@@ -24,6 +24,10 @@
       "@myrmidon/cadmus-tgr-core": [
         "dist/myrmidon/cadmus-tgr-core/myrmidon-cadmus-tgr-core",
         "dist/myrmidon/cadmus-tgr-core"
+      ],
+      "@myrmidon/cadmus-tgr-ui": [
+        "dist/myrmidon/cadmus-tgr-ui/myrmidon-cadmus-tgr-ui",
+        "dist/myrmidon/cadmus-tgr-ui"
       ]
     }
   },

@@ -36,12 +36,19 @@ import { PART_EDITOR_KEYS } from './part-editor-keys';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
 
+// @TEMP
+// import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
+import { CadmusTgrUiModule } from '../../projects/myrmidon/cadmus-tgr-ui/src/public-api';
+
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
+    // @TEMP
+    CadmusTgrUiModule,
+
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
