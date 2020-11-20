@@ -88,8 +88,4 @@ export class HomeComponent {
       },
     ];
   }
-
-  public onEntryChange(entry: ThesaurusEntry): void {
-    console.log(entry.id);
-  }
 }

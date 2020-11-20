@@ -36,19 +36,12 @@ import { PART_EDITOR_KEYS } from './part-editor-keys';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
 
-// @TEMP
-// import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
-import { CadmusTgrUiModule } from '../../projects/myrmidon/cadmus-tgr-ui/src/public-api';
-
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
   ],
   imports: [
-    // @TEMP
-    CadmusTgrUiModule,
-
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -97,10 +90,10 @@ import { CadmusTgrUiModule } from '../../projects/myrmidon/cadmus-tgr-ui/src/pub
           canActivate: [AuthGuardService],
         },
         // {
-        //   path: 'items/:iid/itinera-lt',
+        //   path: 'items/:iid/tgr-gr',
         //   loadChildren: () =>
-        //     import('@myrmidon/cadmus-itinera-part-lt-pg').then(
-        //       (module) => module.CadmusItineraPartLtPgModule
+        //     import('@myrmidon/cadmus-tgr-part-gr-pg').then(
+        //       (module) => module.CadmusTgrPartGrPgModule
         //     ),
         //   canActivate: [AuthGuardService],
         // },
