@@ -65,8 +65,19 @@ li ul {
 
 span.found-count {
   margin: 0 4px;
-  color: forestgreen;
+  padding: 2px 4px;
+  color: white;
+  background-color: #0CC078;
+  border-radius: 6px;
 }
+span.not-found-count {
+  margin: 0 4px;
+  padding: 2px 4px;
+  color: white;
+  background-color: #FB6962;
+  border-radius: 6px;
+}
+
 .hilite {
   background-color: #FDFD96;
 }

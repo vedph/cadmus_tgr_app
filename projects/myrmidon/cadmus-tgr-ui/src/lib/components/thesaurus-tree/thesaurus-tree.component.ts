@@ -31,7 +31,7 @@ export class ThesaurusTreeComponent implements OnInit {
 
   public filter: FormControl;
   public form: FormGroup;
-  public foundNodes: TreeNode[];
+  public foundNodes: TreeNode[] | undefined;
 
   public hasChildren = (index: number, node: TreeNode) => {
     return node && node.children && node.children.length > 0;
@@ -45,7 +45,6 @@ export class ThesaurusTreeComponent implements OnInit {
     // tree
     this.entryChange = new EventEmitter<ThesaurusEntry>();
     this.entries = [];
-    this.foundNodes = [];
     this.rootLabel = '-';
     this.root = { id: '@root', label: '-', children: [] };
     this.treeControl = new NestedTreeControl<TreeNode>((node) => node.children);
@@ -194,10 +193,13 @@ export class ThesaurusTreeComponent implements OnInit {
 
   public resetFilter(): void {
     this.filter.reset();
-    this.foundNodes = [];
+    this.foundNodes = undefined;
   }
 
   public isFoundNode(node: TreeNode): boolean {
+    if (!this.foundNodes) {
+      return false;
+    }
     return this.foundNodes?.length > 0 && this.foundNodes.indexOf(node) > -1;
   }
 }

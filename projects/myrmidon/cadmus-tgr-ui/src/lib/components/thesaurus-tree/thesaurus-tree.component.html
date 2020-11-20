@@ -27,9 +27,14 @@
       <mat-icon>clear</mat-icon>
     </button>
   </mat-form-field>
-  <span class="found-count" *ngIf="foundNodes?.length">{{
-    foundNodes.length
-  }}</span>
+  <span
+    *ngIf="foundNodes"
+    [ngClass]="{
+      'found-count': foundNodes?.length,
+      'not-found-count': foundNodes?.length === 0
+    }"
+    >{{ foundNodes?.length }}</span
+  >
 </form>
 <mat-tree
   [dataSource]="treeDataSource"
