@@ -2,3 +2,11 @@
   width: 90%;
   max-width: 800px;
 }
+th {
+  color: silver;
+  text-align: left;
+  font-weight: normal;
+}
+.hilite {
+  background-color: #ddf3f5;
+}

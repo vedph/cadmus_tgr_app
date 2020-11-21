@@ -7,11 +7,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { AnnotatedTag } from '@myrmidon/cadmus-tgr-core';
+import { AnnotatedTag, TaggedNote } from '@myrmidon/cadmus-tgr-core';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import { LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
+
+interface EditedTaggedNote extends TaggedNote {
+  label: string;
+}
 
 /**
  * LingTaggedForm editor.
@@ -66,10 +70,12 @@ export class LingTaggedFormComponent implements OnInit {
   public noteForm: FormGroup;
 
   public tags: AnnotatedTag[] | undefined;
+  public editedTagIndex: number;
 
   constructor(private _formBuilder: FormBuilder) {
     this.modelChange = new EventEmitter<LingTaggedForm>();
     this._updates$ = new BehaviorSubject<string>('');
+    this.editedTagIndex = -1;
     // form
     this.dubious = _formBuilder.control(false);
     this.lemmata = _formBuilder.control(null, Validators.maxLength(500));
@@ -100,6 +106,7 @@ export class LingTaggedFormComponent implements OnInit {
   }
 
   private updateForm(model: LingTaggedForm | undefined): void {
+    this.editedTagIndex = -1;
     this.noteForm.reset();
 
     if (!model) {
@@ -131,22 +138,20 @@ export class LingTaggedFormComponent implements OnInit {
     let i = 0;
     while (
       i < this.tags.length &&
-      this.tags[i].value.localeCompare(entry.id) > 0
+      entry.id.localeCompare(this.tags[i].value) > 0
     ) {
       i++;
     }
-    this.tags = [
-      ...this.tags.splice(i, 0, {
-        value: entry.id,
-      })
-    ];
+    this.tags.splice(i, 0, {
+      value: entry.id,
+    });
   }
 
   public deleteTag(index: number): void {
     if (!this.tags) {
       return;
     }
-    this.tags = [...this.tags.splice(index, 1)];
+    this.tags.splice(index, 1);
   }
 
   public getTagLabel(tag: string): string {
@@ -154,6 +159,13 @@ export class LingTaggedFormComponent implements OnInit {
     const entry = this._tagEntries?.find((e) => e.id === tag);
     return entry ? entry.value : tag;
   }
+
+  public getAuxLabel(tag: string): string {
+    const entry = this._auxEntries?.find((e) => e.id === tag);
+    return entry ? entry.value : tag;
+  }
+
+  // tag's notes
 
   public tagHasNotes(tag: string): boolean {
     // a tag may have notes when the aux thesaurus has any
@@ -165,7 +177,81 @@ export class LingTaggedFormComponent implements OnInit {
     return this.auxEntries.some((e) => e.id.startsWith(prefix));
   }
 
+  private getEditTagNotes(tag: AnnotatedTag): EditedTaggedNote[] {
+    // scenario:
+    // tagEntries: [{ id: 'alpha', label: 'ALPHA' }]
+    // auxEntries: [{ id: 'alpha--one', label: 'A1' },
+    //              { id: 'alpha--two', label: 'A2' }]
+    // the TaggedNote's defined for that entries are:
+    // [ { tag: 'one', label: 'A1' },
+    //   { tag: 'two', label: 'A2' }]
+
+    if (!this.auxEntries) {
+      return [];
+    }
+    const prefix = tag.value + '--';
+
+    // get the existing notes if any
+    const notes: EditedTaggedNote[] = (tag.notes ?? []).map((n) => {
+      return {
+        tag: n.tag,
+        note: n.note,
+        label: this.getAuxLabel(prefix + n.tag) ?? n.tag,
+      };
+    });
+
+    // add to them all the notes defined for the tag
+    this.auxEntries
+      .filter((e) => e.id.startsWith(prefix))
+      .forEach((entry) => {
+        const nid = entry.id.substring(prefix.length);
+        if (!notes.some((n) => n.tag === nid)) {
+          notes.push({
+            tag: nid,
+            note: '',
+            label: entry.value,
+          });
+        }
+      });
+
+    // sort the notes
+    notes.sort((a, b) => {
+      return a.label.localeCompare(b.label);
+    });
+
+    return notes;
+  }
+
+  private getAnnotatedTagGroup(item: EditedTaggedNote): FormGroup {
+    return this._formBuilder.group({
+      tag: this._formBuilder.control(item.tag),
+      label: this._formBuilder.control(item.label),
+      note: this._formBuilder.control(item.note),
+    });
+  }
+
   public editTagNotes(index: number): void {
+    if (!this.auxEntries || index === this.editedTagIndex || !this.tags) {
+      return;
+    }
+    this.editedTagIndex = index;
+    const tag = this.tags[this.editedTagIndex];
+    const tagNotes = this.getEditTagNotes(tag);
+    this.notes.reset();
+    for (const note of tagNotes) {
+      this.notes.push(this.getAnnotatedTagGroup(note));
+    }
+    this.noteForm.markAsPristine();
+  }
+
+  public closeTagNotes(): void {
+    if (this.editedTagIndex === -1) {
+      return;
+    }
+    this.noteForm.reset();
+  }
+
+  public saveTagNotes(): void {
     // TODO
   }
 }

@@ -11,13 +11,14 @@ export class HomeComponent {
   public title: string;
   public logged: boolean;
 
-  public entries: ThesaurusEntry[];
+  public tagEntries: ThesaurusEntry[];
+  public auxEntries: ThesaurusEntry[];
 
   constructor(env: EnvService, authService: AuthService) {
     this.title = env.name;
     this.logged = authService.currentUserValue !== null;
 
-    this.entries = [
+    this.tagEntries = [
       {
         id: 'architecture',
         value: 'architecture',
@@ -85,6 +86,17 @@ export class HomeComponent {
       {
         id: 'literature',
         value: 'literature',
+      },
+    ];
+
+    this.auxEntries = [
+      {
+        id: 'language.syntax--alpha',
+        value: 'a-syntax'
+      },
+      {
+        id: 'language.syntax--beta',
+        value: 'b-syntax'
       },
     ];
   }

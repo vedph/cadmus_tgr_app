@@ -14,7 +14,7 @@
 
     <mat-card-content>
       <cadmus-thesaurus-tree
-        [entries]="tagEntries$ | async"
+        [entries]="(tagEntries$ | async) || []"
         rootLabel="tags"
         [renderLabel]="renderLabel"
         (entryChange)="onEntryChange($event)"

@@ -2,12 +2,12 @@
   <mat-tab label="tags">
     <!-- tags -->
     <cadmus-thesaurus-tree
-      [entries]="tagEntries"
+      [entries]="tagEntries || []"
       rootLabel="tags"
       [renderLabel]="renderLabel"
       (entryChange)="onEntryChange($event)"
     ></cadmus-thesaurus-tree>
-    <table>
+    <table *ngIf="tags?.length">
       <thead>
         <tr>
           <th></th>
@@ -16,7 +16,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let t of tags; let i = index">
+        <tr
+          *ngFor="let t of tags; let i = index"
+          [class.hilite]="i === editedTagIndex"
+        >
           <td>
             <button
               type="button"
@@ -27,21 +30,60 @@
             >
               <mat-icon>remove_circle</mat-icon>
             </button>
-            <button *ngIf="tagHasNotes(t)"
+            <button
+              *ngIf="tagHasNotes(t.value)"
               type="button"
               color="primary"
               mat-icon-button
               matTooltip="Edit this tag's notes"
               (click)="editTagNotes(i)"
             >
-              <mat-icon>remove_circle</mat-icon>
+              <mat-icon>edit</mat-icon>
             </button>
           </td>
           <td>{{ getTagLabel(t.value) }}</td>
-          <td>{{ t.notes?.length || 0 }}</td>
+          <td style="text-align: center">{{ t.notes?.length || 0 }}</td>
         </tr>
       </tbody>
     </table>
+
+    <!-- tag notes -->
+    <mat-expansion-panel
+      *ngIf="editedTagIndex > -1"
+      [expanded]="editedTagIndex > -1"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Tag notes</mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="noteForm" (submit)="saveTagNotes()">
+        <div formArrayName="notes">
+          <div *ngFor="let item of notes.controls; let i = index">
+            <!-- child form -->
+            <div [formGroupName]="i">
+              {{ i + 1 }}. {{ item["controls"].label.value }}
+              <mat-form-field>
+                <textarea
+                  matInput
+                  rows="2"
+                  class="long-text"
+                  formControlName="note"
+                  placeholder="note"
+                  maxlength="500"
+                ></textarea>
+                <mat-error
+                  *ngIf="
+                    item['controls'].note.errors?.maxLength &&
+                    (item['controls'].note.dirty ||
+                      item['controls'].note.touched)
+                  "
+                  >note too long</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-expansion-panel>
   </mat-tab>
 
   <mat-tab label="general">

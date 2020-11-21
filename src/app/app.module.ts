@@ -35,6 +35,8 @@ import {
 import { PART_EDITOR_KEYS } from './part-editor-keys';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
+// TEMP:
+import { CadmusTgrPartGrUiModule } from 'projects/myrmidon/cadmus-tgr-part-gr-ui/src/public-api';
 
 @NgModule({
   declarations: [
@@ -162,8 +164,8 @@ import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
     CadmusPartGeneralUiModule,
     CadmusPartPhilologyUiModule,
     CadmusUiModule,
-    // when developing...
-    // CadmusTgrPartGrModule
+    // TEMP: when developing
+    CadmusTgrPartGrUiModule
   ],
   providers: [
     EnvServiceProvider,
