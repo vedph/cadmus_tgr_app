@@ -1,0 +1,87 @@
+<mat-tab-group>
+  <mat-tab label="tags">
+    <!-- tags -->
+    <cadmus-thesaurus-tree
+      [entries]="tagEntries"
+      rootLabel="tags"
+      [renderLabel]="renderLabel"
+      (entryChange)="onEntryChange($event)"
+    ></cadmus-thesaurus-tree>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>tag</th>
+          <th>notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of tags; let i = index">
+          <td>
+            <button
+              type="button"
+              color="warn"
+              mat-icon-button
+              matTooltip="Delete this tag"
+              (click)="deleteTag(i)"
+            >
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+            <button *ngIf="tagHasNotes(t)"
+              type="button"
+              color="primary"
+              mat-icon-button
+              matTooltip="Edit this tag's notes"
+              (click)="editTagNotes(i)"
+            >
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </td>
+          <td>{{ getTagLabel(t.value) }}</td>
+          <td>{{ t.notes?.length || 0 }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-tab>
+
+  <mat-tab label="general">
+    <!-- dubious -->
+    <div>
+      <mat-checkbox [formControl]="dubious">dubious</mat-checkbox>
+    </div>
+
+    <!-- lemmata -->
+    <div>
+      <mat-form-field class="long-text">
+        <textarea
+          rows="3"
+          matInput
+          [formControl]="lemmata"
+          placeholder="lemmata"
+        ></textarea>
+        <mat-error
+          *ngIf="
+            lemmata.errors?.maxLength && (lemmata.dirty || lemmata.touched)
+          "
+          >lemmata too long</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <!-- note -->
+    <div>
+      <mat-form-field class="long-text">
+        <textarea
+          rows="3"
+          matInput
+          [formControl]="note"
+          placeholder="note"
+        ></textarea>
+        <mat-error
+          *ngIf="note.errors?.maxLength && (note.dirty || note.touched)"
+          >note too long</mat-error
+        >
+      </mat-form-field>
+    </div>
+  </mat-tab>
+</mat-tab-group>

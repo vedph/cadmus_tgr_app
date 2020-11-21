@@ -163,9 +163,7 @@ import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
     CadmusPartPhilologyUiModule,
     CadmusUiModule,
     // when developing...
-    // CadmusItineraPartLtUiModule
-    // TODO remove
-    // CadmusItineraPartMsUiModule
+    // CadmusTgrPartGrModule
   ],
   providers: [
     EnvServiceProvider,

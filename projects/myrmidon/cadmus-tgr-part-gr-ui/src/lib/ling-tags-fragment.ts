@@ -2,7 +2,7 @@ import { Fragment } from '@myrmidon/cadmus-core';
 import { LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
 
 /**
- * The LingTags layer fragment server model.
+ * The linguistic tags layer fragment server model.
  */
 export interface LingTagsFragment extends Fragment {
   forms: LingTaggedForm[];
