@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -60,6 +68,11 @@ export class LingTaggedFormComponent implements OnInit {
 
   @Output()
   public modelChange: EventEmitter<LingTaggedForm>;
+  @Output()
+  public editorClose: EventEmitter<any>;
+
+  @ViewChild('notebar', { static: false })
+  noteDivRef?: ElementRef<HTMLElement>;
 
   public dubious: FormControl;
   public lemmata: FormControl;
@@ -71,11 +84,14 @@ export class LingTaggedFormComponent implements OnInit {
 
   public tags: AnnotatedTag[] | undefined;
   public editedTagIndex: number;
+  public editingNotes: boolean;
 
   constructor(private _formBuilder: FormBuilder) {
     this.modelChange = new EventEmitter<LingTaggedForm>();
+    this.editorClose = new EventEmitter<any>();
     this._updates$ = new BehaviorSubject<string>('');
     this.editedTagIndex = -1;
+    this.editingNotes = false;
     // form
     this.dubious = _formBuilder.control(false);
     this.lemmata = _formBuilder.control(null, Validators.maxLength(500));
@@ -122,6 +138,31 @@ export class LingTaggedFormComponent implements OnInit {
     this.form.markAsPristine();
   }
 
+  private getModel(): LingTaggedForm {
+    // split text into lemmata, trimming and removing
+    // empty or duplicate lemmata
+    const lemmata = [
+      ...new Set<string>(
+        this.lemmata.value
+          ?.split('\n')
+          .map((l: string) => {
+            return l.trim();
+          })
+          .filter((l: string) => {
+            return l.length > 0;
+          })
+      ).values(),
+    ];
+    const note = this.note.value?.trim();
+
+    return {
+      lemmata: lemmata.length > 0 ? lemmata : undefined,
+      isDubious: this.dubious.value,
+      note: note ? note : undefined,
+      tags: this.tags || [],
+    };
+  }
+
   public renderLabel(label: string): string {
     return renderLabelFromLastColon(label);
   }
@@ -145,6 +186,7 @@ export class LingTaggedFormComponent implements OnInit {
     this.tags.splice(i, 0, {
       value: entry.id,
     });
+    this.form.markAsDirty();
   }
 
   public deleteTag(index: number): void {
@@ -152,6 +194,7 @@ export class LingTaggedFormComponent implements OnInit {
       return;
     }
     this.tags.splice(index, 1);
+    this.form.markAsDirty();
   }
 
   public getTagLabel(tag: string): string {
@@ -165,8 +208,7 @@ export class LingTaggedFormComponent implements OnInit {
     return entry ? entry.value : tag;
   }
 
-  // tag's notes
-
+  //#region Tag's notes
   public tagHasNotes(tag: string): boolean {
     // a tag may have notes when the aux thesaurus has any
     // entry starting with its ID plus "--"
@@ -235,13 +277,21 @@ export class LingTaggedFormComponent implements OnInit {
       return;
     }
     this.editedTagIndex = index;
+    this.editingNotes = true;
     const tag = this.tags[this.editedTagIndex];
     const tagNotes = this.getEditTagNotes(tag);
-    this.notes.reset();
+    this.notes.clear();
     for (const note of tagNotes) {
       this.notes.push(this.getAnnotatedTagGroup(note));
     }
     this.noteForm.markAsPristine();
+
+    // scroll to bottom of notes editor
+    setTimeout(() => {
+      this.noteDivRef?.nativeElement?.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }, 200);
   }
 
   public closeTagNotes(): void {
@@ -249,9 +299,46 @@ export class LingTaggedFormComponent implements OnInit {
       return;
     }
     this.noteForm.reset();
+    this.editedTagIndex = -1;
+    this.editingNotes = false;
   }
 
   public saveTagNotes(): void {
-    // TODO
+    if (!this.tags || !this.editingNotes) {
+      return;
+    }
+    const tag = this.tags[this.editedTagIndex];
+    tag.notes = this.notes.value
+      .filter((n: EditedTaggedNote) => {
+        return n.note?.trim()?.length > 0;
+      })
+      .map((n: EditedTaggedNote) => {
+        return {
+          tag: n.tag,
+          note: n.note,
+        };
+      });
+    if (!tag.notes?.length) {
+      tag.notes = undefined;
+    }
+    this.closeTagNotes();
+    this.form.markAsDirty();
+  }
+  //#endregion
+
+  public cancel(): void {
+    this.editorClose.emit();
+  }
+
+  public save(): void {
+    if (this.form.invalid) {
+      return;
+    }
+    if (this.editedTagIndex > -1) {
+      this.closeTagNotes();
+    }
+    const model = this.getModel();
+    this.modelChange.emit(model);
+    this.form.markAsPristine();
   }
 }
