@@ -157,7 +157,7 @@ export class LingTaggedFormComponent implements OnInit {
 
     return {
       lemmata: lemmata.length > 0 ? lemmata : undefined,
-      isDubious: this.dubious.value,
+      isDubious: this.dubious.value ? true : undefined,
       note: note ? note : undefined,
       tags: this.tags || [],
     };

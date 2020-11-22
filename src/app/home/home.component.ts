@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { EnvService, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { AuthService } from '@myrmidon/cadmus-api';
+import { LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
 
 @Component({
   selector: 'cadmus-home',
@@ -13,6 +14,7 @@ export class HomeComponent {
 
   public tagEntries: ThesaurusEntry[];
   public auxEntries: ThesaurusEntry[];
+  public taggedForm: LingTaggedForm | undefined;
 
   constructor(env: EnvService, authService: AuthService) {
     this.title = env.name;
@@ -99,5 +101,9 @@ export class HomeComponent {
         value: 'b-syntax'
       },
     ];
+  }
+
+  public onLingTaggedFormChange(form: LingTaggedForm): void {
+    this.taggedForm = form;
   }
 }
