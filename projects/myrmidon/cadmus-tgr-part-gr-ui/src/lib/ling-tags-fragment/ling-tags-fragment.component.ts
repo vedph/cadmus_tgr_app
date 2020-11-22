@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -8,14 +7,11 @@ import {
 } from '@angular/forms';
 import { Fragment, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { AuthService } from '@myrmidon/cadmus-api';
-import {
-  ModelEditorComponentBase,
-  DialogService,
-  renderLabelFromLastColon,
-} from '@myrmidon/cadmus-ui';
+import { ModelEditorComponentBase, DialogService } from '@myrmidon/cadmus-ui';
 
 import { LingTagsFragment } from '../ling-tags-fragment';
 import { BehaviorSubject } from 'rxjs';
+import { AnnotatedTag, LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
 
 /**
  * Linguistic tags fragment editor component.
@@ -29,30 +25,27 @@ import { BehaviorSubject } from 'rxjs';
 export class LingTagsFragmentComponent
   extends ModelEditorComponentBase<LingTagsFragment>
   implements OnInit {
+  private _editedFormIndex: number;
   public fragment: Fragment | undefined;
 
   public tagEntries$: BehaviorSubject<ThesaurusEntry[]>;
   public auxEntries$: BehaviorSubject<ThesaurusEntry[]>;
 
-  public entries: FormControl;
+  public forms: FormControl;
   public form: FormGroup;
-
-  public entryNotes: FormArray;
-  public entryForm: FormGroup;
+  public editedForm: LingTaggedForm | undefined;
+  public tabIndex: number;
 
   constructor(authService: AuthService, formBuilder: FormBuilder) {
     super(authService);
     this.tagEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
     this.auxEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
+    this.tabIndex = 0;
+    this._editedFormIndex = -1;
     // form
-    this.entries = formBuilder.control([], Validators.required);
+    this.forms = formBuilder.control([], Validators.required);
     this.form = formBuilder.group({
-      entries: this.entries,
-    });
-    // entry notes form
-    this.entryNotes = formBuilder.array([]);
-    this.entryForm = formBuilder.group({
-      entryNotes: this.entryNotes,
+      forms: this.forms,
     });
   }
 
@@ -65,9 +58,7 @@ export class LingTagsFragmentComponent
       this.form.reset();
       return;
     }
-    this.entryForm.reset();
-
-    this.entries.setValue(model.forms);
+    this.forms.setValue(model.forms || []);
     this.form.markAsPristine();
   }
 
@@ -99,23 +90,73 @@ export class LingTagsFragmentComponent
         forms: [],
       };
     }
-    fr.forms = this.entries.value;
+    fr.forms = this.forms.value?.length ? this.forms.value : undefined;
     return fr;
-  }
-
-  public renderLabel(label: string): string {
-    return renderLabelFromLastColon(label);
   }
 
   public getTagLabel(id: string): string {
     return this.tagEntries$.value.find((e) => e.id === id)?.value || id;
   }
 
-  public getAuxLabel(id: string): string {
-    return this.auxEntries$.value.find((e) => e.id === id)?.value || id;
+  public getTagsLabel(tags: AnnotatedTag[] | undefined): string {
+    if (!tags?.length) {
+      return '';
+    }
+    return tags
+      .map((t) => {
+        return this.getTagLabel(t.value);
+      })
+      .join('\n');
   }
 
-  public onEntryChange(entry: ThesaurusEntry): void {
-    // TODO
+  public addForm(item?: LingTaggedForm): void {
+    this.forms.value.push(item || { tags: [] });
+  }
+
+  public addFormBelow(index: number): void {
+    this.forms.value.insert(index + 1, { tags: [] });
+  }
+
+  public removeForm(index: number): void {
+    this.forms.value.removeAt(index);
+  }
+
+  public moveFormUp(index: number): void {
+    if (index < 1) {
+      return;
+    }
+    const item = this.forms.value[index];
+    this.forms.value.removeAt(index);
+    this.forms.value.insert(index - 1, item);
+  }
+
+  public moveFormDown(index: number): void {
+    if (index + 1 >= this.forms.value.length) {
+      return;
+    }
+    const item = this.forms.value[index];
+    this.forms.value.removeAt(index);
+    this.forms.value.insert(index + 1, item);
+  }
+
+  public editForm(index: number): void {
+    this.editedForm = this.forms.value[index];
+    this._editedFormIndex = index;
+
+    setTimeout(() => {
+      this.tabIndex = 1;
+    }, 200);
+  }
+
+  public closeEditedForm(): void {
+    this.editedForm = undefined;
+    this._editedFormIndex = -1;
+    this.tabIndex = 0;
+  }
+
+  public onFormChange(form: LingTaggedForm): void {
+    this.forms.value.splice(this._editedFormIndex, 1, form);
+    this.closeEditedForm();
+    this.form.markAsDirty();
   }
 }
