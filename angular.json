@@ -250,6 +250,46 @@
           }
         }
       }
+    },
+    "@myrmidon/cadmus-tgr-part-gr-pg": {
+      "projectType": "library",
+      "root": "projects/myrmidon/cadmus-tgr-part-gr-pg",
+      "sourceRoot": "projects/myrmidon/cadmus-tgr-part-gr-pg/src",
+      "prefix": "cadmus",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/myrmidon/cadmus-tgr-part-gr-pg/tsconfig.lib.json",
+            "project": "projects/myrmidon/cadmus-tgr-part-gr-pg/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/myrmidon/cadmus-tgr-part-gr-pg/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/myrmidon/cadmus-tgr-part-gr-pg/src/test.ts",
+            "tsConfig": "projects/myrmidon/cadmus-tgr-part-gr-pg/tsconfig.spec.json",
+            "karmaConfig": "projects/myrmidon/cadmus-tgr-part-gr-pg/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/myrmidon/cadmus-tgr-part-gr-pg/tsconfig.lib.json",
+              "projects/myrmidon/cadmus-tgr-part-gr-pg/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "cadmus-tgr-app"

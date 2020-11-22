@@ -35,8 +35,6 @@ import {
 import { PART_EDITOR_KEYS } from './part-editor-keys';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
-// TEMP:
-import { CadmusTgrPartGrUiModule } from 'projects/myrmidon/cadmus-tgr-part-gr-ui/src/public-api';
 
 @NgModule({
   declarations: [
@@ -91,14 +89,14 @@ import { CadmusTgrPartGrUiModule } from 'projects/myrmidon/cadmus-tgr-part-gr-ui
             ),
           canActivate: [AuthGuardService],
         },
-        // {
-        //   path: 'items/:iid/tgr-gr',
-        //   loadChildren: () =>
-        //     import('@myrmidon/cadmus-tgr-part-gr-pg').then(
-        //       (module) => module.CadmusTgrPartGrPgModule
-        //     ),
-        //   canActivate: [AuthGuardService],
-        // },
+        {
+          path: 'items/:iid/tgr-gr',
+          loadChildren: () =>
+            import('@myrmidon/cadmus-tgr-part-gr-pg').then(
+              (module) => module.CadmusTgrPartGrPgModule
+            ),
+          canActivate: [AuthGuardService],
+        },
         {
           path: 'thesauri',
           loadChildren: () =>
@@ -163,9 +161,7 @@ import { CadmusTgrPartGrUiModule } from 'projects/myrmidon/cadmus-tgr-part-gr-ui
     CadmusMaterialModule,
     CadmusPartGeneralUiModule,
     CadmusPartPhilologyUiModule,
-    CadmusUiModule,
-    // TEMP: when developing
-    CadmusTgrPartGrUiModule
+    CadmusUiModule
   ],
   providers: [
     EnvServiceProvider,

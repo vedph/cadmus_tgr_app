@@ -32,6 +32,10 @@
       "@myrmidon/cadmus-tgr-part-gr-ui": [
         "dist/myrmidon/cadmus-tgr-part-gr-ui/myrmidon-cadmus-tgr-part-gr-ui",
         "dist/myrmidon/cadmus-tgr-part-gr-ui"
+      ],
+      "@myrmidon/cadmus-tgr-part-gr-pg": [
+        "dist/myrmidon/cadmus-tgr-part-gr-pg/myrmidon-cadmus-tgr-part-gr-pg",
+        "dist/myrmidon/cadmus-tgr-part-gr-pg"
       ]
     }
   },
