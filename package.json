@@ -41,7 +41,7 @@
     "@myrmidon/cadmus-admin": "^0.0.5",
     "@myrmidon/cadmus-api": "^0.0.6",
     "@myrmidon/cadmus-core": "^0.0.6",
-    "@myrmidon/cadmus-item-editor": "^0.0.5",
+    "@myrmidon/cadmus-item-editor": "^0.0.6",
     "@myrmidon/cadmus-item-list": "^0.0.6",
     "@myrmidon/cadmus-item-search": "^0.0.8",
     "@myrmidon/cadmus-login": "^0.0.5",
