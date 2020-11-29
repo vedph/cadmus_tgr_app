@@ -5,9 +5,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Fragment, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { deepCopy, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { AuthService } from '@myrmidon/cadmus-api';
-import { ModelEditorComponentBase, DialogService } from '@myrmidon/cadmus-ui';
+import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 
 import { LingTagsFragment } from '../ling-tags-fragment';
 import { BehaviorSubject } from 'rxjs';
@@ -26,7 +26,6 @@ export class LingTagsFragmentComponent
   extends ModelEditorComponentBase<LingTagsFragment>
   implements OnInit {
   private _editedFormIndex: number;
-  public fragment: Fragment | undefined;
 
   public tagEntries$: BehaviorSubject<ThesaurusEntry[]>;
   public auxEntries$: BehaviorSubject<ThesaurusEntry[]>;
@@ -63,7 +62,7 @@ export class LingTagsFragmentComponent
   }
 
   protected onModelSet(model: LingTagsFragment): void {
-    this.updateForm(model);
+    this.updateForm(deepCopy(model));
   }
 
   protected onThesauriSet(): void {
@@ -83,15 +82,10 @@ export class LingTagsFragmentComponent
   }
 
   protected getModelFromForm(): LingTagsFragment {
-    let fr = this.getModelFromJson();
-    if (!fr) {
-      fr = {
-        location: this.fragment?.location ?? '',
-        forms: [],
-      };
-    }
-    fr.forms = this.forms.value?.length ? this.forms.value : undefined;
-    return fr;
+    return {
+      location: this.model?.location ?? '',
+      forms: this.forms.value?.length ? this.forms.value : undefined,
+    };
   }
 
   public getTagLabel(id: string): string {
