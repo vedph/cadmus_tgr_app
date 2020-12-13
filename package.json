@@ -9,7 +9,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build-core": "ng build @myrmidon/cadmus-tgr-core --prod && ng build @myrmidon/cadmus-tgr-ui --prod",
-    "build-gr": "ng build @myrmidon/cadmus-tgr-part-gr-ui --prod && ng build @myrmidon/cadmus-tgr-part-gr-pg --prod"
+    "build-gr": "ng build @myrmidon/cadmus-tgr-part-gr-ui --prod && ng build @myrmidon/cadmus-tgr-part-gr-pg --prod",
+    "build-all": "npm run-script build-core && npm run-script build-gr"
   },
   "private": true,
   "dependencies": {
