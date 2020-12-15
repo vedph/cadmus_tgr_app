@@ -12,9 +12,12 @@ import { CadmusItineraCoreModule } from '@myrmidon/cadmus-itinera-core';
 import { CadmusItineraUiModule } from '@myrmidon/cadmus-itinera-ui';
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
 import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
+import { MsUnitsPartComponent } from './ms-units-part/ms-units-part.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    MsUnitsPartComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -29,6 +32,8 @@ import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
     CadmusTgrCoreModule,
     CadmusTgrUiModule,
   ],
-  exports: [],
+  exports: [
+    MsUnitsPartComponent
+  ],
 })
 export class CadmusTgrPartMsUiModule {}

@@ -15,8 +15,8 @@ export interface MsWatermark {
 export interface MsGuardSheet {
   isBack?: boolean;
   material?: string;
-  watermarks?: MsWatermark[];
   note?: string;
+  watermarks?: MsWatermark[];
 }
 
 export interface MsRuling {
@@ -65,10 +65,7 @@ export const MSUNITS_PART_TYPEID = 'it.vedph.tgr.ms-units';
  */
 export const MSUNITS_PART_SCHEMA = {
   $schema: 'http://json-schema.org/draft-07/schema#',
-  $id:
-    'www.vedph.it/cadmus/parts/tgr/ms/' +
-    MSUNITS_PART_TYPEID +
-    '.json',
+  $id: 'www.vedph.it/cadmus/parts/tgr/ms/' + MSUNITS_PART_TYPEID + '.json',
   type: 'object',
   title: 'MsUnitsPart',
   required: [
@@ -79,7 +76,11 @@ export const MSUNITS_PART_SCHEMA = {
     'creatorId',
     'timeModified',
     'userId',
-    // TODO: add other required properties here...
+    'start',
+    'end',
+    'material',
+    'sheetCount',
+    'guardSheetCount',
   ],
   properties: {
     timeCreated: {
@@ -112,7 +113,259 @@ export const MSUNITS_PART_SCHEMA = {
       type: ['string', 'null'],
       pattern: '^([a-z][-0-9a-z._]*)?$',
     },
-
-    // TODO: add properties and fill the "required" array as needed
+    start: {
+      type: 'object',
+      required: ['n'],
+      properties: {
+        n: {
+          type: 'integer',
+        },
+        v: {
+          type: 'string',
+        },
+        l: {
+          type: 'integer',
+        },
+      },
+    },
+    end: {
+      type: 'object',
+      required: ['n'],
+      properties: {
+        n: {
+          type: 'integer',
+        },
+        v: {
+          type: 'string',
+        },
+        l: {
+          type: 'integer',
+        },
+      },
+    },
+    material: {
+      type: 'string',
+    },
+    sheetCount: {
+      type: 'integer',
+    },
+    guardSheetCount: {
+      type: 'integer',
+    },
+    groupId: {
+      type: 'string',
+    },
+    groupOrdinal: {
+      type: 'integer',
+    },
+    quires: {
+      type: 'string',
+    },
+    sheetNumbering: {
+      type: 'string',
+    },
+    quireNumbering: {
+      type: 'string',
+    },
+    state: {
+      type: 'string',
+    },
+    binding: {
+      type: 'string',
+    },
+    palimpsests: {
+      type: 'array',
+      items: {
+        anyOf: [
+          {
+            type: 'object',
+            required: [],
+            properties: {
+              locations: {
+                type: 'array',
+                items: {
+                  anyOf: [
+                    {
+                      type: 'object',
+                      required: ['n'],
+                      properties: {
+                        n: {
+                          type: 'integer',
+                        },
+                        v: {
+                          type: 'string',
+                        },
+                        l: {
+                          type: 'integer',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+              date: {
+                type: 'object',
+              },
+              note: {
+                type: 'string',
+              },
+            },
+          },
+        ],
+      },
+    },
+    guardSheets: {
+      type: 'array',
+      items: {
+        anyOf: [
+          {
+            type: 'object',
+            required: [],
+            properties: {
+              isBack: {
+                type: 'boolean',
+              },
+              material: {
+                type: 'string',
+              },
+              note: {
+                type: 'string',
+              },
+              watermarks: {
+                type: 'array',
+                items: {
+                  anyOf: [
+                    {
+                      type: 'object',
+                      required: ['value', 'description'],
+                      properties: {
+                        value: {
+                          type: 'string',
+                        },
+                        description: {
+                          type: 'string',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+    leafSizes: {
+      type: 'array',
+      items: {
+        anyOf: [
+          {
+            type: 'object',
+          },
+        ],
+      },
+    },
+    writtenAreaSize: {
+      type: 'object',
+      required: [],
+      properties: {
+        tag: {
+          type: 'string',
+        },
+        w: {
+          type: 'object',
+          required: ['value', 'unit'],
+          properties: {
+            tag: {
+              type: 'string',
+            },
+            value: {
+              type: 'number',
+            },
+            unit: {
+              type: 'string',
+            },
+          },
+        },
+        d: {
+          type: 'object',
+          required: ['value', 'unit'],
+          properties: {
+            tag: {
+              type: 'string',
+            },
+            value: {
+              type: 'number',
+            },
+            unit: {
+              type: 'string',
+            },
+          },
+        },
+        h: {
+          type: 'object',
+          required: ['value', 'unit'],
+          properties: {
+            tag: {
+              type: 'string',
+            },
+            value: {
+              type: 'number',
+            },
+            unit: {
+              type: 'string',
+            },
+          },
+        },
+        note: {
+          type: 'string',
+        },
+      },
+    },
+    rulings: {
+      type: 'array',
+      items: {
+        $id: '#/properties/rulings/items',
+        anyOf: [
+          {
+            type: 'object',
+            required: ['manner', 'system'],
+            properties: {
+              manner: {
+                type: 'string',
+              },
+              system: {
+                type: 'string',
+              },
+              type: {
+                type: 'string',
+              },
+              description: {
+                type: 'string',
+              },
+            },
+          },
+        ],
+      },
+    },
+    watermarks: {
+      type: 'array',
+      items: {
+        anyOf: [
+          {
+            type: 'object',
+            required: ['value', 'description'],
+            properties: {
+              value: {
+                type: 'string',
+              },
+              description: {
+                type: 'string',
+              },
+            },
+          },
+        ],
+      },
+    },
   },
 };
