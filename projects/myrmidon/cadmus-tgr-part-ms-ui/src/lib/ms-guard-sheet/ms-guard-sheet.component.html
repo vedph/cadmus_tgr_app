@@ -1,0 +1,160 @@
+<form [formGroup]="form" (submit)="save()">
+  <div>
+    <!-- back -->
+    <mat-checkbox [formControl]="back">back</mat-checkbox>
+
+    &nbsp;
+    <!-- material (bound) -->
+    <mat-form-field *ngIf="matEntries?.length" style="width: 8em">
+      <mat-select [formControl]="material" placeholder="material">
+        <mat-option *ngFor="let e of matEntries" [value]="e.id">{{
+          e.value
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- material (free) -->
+    <mat-form-field *ngIf="!matEntries?.length" style="width: 8em">
+      <input matInput [formControl]="material" placeholder="material" />
+      <mat-error
+        *ngIf="
+          material.errors?.maxLength && (material.dirty || material.touched)
+        "
+        >too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <div>
+    <!-- note -->
+    <mat-form-field class="long-text">
+      <textarea matInput [formControl]="note" placeholder="note"></textarea>
+      <mat-error *ngIf="note.errors?.maxLength && (note.dirty || note.touched)"
+        >too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <!-- watermarks -->
+  <h3>watermarks</h3>
+  <div formArrayName="watermarks">
+    <div>
+      <button
+        type="button"
+        mat-stroked-button
+        color="primary"
+        (click)="addWatermark()"
+      >
+        add watermark
+      </button>
+    </div>
+    <div
+      *ngFor="
+        let item of watermarks.controls;
+        let i = index;
+        let first = first;
+        let last = last
+      "
+    >
+      <!-- child form -->
+      <div [formGroupName]="i">
+        <!-- child actions -->
+        {{ i + 1 }}.
+        <button
+          mat-icon-button
+          type="button"
+          matTooltip="Remove this watermark"
+          color="warn"
+          (click)="removeWatermark(i)"
+        >
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+        <button
+          [disabled]="first"
+          mat-icon-button
+          type="button"
+          matTooltip="Move watermark up"
+          (click)="moveWatermarkUp(i)"
+        >
+          <mat-icon>arrow_upward</mat-icon>
+        </button>
+        <button
+          [disabled]="last"
+          mat-icon-button
+          type="button"
+          matTooltip="Move watermark down"
+          (click)="moveWatermarkDown(i)"
+        >
+          <mat-icon>arrow_downward</mat-icon>
+        </button>
+
+        <!-- child controls -->
+        <!-- value -->
+        <mat-form-field>
+          <input matInput formControlName="value" placeholder="value" />
+          <mat-error
+            *ngIf="
+              item['controls'].value.errors?.required &&
+              (item['controls'].value.dirty || item['controls'].value.touched)
+            "
+            >value required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              item['controls'].value.errors?.maxLength &&
+              (item['controls'].value.dirty || item['controls'].value.touched)
+            "
+            >value too long</mat-error
+          >
+        </mat-form-field>
+
+        <!-- description -->
+        <mat-form-field>
+          <input
+            matInput
+            formControlName="description"
+            placeholder="description"
+          />
+          <mat-error
+            *ngIf="
+              item['controls'].description.errors?.required &&
+              (item['controls'].description.dirty ||
+                item['controls'].description.touched)
+            "
+            >description required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              item['controls'].description.errors?.maxLength &&
+              (item['controls'].description.dirty ||
+                item['controls'].description.touched)
+            "
+            >description too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard sheet changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept sheet changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+</form>

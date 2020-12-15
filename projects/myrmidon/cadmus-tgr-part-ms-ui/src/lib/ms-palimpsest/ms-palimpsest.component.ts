@@ -12,7 +12,7 @@ import { MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { MsPalimpsest } from '../ms-units-part';
 
 @Component({
-  selector: 'lib-ms-palimpsest',
+  selector: 'tgr-ms-palimpsest',
   templateUrl: './ms-palimpsest.component.html',
   styleUrls: ['./ms-palimpsest.component.css'],
 })
