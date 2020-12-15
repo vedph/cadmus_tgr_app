@@ -13,7 +13,7 @@ import { LibraryRouteService } from '@myrmidon/cadmus-core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'cadmus-ling-tags-fragment-feature',
+  selector: 'tgr-ling-tags-fragment-feature',
   templateUrl: './ling-tags-fragment-feature.component.html',
   styleUrls: ['./ling-tags-fragment-feature.component.css'],
 })

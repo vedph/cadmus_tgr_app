@@ -96,12 +96,12 @@
         </mat-tab>
 
         <mat-tab label="form" *ngIf="editedForm">
-          <cadmus-ling-tagged-form
+          <tgr-ling-tagged-form
             [tagEntries]="(tagEntries$ | async) || []"
             [auxEntries]="(auxEntries$ | async) || []"
             [model]="editedForm"
             (modelChange)="onFormChange($event)"
-          ></cadmus-ling-tagged-form>
+          ></tgr-ling-tagged-form>
         </mat-tab>
       </mat-tab-group>
     </mat-card-content>

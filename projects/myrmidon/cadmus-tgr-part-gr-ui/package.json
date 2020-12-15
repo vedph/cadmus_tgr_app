@@ -1,6 +1,19 @@
 {
   "name": "@myrmidon/cadmus-tgr-part-gr-ui",
   "version": "0.0.1",
+  "description": "Cadmus TGR - part editors components.",
+  "keywords": [
+    "Cadmus",
+    "TGR"
+  ],
+  "homepage": "https://github.com/vedph/cadmus_tgr_app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vedph/cadmus_tgr_app"
+  },
+  "author": {
+    "name": "Daniele Fusi"
+  },
   "peerDependencies": {
     "@angular/common": "^11.0.0",
     "@angular/core": "^11.0.0",

@@ -29,7 +29,7 @@ interface EditedTaggedNote extends TaggedNote {
  * LingTaggedForm editor.
  */
 @Component({
-  selector: 'cadmus-ling-tagged-form',
+  selector: 'tgr-ling-tagged-form',
   templateUrl: './ling-tagged-form.component.html',
   styleUrls: ['./ling-tagged-form.component.css'],
 })

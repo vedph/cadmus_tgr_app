@@ -18,7 +18,7 @@ import { AnnotatedTag, LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
  * Thesauri: ling-tags, ling-tags-aux.
  */
 @Component({
-  selector: 'cadmus-ling-tags-fragment',
+  selector: 'tgr-ling-tags-fragment',
   templateUrl: './ling-tags-fragment.component.html',
   styleUrls: ['./ling-tags-fragment.component.css'],
 })
