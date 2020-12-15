@@ -90,6 +90,14 @@ import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
           canActivate: [AuthGuardService],
         },
         {
+          path: 'items/:iid/itinera-ms',
+          loadChildren: () =>
+            import('@myrmidon/cadmus-itinera-part-ms-pg').then(
+              (module) => module.CadmusItineraPartMsPgModule
+            ),
+          canActivate: [AuthGuardService],
+        },
+        {
           path: 'items/:iid/tgr-gr',
           loadChildren: () =>
             import('@myrmidon/cadmus-tgr-part-gr-pg').then(

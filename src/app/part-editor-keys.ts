@@ -17,9 +17,11 @@ import {
 } from '@myrmidon/cadmus-part-philology-ui';
 import { PartEditorKeys } from '@myrmidon/cadmus-core';
 import { LING_TAGS_FRAGMENT_TYPEID } from '@myrmidon/cadmus-tgr-part-gr-ui';
+import { MSPLACE_PART_TYPEID, MSSIGNATURES_PART_TYPEID } from '@myrmidon/cadmus-itinera-part-ms-ui';
 
 const GENERAL = 'general';
 const PHILOLOGY = 'philology';
+const ITINERA_MS = 'itinera-ms';
 const TGR_GR = 'tgr-gr';
 const TOKEN_TEXT_LAYER_PART_TYPEID = 'it.vedph.token-text-layer';
 // const TILED_TEXT_LAYER_PART_TYPEID = 'it.vedph.tiled-text-layer';
@@ -54,6 +56,12 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
   // },
   [TOKEN_TEXT_PART_TYPEID]: {
     part: GENERAL,
+  },
+  [MSSIGNATURES_PART_TYPEID]: {
+    part: ITINERA_MS,
+  },
+  [MSPLACE_PART_TYPEID]: {
+    part: ITINERA_MS,
   },
   // layer parts
   [TOKEN_TEXT_LAYER_PART_TYPEID]: {

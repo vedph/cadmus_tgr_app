@@ -57,7 +57,11 @@
     "@myrmidon/cadmus-thesaurus-list": "0.0.5",
     "@myrmidon/cadmus-ui": "0.0.19",
     "@myrmidon/cadmus-ui-pg": "0.0.6",
-    "@myrmidon/cadmus-user": "0.0.5"
+    "@myrmidon/cadmus-user": "0.0.5",
+    "@myrmidon/cadmus-itinera-core": "0.0.1",
+    "@myrmidon/cadmus-itinera-ui": "0.0.1",
+    "@myrmidon/cadmus-itinera-part-ms-ui": "0.0.1",
+    "@myrmidon/cadmus-itinera-part-ms-pg": "0.0.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1100.1",
