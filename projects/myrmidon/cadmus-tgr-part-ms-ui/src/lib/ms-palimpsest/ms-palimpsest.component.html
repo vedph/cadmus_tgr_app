@@ -1,0 +1,57 @@
+<form [formGroup]="form" (submit)="save()">
+  <!-- locations -->
+  <div>
+    <mat-form-field>
+      <input matInput [formControl]="locations" placeholder="locations" />
+      <mat-error
+        *ngIf="
+          locations.errors?.invalid && (locations.dirty || locations.touched)
+        "
+        >invalid location(s)</mat-error
+      >
+      <mat-error
+        *ngIf="
+          locations.errors?.maxLength && (locations.dirty || locations.touched)
+        "
+        >too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <!-- date -->
+  <div>
+    <cadmus-historical-date-editor
+      [date]="date"
+      (dateChange)="onDateChange($event)"
+    ></cadmus-historical-date-editor>
+  </div>
+
+  <!-- note -->
+  <div>
+    <mat-form-field class="long-text">
+      <textarea matInput [formControl]="note"></textarea>
+    </mat-form-field>
+  </div>
+
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard palimpsest changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept palimpsest changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+</form>

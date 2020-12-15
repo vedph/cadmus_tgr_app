@@ -13,9 +13,11 @@ import { CadmusItineraUiModule } from '@myrmidon/cadmus-itinera-ui';
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
 import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
 import { MsUnitsPartComponent } from './ms-units-part/ms-units-part.component';
+import { MsPalimpsestComponent } from './ms-palimpsest/ms-palimpsest.component';
 
 @NgModule({
   declarations: [
+    MsPalimpsestComponent,
     MsUnitsPartComponent
   ],
   imports: [
@@ -33,6 +35,7 @@ import { MsUnitsPartComponent } from './ms-units-part/ms-units-part.component';
     CadmusTgrUiModule,
   ],
   exports: [
+    MsPalimpsestComponent,
     MsUnitsPartComponent
   ],
 })
