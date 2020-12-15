@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "build-core": "ng build @myrmidon/cadmus-tgr-core --prod && ng build @myrmidon/cadmus-tgr-ui --prod",
     "build-gr": "ng build @myrmidon/cadmus-tgr-part-gr-ui --prod && ng build @myrmidon/cadmus-tgr-part-gr-pg --prod",
-    "build-all": "npm run-script build-core && npm run-script build-gr"
+    "build-ms": "ng build @myrmidon/cadmus-tgr-part-ms-ui --prod && ng build @myrmidon/cadmus-tgr-part-ms-pg --prod",
+    "build-all": "npm run-script build-core && npm run-script build-gr && npm run-script build-ms"
   },
   "private": true,
   "dependencies": {

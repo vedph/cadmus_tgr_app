@@ -1,0 +1,31 @@
+{
+  "name": "@myrmidon/cadmus-tgr-part-ms-pg",
+  "version": "0.0.1",
+  "description": "Cadmus TGR - codicologic editors wrappers components.",
+  "keywords": [
+    "Cadmus",
+    "TGR"
+  ],
+  "homepage": "https://github.com/vedph/cadmus_tgr_app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vedph/cadmus_tgr_app"
+  },
+  "author": {
+    "name": "Daniele Fusi"
+  },
+  "peerDependencies": {
+    "@angular/common": "^11.0.0",
+    "@angular/core": "^11.0.0",
+    "@myrmidon/cadmus-core": "^0.0.1",
+    "@myrmidon/cadmus-material": "^0.0.1",
+    "@myrmidon/cadmus-ui": "^0.0.1",
+    "@myrmidon/cadmus-itinera-core": "^0.0.1",
+    "@myrmidon/cadmus-itinera-ui": "^0.0.1",
+    "@myrmidon/cadmus-tgr-core": "^0.0.1",
+    "@myrmidon/cadmus-tgr-ui": "^0.0.1"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

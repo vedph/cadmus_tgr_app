@@ -36,6 +36,14 @@
       "@myrmidon/cadmus-tgr-part-gr-pg": [
         "dist/myrmidon/cadmus-tgr-part-gr-pg/myrmidon-cadmus-tgr-part-gr-pg",
         "dist/myrmidon/cadmus-tgr-part-gr-pg"
+      ],
+      "@myrmidon/cadmus-tgr-part-ms-ui": [
+        "dist/myrmidon/cadmus-tgr-part-ms-ui/myrmidon-cadmus-tgr-part-ms-ui",
+        "dist/myrmidon/cadmus-tgr-part-ms-ui"
+      ],
+      "@myrmidon/cadmus-tgr-part-ms-pg": [
+        "dist/myrmidon/cadmus-tgr-part-ms-pg/myrmidon-cadmus-tgr-part-ms-pg",
+        "dist/myrmidon/cadmus-tgr-part-ms-pg"
       ]
     }
   },
