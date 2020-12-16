@@ -333,5 +333,109 @@
         </div>
       </div>
     </mat-tab>
+
+    <!-- WATERMARKS -->
+    <mat-tab label="watermarks">
+      <div formArrayName="watermarks">
+        <div>
+          <button
+            type="button"
+            mat-stroked-button
+            color="primary"
+            (click)="addWatermark()"
+          >
+            add item
+          </button>
+        </div>
+        <div
+          *ngFor="
+            let item of watermarks.controls;
+            let i = index;
+            let first = first;
+            let last = last
+          "
+        >
+          <!-- child form -->
+          <div [formGroupName]="i">
+            <!-- child actions -->
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this watermark"
+              color="warn"
+              (click)="removeWatermark(i)"
+            >
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+            <button
+              [disabled]="first"
+              mat-icon-button
+              type="button"
+              matTooltip="Move watermark up"
+              (click)="moveWatermarkUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              [disabled]="last"
+              mat-icon-button
+              type="button"
+              matTooltip="Move watermark down"
+              (click)="moveWatermarkDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+
+            <!-- child controls -->
+            <!-- value -->
+            <mat-form-field>
+              <input matInput formControlName="value" placeholder="value" />
+              <mat-error
+                *ngIf="
+                  item['controls'].value.errors?.required &&
+                  (item['controls'].value.dirty ||
+                    item['controls'].value.touched)
+                "
+                >value required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  item['controls'].value.errors?.maxLength &&
+                  (item['controls'].value.dirty ||
+                    item['controls'].value.touched)
+                "
+                >value too long</mat-error
+              >
+            </mat-form-field>
+
+            <!-- description -->
+            <mat-form-field>
+              <input
+                matInput
+                formControlName="description"
+                placeholder="description"
+              />
+              <mat-error
+                *ngIf="
+                  item['controls'].description.errors?.required &&
+                  (item['controls'].description.dirty ||
+                    item['controls'].description.touched)
+                "
+                >description required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  item['controls'].description.errors?.maxLength &&
+                  (item['controls'].description.dirty ||
+                    item['controls'].description.touched)
+                "
+                >description too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 </form>

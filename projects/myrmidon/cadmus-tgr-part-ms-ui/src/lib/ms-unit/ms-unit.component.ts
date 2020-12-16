@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocationService } from '@myrmidon/cadmus-itinera-core';
-import { MsRuling, MsUnit } from '../ms-units-part';
+import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
 
 @Component({
   selector: 'lib-ms-unit',
@@ -54,6 +54,8 @@ export class MsUnitComponent implements OnInit {
   public binding: FormControl;
   // rulings
   public rulings: FormArray;
+  // watermarks
+  public watermarks: FormArray;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -85,6 +87,8 @@ export class MsUnitComponent implements OnInit {
     this.binding = _formBuilder.control(null, Validators.maxLength(500));
     // rulings
     this.rulings = _formBuilder.array([]);
+    // watermarks
+    this.watermarks = _formBuilder.array([]);
     // form
     this.form = _formBuilder.group({
       start: this.start,
@@ -101,6 +105,8 @@ export class MsUnitComponent implements OnInit {
       binding: this.binding,
       // ruling
       rulings: this.rulings,
+      // watermarks
+      watermarks: this.watermarks,
     });
   }
 
@@ -134,6 +140,13 @@ export class MsUnitComponent implements OnInit {
         this.rulings.push(this.getRulingGroup(ruling));
       }
     }
+    // watermarks
+    this.watermarks.clear();
+    if (model.watermarks?.length) {
+      for (const watermark of model.watermarks) {
+        this.watermarks.push(this.getWatermarkGroup(watermark));
+      }
+    }
 
     this.form.markAsPristine();
   }
@@ -149,10 +162,25 @@ export class MsUnitComponent implements OnInit {
         manner: g.controls.manner.value?.trim(),
         system: g.controls.system.value?.trim(),
         type: g.controls.type.value?.trim(),
-        description: g.controls.description.value?.trim()
+        description: g.controls.description.value?.trim(),
       });
     }
-    return rulings.length? rulings : undefined;
+    return rulings.length ? rulings : undefined;
+  }
+
+  private getWatermarks(): MsWatermark[] | undefined {
+    if (!this.watermarks.length) {
+      return undefined;
+    }
+    const watermarks: MsWatermark[] = [];
+    for (let i = 0; i < this.watermarks.length; i++) {
+      const g = this.watermarks.at(i) as FormGroup;
+      watermarks.push({
+        value: g.controls.value.value?.trim(),
+        description: g.controls.description.value?.trim(),
+      });
+    }
+    return watermarks.length ? watermarks : undefined;
   }
 
   private getModel(): MsUnit | null {
@@ -171,7 +199,9 @@ export class MsUnitComponent implements OnInit {
       state: this.state.value?.trim(),
       binding: this.binding.value?.trim(),
       // rulings
-      rulings: this.getRulings()
+      rulings: this.getRulings(),
+      // watermarks
+      watermarks: this.getWatermarks(),
     };
   }
 
@@ -218,6 +248,45 @@ export class MsUnitComponent implements OnInit {
     const item = this.rulings.controls[index];
     this.rulings.removeAt(index);
     this.rulings.insert(index + 1, item);
+  }
+  //#endregion
+
+  //#region Watermarks
+  private getWatermarkGroup(item?: MsWatermark): FormGroup {
+    return this._formBuilder.group({
+      value: this._formBuilder.control(item?.value, [
+        Validators.required, Validators.maxLength(100)
+      ]),
+      description: this._formBuilder.control(item?.description, [
+        Validators.required, Validators.maxLength(500)
+      ]),
+    });
+  }
+
+  public addWatermark(item?: MsWatermark): void {
+    this.watermarks.push(this.getWatermarkGroup(item));
+  }
+
+  public removeWatermark(index: number): void {
+    this.watermarks.removeAt(index);
+  }
+
+  public moveWatermarkUp(index: number): void {
+    if (index < 1) {
+      return;
+    }
+    const item = this.watermarks.controls[index];
+    this.watermarks.removeAt(index);
+    this.watermarks.insert(index - 1, item);
+  }
+
+  public moveWatermarkDown(index: number): void {
+    if (index + 1 >= this.watermarks.length) {
+      return;
+    }
+    const item = this.watermarks.controls[index];
+    this.watermarks.removeAt(index);
+    this.watermarks.insert(index + 1, item);
   }
   //#endregion
 
