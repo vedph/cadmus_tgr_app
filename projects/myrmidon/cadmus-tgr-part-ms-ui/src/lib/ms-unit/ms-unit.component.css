@@ -1,3 +1,7 @@
+th {
+  color: silver;
+  font-weight: normal;
+}
 .long-text {
   width: 95%;
   max-width: 800px;
@@ -5,5 +9,5 @@
 .long-text-indented {
   width: 95%;
   max-width: 600px;
-  margin-left: 80px;
+  margin-left: 135px;
 }

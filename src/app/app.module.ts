@@ -106,6 +106,14 @@ import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
           canActivate: [AuthGuardService],
         },
         {
+          path: 'items/:iid/tgr-ms',
+          loadChildren: () =>
+            import('@myrmidon/cadmus-tgr-part-ms-pg').then(
+              (module) => module.CadmusTgrPartMsPgModule
+            ),
+          canActivate: [AuthGuardService],
+        },
+        {
           path: 'thesauri',
           loadChildren: () =>
             import('@myrmidon/cadmus-thesaurus-list').then(

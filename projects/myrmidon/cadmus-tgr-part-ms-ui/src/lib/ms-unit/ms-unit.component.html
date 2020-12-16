@@ -51,27 +51,27 @@
         </mat-form-field>
         &nbsp;
         <!-- sheetCount -->
-        <mat-form-field>
+        <mat-form-field style="width: 6em">
           <input
             matInput
             [formControl]="sheetCount"
             type="number"
             min="0"
             max="100"
-            placeholder="sheetCount"
+            placeholder="sheets count"
           />
         </mat-form-field>
 
         &nbsp;
         <!-- guardSheetCount -->
-        <mat-form-field>
+        <mat-form-field style="width: 6em">
           <input
             matInput
             [formControl]="guardSheetCount"
             type="number"
             min="0"
             max="100"
-            placeholder="sheetCount"
+            placeholder="guard sheets count"
           />
         </mat-form-field>
       </div>
@@ -79,7 +79,7 @@
       <div>
         <!-- group ID -->
         <mat-form-field>
-          <input matInput [formControl]="groupId" placeholder="groupId" />
+          <input matInput [formControl]="groupId" placeholder="group ID" />
           <mat-error
             *ngIf="
               groupId.errors?.maxLength && (groupId.dirty || groupId.touched)
@@ -90,13 +90,13 @@
 
         &nbsp;
         <!-- groupOrdinal -->
-        <mat-form-field>
+        <mat-form-field style="width: 6em">
           <input
             matInput
             [formControl]="groupOrdinal"
             type="number"
             min="0"
-            placeholder="sheetCount"
+            placeholder="group ordinal"
           />
         </mat-form-field>
       </div>
@@ -104,7 +104,12 @@
       <!-- quires -->
       <div>
         <mat-form-field class="long-text">
-          <input matInput [formControl]="quires" placeholder="quires" />
+          <textarea
+            rows="3"
+            matInput
+            [formControl]="quires"
+            placeholder="quires"
+          ></textarea>
           <mat-error
             *ngIf="quires.errors?.maxLength && (quires.dirty || quires.touched)"
             >too long</mat-error
@@ -114,11 +119,12 @@
       <!-- sheetNumbering -->
       <div>
         <mat-form-field class="long-text">
-          <input
+          <textarea
+            rows="3"
             matInput
             [formControl]="sheetNumbering"
-            placeholder="sheetNumbering"
-          />
+            placeholder="sheet numbering"
+          ></textarea>
           <mat-error
             *ngIf="
               sheetNumbering.errors?.maxLength &&
@@ -131,11 +137,12 @@
       <!-- quireNumbering -->
       <div>
         <mat-form-field class="long-text">
-          <input
+          <textarea
+            rows="3"
             matInput
             [formControl]="quireNumbering"
-            placeholder="quireNumbering"
-          />
+            placeholder="quire numbering"
+          ></textarea>
           <mat-error
             *ngIf="
               quireNumbering.errors?.maxLength &&
@@ -148,7 +155,12 @@
       <!-- state -->
       <div>
         <mat-form-field class="long-text">
-          <input matInput [formControl]="state" placeholder="state" />
+          <textarea
+            rows="3"
+            matInput
+            [formControl]="state"
+            placeholder="state"
+          ></textarea>
           <mat-error
             *ngIf="state.errors?.maxLength && (state.dirty || state.touched)"
             >too long</mat-error
@@ -158,7 +170,12 @@
       <!-- binding -->
       <div>
         <mat-form-field class="long-text">
-          <input matInput [formControl]="binding" placeholder="binding" />
+          <textarea
+            rows="3"
+            matInput
+            [formControl]="binding"
+            placeholder="binding"
+          ></textarea>
           <mat-error
             *ngIf="
               binding.errors?.maxLength && (binding.dirty || binding.touched)
@@ -439,10 +456,11 @@
         <div>
           <button
             type="button"
-            mat-stroked-button
+            mat-icon-button
             color="primary"
             (click)="addWatermark()"
           >
+            <mat-icon>add_circle</mat-icon>
             add item
           </button>
         </div>
