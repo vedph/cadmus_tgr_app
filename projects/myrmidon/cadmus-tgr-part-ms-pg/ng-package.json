@@ -11,7 +11,8 @@
       "@myrmidon/cadmus-itinera-core": "@myrmidon/cadmus-itinera-core",
       "@myrmidon/cadmus-itinera-ui": "@myrmidon/cadmus-itinera-ui",
       "@myrmidon/cadmus-tgr-core": "@myrmidon/cadmus-tgr-core",
-      "@myrmidon/cadmus-tgr-ui": "@myrmidon/cadmus-tgr-ui"
+      "@myrmidon/cadmus-tgr-ui": "@myrmidon/cadmus-tgr-ui",
+      "@myrmidon/cadmus-tgr-part-ms-ui": "@myrmidon/cadmus-tgr-part-ms-ui"
     }
   }
 }

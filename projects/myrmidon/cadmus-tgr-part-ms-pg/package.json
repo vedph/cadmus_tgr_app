@@ -23,7 +23,8 @@
     "@myrmidon/cadmus-itinera-core": "^0.0.1",
     "@myrmidon/cadmus-itinera-ui": "^0.0.1",
     "@myrmidon/cadmus-tgr-core": "^0.0.1",
-    "@myrmidon/cadmus-tgr-ui": "^0.0.1"
+    "@myrmidon/cadmus-tgr-ui": "^0.0.1",
+    "@myrmidon/cadmus-tgr-parts-ms-ui": "^0.0.1"
   },
   "dependencies": {
     "tslib": "^2.0.0"
