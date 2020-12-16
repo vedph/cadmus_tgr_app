@@ -1,1 +1,109 @@
-<p>ms-units-part works!</p>
+<form [formGroup]="form" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>Codicological Units Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group [(selectedIndex)]="tabIndex">
+        <mat-tab label="Units">
+          <div>
+            <button
+              type="button"
+              mat-icon-button
+              color="primary"
+              (click)="addUnit()"
+            >
+              <mat-icon>add_circle</mat-icon> add unit
+            </button>
+          </div>
+          <table *ngIf="units?.value?.length">
+            <thead>
+              <tr>
+                <th></th>
+                <th>start</th>
+                <th>end</th>
+                <th>sheets</th>
+                <th>guards</th>
+                <th>material</th>
+                <th>group</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let unit of units?.value;
+                  let i = index;
+                  let first = first;
+                  let last = last
+                "
+              >
+                <td>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Edit this unit"
+                    (click)="editUnit(i)"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this unit up"
+                    [disabled]="first"
+                    (click)="moveUnitUp(i)"
+                  >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this unit down"
+                    [disabled]="last"
+                    (click)="moveUnitDown(i)"
+                  >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="Delete this unit"
+                    (click)="deleteUnit(i)"
+                  >
+                    <mat-icon>remove_circle</mat-icon>
+                  </button>
+                </td>
+                <td>{{ locationToString(unit.start) }}</td>
+                <td>{{ locationToString(unit.end) }}</td>
+                <td>{{unit.sheetCount}}</td>
+                <td>{{unit.guardSheetCount}}</td>
+                <td>{{unit.material}}</td>
+                <td>{{unit.groupId}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-tab>
+
+        <mat-tab label="unit" *ngIf="editedUnit">
+          <tgr-ms-unit
+            [model]="editedUnit"
+            (modelChange)="onUnitSave($event)"
+            (editorClose)="onUnitClose()"
+          ></tgr-ms-unit>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

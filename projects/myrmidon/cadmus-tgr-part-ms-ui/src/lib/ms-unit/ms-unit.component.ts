@@ -11,7 +11,7 @@ import { MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
 
 @Component({
-  selector: 'lib-ms-unit',
+  selector: 'tgr-ms-unit',
   templateUrl: './ms-unit.component.html',
   styleUrls: ['./ms-unit.component.css'],
 })
