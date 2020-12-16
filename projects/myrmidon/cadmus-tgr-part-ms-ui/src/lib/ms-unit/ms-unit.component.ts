@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -7,7 +8,7 @@ import {
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocationService } from '@myrmidon/cadmus-itinera-core';
-import { MsUnit } from '../ms-units-part';
+import { MsRuling, MsUnit } from '../ms-units-part';
 
 @Component({
   selector: 'lib-ms-unit',
@@ -17,14 +18,28 @@ import { MsUnit } from '../ms-units-part';
 export class MsUnitComponent implements OnInit {
   @Input()
   public model: MsUnit | undefined;
+  /**
+   * Manuscript's materials.
+   */
   @Input()
   public matEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Manuscript's ruling: manners of execution.
+   */
+  @Input()
+  public rulManEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Manuscript's ruling: systems.
+   */
+  @Input()
+  public rulSysEntries: ThesaurusEntry[] | undefined;
   @Output()
   public modelChange: EventEmitter<MsUnit>;
   @Output()
   public editorClose: EventEmitter<any>;
 
   public form: FormGroup;
+  // general
   public start: FormControl;
   public end: FormControl;
   public material: FormControl;
@@ -37,9 +52,13 @@ export class MsUnitComponent implements OnInit {
   public quireNumbering: FormControl;
   public state: FormControl;
   public binding: FormControl;
+  // rulings
+  public rulings: FormArray;
 
-  constructor(private _formBuilder: FormBuilder,
-    private _msLocation: MsLocationService) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _msLocation: MsLocationService
+  ) {
     this.modelChange = new EventEmitter<MsUnit>();
     this.editorClose = new EventEmitter<any>();
     // form - general
@@ -64,6 +83,8 @@ export class MsUnitComponent implements OnInit {
     this.quireNumbering = _formBuilder.control(null, Validators.maxLength(500));
     this.state = _formBuilder.control(null, Validators.maxLength(500));
     this.binding = _formBuilder.control(null, Validators.maxLength(500));
+    // rulings
+    this.rulings = _formBuilder.array([]);
     // form
     this.form = _formBuilder.group({
       start: this.start,
@@ -77,7 +98,9 @@ export class MsUnitComponent implements OnInit {
       sheetNumbering: this.sheetNumbering,
       quireNumbering: this.quireNumbering,
       state: this.state,
-      binding: this.binding
+      binding: this.binding,
+      // ruling
+      rulings: this.rulings,
     });
   }
 
@@ -104,8 +127,32 @@ export class MsUnitComponent implements OnInit {
     this.quireNumbering.setValue(model.quireNumbering);
     this.state.setValue(model.state);
     this.binding.setValue(model.binding);
+    // rulings
+    this.rulings.clear();
+    if (model.rulings?.length) {
+      for (const ruling of model.rulings) {
+        this.rulings.push(this.getRulingGroup(ruling));
+      }
+    }
 
     this.form.markAsPristine();
+  }
+
+  private getRulings(): MsRuling[] | undefined {
+    if (!this.rulings.length) {
+      return undefined;
+    }
+    const rulings: MsRuling[] = [];
+    for (let i = 0; i < this.rulings.length; i++) {
+      const g = this.rulings.at(i) as FormGroup;
+      rulings.push({
+        manner: g.controls.manner.value?.trim(),
+        system: g.controls.system.value?.trim(),
+        type: g.controls.type.value?.trim(),
+        description: g.controls.description.value?.trim()
+      });
+    }
+    return rulings.length? rulings : undefined;
   }
 
   private getModel(): MsUnit | null {
@@ -122,9 +169,57 @@ export class MsUnitComponent implements OnInit {
       sheetNumbering: this.sheetNumbering.value?.trim(),
       quireNumbering: this.quireNumbering.value?.trim(),
       state: this.state.value?.trim(),
-      binding: this.binding.value?.trim()
+      binding: this.binding.value?.trim(),
+      // rulings
+      rulings: this.getRulings()
     };
   }
+
+  //#region Rulings
+  private getRulingGroup(ruling?: MsRuling): FormGroup {
+    return this._formBuilder.group({
+      manner: this._formBuilder.control(ruling?.manner, [
+        Validators.required,
+        Validators.maxLength(50),
+      ]),
+      system: this._formBuilder.control(ruling?.system, [
+        Validators.required,
+        Validators.maxLength(50),
+      ]),
+      type: this._formBuilder.control(ruling?.type, Validators.maxLength(50)),
+      description: this._formBuilder.control(
+        ruling?.description,
+        Validators.maxLength(500)
+      ),
+    });
+  }
+
+  public addRuling(item?: MsRuling): void {
+    this.rulings.push(this.getRulingGroup(item));
+  }
+
+  public removeRuling(index: number): void {
+    this.rulings.removeAt(index);
+  }
+
+  public moveRulingUp(index: number): void {
+    if (index < 1) {
+      return;
+    }
+    const item = this.rulings.controls[index];
+    this.rulings.removeAt(index);
+    this.rulings.insert(index - 1, item);
+  }
+
+  public moveRulingDown(index: number): void {
+    if (index + 1 >= this.rulings.length) {
+      return;
+    }
+    const item = this.rulings.controls[index];
+    this.rulings.removeAt(index);
+    this.rulings.insert(index + 1, item);
+  }
+  //#endregion
 
   public cancel(): void {
     this.editorClose.emit();
