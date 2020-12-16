@@ -334,6 +334,17 @@
       </div>
     </mat-tab>
 
+    <!-- AREA SIZE -->
+    <mat-tab label="area size">
+      <cadmus-physical-size
+        [unitEntries]="szUnitEntries"
+        [tagEntries]="szTagEntries"
+        [dimTagEntries]="szDimTagEntries"
+        [size]="areaSize"
+        (sizeChange)="onAreaSizeChange($event)"
+      ></cadmus-physical-size>
+    </mat-tab>
+
     <!-- WATERMARKS -->
     <mat-tab label="watermarks">
       <div formArrayName="watermarks">

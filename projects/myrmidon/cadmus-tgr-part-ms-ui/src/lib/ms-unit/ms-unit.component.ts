@@ -6,7 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { PhysicalSize, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
 
@@ -33,6 +33,22 @@ export class MsUnitComponent implements OnInit {
    */
   @Input()
   public rulSysEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Physical size: units.
+   */
+  @Input()
+  public szUnitEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Physical size: size tags.
+   */
+  @Input()
+  public szTagEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Physical size: dimensions tags.
+   */
+  @Input()
+  public szDimTagEntries: ThesaurusEntry[] | undefined;
+
   @Output()
   public modelChange: EventEmitter<MsUnit>;
   @Output()
@@ -52,6 +68,8 @@ export class MsUnitComponent implements OnInit {
   public quireNumbering: FormControl;
   public state: FormControl;
   public binding: FormControl;
+  // written area size
+  public areaSize: PhysicalSize | undefined;
   // rulings
   public rulings: FormArray;
   // watermarks
@@ -133,6 +151,8 @@ export class MsUnitComponent implements OnInit {
     this.quireNumbering.setValue(model.quireNumbering);
     this.state.setValue(model.state);
     this.binding.setValue(model.binding);
+    // written area size
+    this.areaSize = model.writtenAreaSize;
     // rulings
     this.rulings.clear();
     if (model.rulings?.length) {
@@ -289,6 +309,11 @@ export class MsUnitComponent implements OnInit {
     this.watermarks.insert(index + 1, item);
   }
   //#endregion
+
+  public onAreaSizeChange(size: PhysicalSize): void {
+    this.areaSize = size;
+    this.form.markAsDirty();
+  }
 
   public cancel(): void {
     this.editorClose.emit();
