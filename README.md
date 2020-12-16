@@ -24,26 +24,110 @@ Each library is added like this:
 ng generate library @myrmidon/cadmus-tgr-core --prefix cadmus
 ```
 
-## Development server
+## Snippets
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Just to save some typing.
 
-## Code scaffolding
+### Sub-Model Editor Template
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```ts
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 
-## Build
+@Component({
+  selector: 'tgr-...',
+  templateUrl: './...component.html',
+  styleUrls: ['./...component.css'],
+})
+export class __NAME__Component implements OnInit {
+  @Input()
+  public model: __TYPE__ | undefined;
+  @Output()
+  public modelChange: EventEmitter<__TYPE__>;
+  @Output()
+  public editorClose: EventEmitter<any>;
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+  public form: FormGroup;
+  // TODO: controls
 
-## Running unit tests
+  constructor(formBuilder: FormBuilder) {
+    this.modelChange = new EventEmitter<MsGuardSheet>();
+    this.editorClose = new EventEmitter<any>();
+    // form
+    // TODO: controls
+    this.form = formBuilder.group({
+      // TODO
+    });
+  }
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+  ngOnInit(): void {
+    this.updateForm(this.model);
+  }
 
-## Running end-to-end tests
+  private updateForm(model: __TYPE__ | undefined): void {
+    if (!model) {
+      this.form.reset();
+      return;
+    }
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+    // TODO set controls values
 
-## Further help
+    this.form.markAsPristine();
+  }
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+  private getModel(): __TYPE__ | null {
+    return {
+      // TODO get values from controls
+    };
+  }
+
+  public cancel(): void {
+    this.editorClose.emit();
+  }
+
+  public save(): void {
+    if (this.form.invalid) {
+      return;
+    }
+    const model = this.getModel();
+    if (!model) {
+      return;
+    }
+    this.modelChange.emit(model);
+  }
+}
+```
+
+```html
+<form [formGroup]="form" (submit)="save()">
+  TODO
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+</form>
+```

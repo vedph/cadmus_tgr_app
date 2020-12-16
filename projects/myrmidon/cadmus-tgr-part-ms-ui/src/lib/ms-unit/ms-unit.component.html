@@ -1,0 +1,172 @@
+<form [formGroup]="form" (submit)="save()">
+  <mat-tab-group>
+    <!-- GENERAL -->
+    <mat-tab label="general">
+      <div>
+        <!-- start -->
+        <mat-form-field>
+          <input matInput [formControl]="start" placeholder="start" />
+          <mat-error
+            *ngIf="start.errors?.required && (start.dirty || start.touched)"
+            >start required</mat-error
+          >
+          <mat-error
+            *ngIf="start.errors?.pattern && (start.dirty || start.touched)"
+            >invalid start</mat-error
+          >
+        </mat-form-field>
+
+        &nbsp;
+        <!-- end -->
+        <mat-form-field>
+          <input matInput [formControl]="end" placeholder="end" />
+          <mat-error *ngIf="end.errors?.required && (end.dirty || end.touched)"
+            >end required</mat-error
+          >
+          <mat-error *ngIf="end.errors?.pattern && (end.dirty || end.touched)"
+            >invalid end</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div>
+        <!-- material (bound) -->
+        <mat-form-field *ngIf="matEntries?.length" style="width: 8em">
+          <mat-select [formControl]="material" placeholder="material">
+            <mat-option *ngFor="let e of matEntries" [value]="e.id">{{
+              e.value
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- material (free) -->
+        <mat-form-field *ngIf="!matEntries?.length" style="width: 8em">
+          <input matInput [formControl]="material" placeholder="material" />
+          <mat-error
+            *ngIf="
+              material.errors?.maxLength && (material.dirty || material.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+        &nbsp;
+        <!-- sheetCount -->
+        <mat-form-field>
+          <input
+            matInput
+            [formControl]="sheetCount"
+            type="number"
+            min="0"
+            max="100"
+            placeholder="sheetCount"
+          />
+        </mat-form-field>
+
+        &nbsp;
+        <!-- guardSheetCount -->
+        <mat-form-field>
+          <input
+            matInput
+            [formControl]="guardSheetCount"
+            type="number"
+            min="0"
+            max="100"
+            placeholder="sheetCount"
+          />
+        </mat-form-field>
+      </div>
+
+      <div>
+        <!-- group ID -->
+        <mat-form-field>
+          <input matInput [formControl]="groupId" placeholder="groupId" />
+          <mat-error
+            *ngIf="
+              groupId.errors?.maxLength && (groupId.dirty || groupId.touched)
+            "
+            >ID too long</mat-error
+          >
+        </mat-form-field>
+
+        &nbsp;
+        <!-- groupOrdinal -->
+        <mat-form-field>
+          <input
+            matInput
+            [formControl]="groupOrdinal"
+            type="number"
+            min="0"
+            placeholder="sheetCount"
+          />
+        </mat-form-field>
+      </div>
+
+      <!-- quires -->
+      <div>
+        <mat-form-field class="long-text">
+          <input matInput [formControl]="quires" placeholder="quires" />
+          <mat-error
+            *ngIf="quires.errors?.maxLength && (quires.dirty || quires.touched)"
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <!-- sheetNumbering -->
+      <div>
+        <mat-form-field class="long-text">
+          <input
+            matInput
+            [formControl]="sheetNumbering"
+            placeholder="sheetNumbering"
+          />
+          <mat-error
+            *ngIf="
+              sheetNumbering.errors?.maxLength &&
+              (sheetNumbering.dirty || sheetNumbering.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <!-- quireNumbering -->
+      <div>
+        <mat-form-field class="long-text">
+          <input
+            matInput
+            [formControl]="quireNumbering"
+            placeholder="quireNumbering"
+          />
+          <mat-error
+            *ngIf="
+              quireNumbering.errors?.maxLength &&
+              (quireNumbering.dirty || quireNumbering.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <!-- state -->
+      <div>
+        <mat-form-field class="long-text">
+          <input matInput [formControl]="state" placeholder="state" />
+          <mat-error
+            *ngIf="state.errors?.maxLength && (state.dirty || state.touched)"
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <!-- binding -->
+      <div>
+        <mat-form-field class="long-text">
+          <input matInput [formControl]="binding" placeholder="binding" />
+          <mat-error
+            *ngIf="
+              binding.errors?.maxLength && (binding.dirty || binding.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</form>
