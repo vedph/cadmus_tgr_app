@@ -6,7 +6,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { PhysicalDimension, PhysicalSize, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  PhysicalDimension,
+  PhysicalSize,
+  ThesaurusEntry,
+} from '@myrmidon/cadmus-core';
 import { MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
 
@@ -253,9 +257,16 @@ export class MsUnitComponent implements OnInit {
     }
   }
 
+  public saveLeafSize(): void {
+    if (this.editedLeafSize) {
+      this.leafSizes.splice(this.editedLeafSizeIndex, 1, this.editedLeafSize);
+      this.form.markAsDirty();
+      this.editLeafSize(-1);
+    }
+  }
+
   public onEditedLeafSizeChange(size: PhysicalSize): void {
     this.editedLeafSize = size;
-    this.form.markAsDirty();
   }
 
   public addLeafSize(): void {
@@ -290,7 +301,7 @@ export class MsUnitComponent implements OnInit {
   }
 
   public dimToString(dim: PhysicalDimension | undefined): string {
-    return dim? `${dim.value} ${dim.unit}` : '';
+    return dim ? `${dim.value} ${dim.unit}` : '';
   }
   //#endregion
 

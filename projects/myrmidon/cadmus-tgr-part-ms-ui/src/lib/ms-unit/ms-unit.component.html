@@ -425,7 +425,10 @@
           </tr>
         </tbody>
       </table>
-      <mat-expansion-panel [expanded]="editingLeafSize" [disabled]="!editingLeafSize">
+      <mat-expansion-panel
+        [expanded]="editingLeafSize"
+        [disabled]="!editingLeafSize"
+      >
         <mat-expansion-panel-header>size</mat-expansion-panel-header>
         <cadmus-physical-size
           [unitEntries]="szUnitEntries"
@@ -434,8 +437,21 @@
           [size]="editedLeafSize"
           (sizeChange)="onEditedLeafSizeChange($event)"
         ></cadmus-physical-size>
-        <button type="button" mat-icon-button (click)="editLeafSize(-1)">
-          <mat-icon color="warn">clear</mat-icon> close
+        <button
+          type="button"
+          mat-icon-button
+          (click)="editLeafSize(-1)"
+          matTooltip="Discard size"
+        >
+          <mat-icon color="warn">clear</mat-icon>
+        </button>
+        <button
+          type="button"
+          mat-icon-button
+          (click)="saveLeafSize()"
+          matTooltip="Save size"
+        >
+          <mat-icon color="primary">check_circle</mat-icon>
         </button>
       </mat-expansion-panel>
     </mat-tab>
