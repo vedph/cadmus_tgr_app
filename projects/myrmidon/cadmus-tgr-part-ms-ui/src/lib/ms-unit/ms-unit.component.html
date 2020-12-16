@@ -334,6 +334,85 @@
       </div>
     </mat-tab>
 
+    <!-- LEAF SIZES -->
+    <mat-tab label="leaf sizes">
+      <button type="button" mat-icon-button color="primary">
+        <mat-icon>add_circle</mat-icon> add size
+      </button>
+      <table *ngIf="leafSizes?.length">
+        <thead>
+          <tr>
+            <th></th>
+            <th>tag</th>
+            <th>w</th>
+            <th>h</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let size of leafSizes;
+              let i = index;
+              let first = first;
+              let last = last
+            "
+          >
+            <td>
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Remove this size"
+                color="warn"
+                (click)="removeLeafSize(i)"
+              >
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move size up"
+                (click)="moveLeafSizeUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move size down"
+                (click)="moveLeafSizeDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </td>
+            <td>
+              {{ size.tag }}
+            </td>
+            <td>
+              {{ dimToString(size.w) }}
+            </td>
+            <td>
+              {{ dimToString(size.h) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-expansion-panel [expanded]="editedLeafSizeIndex > -1">
+        <mat-expansion-panel-header>size</mat-expansion-panel-header>
+        <cadmus-physical-size
+          [unitEntries]="szUnitEntries"
+          [tagEntries]="szTagEntries"
+          [dimTagEntries]="szDimTagEntries"
+          [size]="editedLeafSize"
+          (sizeChange)="onEditedLeafSizeChange($event)"
+        ></cadmus-physical-size>
+        <button type="button" mat-icon-button>
+          <mat-icon color="warn">clear</mat-icon> close
+        </button>
+      </mat-expansion-panel>
+    </mat-tab>
+
     <!-- AREA SIZE -->
     <mat-tab label="area size">
       <cadmus-physical-size

@@ -6,7 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { PhysicalSize, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { PhysicalDimension, PhysicalSize, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
 
@@ -68,6 +68,10 @@ export class MsUnitComponent implements OnInit {
   public quireNumbering: FormControl;
   public state: FormControl;
   public binding: FormControl;
+  // leaf sizes
+  public leafSizes: PhysicalSize[];
+  public editedLeafSize: PhysicalSize | undefined;
+  public editedLeafSizeIndex: number;
   // written area size
   public areaSize: PhysicalSize | undefined;
   // rulings
@@ -103,6 +107,9 @@ export class MsUnitComponent implements OnInit {
     this.quireNumbering = _formBuilder.control(null, Validators.maxLength(500));
     this.state = _formBuilder.control(null, Validators.maxLength(500));
     this.binding = _formBuilder.control(null, Validators.maxLength(500));
+    // sizes
+    this.leafSizes = [];
+    this.editedLeafSizeIndex = -1;
     // rulings
     this.rulings = _formBuilder.array([]);
     // watermarks
@@ -151,6 +158,9 @@ export class MsUnitComponent implements OnInit {
     this.quireNumbering.setValue(model.quireNumbering);
     this.state.setValue(model.state);
     this.binding.setValue(model.binding);
+    // leaf sizes
+    this.editedLeafSize = undefined;
+    this.leafSizes = model.leafSizes || [];
     // written area size
     this.areaSize = model.writtenAreaSize;
     // rulings
@@ -218,12 +228,67 @@ export class MsUnitComponent implements OnInit {
       quireNumbering: this.quireNumbering.value?.trim(),
       state: this.state.value?.trim(),
       binding: this.binding.value?.trim(),
+      // leaf sizes
+      leafSizes: this.leafSizes.length ? this.leafSizes : undefined,
+      // written area size
+      writtenAreaSize: this.areaSize,
       // rulings
       rulings: this.getRulings(),
       // watermarks
       watermarks: this.getWatermarks(),
     };
   }
+
+  //#region Leaf Sizes
+  private editLeafSize(index: number): void {
+    this.editedLeafSizeIndex = index;
+    if (index === -1) {
+      this.editedLeafSize = undefined;
+    } else {
+      this.editedLeafSize = this.leafSizes[index];
+    }
+  }
+
+  public onEditedLeafSizeChange(size: PhysicalSize): void {
+    this.editedLeafSize = size;
+    this.form.markAsDirty();
+  }
+
+  public addLeafSize(): void {
+    this.leafSizes.push({});
+    this.editLeafSize(this.leafSizes.length - 1);
+    this.form.markAsDirty();
+  }
+
+  public removeLeafSize(index: number): void {
+    this.leafSizes.splice(index, 1);
+    this.form.markAsDirty();
+  }
+
+  public moveLeafSizeUp(index: number): void {
+    if (index < 1) {
+      return;
+    }
+    const size = this.leafSizes[index];
+    this.leafSizes.splice(index, 1);
+    this.leafSizes.splice(index - 1, 0, size);
+    this.form.markAsDirty();
+  }
+
+  public moveLeafSizeDown(index: number): void {
+    if (index + 1 >= this.leafSizes.length) {
+      return;
+    }
+    const size = this.leafSizes[index];
+    this.leafSizes.splice(index, 1);
+    this.leafSizes.splice(index + 1, 0, size);
+    this.form.markAsDirty();
+  }
+
+  public dimToString(dim: PhysicalDimension | undefined): string {
+    return dim? `${dim.value} ${dim.unit}` : '';
+  }
+  //#endregion
 
   //#region Rulings
   private getRulingGroup(ruling?: MsRuling): FormGroup {
@@ -275,10 +340,12 @@ export class MsUnitComponent implements OnInit {
   private getWatermarkGroup(item?: MsWatermark): FormGroup {
     return this._formBuilder.group({
       value: this._formBuilder.control(item?.value, [
-        Validators.required, Validators.maxLength(100)
+        Validators.required,
+        Validators.maxLength(100),
       ]),
       description: this._formBuilder.control(item?.description, [
-        Validators.required, Validators.maxLength(500)
+        Validators.required,
+        Validators.maxLength(500),
       ]),
     });
   }
