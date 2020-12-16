@@ -240,7 +240,7 @@ export class MsUnitComponent implements OnInit {
   }
 
   //#region Leaf Sizes
-  private editLeafSize(index: number): void {
+  public editLeafSize(index: number): void {
     this.editedLeafSizeIndex = index;
     if (index === -1) {
       this.editedLeafSize = undefined;

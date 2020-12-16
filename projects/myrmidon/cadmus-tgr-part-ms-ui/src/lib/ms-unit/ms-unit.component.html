@@ -361,6 +361,15 @@
               <button
                 mat-icon-button
                 type="button"
+                color="primary"
+                matTooltip="Edit this size"
+                (click)="editLeafSize(i)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
                 matTooltip="Remove this size"
                 color="warn"
                 (click)="removeLeafSize(i)"
@@ -407,7 +416,7 @@
           [size]="editedLeafSize"
           (sizeChange)="onEditedLeafSizeChange($event)"
         ></cadmus-physical-size>
-        <button type="button" mat-icon-button>
+        <button type="button" mat-icon-button (click)="editLeafSize(-1)">
           <mat-icon color="warn">clear</mat-icon> close
         </button>
       </mat-expansion-panel>
