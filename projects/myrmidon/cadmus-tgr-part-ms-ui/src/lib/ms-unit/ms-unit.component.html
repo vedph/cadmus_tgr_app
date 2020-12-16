@@ -192,10 +192,11 @@
         <div>
           <button
             type="button"
-            mat-stroked-button
+            mat-icon-button
             color="primary"
             (click)="addRuling()"
           >
+            <mat-icon>add_circle</mat-icon>
             add ruling
           </button>
         </div>
@@ -424,7 +425,7 @@
           </tr>
         </tbody>
       </table>
-      <mat-expansion-panel [expanded]="editedLeafSizeIndex > -1">
+      <mat-expansion-panel [expanded]="editingLeafSize" [disabled]="!editingLeafSize">
         <mat-expansion-panel-header>size</mat-expansion-panel-header>
         <cadmus-physical-size
           [unitEntries]="szUnitEntries"
@@ -461,7 +462,7 @@
             (click)="addWatermark()"
           >
             <mat-icon>add_circle</mat-icon>
-            add item
+            add watermark
           </button>
         </div>
         <div

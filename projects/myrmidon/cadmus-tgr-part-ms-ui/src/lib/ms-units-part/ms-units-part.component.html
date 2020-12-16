@@ -92,6 +92,12 @@
         <mat-tab label="unit" *ngIf="editedUnit">
           <tgr-ms-unit
             [model]="editedUnit"
+            [matEntries]="matEntries"
+            [rulManEntries]="rulManEntries"
+            [rulSysEntries]="rulSysEntries"
+            [szUnitEntries]="szUnitEntries"
+            [szTagEntries]="szTagEntries"
+            [szDimTagEntries]="szDimTagEntries"
             (modelChange)="onUnitSave($event)"
             (editorClose)="onUnitClose()"
           ></tgr-ms-unit>

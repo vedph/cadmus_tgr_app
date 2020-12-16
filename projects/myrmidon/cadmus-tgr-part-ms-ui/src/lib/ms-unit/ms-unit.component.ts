@@ -72,6 +72,7 @@ export class MsUnitComponent implements OnInit {
   public leafSizes: PhysicalSize[];
   public editedLeafSize: PhysicalSize | undefined;
   public editedLeafSizeIndex: number;
+  public editingLeafSize: boolean;
   // written area size
   public areaSize: PhysicalSize | undefined;
   // rulings
@@ -110,6 +111,7 @@ export class MsUnitComponent implements OnInit {
     // sizes
     this.leafSizes = [];
     this.editedLeafSizeIndex = -1;
+    this.editingLeafSize = false;
     // rulings
     this.rulings = _formBuilder.array([]);
     // watermarks
@@ -243,8 +245,10 @@ export class MsUnitComponent implements OnInit {
   public editLeafSize(index: number): void {
     this.editedLeafSizeIndex = index;
     if (index === -1) {
+      this.editingLeafSize = false;
       this.editedLeafSize = undefined;
     } else {
+      this.editingLeafSize = true;
       this.editedLeafSize = this.leafSizes[index];
     }
   }
