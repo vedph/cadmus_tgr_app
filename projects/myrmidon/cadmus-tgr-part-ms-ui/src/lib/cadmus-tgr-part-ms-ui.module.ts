@@ -16,9 +16,13 @@ import { MsUnitsPartComponent } from './ms-units-part/ms-units-part.component';
 import { MsPalimpsestComponent } from './ms-palimpsest/ms-palimpsest.component';
 import { MsGuardSheetComponent } from './ms-guard-sheet/ms-guard-sheet.component';
 import { MsUnitComponent } from './ms-unit/ms-unit.component';
+import { MsContentsPartComponent } from './ms-contents-part/ms-contents-part.component';
+import { MsContentComponent } from './ms-content/ms-content.component';
 
 @NgModule({
   declarations: [
+    MsContentComponent,
+    MsContentsPartComponent,
     MsGuardSheetComponent,
     MsPalimpsestComponent,
     MsUnitComponent,
@@ -39,6 +43,8 @@ import { MsUnitComponent } from './ms-unit/ms-unit.component';
     CadmusTgrUiModule,
   ],
   exports: [
+    MsContentComponent,
+    MsContentsPartComponent,
     MsGuardSheetComponent,
     MsPalimpsestComponent,
     MsUnitComponent,

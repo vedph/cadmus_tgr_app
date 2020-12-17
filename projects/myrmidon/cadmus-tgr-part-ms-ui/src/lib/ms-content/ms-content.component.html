@@ -1,0 +1,156 @@
+<form [formGroup]="form" (submit)="save()">
+  <mat-tab-group>
+    <!-- GENERAL -->
+    <mat-tab label="general">
+      <div>
+        <!-- start -->
+        <mat-form-field style="width: 8em">
+          <input matInput [formControl]="start" placeholder="start" />
+          <mat-error
+            *ngIf="start.errors?.required && (start.dirty || start.touched)"
+            >start required</mat-error
+          >
+          <mat-error
+            *ngIf="start.errors?.pattern && (start.dirty || start.touched)"
+            >invalid start</mat-error
+          >
+        </mat-form-field>
+        &nbsp;
+        <!-- end -->
+        <mat-form-field style="width: 8em">
+          <input matInput [formControl]="end" placeholder="end" />
+          <mat-error *ngIf="end.errors?.required && (end.dirty || end.touched)"
+            >end required</mat-error
+          >
+          <mat-error *ngIf="end.errors?.pattern && (end.dirty || end.touched)"
+            >invalid end</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div>
+        <cadmus-thesaurus-tree
+        [entries]="workEntries"
+        rootLabel="works"
+        [renderLabel]="renderLabel"
+        (entryChange)="onWorkEntryChange($event)"
+      ></cadmus-thesaurus-tree>
+      </div>
+      <div>
+        <!-- work -->
+        <mat-form-field>
+          <input matInput [formControl]="work" placeholder="work" />
+          <mat-error
+            *ngIf="work.errors?.maxLength && (work.dirty || work.touched)"
+            >too long</mat-error
+          >
+        </mat-form-field>
+        &nbsp;
+        <!-- location -->
+        <mat-form-field>
+          <input matInput [formControl]="location" placeholder="location" />
+          <mat-error
+            *ngIf="
+              location.errors?.maxLength && (location.dirty || location.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div>
+        <!-- input -->
+        <mat-form-field>
+          <input matInput [formControl]="title" placeholder="title" />
+          <mat-error
+            *ngIf="title.errors?.maxLength && (title.dirty || title.touched)"
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </mat-tab>
+
+    <!-- TEXT -->
+    <mat-tab label="text">
+      <div>
+        <!-- incipit -->
+        <mat-form-field>
+          <textarea
+            matInput
+            [formControl]="incipit"
+            rows="3"
+            placeholder="incipit"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              incipit.errors?.maxLength && (incipit.dirty || incipit.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div>
+        <!-- explicit -->
+        <mat-form-field>
+          <textarea
+            matInput
+            [formControl]="explicit"
+            rows="3"
+            placeholder="explicit"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              explicit.errors?.maxLength && (explicit.dirty || explicit.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div>
+        <!-- note -->
+        <mat-form-field>
+          <textarea
+            rows="3"
+            matInput
+            [formControl]="note"
+            placeholder="note"
+          ></textarea>
+          <mat-error
+            *ngIf="note.errors?.maxLength && (note.dirty || note.touched)"
+            >note too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </mat-tab>
+
+    <!-- EDITIONS -->
+    <mat-tab label="editions">
+      <cadmus-doc-references
+      [model$]="editions$"
+      [tagEntries]="refTagEntries"
+      (modelChange)="onEditionsChange($event)"
+    ></cadmus-doc-references>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard content changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept content changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+</form>
