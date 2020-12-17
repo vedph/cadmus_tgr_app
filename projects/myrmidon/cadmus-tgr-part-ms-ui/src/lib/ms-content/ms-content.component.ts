@@ -26,7 +26,7 @@ export class MsContentComponent implements OnInit {
   @Input()
   public workEntries: ThesaurusEntry[] | undefined;
   @Input()
-  public refTagEntries: ThesaurusEntry[] | undefined;
+  public docTagEntries: ThesaurusEntry[] | undefined;
   @Output()
   public modelChange: EventEmitter<MsContent>;
   @Output()

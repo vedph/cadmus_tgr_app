@@ -28,7 +28,7 @@
         </mat-form-field>
       </div>
 
-      <div>
+      <div *ngIf="workEntries?.length">
         <cadmus-thesaurus-tree
         [entries]="workEntries"
         rootLabel="works"
@@ -126,7 +126,7 @@
     <mat-tab label="editions">
       <cadmus-doc-references
       [model$]="editions$"
-      [tagEntries]="refTagEntries"
+      [tagEntries]="docTagEntries"
       (modelChange)="onEditionsChange($event)"
     ></cadmus-doc-references>
     </mat-tab>

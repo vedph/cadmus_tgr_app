@@ -1,1 +1,105 @@
-<p>ms-contents-part works!</p>
+<form [formGroup]="form" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>Manuscript's Contents Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group [(selectedIndex)]="tabIndex">
+        <mat-tab label="contents">
+          <div>
+            <button
+              type="button"
+              mat-icon-button
+              color="primary"
+              (click)="addContent()"
+            >
+              <mat-icon>add_circle</mat-icon> add content
+            </button>
+          </div>
+          <table *ngIf="contents?.value?.length">
+            <thead>
+              <tr>
+                <th></th>
+                <th>start</th>
+                <th>end</th>
+                <th>work</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let content of contents?.value;
+                  let i = index;
+                  let first = first;
+                  let last = last
+                "
+              >
+                <td>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Edit this content"
+                    (click)="editContent(i)"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this content up"
+                    [disabled]="first"
+                    (click)="moveContentUp(i)"
+                  >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this content down"
+                    [disabled]="last"
+                    (click)="moveContentDown(i)"
+                  >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="Delete this content"
+                    (click)="deleteContent(i)"
+                  >
+                    <mat-icon>remove_circle</mat-icon>
+                  </button>
+                </td>
+                <td>{{ locationToString(content.start) }}</td>
+                <td>{{ locationToString(content.end) }}</td>
+                <td>{{content.work}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-tab>
+
+        <mat-tab label="content" *ngIf="editedContent">
+          <tgr-ms-content
+            [model]="editedContent"
+            [workEntries]="workEntries"
+            [docTagEntries]="docTagEntries"
+            (modelChange)="onContentSave($event)"
+            (editorClose)="onContentClose()"
+          ></tgr-ms-content>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>
