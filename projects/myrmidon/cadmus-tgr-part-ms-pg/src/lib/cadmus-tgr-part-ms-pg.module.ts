@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 // general Cadmus modules
 import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
@@ -15,14 +16,21 @@ import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
 import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
 import {
   CadmusTgrPartMsUiModule,
+  MSCONTENTS_PART_TYPEID,
   MSUNITS_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-ms-ui';
 
+import { MsContentsPartFeatureComponent } from './ms-contents-part-feature/ms-contents-part-feature.component';
 import { MsUnitsPartFeatureComponent } from './ms-units-part-feature/ms-units-part-feature.component';
-import { RouterModule } from '@angular/router';
 
 // https://github.com/ng-packagr/ng-packagr/issues/778
 export const RouterModuleForChild = RouterModule.forChild([
+  {
+    path: `${MSCONTENTS_PART_TYPEID}/:pid`,
+    pathMatch: 'full',
+    component: MsContentsPartFeatureComponent,
+    canDeactivate: [PendingChangesGuard],
+  },
   {
     path: `${MSUNITS_PART_TYPEID}/:pid`,
     pathMatch: 'full',
@@ -32,7 +40,10 @@ export const RouterModuleForChild = RouterModule.forChild([
 ]);
 
 @NgModule({
-  declarations: [MsUnitsPartFeatureComponent],
+  declarations: [
+    MsContentsPartFeatureComponent,
+    MsUnitsPartFeatureComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -49,6 +60,9 @@ export const RouterModuleForChild = RouterModule.forChild([
     CadmusTgrUiModule,
     CadmusTgrPartMsUiModule,
   ],
-  exports: [MsUnitsPartFeatureComponent],
+  exports: [
+    MsContentsPartFeatureComponent,
+    MsUnitsPartFeatureComponent
+  ],
 })
 export class CadmusTgrPartMsPgModule {}

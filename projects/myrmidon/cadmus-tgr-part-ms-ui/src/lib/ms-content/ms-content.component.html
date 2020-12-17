@@ -38,7 +38,7 @@
       </div>
       <div>
         <!-- work -->
-        <mat-form-field>
+        <mat-form-field class="long-text">
           <input matInput [formControl]="work" placeholder="work" />
           <mat-error
             *ngIf="work.errors?.maxLength && (work.dirty || work.touched)"
@@ -58,8 +58,8 @@
         </mat-form-field>
       </div>
       <div>
-        <!-- input -->
-        <mat-form-field>
+        <!-- title -->
+        <mat-form-field class="long-text">
           <input matInput [formControl]="title" placeholder="title" />
           <mat-error
             *ngIf="title.errors?.maxLength && (title.dirty || title.touched)"
@@ -73,7 +73,7 @@
     <mat-tab label="text">
       <div>
         <!-- incipit -->
-        <mat-form-field>
+        <mat-form-field class="long-text">
           <textarea
             matInput
             [formControl]="incipit"
@@ -90,7 +90,7 @@
       </div>
       <div>
         <!-- explicit -->
-        <mat-form-field>
+        <mat-form-field class="long-text">
           <textarea
             matInput
             [formControl]="explicit"
@@ -107,7 +107,7 @@
       </div>
       <div>
         <!-- note -->
-        <mat-form-field>
+        <mat-form-field class="long-text">
           <textarea
             rows="3"
             matInput

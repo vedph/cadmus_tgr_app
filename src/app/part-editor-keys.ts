@@ -17,8 +17,14 @@ import {
 } from '@myrmidon/cadmus-part-philology-ui';
 import { PartEditorKeys } from '@myrmidon/cadmus-core';
 import { LING_TAGS_FRAGMENT_TYPEID } from '@myrmidon/cadmus-tgr-part-gr-ui';
-import { MSPLACE_PART_TYPEID, MSSIGNATURES_PART_TYPEID } from '@myrmidon/cadmus-itinera-part-ms-ui';
-import { MSUNITS_PART_TYPEID } from '@myrmidon/cadmus-tgr-part-ms-ui';
+import {
+  MSPLACE_PART_TYPEID,
+  MSSIGNATURES_PART_TYPEID,
+} from '@myrmidon/cadmus-itinera-part-ms-ui';
+import {
+  MSCONTENTS_PART_TYPEID,
+  MSUNITS_PART_TYPEID,
+} from '@myrmidon/cadmus-tgr-part-ms-ui';
 
 const GENERAL = 'general';
 const PHILOLOGY = 'philology';
@@ -64,8 +70,11 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
   [MSPLACE_PART_TYPEID]: {
     part: ITINERA_MS,
   },
+  [MSCONTENTS_PART_TYPEID]: {
+    part: TGR_MS,
+  },
   [MSUNITS_PART_TYPEID]: {
-    part: TGR_MS
+    part: TGR_MS,
   },
   // layer parts
   [TOKEN_TEXT_LAYER_PART_TYPEID]: {
