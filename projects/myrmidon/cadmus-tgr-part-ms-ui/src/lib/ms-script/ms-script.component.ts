@@ -182,7 +182,7 @@ export class MsScriptComponent implements OnInit {
   }
 
   public onScrTypeEntryChange(entry: ThesaurusEntry): void {
-    this.type.setValue(entry.value);
+    this.type.setValue(entry.id);
   }
 
   public cancel(): void {
