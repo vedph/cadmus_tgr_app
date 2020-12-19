@@ -18,13 +18,19 @@ import { MsGuardSheetComponent } from './ms-guard-sheet/ms-guard-sheet.component
 import { MsUnitComponent } from './ms-unit/ms-unit.component';
 import { MsContentsPartComponent } from './ms-contents-part/ms-contents-part.component';
 import { MsContentComponent } from './ms-content/ms-content.component';
+import { MsScriptsPartComponent } from './ms-scripts-part/ms-scripts-part.component';
+import { MsHandComponent } from './ms-hand/ms-hand.component';
+import { MsScriptComponent } from './ms-script/ms-script.component';
 
 @NgModule({
   declarations: [
     MsContentComponent,
     MsContentsPartComponent,
     MsGuardSheetComponent,
+    MsHandComponent,
     MsPalimpsestComponent,
+    MsScriptComponent,
+    MsScriptsPartComponent,
     MsUnitComponent,
     MsUnitsPartComponent,
   ],
@@ -46,7 +52,10 @@ import { MsContentComponent } from './ms-content/ms-content.component';
     MsContentComponent,
     MsContentsPartComponent,
     MsGuardSheetComponent,
+    MsHandComponent,
     MsPalimpsestComponent,
+    MsScriptComponent,
+    MsScriptsPartComponent,
     MsUnitComponent,
     MsUnitsPartComponent
   ],

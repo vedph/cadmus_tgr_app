@@ -1,0 +1,227 @@
+<form [formGroup]="form" (submit)="save()">
+  <div>
+    <!-- id -->
+    <mat-form-field style="width: 8em">
+      <input matInput [formControl]="id" placeholder="id" />
+      <mat-error *ngIf="id.errors?.required && (id.dirty || id.touched)"
+        >id required</mat-error
+      >
+      <mat-error *ngIf="id.errors?.maxLength && (id.dirty || id.touched)"
+        >id too long</mat-error
+      >
+    </mat-form-field>
+
+    &nbsp;
+    <!-- start -->
+    <mat-form-field style="width: 8em">
+      <input matInput [formControl]="start" placeholder="start" />
+      <mat-error
+        *ngIf="start.errors?.required && (start.dirty || start.touched)"
+        >start required</mat-error
+      >
+      <mat-error *ngIf="start.errors?.pattern && (start.dirty || start.touched)"
+        >invalid start</mat-error
+      >
+    </mat-form-field>
+
+    &nbsp;
+    <!-- end -->
+    <mat-form-field style="width: 8em">
+      <input matInput [formControl]="end" placeholder="end" />
+      <mat-error *ngIf="end.errors?.required && (end.dirty || end.touched)"
+        >end required</mat-error
+      >
+      <mat-error *ngIf="end.errors?.pattern && (end.dirty || end.touched)"
+        >invalid end</mat-error
+      >
+    </mat-form-field>
+  </div>
+  >
+
+  <!-- date -->
+  <div>
+    <cadmus-historical-date-editor
+      [date]="date"
+      (dateChange)="onDateChange($event)"
+    ></cadmus-historical-date-editor>
+  </div>
+
+  <div>
+    <!-- description -->
+    <mat-form-field class="long-text">
+      <textarea
+        matInput
+        rows="3"
+        [formControl]="description"
+        placeholder="description"
+      ></textarea>
+      <mat-error
+        *ngIf="
+          description.errors?.maxLength &&
+          (description.dirty || description.touched)
+        "
+        >description too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <div>
+    <!-- abbreviations -->
+    <mat-form-field class="long-text">
+      <textarea
+        matInput
+        rows="3"
+        [formControl]="abbreviations"
+        placeholder="abbreviations"
+      ></textarea>
+      <mat-error
+        *ngIf="
+          abbreviations.errors?.maxLength &&
+          (abbreviations.dirty || abbreviations.touched)
+        "
+        >abbreviations too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <div>
+    <!-- letters -->
+    <div formArrayName="letters">
+      <div>
+        <button
+          type="button"
+          mat-icon-button
+          color="primary"
+          (click)="addLetter()"
+        >
+          add letter
+        </button>
+      </div>
+      <div
+        *ngFor="
+          let item of letters.controls;
+          let i = index;
+          let first = first;
+          let last = last
+        "
+      >
+        <!-- child form -->
+        <div [formGroupName]="i">
+          <!-- child actions -->
+          {{ i + 1 }}.
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Remove this letter"
+            color="warn"
+            (click)="removeLetter(i)"
+          >
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+          <button
+            [disabled]="first"
+            mat-icon-button
+            type="button"
+            matTooltip="Move letter up"
+            (click)="moveLetterUp(i)"
+          >
+            <mat-icon>arrow_upward</mat-icon>
+          </button>
+          <button
+            [disabled]="last"
+            mat-icon-button
+            type="button"
+            matTooltip="Move letter down"
+            (click)="moveLetterDown(i)"
+          >
+            <mat-icon>arrow_downward</mat-icon>
+          </button>
+
+          <!-- child controls -->
+          <!-- letter -->
+          <mat-form-field>
+            <input matInput formControlName="letter" placeholder="letter" />
+            <mat-error
+              *ngIf="
+                item['controls'].letter.errors?.required &&
+                (item['controls'].letter.dirty ||
+                  item['controls'].letter.touched)
+              "
+              >letter required</mat-error
+            >
+            <mat-error
+              *ngIf="
+                item['controls'].letter.errors?.maxLength &&
+                (item['controls'].letter.dirty ||
+                  item['controls'].letter.touched)
+              "
+              >too long</mat-error
+            >
+          </mat-form-field>
+          &nbsp;
+          <!-- imageId-->
+          <mat-form-field>
+            <input matInput formControlName="imageId" placeholder="imageId" />
+            <mat-error
+              *ngIf="
+                item['controls'].imageId.errors?.maxLength &&
+                (item['controls'].imageId.dirty ||
+                  item['controls'].imageId.touched)
+              "
+              >too long</mat-error
+            >
+          </mat-form-field>
+
+          <!-- description -->
+          <div>
+            <mat-form-field class="long-text-indented">
+              <input
+                matInput
+                formControlName="description"
+                placeholder="description"
+              />
+              <mat-error
+                *ngIf="
+                  item['controls'].description.errors?.required &&
+                  (item['controls'].description.dirty ||
+                    item['controls'].description.touched)
+                "
+                >required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  item['controls'].description.errors?.maxLength &&
+                  (item['controls'].description.dirty ||
+                    item['controls'].description.touched)
+                "
+                >too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard hand changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept hand changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+</form>

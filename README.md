@@ -58,7 +58,7 @@ export class __NAME__Component implements OnInit {
   // TODO: controls
 
   constructor(formBuilder: FormBuilder) {
-    this.modelChange = new EventEmitter<MsGuardSheet>();
+    this.modelChange = new EventEmitter<__TYPE__>();
     this.editorClose = new EventEmitter<any>();
     // form
     // TODO: controls

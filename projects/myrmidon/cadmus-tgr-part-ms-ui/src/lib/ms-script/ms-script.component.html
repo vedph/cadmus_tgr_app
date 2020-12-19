@@ -1,0 +1,186 @@
+<form [formGroup]="form" (submit)="save()">
+  <mat-tab-group [(selectedIndex)]="tabIndex">
+    <mat-tab label="script">
+      <div>
+        <!-- language (bound) -->
+        <mat-form-field *ngIf="langEntries?.length" style="width: 8em">
+          <mat-select [formControl]="language" placeholder="language">
+            <mat-option *ngFor="let e of langEntries" [value]="e.id">{{
+              e.value
+            }}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              language.errors?.required && (language.dirty || language.touched)
+            "
+            >language required</mat-error
+          >
+        </mat-form-field>
+        <!-- language (free) -->
+        <mat-form-field *ngIf="!langEntries?.length" style="width: 8em">
+          <input matInput [formControl]="language" placeholder="language" />
+          <mat-error
+            *ngIf="
+              language.errors?.required && (language.dirty || language.touched)
+            "
+            >required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              language.errors?.maxLength && (language.dirty || language.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+
+        &nbsp;
+        <!-- role (bound) -->
+        <mat-form-field *ngIf="scrRoleEntries?.length" style="width: 12em">
+          <mat-select [formControl]="role" placeholder="role">
+            <mat-option *ngFor="let e of scrRoleEntries" [value]="e.id">{{
+              e.value
+            }}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="role.errors?.required && (role.dirty || role.touched)"
+            >required</mat-error
+          >
+        </mat-form-field>
+        <!-- role (free) -->
+        <mat-form-field *ngIf="!scrRoleEntries?.length" style="width: 12em">
+          <input matInput [formControl]="role" placeholder="role" />
+          <mat-error
+            *ngIf="role.errors?.required && (role.dirty || role.touched)"
+            >required</mat-error
+          >
+          <mat-error
+            *ngIf="role.errors?.maxLength && (role.dirty || role.touched)"
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div>
+        <!-- type -->
+        <cadmus-thesaurus-tree *ngIf="scrTypeEntries?.length"
+          [entries]="scrTypeEntries"
+          rootLabel="scripts"
+          [renderLabel]="renderLabel"
+          (entryChange)="onScrTypeEntryChange($event)"
+        ></cadmus-thesaurus-tree>
+
+        <mat-form-field>
+          <input matInput [formControl]="type" placeholder="type" />
+          <mat-error
+            *ngIf="type.errors?.maxLength && (type.dirty || type.touched)"
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <!-- hands -->
+      <div>
+        <button
+          type="button"
+          mat-icon-button
+          color="primary"
+          (click)="addHand()"
+        >
+          <mat-icon>add_circle</mat-icon> add hand
+        </button>
+      </div>
+      <table *ngIf="hands?.value?.length">
+        <thead>
+          <tr>
+            <th></th>
+            <th>ID</th>
+            <th>start</th>
+            <th>end</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let hand of hands?.value;
+              let i = index;
+              let first = first;
+              let last = last
+            "
+          >
+            <td>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit this hand"
+                (click)="editHand(i)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this hand up"
+                [disabled]="first"
+                (click)="moveHandUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this hand down"
+                [disabled]="last"
+                (click)="moveHandDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                color="warn"
+                matTooltip="Delete this hand"
+                (click)="deleteHand(i)"
+              >
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </td>
+            <td>{{ hand.id }}</td>
+            <td>{{ locationToString(hand.start) }}</td>
+            <td>{{ locationToString(hand.end) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-tab>
+
+    <mat-tab label="content" *ngIf="editedHand">
+      <tgr-ms-hand
+        [model]="editedHand"
+        (modelChange)="onHandSave($event)"
+        (editorClose)="onHandClose()"
+      ></tgr-ms-hand>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard script changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept script changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon> script
+    </button>
+  </div>
+</form>

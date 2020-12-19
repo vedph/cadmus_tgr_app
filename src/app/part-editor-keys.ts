@@ -23,6 +23,7 @@ import {
 } from '@myrmidon/cadmus-itinera-part-ms-ui';
 import {
   MSCONTENTS_PART_TYPEID,
+  MSSCRIPTS_PART_TYPEID,
   MSUNITS_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-ms-ui';
 
@@ -74,6 +75,9 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
     part: TGR_MS,
   },
   [MSUNITS_PART_TYPEID]: {
+    part: TGR_MS,
+  },
+  [MSSCRIPTS_PART_TYPEID]: {
     part: TGR_MS,
   },
   // layer parts

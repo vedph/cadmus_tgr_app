@@ -101,13 +101,13 @@ export class MsContentsPartComponent
   }
 
   public addContent(): void {
-    const Content: MsContent = {
+    const content: MsContent = {
       start: { n: 0 },
       end: { n: 0 },
       incipit: '',
       explicit: ''
     };
-    this.contents.setValue([...this.contents.value, Content]);
+    this.contents.setValue([...this.contents.value, content]);
     this.editContent(this.contents.value.length - 1);
   }
 
