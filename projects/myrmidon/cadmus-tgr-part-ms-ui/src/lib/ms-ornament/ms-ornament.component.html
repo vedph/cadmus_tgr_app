@@ -67,22 +67,17 @@
 
   <div>
     <!-- description -->
-    <mat-form-field>
-      <textarea
-        class="long-text"
-        rows="3"
-        matInput
-        [formControl]="description"
-        placeholder="description"
-      ></textarea>
-      <mat-error
-        *ngIf="
-          description.errors?.maxLength &&
-          (description.dirty || description.touched)
-        "
-        >too long</mat-error
-      >
-    </mat-form-field>
+    <ngx-monaco-editor #dsceditor
+      [options]="editorOptions"
+      [formControl]="description"
+    ></ngx-monaco-editor>
+    <mat-error
+      *ngIf="
+        description.errors?.maxLength &&
+        (description.touched || description.dirty)
+      "
+      >too long</mat-error
+    >
   </div>
 
   <!-- buttons -->

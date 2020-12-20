@@ -1,0 +1,108 @@
+<form [formGroup]="form" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>Manuscript's Ornamentations Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group [(selectedIndex)]="tabIndex">
+        <mat-tab label="ornamentations">
+          <div>
+            <button
+              type="button"
+              mat-icon-button
+              color="primary"
+              (click)="addOrnament()"
+            >
+              <mat-icon>add_circle</mat-icon> add ornamentation
+            </button>
+          </div>
+          <table *ngIf="ornaments?.value?.length">
+            <thead>
+              <tr>
+                <th></th>
+                <th>type</th>
+                <th>start</th>
+                <th>end</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let ornament of ornaments?.value;
+                  let i = index;
+                  let first = first;
+                  let last = last
+                "
+              >
+                <td>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Edit this ornamentation"
+                    (click)="editOrnament(i)"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this ornamentation up"
+                    [disabled]="first"
+                    (click)="moveOrnamentUp(i)"
+                  >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this ornamentation down"
+                    [disabled]="last"
+                    (click)="moveOrnamentDown(i)"
+                  >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="Delete this ornamentation"
+                    (click)="deleteOrnament(i)"
+                  >
+                    <mat-icon>remove_circle</mat-icon>
+                  </button>
+                </td>
+                <td>{{ ornament.type }}</td>
+                <td>{{ locationToString(ornament.start) }}</td>
+                <td>{{ locationToString(ornament.end) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-tab>
+
+        <mat-tab label="unit" *ngIf="editedOrnament">
+          <tgr-ms-ornament
+            [model]="editedOrnament"
+            [ornTypeEntries]="ornTypeEntries"
+            [szUnitEntries]="szUnitEntries"
+            [szTagEntries]="szTagEntries"
+            [szDimTagEntries]="szDimTagEntries"
+            (modelChange)="onOrnamentSave($event)"
+            (editorClose)="onOrnamentClose()"
+          >
+          </tgr-ms-ornament>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

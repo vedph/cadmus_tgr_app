@@ -1,14 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {
-  PhysicalSize,
-  ThesaurusEntry,
-} from '@myrmidon/cadmus-core';
+import { PhysicalSize, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { MsOrnament } from '../ms-ornaments-part';
 
@@ -17,8 +22,10 @@ import { MsOrnament } from '../ms-ornaments-part';
   templateUrl: './ms-ornament.component.html',
   styleUrls: ['./ms-ornament.component.css'],
 })
-export class MsOrnamentComponent implements OnInit {
+export class MsOrnamentComponent implements OnInit, AfterViewInit {
   private _model: MsOrnament | undefined;
+
+  @ViewChild('dsceditor') dscEditor: any;
 
   @Input()
   public get model(): MsOrnament | undefined {
@@ -49,6 +56,14 @@ export class MsOrnamentComponent implements OnInit {
   public description: FormControl;
   public hasSize: FormControl;
   public size: PhysicalSize | undefined;
+
+  public editorOptions = {
+    theme: 'vs-light',
+    language: 'markdown',
+    wordWrap: 'on',
+    // https://github.com/atularen/ngx-monaco-editor/issues/19
+    automaticLayout: true,
+  };
 
   constructor(
     formBuilder: FormBuilder,
@@ -82,6 +97,15 @@ export class MsOrnamentComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateForm(this.model);
+  }
+
+  ngAfterViewInit(): void {
+    this.updateForm(this.model);
+    // HACK: required to show the monaco editor when this component
+    // is used in some initially-hidden container, e.g. a tab
+    setTimeout(() => {
+      this.dscEditor._editor?.layout();
+    }, 150);
   }
 
   private updateForm(model: MsOrnament | undefined): void {
