@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -12,8 +20,10 @@ import { MsFormalFeature } from '../ms-formal-features-part';
   templateUrl: './ms-formal-feature.component.html',
   styleUrls: ['./ms-formal-feature.component.css'],
 })
-export class MsFormalFeatureComponent implements OnInit {
+export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
   private _model: MsFormalFeature | undefined;
+
+  @ViewChild('dsceditor') dscEditor: any;
 
   @Input()
   public get model(): MsFormalFeature | undefined {
@@ -59,8 +69,15 @@ export class MsFormalFeatureComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
     this.updateForm(this.model);
+    // HACK: required to show the monaco editor when this component
+    // is used in some initially-hidden container, e.g. a tab
+    setTimeout(() => {
+      this.dscEditor._editor?.layout();
+    }, 150);
   }
 
   private updateForm(model: MsFormalFeature | undefined): void {

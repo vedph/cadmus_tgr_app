@@ -17,6 +17,7 @@ import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
 import {
   CadmusTgrPartMsUiModule,
   MSCONTENTS_PART_TYPEID,
+  MSFORMAL_FEATURES_PART_TYPEID,
   MSSCRIPTS_PART_TYPEID,
   MSUNITS_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-ms-ui';
@@ -24,6 +25,7 @@ import {
 import { MsContentsPartFeatureComponent } from './ms-contents-part-feature/ms-contents-part-feature.component';
 import { MsUnitsPartFeatureComponent } from './ms-units-part-feature/ms-units-part-feature.component';
 import { MsScriptsPartFeatureComponent } from './ms-scripts-part-feature/ms-scripts-part-feature.component';
+import { MsFormalFeaturesPartFeatureComponent } from './ms-formal-features-part-feature/ms-formal-features-part-feature.component';
 
 // https://github.com/ng-packagr/ng-packagr/issues/778
 export const RouterModuleForChild = RouterModule.forChild([
@@ -31,6 +33,12 @@ export const RouterModuleForChild = RouterModule.forChild([
     path: `${MSCONTENTS_PART_TYPEID}/:pid`,
     pathMatch: 'full',
     component: MsContentsPartFeatureComponent,
+    canDeactivate: [PendingChangesGuard],
+  },
+  {
+    path: `${MSFORMAL_FEATURES_PART_TYPEID}/:pid`,
+    pathMatch: 'full',
+    component: MsFormalFeaturesPartFeatureComponent,
     canDeactivate: [PendingChangesGuard],
   },
   {
@@ -50,6 +58,7 @@ export const RouterModuleForChild = RouterModule.forChild([
 @NgModule({
   declarations: [
     MsContentsPartFeatureComponent,
+    MsFormalFeaturesPartFeatureComponent,
     MsScriptsPartFeatureComponent,
     MsUnitsPartFeatureComponent,
   ],
@@ -71,6 +80,7 @@ export const RouterModuleForChild = RouterModule.forChild([
   ],
   exports: [
     MsContentsPartFeatureComponent,
+    MsFormalFeaturesPartFeatureComponent,
     MsScriptsPartFeatureComponent,
     MsUnitsPartFeatureComponent
   ],
