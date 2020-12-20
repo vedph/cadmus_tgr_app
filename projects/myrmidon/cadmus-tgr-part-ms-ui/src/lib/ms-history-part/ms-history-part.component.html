@@ -1,0 +1,246 @@
+<form [formGroup]="form" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>Manuscript's History Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group>
+        <!-- GENERAL -->
+        <mat-tab label="general">
+          <!-- provenances -->
+          <div formArrayName="provenances">
+            <div>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                (click)="addProvenance()"
+              >
+                add provenance
+              </button>
+            </div>
+            <div
+              *ngFor="
+                let item of provenances.controls;
+                let i = index;
+                let first = first;
+                let last = last
+              "
+            >
+              <!-- child form -->
+              <div [formGroupName]="i">
+                <!-- child actions -->
+                {{ i + 1 }}.
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Remove this provenance"
+                  color="warn"
+                  (click)="removeProvenance(i)"
+                >
+                  <mat-icon>remove_circle</mat-icon>
+                </button>
+                <button
+                  [disabled]="first"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move provenance up"
+                  (click)="moveProvenanceUp(i)"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button
+                  [disabled]="last"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move provenance down"
+                  (click)="moveProvenanceDown(i)"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+
+                <!-- child controls -->
+                <mat-form-field style="width: 12em">
+                  <input matInput formControlName="area" placeholder="area" />
+                  <mat-error
+                    *ngIf="
+                      item['controls'].area.errors?.required &&
+                      (item['controls'].area.dirty ||
+                        item['controls'].area.touched)
+                    "
+                    >area required</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      item['controls'].area.errors?.maxLength &&
+                      (item['controls'].area.dirty ||
+                        item['controls'].area.touched)
+                    "
+                    >area too long</mat-error
+                  >
+                </mat-form-field>
+                &nbsp;
+                <mat-form-field>
+                  <input
+                    matInput
+                    formControlName="address"
+                    placeholder="address"
+                  />
+                  <mat-error
+                    *ngIf="
+                      item['controls'].address.errors?.maxLength &&
+                      (item['controls'].address.dirty ||
+                        item['controls'].address.touched)
+                    "
+                    >address too long</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- history -->
+          <div>
+            <ngx-monaco-editor
+              [options]="editorOptions"
+              [formControl]="history"
+            ></ngx-monaco-editor>
+            <mat-error
+              *ngIf="
+                history.errors?.maxLength && (history.touched || history.dirty)
+              "
+              >history too long</mat-error
+            >
+          </div>
+
+          <!-- owners -->
+          <div formArrayName="owners">
+            <div>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                (click)="addOwner()"
+              >
+                add item
+              </button>
+            </div>
+            <div
+              *ngFor="
+                let item of owners.controls;
+                let i = index;
+                let first = first;
+                let last = last
+              "
+            >
+              <!-- child form -->
+              <div [formGroupName]="i">
+                <!-- child actions -->
+                {{ i + 1 }}.
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Remove this owner"
+                  color="warn"
+                  (click)="removeOwner(i)"
+                >
+                  <mat-icon>remove_circle</mat-icon>
+                </button>
+                <button
+                  [disabled]="first"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move owner up"
+                  (click)="moveOwnerUp(i)"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button
+                  [disabled]="last"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move owner down"
+                  (click)="moveOwnerDown(i)"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+
+                <!-- child controls -->
+                <mat-form-field>
+                  <input matInput formControlName="name" placeholder="name" />
+                  <mat-error
+                    *ngIf="
+                      item['controls'].name.errors?.required &&
+                      (item['controls'].name.dirty ||
+                        item['controls'].name.touched)
+                    "
+                    >name required</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      item['controls'].name.errors?.maxLength &&
+                      (item['controls'].name.dirty ||
+                        item['controls'].name.touched)
+                    "
+                    >name too long</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- SUBSCRIPTION -->
+        <mat-tab label="subscription">
+          <!-- locations -->
+          <div>
+            <mat-form-field>
+              <input
+                matInput
+                [formControl]="subLocations"
+                placeholder="locations"
+              />
+              <mat-error
+                *ngIf="
+                  subLocations.errors?.invalid &&
+                  (subLocations.dirty || subLocations.touched)
+                "
+                >invalid location(s)</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  subLocations.errors?.maxLength &&
+                  (subLocations.dirty || subLocations.touched)
+                "
+                >too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div>
+            <!-- language -->
+            TODO
+            &nbsp;
+            <!-- handId -->
+          </div>
+          <!-- text -->
+          <div></div>
+          <!-- note -->
+          <div></div>
+        </mat-tab>
+
+        <!-- ANNOTATIONS -->
+        <mat-tab label="annotations"> </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

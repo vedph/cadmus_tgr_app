@@ -26,6 +26,7 @@ import { MsFormalFeaturesPartComponent } from './ms-formal-features-part/ms-form
 import { MsFormalFeatureComponent } from './ms-formal-feature/ms-formal-feature.component';
 import { MsOrnamentComponent } from './ms-ornament/ms-ornament.component';
 import { MsOrnamentsPartComponent } from './ms-ornaments-part/ms-ornaments-part.component';
+import { MsHistoryPartComponent } from './ms-history-part/ms-history-part.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { MsOrnamentsPartComponent } from './ms-ornaments-part/ms-ornaments-part.
     MsFormalFeaturesPartComponent,
     MsGuardSheetComponent,
     MsHandComponent,
+    MsHistoryPartComponent,
     MsOrnamentComponent,
     MsOrnamentsPartComponent,
     MsPalimpsestComponent,
@@ -65,6 +67,7 @@ import { MsOrnamentsPartComponent } from './ms-ornaments-part/ms-ornaments-part.
     MsFormalFeaturesPartComponent,
     MsGuardSheetComponent,
     MsHandComponent,
+    MsHistoryPartComponent,
     MsOrnamentComponent,
     MsOrnamentsPartComponent,
     MsPalimpsestComponent,

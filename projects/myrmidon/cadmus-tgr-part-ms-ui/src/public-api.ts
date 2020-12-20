@@ -11,6 +11,7 @@ export * from './lib/ms-formal-feature/ms-formal-feature.component';
 export * from './lib/ms-formal-features-part/ms-formal-features-part.component';
 
 export * from './lib/ms-history-part';
+export * from './lib/ms-history-part/ms-history-part.component';
 
 export * from './lib/ms-ornaments-part';
 export * from './lib/ms-ornament/ms-ornament.component';
