@@ -74,7 +74,6 @@ export const MSORNAMENTS_PART_SCHEMA = {
       type: ['string', 'null'],
       pattern: '^([a-z][-0-9a-z._]*)?$',
     },
-
     ornaments: {
       type: 'array',
       items: {

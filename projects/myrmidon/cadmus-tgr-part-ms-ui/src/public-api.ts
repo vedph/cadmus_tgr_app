@@ -10,6 +10,9 @@ export * from './lib/ms-formal-features-part';
 export * from './lib/ms-formal-feature/ms-formal-feature.component';
 export * from './lib/ms-formal-features-part/ms-formal-features-part.component';
 
+export * from './lib/ms-ornaments-part';
+export * from './lib/ms-ornament/ms-ornament.component';
+
 export * from './lib/ms-scripts-part';
 export * from './lib/ms-hand/ms-hand.component';
 export * from './lib/ms-script/ms-script.component';

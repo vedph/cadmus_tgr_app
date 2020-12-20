@@ -24,6 +24,7 @@ import { MsHandComponent } from './ms-hand/ms-hand.component';
 import { MsScriptComponent } from './ms-script/ms-script.component';
 import { MsFormalFeaturesPartComponent } from './ms-formal-features-part/ms-formal-features-part.component';
 import { MsFormalFeatureComponent } from './ms-formal-feature/ms-formal-feature.component';
+import { MsOrnamentComponent } from './ms-ornament/ms-ornament.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MsFormalFeatureComponent } from './ms-formal-feature/ms-formal-feature.
     MsFormalFeaturesPartComponent,
     MsGuardSheetComponent,
     MsHandComponent,
+    MsOrnamentComponent,
     MsPalimpsestComponent,
     MsScriptComponent,
     MsScriptsPartComponent,
@@ -61,6 +63,7 @@ import { MsFormalFeatureComponent } from './ms-formal-feature/ms-formal-feature.
     MsFormalFeaturesPartComponent,
     MsGuardSheetComponent,
     MsHandComponent,
+    MsOrnamentComponent,
     MsPalimpsestComponent,
     MsScriptComponent,
     MsScriptsPartComponent,
