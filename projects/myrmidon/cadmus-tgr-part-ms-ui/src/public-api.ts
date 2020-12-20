@@ -6,6 +6,8 @@ export * from './lib/ms-contents-part';
 export * from './lib/ms-content/ms-content.component';
 export * from './lib/ms-contents-part/ms-contents-part.component';
 
+export * from './lib/ms-formal-features-part';
+
 export * from './lib/ms-scripts-part';
 export * from './lib/ms-hand/ms-hand.component';
 export * from './lib/ms-script/ms-script.component';
