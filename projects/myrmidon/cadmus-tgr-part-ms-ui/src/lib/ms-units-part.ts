@@ -324,6 +324,60 @@ export const MSUNITS_PART_SCHEMA = {
         anyOf: [
           {
             type: 'object',
+            required: [],
+            properties: {
+              tag: {
+                type: 'string',
+              },
+              w: {
+                type: 'object',
+                required: ['value', 'unit'],
+                properties: {
+                  tag: {
+                    type: 'string',
+                  },
+                  value: {
+                    type: 'number',
+                  },
+                  unit: {
+                    type: 'string',
+                  },
+                },
+              },
+              d: {
+                type: 'object',
+                required: ['value', 'unit'],
+                properties: {
+                  tag: {
+                    type: 'string',
+                  },
+                  value: {
+                    type: 'number',
+                  },
+                  unit: {
+                    type: 'string',
+                  },
+                },
+              },
+              h: {
+                type: 'object',
+                required: ['value', 'unit'],
+                properties: {
+                  tag: {
+                    type: 'string',
+                  },
+                  value: {
+                    type: 'number',
+                  },
+                  unit: {
+                    type: 'string',
+                  },
+                },
+              },
+              note: {
+                type: 'string',
+              },
+            },
           },
         ],
       },
