@@ -24,6 +24,7 @@ import {
 import {
   MSCONTENTS_PART_TYPEID,
   MSFORMAL_FEATURES_PART_TYPEID,
+  MSORNAMENTS_PART_TYPEID,
   MSSCRIPTS_PART_TYPEID,
   MSUNITS_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-ms-ui';
@@ -82,6 +83,9 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
     part: TGR_MS,
   },
   [MSFORMAL_FEATURES_PART_TYPEID]: {
+    part: TGR_MS,
+  },
+  [MSORNAMENTS_PART_TYPEID]: {
     part: TGR_MS,
   },
   // layer parts
