@@ -1,0 +1,59 @@
+<form [formGroup]="form" (submit)="save()">
+  <!-- handId -->
+  <div>
+    <mat-form-field>
+      <input matInput [formControl]="handId" placeholder="hand ID" />
+      <mat-error
+        *ngIf="handId.errors?.required && (handId.dirty || handId.touched)"
+        >required</mat-error
+      >
+      <mat-error
+        *ngIf="handId.errors?.maxLength && (handId.dirty || handId.touched)"
+        >too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+  <!-- description -->
+  <div>
+    <ngx-monaco-editor
+      [options]="editorOptions"
+      [formControl]="description"
+    ></ngx-monaco-editor>
+    <mat-error
+      *ngIf="
+        description.errors?.required&&
+        (description.touched || description.dirty)
+      "
+      >required</mat-error
+    >
+    <mat-error
+      *ngIf="
+        description.errors?.maxLength &&
+        (description.touched || description.dirty)
+      "
+      >too long</mat-error
+    >
+  </div>
+
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard feature changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept feature changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+</form>

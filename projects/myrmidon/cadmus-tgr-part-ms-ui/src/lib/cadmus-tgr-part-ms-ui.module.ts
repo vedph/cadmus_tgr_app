@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 // general Cadmus modules
 import { CadmusCoreModule } from '@myrmidon/cadmus-core';
@@ -21,11 +22,15 @@ import { MsContentComponent } from './ms-content/ms-content.component';
 import { MsScriptsPartComponent } from './ms-scripts-part/ms-scripts-part.component';
 import { MsHandComponent } from './ms-hand/ms-hand.component';
 import { MsScriptComponent } from './ms-script/ms-script.component';
+import { MsFormalFeaturesPartComponent } from './ms-formal-features-part/ms-formal-features-part.component';
+import { MsFormalFeatureComponent } from './ms-formal-feature/ms-formal-feature.component';
 
 @NgModule({
   declarations: [
     MsContentComponent,
     MsContentsPartComponent,
+    MsFormalFeatureComponent,
+    MsFormalFeaturesPartComponent,
     MsGuardSheetComponent,
     MsHandComponent,
     MsPalimpsestComponent,
@@ -38,6 +43,7 @@ import { MsScriptComponent } from './ms-script/ms-script.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MonacoEditorModule,
     // Cadmus
     CadmusCoreModule,
     CadmusMaterialModule,
@@ -51,6 +57,8 @@ import { MsScriptComponent } from './ms-script/ms-script.component';
   exports: [
     MsContentComponent,
     MsContentsPartComponent,
+    MsFormalFeatureComponent,
+    MsFormalFeaturesPartComponent,
     MsGuardSheetComponent,
     MsHandComponent,
     MsPalimpsestComponent,
