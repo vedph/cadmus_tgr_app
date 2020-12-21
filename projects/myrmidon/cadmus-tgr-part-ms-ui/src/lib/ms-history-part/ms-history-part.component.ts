@@ -17,7 +17,11 @@ import {
   MsHistoryPart,
   MSHISTORY_PART_TYPEID,
 } from '../ms-history-part';
-import { GeoAddress, MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import {
+  GeoAddress,
+  MsLocation,
+  MsLocationService,
+} from '@myrmidon/cadmus-itinera-core';
 
 /**
  * Manuscript's history part editor component.
@@ -76,13 +80,28 @@ export class MsHistoryPartComponent
     this.subText = _formBuilder.control(null, Validators.maxLength(1000));
     this.subNote = _formBuilder.control(null, Validators.maxLength(500));
     this.annotations = _formBuilder.array([]);
+    this.form = _formBuilder.group({
+      provenances: this.provenances,
+      history: this.history,
+      owners: this.owners,
+      subLocations: this.subLocations,
+      subLanguage: this.subLanguage,
+      subHandId: this.subHandId,
+      subText: this.subText,
+      subNote: this.subNote,
+      annotations: this.annotations,
+    });
   }
 
   private locationsVal(control: AbstractControl): ValidationErrors | null {
+    const locService = new MsLocationService();
     if (control.value) {
-      const err = control.value.split().map((t: string) => {
-        return this._locService.parseLocation(t);
-      });
+      const err = control.value
+        .split(',')
+        .map((t: string) => {
+          return locService.parseLocation(t.trim());
+        })
+        .some((l: MsLocation) => !l);
       if (err) {
         return { invalid: true };
       }
@@ -92,6 +111,7 @@ export class MsHistoryPartComponent
 
   public ngOnInit(): void {
     this.initEditor();
+    this.provenances.updateValueAndValidity();
   }
 
   private updateForm(model: MsHistoryPart): void {
@@ -116,10 +136,12 @@ export class MsHistoryPartComponent
     }
     this.subLocations.setValue(
       model.subscription?.locations
-        ? model.subscription.locations.map((l) => {
-            return this._locService.locationToString(l);
-          })
-        : []
+        ? model.subscription.locations
+            .map((l) => {
+              return this._locService.locationToString(l);
+            })
+            .join(',')
+        : ''
     );
     this.subLanguage.setValue(model.subscription?.language);
     this.subHandId.setValue(model.subscription?.handId);
@@ -172,8 +194,8 @@ export class MsHistoryPartComponent
 
     if (this.subLocations.value) {
       part.subscription = {
-        locations: this.subLocations.value.split().map((t: string) => {
-          return this._locService.parseLocation(t);
+        locations: this.subLocations.value.split(',').map((t: string) => {
+          return this._locService.parseLocation(t.trim());
         }),
         language: this.subLanguage.value?.trim(),
         handId: this.subHandId.value?.trim(),
@@ -338,7 +360,7 @@ export class MsHistoryPartComponent
         note: g.controls.note.value?.trim(),
       });
     }
-    return annotations.length? annotations : undefined;
+    return annotations.length ? annotations : undefined;
   }
   //#endregion
 }

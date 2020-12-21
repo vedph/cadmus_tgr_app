@@ -19,8 +19,10 @@
                 color="primary"
                 (click)="addProvenance()"
               >
+                <mat-icon>add_circle</mat-icon>
                 add provenance
               </button>
+              <mat-error *ngIf="provenances.errors?.required && !provenances.length">provenances required</mat-error>
             </div>
             <div
               *ngFor="
@@ -125,7 +127,8 @@
                 color="primary"
                 (click)="addOwner()"
               >
-                add item
+                <mat-icon>add_circle</mat-icon>
+                add owner
               </button>
             </div>
             <div
@@ -197,12 +200,12 @@
         <mat-tab label="subscription">
           <!-- locations -->
           <div>
-            <mat-form-field>
-              <input
+            <mat-form-field class="long-text">
+              <textarea
                 matInput
                 [formControl]="subLocations"
-                placeholder="locations"
-              />
+                placeholder="locations (comma separated)"
+              ></textarea>
               <mat-error
                 *ngIf="
                   subLocations.errors?.invalid &&
@@ -304,7 +307,7 @@
           </div>
           <!-- note -->
           <div>
-            <mat-form-field>
+            <mat-form-field class="long-text">
               <textarea
                 rows="3"
                 matInput
@@ -330,7 +333,7 @@
 
         <!-- ANNOTATIONS -->
         <mat-tab label="annotations">
-          <div formArrayName="__ITEMS__">
+          <div formArrayName="annotations">
             <div>
               <button
                 type="button"
@@ -338,7 +341,8 @@
                 color="primary"
                 (click)="addAnnotation()"
               >
-                add item
+                <mat-icon>add_circle</mat-icon>
+                add annotation
               </button>
             </div>
             <div

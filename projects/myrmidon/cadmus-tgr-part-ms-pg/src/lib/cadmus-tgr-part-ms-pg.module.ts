@@ -18,6 +18,7 @@ import {
   CadmusTgrPartMsUiModule,
   MSCONTENTS_PART_TYPEID,
   MSFORMAL_FEATURES_PART_TYPEID,
+  MSHISTORY_PART_TYPEID,
   MSORNAMENTS_PART_TYPEID,
   MSSCRIPTS_PART_TYPEID,
   MSUNITS_PART_TYPEID,
@@ -28,6 +29,7 @@ import { MsUnitsPartFeatureComponent } from './ms-units-part-feature/ms-units-pa
 import { MsScriptsPartFeatureComponent } from './ms-scripts-part-feature/ms-scripts-part-feature.component';
 import { MsFormalFeaturesPartFeatureComponent } from './ms-formal-features-part-feature/ms-formal-features-part-feature.component';
 import { MsOrnamentsPartFeatureComponent } from './ms-ornaments-part-feature/ms-ornaments-part-feature.component';
+import { MsHistoryPartFeatureComponent } from './ms-history-part-feature/ms-history-part-feature.component';
 
 // https://github.com/ng-packagr/ng-packagr/issues/778
 export const RouterModuleForChild = RouterModule.forChild([
@@ -41,6 +43,12 @@ export const RouterModuleForChild = RouterModule.forChild([
     path: `${MSFORMAL_FEATURES_PART_TYPEID}/:pid`,
     pathMatch: 'full',
     component: MsFormalFeaturesPartFeatureComponent,
+    canDeactivate: [PendingChangesGuard],
+  },
+  {
+    path: `${MSHISTORY_PART_TYPEID}/:pid`,
+    pathMatch: 'full',
+    component: MsHistoryPartFeatureComponent,
     canDeactivate: [PendingChangesGuard],
   },
   {
@@ -67,6 +75,7 @@ export const RouterModuleForChild = RouterModule.forChild([
   declarations: [
     MsContentsPartFeatureComponent,
     MsFormalFeaturesPartFeatureComponent,
+    MsHistoryPartFeatureComponent,
     MsOrnamentsPartFeatureComponent,
     MsScriptsPartFeatureComponent,
     MsUnitsPartFeatureComponent,
@@ -90,6 +99,7 @@ export const RouterModuleForChild = RouterModule.forChild([
   exports: [
     MsContentsPartFeatureComponent,
     MsFormalFeaturesPartFeatureComponent,
+    MsHistoryPartFeatureComponent,
     MsOrnamentsPartFeatureComponent,
     MsScriptsPartFeatureComponent,
     MsUnitsPartFeatureComponent

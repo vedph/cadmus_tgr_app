@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { HistoricalDateModel } from '@myrmidon/cadmus-core';
-import { MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { MsPalimpsest } from '../ms-units-part';
 
 @Component({
@@ -61,8 +61,8 @@ export class MsPalimpsestComponent implements OnInit {
       model.locations
         ? model.locations.map((l) => {
             return this._locService.locationToString(l);
-          })
-        : []
+          }).join(',')
+        : ''
     );
     this.note.setValue(model.note);
     this.form.markAsPristine();
@@ -70,8 +70,8 @@ export class MsPalimpsestComponent implements OnInit {
 
   private getModel(): MsPalimpsest | null {
     const model: MsPalimpsest = {
-      locations: this.locations.value.split().map((t: string) => {
-        return this._locService.parseLocation(t);
+      locations: this.locations.value.split(',').map((t: string) => {
+        return this._locService.parseLocation(t.trim());
       }),
       date: this.date,
       note: this.note.value?.trim(),
@@ -84,10 +84,14 @@ export class MsPalimpsestComponent implements OnInit {
   }
 
   private locationsVal(control: AbstractControl): ValidationErrors | null {
+    const locService = new MsLocationService();
     if (control.value) {
-      const err = control.value.split().map((t: string) => {
-        return this._locService.parseLocation(t);
-      });
+      const err = control.value
+        .split(',')
+        .map((t: string) => {
+          return locService.parseLocation(t.trim());
+        })
+        .some((l: MsLocation) => !l);
       if (err) {
         return { invalid: true };
       }

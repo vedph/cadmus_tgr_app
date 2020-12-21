@@ -2,7 +2,12 @@
   <!-- locations -->
   <div>
     <mat-form-field>
-      <input matInput [formControl]="locations" placeholder="locations" />
+      <textarea
+        matInput
+        class="long-text"
+        [formControl]="locations"
+        placeholder="locations (comma separated)"
+      ></textarea>
       <mat-error
         *ngIf="
           locations.errors?.invalid && (locations.dirty || locations.touched)
