@@ -55,7 +55,6 @@ export const VAR_QUOTATIONS_FRAGMENT_SCHEMA = {
     '.json',
   type: 'object',
   title: 'VarQuotationsFragment',
-  // TODO: add which properties are required
   required: ['location', 'entries'],
   properties: {
     location: {
