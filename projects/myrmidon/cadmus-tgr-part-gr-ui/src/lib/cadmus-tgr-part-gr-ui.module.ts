@@ -10,6 +10,7 @@ import { LingTaggedFormComponent } from './ling-tagged-form/ling-tagged-form.com
 import { VarQuotationEntryComponent } from './var-quotation-entry/var-quotation-entry.component';
 import { QuotationVariantComponent } from './quotation-variant/quotation-variant.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { VarQuotationsFragmentComponent } from './var-quotations-fragment/var-quotations-fragment.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     LingTaggedFormComponent,
     QuotationVariantComponent,
     VarQuotationEntryComponent,
+    VarQuotationsFragmentComponent,
   ],
   imports: [
     CommonModule,
@@ -34,6 +36,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     LingTaggedFormComponent,
     QuotationVariantComponent,
     VarQuotationEntryComponent,
+    VarQuotationsFragmentComponent,
   ],
 })
 export class CadmusTgrPartGrUiModule {}
