@@ -16,6 +16,7 @@
   },
   "peerDependencies": {
     "@angular/common": "^11.0.0",
+    "@angular/cdk": "^11.0.3",
     "@angular/core": "^11.0.0",
     "@myrmidon/cadmus-core": "^0.0.1",
     "@myrmidon/cadmus-material": "^0.0.1",

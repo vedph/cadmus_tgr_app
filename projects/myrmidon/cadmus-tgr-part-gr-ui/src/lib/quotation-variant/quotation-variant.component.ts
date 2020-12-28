@@ -31,11 +31,6 @@ export class QuotationVariantComponent implements OnInit {
   }
 
   /**
-   * Tags for apparatus entries.
-   */
-  @Input()
-  public tagEntries: ThesaurusEntry[] | undefined;
-  /**
    * Witnesses.
    */
   @Input()

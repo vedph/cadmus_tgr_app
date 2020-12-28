@@ -9,6 +9,7 @@ import { LingTagsFragmentComponent } from './ling-tags-fragment/ling-tags-fragme
 import { LingTaggedFormComponent } from './ling-tagged-form/ling-tagged-form.component';
 import { VarQuotationEntryComponent } from './var-quotation-entry/var-quotation-entry.component';
 import { QuotationVariantComponent } from './quotation-variant/quotation-variant.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { QuotationVariantComponent } from './quotation-variant/quotation-variant
     FormsModule,
     ReactiveFormsModule,
     MonacoEditorModule,
+    ClipboardModule,
     // Cadmus
     CadmusMaterialModule,
     CadmusUiModule,
