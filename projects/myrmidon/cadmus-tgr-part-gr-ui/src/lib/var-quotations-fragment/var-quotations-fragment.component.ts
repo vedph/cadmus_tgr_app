@@ -141,7 +141,7 @@ export class VarQuotationsFragmentComponent
     const entry: VarQuotationEntry = {
       authority: 'gram',
       work: '',
-      location: ''
+      location: '',
     };
     this.entries.setValue([...this.entries.value, entry]);
     this.editEntry(this.entries.value.length - 1);
@@ -207,5 +207,27 @@ export class VarQuotationsFragmentComponent
     entries.splice(index, 1);
     entries.splice(index + 1, 0, entry);
     this.entries.setValue(entries);
+  }
+
+  public resolveId(id: string, thesaurus: string): string {
+    let entries: ThesaurusEntry[] | undefined;
+    switch (thesaurus) {
+      case 't':
+        entries = this.quotTagEntries;
+        break;
+      case 'a':
+        entries = this.authEntries;
+        break;
+      case 'w':
+        entries = this.workEntries;
+        break;
+    }
+    if (!entries) {
+      return id;
+    }
+    const entry = entries.find((e) => {
+      return e.id === id;
+    });
+    return entry ? entry.value : id;
   }
 }

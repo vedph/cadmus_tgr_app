@@ -7,12 +7,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
+import { DialogService, renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import {
   QuotationParallel,
+  QuotationVariant,
   VarQuotationEntry,
 } from '../var-quotations-fragment';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'tgr-var-quotation-entry',
@@ -21,6 +23,10 @@ import { Clipboard } from '@angular/cdk/clipboard';
 })
 export class VarQuotationEntryComponent implements OnInit {
   private _model: VarQuotationEntry | undefined;
+  private _editedIndex;
+
+  public editedVariant: QuotationVariant | undefined;
+  public variantOpen: boolean;
 
   @Input()
   public get model(): VarQuotationEntry | undefined {
@@ -73,10 +79,17 @@ export class VarQuotationEntryComponent implements OnInit {
   public work: FormControl;
   public location: FormControl;
   public parallels: FormArray;
+  public variants: FormControl;
 
-  constructor(private _formBuilder: FormBuilder, private clipboard: Clipboard) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private clipboard: Clipboard,
+    private _dialogService: DialogService
+  ) {
     this.modelChange = new EventEmitter<VarQuotationEntry>();
     this.editorClose = new EventEmitter<any>();
+    this._editedIndex = -1;
+    this.variantOpen = false;
     // form
     this.tag = _formBuilder.control(null, Validators.maxLength(50));
     this.authority = _formBuilder.control(null, [
@@ -92,12 +105,14 @@ export class VarQuotationEntryComponent implements OnInit {
       Validators.maxLength(50),
     ]);
     this.parallels = _formBuilder.array([]);
+    this.variants = _formBuilder.control([]);
     this.form = _formBuilder.group({
       tag: this.tag,
       authority: this.authority,
       work: this.work,
       location: this.location,
       parallels: this.parallels,
+      variants: this.variants,
     });
   }
 
@@ -121,6 +136,7 @@ export class VarQuotationEntryComponent implements OnInit {
         this.parallels.controls.push(this.getParallelGroup(parallel));
       }
     }
+    this.variants.setValue(model.variants || []);
 
     this.form.markAsPristine();
   }
@@ -132,6 +148,7 @@ export class VarQuotationEntryComponent implements OnInit {
       work: this.work.value?.trim(),
       location: this.location.value?.trim(),
       parallels: this.getParallels(),
+      variants: this.variants.value.length ? this.variants.value : undefined,
     };
   }
 
@@ -194,6 +211,80 @@ export class VarQuotationEntryComponent implements OnInit {
   }
   //#endregion
 
+  //#region Variants
+  public addVariant(): void {
+    const variant: QuotationVariant = {
+      type: 0,
+      lemma: '',
+      value: '',
+    };
+    this.variants.setValue([...this.variants.value, variant]);
+    this.editVariant(this.variants.value.length - 1);
+  }
+
+  public editVariant(index: number): void {
+    if (index < 0) {
+      this._editedIndex = -1;
+      this.variantOpen = false;
+      this.editedVariant = undefined;
+    } else {
+      this._editedIndex = index;
+      this.editedVariant = this.variants.value[index];
+      setTimeout(() => {
+        this.variantOpen = true;
+      }, 300);
+    }
+  }
+
+  public onVariantSave(item: QuotationVariant): void {
+    this.variants.setValue(
+      this.variants.value.map((x: QuotationVariant, i: number) =>
+        i === this._editedIndex ? item : x
+      )
+    );
+    this.editVariant(-1);
+  }
+
+  public onVariantClose(): void {
+    this.editVariant(-1);
+  }
+
+  public deleteVariant(index: number): void {
+    this._dialogService
+      .confirm('Confirmation', 'Delete item?')
+      .pipe(take(1))
+      .subscribe((yes) => {
+        if (yes) {
+          const variants = [...this.variants.value];
+          variants.splice(index, 1);
+          this.variants.setValue(variants);
+        }
+      });
+  }
+
+  public moveVariantUp(index: number): void {
+    if (index < 1) {
+      return;
+    }
+    const variant = this.variants.value[index];
+    const variants = [...this.variants.value];
+    variants.splice(index, 1);
+    variants.splice(index - 1, 0, variant);
+    this.variants.setValue(variants);
+  }
+
+  public moveVariantDown(index: number): void {
+    if (index + 1 >= this.variants.value.length) {
+      return;
+    }
+    const variant = this.variants.value[index];
+    const variants = [...this.variants.value];
+    variants.splice(index, 1);
+    variants.splice(index + 1, 0, variant);
+    this.variants.setValue(variants);
+  }
+  //#endregion
+
   public renderLabel(label: string): string {
     return renderLabelFromLastColon(label);
   }
@@ -207,6 +298,32 @@ export class VarQuotationEntryComponent implements OnInit {
   public quoteTagToString(tag: string): string {
     const entry = this.quotTagEntries?.find((e) => e.id === tag);
     return entry ? entry.value : tag;
+  }
+
+  public getEntryTypeDsc(type: number): string {
+    switch (type) {
+      case 1:
+        return 'Addition before';
+      case 2:
+        return 'Addition after';
+      case 3:
+        return 'Note';
+      default:
+        return 'Replacement';
+    }
+  }
+
+  public getEntryTypeIcon(type: number): string {
+    switch (type) {
+      case 1:
+        return 'skip_next';
+      case 2:
+        return 'skip_previous';
+      case 3:
+        return 'chat';
+      default:
+        return 'content_copy';
+    }
   }
 
   public cancel(): void {

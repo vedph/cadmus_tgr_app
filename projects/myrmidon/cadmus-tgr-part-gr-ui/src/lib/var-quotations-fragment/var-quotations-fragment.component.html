@@ -27,9 +27,10 @@
             <thead>
               <tr>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th>tag</th>
+                <th>authority</th>
+                <th>work</th>
+                <th>location</th>
               </tr>
             </thead>
             <tbody>
@@ -79,13 +80,16 @@
                     <mat-icon>remove_circle</mat-icon>
                   </button>
                 </td>
-                TODO: properties
+                <td>{{resolveId(entry.tag, 't')}}</td>
+                <td>{{resolveId(entry.authority, 'a')}}</td>
+                <td>{{resolveId(entry.work, 'w')}}</td>
+                <td>{{entry.location}}</td>
               </tr>
             </tbody>
           </table>
         </mat-tab>
 
-        <mat-tab label="unit" *ngIf="editedEntry">
+        <mat-tab label="quotation" *ngIf="editedEntry">
           <tgr-var-quotation-entry
             [model]="editedEntry"
             [quotTagEntries]="quotTagEntries"

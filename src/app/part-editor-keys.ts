@@ -16,7 +16,10 @@ import {
   QUOTATIONS_FRAGMENT_TYPEID,
 } from '@myrmidon/cadmus-part-philology-ui';
 import { PartEditorKeys } from '@myrmidon/cadmus-core';
-import { LING_TAGS_FRAGMENT_TYPEID } from '@myrmidon/cadmus-tgr-part-gr-ui';
+import {
+  LING_TAGS_FRAGMENT_TYPEID,
+  VAR_QUOTATIONS_FRAGMENT_TYPEID,
+} from '@myrmidon/cadmus-tgr-part-gr-ui';
 import {
   MSPLACE_PART_TYPEID,
   MSSIGNATURES_PART_TYPEID,
@@ -101,6 +104,7 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
       [APPARATUS_FRAGMENT_TYPEID]: PHILOLOGY,
       [ORTHOGRAPHY_FRAGMENT_TYPEID]: PHILOLOGY,
       [QUOTATIONS_FRAGMENT_TYPEID]: PHILOLOGY,
+      [VAR_QUOTATIONS_FRAGMENT_TYPEID]: TGR_GR,
       [LING_TAGS_FRAGMENT_TYPEID]: TGR_GR,
     },
   },

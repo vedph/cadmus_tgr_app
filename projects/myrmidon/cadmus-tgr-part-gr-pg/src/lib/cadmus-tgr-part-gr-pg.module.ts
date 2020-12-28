@@ -8,10 +8,13 @@ import { CadmusStateModule } from '@myrmidon/cadmus-state';
 import {
   CadmusTgrPartGrUiModule,
   LING_TAGS_FRAGMENT_TYPEID,
+  VAR_QUOTATIONS_FRAGMENT_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-gr-ui';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
+
 import { LingTagsFragmentFeatureComponent } from './ling-tags-fragment-feature/ling-tags-fragment-feature.component';
+import { VarQuotationsFragmentFeatureComponent } from './var-quotations-fragment-feature/var-quotations-fragment-feature.component';
 
 export const RouterModuleForChild = RouterModule.forChild([
   {
@@ -20,10 +23,19 @@ export const RouterModuleForChild = RouterModule.forChild([
     component: LingTagsFragmentFeatureComponent,
     canDeactivate: [PendingChangesGuard],
   },
+  {
+    path: `fragment/:pid/${VAR_QUOTATIONS_FRAGMENT_TYPEID}/:loc`,
+    pathMatch: 'full',
+    component: VarQuotationsFragmentFeatureComponent,
+    canDeactivate: [PendingChangesGuard],
+  },
 ]);
 
 @NgModule({
-  declarations: [LingTagsFragmentFeatureComponent],
+  declarations: [
+    LingTagsFragmentFeatureComponent,
+    VarQuotationsFragmentFeatureComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -37,6 +49,9 @@ export const RouterModuleForChild = RouterModule.forChild([
     CadmusUiPgModule,
     CadmusTgrPartGrUiModule,
   ],
-  exports: [LingTagsFragmentFeatureComponent],
+  exports: [
+    LingTagsFragmentFeatureComponent,
+    VarQuotationsFragmentFeatureComponent,
+  ],
 })
 export class CadmusTgrPartGrPgModule {}
