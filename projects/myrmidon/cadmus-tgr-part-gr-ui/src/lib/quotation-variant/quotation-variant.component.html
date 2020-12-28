@@ -1,0 +1,300 @@
+<form [formGroup]="form" (submit)="save()">
+  <div>
+    <!-- type -->
+    <mat-form-field>
+      <mat-select placeholder="type" formControlName="type">
+        <mat-option [value]="0">replacement</mat-option>
+        <mat-option [value]="1">addition before</mat-option>
+        <mat-option [value]="2">addition after</mat-option>
+        <mat-option [value]="3">note</mat-option>
+      </mat-select>
+      <mat-error
+        *ngIf="type.errors?.required && (type.dirty || type.touched)"
+      ></mat-error>
+    </mat-form-field>
+
+    <!-- lemma -->
+    &nbsp;
+    <mat-form-field style="width: 12em">
+      <input matInput [formControl]="lemma" placeholder="lemma" />
+      <mat-error
+        *ngIf="lemma.errors?.required && (lemma.dirty || lemma.touched)"
+        >lemma required</mat-error
+      >
+      <mat-error
+        *ngIf="lemma.errors?.maxLength && (lemma.dirty || lemma.touched)"
+        >lemma too long</mat-error
+      >
+    </mat-form-field>
+
+    <!-- value -->
+    &nbsp;
+    <mat-form-field style="width: 10em;">
+      <input matInput type="text" formControlName="value" placeholder="value" />
+      <mat-error
+        *ngIf="value.errors?.maxLength && (value.dirty || value.touched)"
+        >too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <!-- witnesses -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>witnesses</mat-panel-title>
+      <mat-panel-description>{{
+        model?.witnesses?.length || 0
+      }}</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div formArrayName="witnesses">
+      <div
+        *ngFor="
+          let item of witnesses.controls;
+          let i = index;
+          let first = first;
+          let last = last
+        "
+      >
+        <div [formGroupName]="i">
+          {{ i + 1 }}.
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Move this witness up"
+            [disabled]="first"
+            (click)="moveWitnessUp(i)"
+          >
+            <mat-icon>arrow_upward</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Move this witness down"
+            [disabled]="last"
+            (click)="moveWitnessDown(i)"
+          >
+            <mat-icon>arrow_downward</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Remove this witness"
+            color="warn"
+            (click)="removeWitness(i)"
+          >
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+          <!-- witness: value (thesaurus) -->
+          <mat-form-field *ngIf="witEntries?.length">
+            <mat-select formControlName="value" placeholder="value">
+              <mat-option *ngFor="let e of witEntries" [value]="e.id">{{
+                e.value
+              }}</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="
+                item['controls'].value.errors?.required &&
+                (item['controls'].value.dirty || item['controls'].value.touched)
+              "
+              >value required</mat-error
+            >
+          </mat-form-field>
+          <!-- witness: value (free) -->
+          <mat-form-field *ngIf="!witEntries?.length">
+            <input matInput formControlName="value" placeholder="value" />
+            <mat-error
+              *ngIf="
+                item['controls'].value.errors?.required &&
+                (item['controls'].value.dirty || item['controls'].value.touched)
+              "
+              >value required</mat-error
+            >
+            <mat-error
+              *ngIf="
+                item['controls'].value.errors?.maxLength &&
+                (item['controls'].value.dirty || item['controls'].value.touched)
+              "
+              >value too long</mat-error
+            >
+          </mat-form-field>
+          &nbsp;
+          <!-- witness: note -->
+          <mat-form-field>
+            <input matInput formControlName="note" placeholder="note" />
+            <mat-error
+              *ngIf="
+                item['controls'].note.errors?.maxLength &&
+                (item['controls'].note.dirty || item['controls'].note.touched)
+              "
+              >note too long</mat-error
+            >
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <button
+      type="button"
+      mat-icon-button
+      color="primary"
+      (click)="addWitness()"
+    >
+      <mat-icon>add_circle</mat-icon> add witness
+    </button>
+  </mat-expansion-panel>
+
+  <!-- authors -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>authors</mat-panel-title>
+      <mat-panel-description>{{
+        model?.authors?.length || 0
+      }}</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div formArrayName="authors">
+      <div
+        *ngFor="
+          let item of authors.controls;
+          let i = index;
+          let first = first;
+          let last = last
+        "
+      >
+        <div [formGroupName]="i">
+          {{ i + 1 }}.
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Move this author up"
+            [disabled]="first"
+            (click)="moveAuthorUp(i)"
+          >
+            <mat-icon>arrow_upward</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Move this author down"
+            [disabled]="last"
+            (click)="moveAuthorDown(i)"
+          >
+            <mat-icon>arrow_downward</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Remove this author"
+            color="warn"
+            (click)="removeAuthor(i)"
+          >
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+          <!-- author: value (thesaurus) -->
+          <mat-form-field *ngIf="authEntries?.length">
+            <mat-select formControlName="value" placeholder="value">
+              <mat-option *ngFor="let e of authEntries" [value]="e.id">{{
+                e.value
+              }}</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="
+                item['controls'].value.errors?.required &&
+                (item['controls'].value.dirty || item['controls'].value.touched)
+              "
+              >value required</mat-error
+            >
+          </mat-form-field>
+          <!-- author: value (free) -->
+          <mat-form-field *ngIf="!authEntries?.length">
+            <input matInput formControlName="value" placeholder="value" />
+            <mat-error
+              *ngIf="
+                item['controls'].value.errors?.required &&
+                (item['controls'].value.dirty || item['controls'].value.touched)
+              "
+              >value required</mat-error
+            >
+            <mat-error
+              *ngIf="
+                item['controls'].value.errors?.maxLength &&
+                (item['controls'].value.dirty || item['controls'].value.touched)
+              "
+              >value too long</mat-error
+            >
+          </mat-form-field>
+          &nbsp;
+          <!-- author: location -->
+          <mat-form-field style="width: 8em">
+            <input matInput formControlName="location" placeholder="location" />
+            <mat-error
+              *ngIf="
+                item['controls'].location.errors?.maxLength &&
+                (item['controls'].location.dirty ||
+                  item['controls'].location.touched)
+              "
+              >loc. too long</mat-error
+            >
+          </mat-form-field>
+          &nbsp;
+          <!-- author: tag (thesaurus) -->
+          <mat-form-field *ngIf="authTagEntries?.length" style="width: 10em">
+            <mat-select formControlName="tag" placeholder="tag">
+              <mat-option *ngFor="let e of authTagEntries" [value]="e.id">{{
+                e.value
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <!-- author: tag (free) -->
+          <mat-form-field *ngIf="!authTagEntries?.length" style="width: 8em">
+            <input matInput formControlName="tag" placeholder="tag" />
+            <mat-error
+              *ngIf="
+                item['controls'].tag.errors?.maxLength &&
+                (item['controls'].tag.dirty || item['controls'].tag.touched)
+              "
+              >tag too long</mat-error
+            >
+          </mat-form-field>
+          &nbsp;
+          <!-- author: note -->
+          <mat-form-field>
+            <input matInput formControlName="note" placeholder="note" />
+            <mat-error
+              *ngIf="
+                item['controls'].note.errors?.maxLength &&
+                (item['controls'].note.dirty || item['controls'].note.touched)
+              "
+              >note too long</mat-error
+            >
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <button type="button" mat-icon-button color="primary" (click)="addAuthor()">
+      <mat-icon>add_circle</mat-icon> add author
+    </button>
+  </mat-expansion-panel>
+
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard variant changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept variant changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+</form>

@@ -7,9 +7,16 @@ import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { LingTagsFragmentComponent } from './ling-tags-fragment/ling-tags-fragment.component';
 import { LingTaggedFormComponent } from './ling-tagged-form/ling-tagged-form.component';
+import { VarQuotationEntryComponent } from './var-quotation-entry/var-quotation-entry.component';
+import { QuotationVariantComponent } from './quotation-variant/quotation-variant.component';
 
 @NgModule({
-  declarations: [LingTagsFragmentComponent, LingTaggedFormComponent],
+  declarations: [
+    LingTagsFragmentComponent,
+    LingTaggedFormComponent,
+    QuotationVariantComponent,
+    VarQuotationEntryComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -20,6 +27,11 @@ import { LingTaggedFormComponent } from './ling-tagged-form/ling-tagged-form.com
     CadmusUiModule,
     CadmusTgrCoreModule,
   ],
-  exports: [LingTagsFragmentComponent, LingTaggedFormComponent],
+  exports: [
+    LingTagsFragmentComponent,
+    LingTaggedFormComponent,
+    QuotationVariantComponent,
+    VarQuotationEntryComponent,
+  ],
 })
 export class CadmusTgrPartGrUiModule {}
