@@ -394,7 +394,7 @@
     </mat-tab>
 
     <mat-tab label="quotation" *ngIf="editedQuotation">
-      <tgr-var-quotation-entry
+      <tgr-var-quotation
         [model]="editedQuotation"
         [quotTagEntries]="quotTagEntries"
         [quotAuthEntries]="quotAuthEntries"
@@ -405,7 +405,7 @@
         (modelChange)="onQuotationSave($event)"
         (editorClose)="onQuotationClose()"
       >
-      </tgr-var-quotation-entry>
+      </tgr-var-quotation>
     </mat-tab>
   </mat-tab-group>
 

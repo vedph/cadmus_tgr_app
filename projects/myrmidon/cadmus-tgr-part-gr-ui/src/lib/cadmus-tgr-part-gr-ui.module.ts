@@ -7,19 +7,21 @@ import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { LingTagsFragmentComponent } from './ling-tags-fragment/ling-tags-fragment.component';
 import { LingTaggedFormComponent } from './ling-tagged-form/ling-tagged-form.component';
-import { VarQuotationEntryComponent } from './var-quotation-entry/var-quotation-entry.component';
+import { VarQuotationComponent } from './var-quotation/var-quotation.component';
 import { QuotationVariantComponent } from './quotation-variant/quotation-variant.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { VarQuotationsFragmentComponent } from './var-quotations-fragment/var-quotations-fragment.component';
-import { InterpEntryComponent } from './interp-entry/interp-entry.component';
+import { InterpolationComponent } from './interpolation/interpolation.component';
+import { InterpolationsFragmentComponent } from './interpolations-fragment/interpolations-fragment.component';
 
 @NgModule({
   declarations: [
-    InterpEntryComponent,
+    InterpolationComponent,
+    InterpolationsFragmentComponent,
     LingTagsFragmentComponent,
     LingTaggedFormComponent,
     QuotationVariantComponent,
-    VarQuotationEntryComponent,
+    VarQuotationComponent,
     VarQuotationsFragmentComponent,
   ],
   imports: [
@@ -34,11 +36,12 @@ import { InterpEntryComponent } from './interp-entry/interp-entry.component';
     CadmusTgrCoreModule,
   ],
   exports: [
-    InterpEntryComponent,
+    InterpolationComponent,
+    InterpolationsFragmentComponent,
     LingTagsFragmentComponent,
     LingTaggedFormComponent,
     QuotationVariantComponent,
-    VarQuotationEntryComponent,
+    VarQuotationComponent,
     VarQuotationsFragmentComponent,
   ],
 })

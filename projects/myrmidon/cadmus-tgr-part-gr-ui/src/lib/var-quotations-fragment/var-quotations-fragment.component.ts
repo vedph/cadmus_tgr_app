@@ -5,7 +5,7 @@ import { deepCopy, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { DialogService, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { take } from 'rxjs/operators';
 import {
-  VarQuotationEntry,
+  VarQuotation,
   VarQuotationsFragment,
 } from '../var-quotations-fragment';
 
@@ -25,7 +25,7 @@ export class VarQuotationsFragmentComponent
   private _editedIndex: number;
 
   public tabIndex: number;
-  public editedEntry: VarQuotationEntry | undefined;
+  public editedEntry: VarQuotation | undefined;
 
   /**
    * Quotation tags.
@@ -78,7 +78,7 @@ export class VarQuotationsFragmentComponent
       this.form.reset();
       return;
     }
-    this.entries.setValue(model.entries || []);
+    this.entries.setValue(model.quotations || []);
     this.form.markAsPristine();
   }
 
@@ -133,12 +133,12 @@ export class VarQuotationsFragmentComponent
   protected getModelFromForm(): VarQuotationsFragment {
     return {
       location: this.model?.location ?? '',
-      entries: this.entries.value?.length ? this.entries.value : undefined,
+      quotations: this.entries.value?.length ? this.entries.value : undefined,
     };
   }
 
   public addEntry(): void {
-    const entry: VarQuotationEntry = {
+    const entry: VarQuotation = {
       authority: 'gram',
       work: '',
       location: '',
@@ -161,9 +161,9 @@ export class VarQuotationsFragmentComponent
     }
   }
 
-  public onEntrySave(entry: VarQuotationEntry): void {
+  public onEntrySave(entry: VarQuotation): void {
     this.entries.setValue(
-      this.entries.value.map((e: VarQuotationEntry, i: number) =>
+      this.entries.value.map((e: VarQuotation, i: number) =>
         i === this._editedIndex ? entry : e
       )
     );

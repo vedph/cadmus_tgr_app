@@ -11,28 +11,28 @@ import { DialogService, renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import {
   QuotationParallel,
   QuotationVariant,
-  VarQuotationEntry,
+  VarQuotation,
 } from '../var-quotations-fragment';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'tgr-var-quotation-entry',
-  templateUrl: './var-quotation-entry.component.html',
-  styleUrls: ['./var-quotation-entry.component.css'],
+  selector: 'tgr-var-quotation',
+  templateUrl: './var-quotation.component.html',
+  styleUrls: ['./var-quotation.component.css'],
 })
-export class VarQuotationEntryComponent implements OnInit {
-  private _model: VarQuotationEntry | undefined;
+export class VarQuotationComponent implements OnInit {
+  private _model: VarQuotation | undefined;
   private _editedIndex;
 
   public editedVariant: QuotationVariant | undefined;
   public variantOpen: boolean;
 
   @Input()
-  public get model(): VarQuotationEntry | undefined {
+  public get model(): VarQuotation | undefined {
     return this._model;
   }
-  public set model(value: VarQuotationEntry | undefined) {
+  public set model(value: VarQuotation | undefined) {
     this._model = value;
     this.updateForm(value);
   }
@@ -69,7 +69,7 @@ export class VarQuotationEntryComponent implements OnInit {
   public authTagEntries: ThesaurusEntry[] | undefined;
 
   @Output()
-  public modelChange: EventEmitter<VarQuotationEntry>;
+  public modelChange: EventEmitter<VarQuotation>;
   @Output()
   public editorClose: EventEmitter<any>;
 
@@ -86,7 +86,7 @@ export class VarQuotationEntryComponent implements OnInit {
     private clipboard: Clipboard,
     private _dialogService: DialogService
   ) {
-    this.modelChange = new EventEmitter<VarQuotationEntry>();
+    this.modelChange = new EventEmitter<VarQuotation>();
     this.editorClose = new EventEmitter<any>();
     this._editedIndex = -1;
     this.variantOpen = false;
@@ -120,7 +120,7 @@ export class VarQuotationEntryComponent implements OnInit {
     this.updateForm(this.model);
   }
 
-  private updateForm(model: VarQuotationEntry | undefined): void {
+  private updateForm(model: VarQuotation | undefined): void {
     if (!model) {
       this.form.reset();
       return;
@@ -141,7 +141,7 @@ export class VarQuotationEntryComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): VarQuotationEntry | null {
+  private getModel(): VarQuotation | null {
     return {
       tag: this.tag.value?.trim(),
       authority: this.authority.value?.trim(),

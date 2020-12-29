@@ -1,8 +1,9 @@
 import { Fragment } from '@myrmidon/cadmus-core';
-import { VarQuotationEntry } from './var-quotations-fragment';
+import { ApparatusEntryType } from '@myrmidon/cadmus-part-philology-ui';
+import { VarQuotation } from './var-quotations-fragment';
 
 /**
- * Source for a reading in an InterpEntry.
+ * Source for a reading in an Interpolation.
  */
 export interface ReadingSource {
   witness: string;
@@ -10,10 +11,10 @@ export interface ReadingSource {
 }
 
 /**
- * An interpolation entry in an InterpFragment.
+ * An interpolation entry in an InterpolationsFragment.
  */
-export interface InterpEntry {
-  type: string;
+export interface Interpolation {
+  type: ApparatusEntryType;
   role: string;
   tag?: string;
   languages: string[];
@@ -21,26 +22,26 @@ export interface InterpEntry {
   groupId?: string;
   note?: string;
   sources?: ReadingSource[];
-  quotations?: VarQuotationEntry[];
+  quotations?: VarQuotation[];
 }
 
 /**
  * The interpolations layer fragment server model.
  */
-export interface InterpFragment extends Fragment {
-  entries: InterpEntry[];
+export interface InterpolationsFragment extends Fragment {
+  interpolations: Interpolation[];
 }
 
-export const INTERP_FRAGMENT_TYPEID = 'fr.it.vedph.tgr.interp';
+export const INTERPOLATIONS_FRAGMENT_TYPEID = 'fr.it.vedph.tgr.interpolations';
 
-export const INTERP_FRAGMENT_SCHEMA = {
+export const INTERPOLATIONS_FRAGMENT_SCHEMA = {
   definitions: {},
   $schema: 'http://json-schema.org/draft-07/schema#',
   $id:
-    'www.vedph.it/cadmus/fragments/general/' + INTERP_FRAGMENT_TYPEID + '.json',
+    'www.vedph.it/cadmus/fragments/general/' + INTERPOLATIONS_FRAGMENT_TYPEID + '.json',
   type: 'object',
   title: 'InterpFragment',
-  required: ['location', 'entries'],
+  required: ['location', 'interpolations'],
   properties: {
     location: {
       $id: '#/properties/location',
@@ -50,7 +51,7 @@ export const INTERP_FRAGMENT_SCHEMA = {
       $id: '#/properties/baseText',
       type: 'string',
     },
-    entries: {
+    interpolations: {
       type: 'array',
       items: {
         anyOf: [

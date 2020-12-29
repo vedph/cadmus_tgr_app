@@ -9,26 +9,26 @@ import {
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { DialogService } from '@myrmidon/cadmus-ui';
 import { take } from 'rxjs/operators';
-import { InterpEntry, ReadingSource } from '../interp-fragment';
-import { VarQuotationEntry } from '../var-quotations-fragment';
+import { Interpolation, ReadingSource } from '../interpolations-fragment';
+import { VarQuotation } from '../var-quotations-fragment';
 
 @Component({
-  selector: 'tgr-interp-entry',
-  templateUrl: './interp-entry.component.html',
-  styleUrls: ['./interp-entry.component.css'],
+  selector: 'tgr-interpolation',
+  templateUrl: './interpolation.component.html',
+  styleUrls: ['./interpolation.component.css'],
 })
-export class InterpEntryComponent implements OnInit {
-  private _model: InterpEntry | undefined;
+export class InterpolationComponent implements OnInit {
+  private _model: Interpolation | undefined;
   private _editedIndex: number;
 
   public tabIndex: number;
-  public editedQuotation: VarQuotationEntry | undefined;
+  public editedQuotation: VarQuotation | undefined;
 
   @Input()
-  public get model(): InterpEntry | undefined {
+  public get model(): Interpolation | undefined {
     return this._model;
   }
-  public set model(value: InterpEntry | undefined) {
+  public set model(value: Interpolation | undefined) {
     this._model = value;
     this.updateForm(value);
   }
@@ -80,7 +80,7 @@ export class InterpEntryComponent implements OnInit {
   public authTagEntries: ThesaurusEntry[] | undefined;
 
   @Output()
-  public modelChange: EventEmitter<InterpEntry>;
+  public modelChange: EventEmitter<Interpolation>;
   @Output()
   public editorClose: EventEmitter<any>;
 
@@ -99,7 +99,7 @@ export class InterpEntryComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
-    this.modelChange = new EventEmitter<InterpEntry>();
+    this.modelChange = new EventEmitter<Interpolation>();
     this.editorClose = new EventEmitter<any>();
     this._editedIndex = -1;
     this.tabIndex = 0;
@@ -139,7 +139,7 @@ export class InterpEntryComponent implements OnInit {
     this.updateForm(this.model);
   }
 
-  private updateForm(model: InterpEntry | undefined): void {
+  private updateForm(model: Interpolation | undefined): void {
     if (!model) {
       this.form.reset();
       return;
@@ -170,7 +170,7 @@ export class InterpEntryComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): InterpEntry | null {
+  private getModel(): Interpolation | null {
     return {
       type: this.type.value?.trim(),
       role: this.role.value?.trim(),
@@ -292,7 +292,7 @@ export class InterpEntryComponent implements OnInit {
 
   //#region Quotations
   public addQuotation(): void {
-    const quotation: VarQuotationEntry = {
+    const quotation: VarQuotation = {
       authority: 'gram',
       work: '',
       location: '',
@@ -315,9 +315,9 @@ export class InterpEntryComponent implements OnInit {
     }
   }
 
-  public onQuotationSave(quotation: VarQuotationEntry): void {
+  public onQuotationSave(quotation: VarQuotation): void {
     this.quotations.setValue(
-      this.quotations.value.map((e: VarQuotationEntry, i: number) =>
+      this.quotations.value.map((e: VarQuotation, i: number) =>
         i === this._editedIndex ? quotation : e
       )
     );

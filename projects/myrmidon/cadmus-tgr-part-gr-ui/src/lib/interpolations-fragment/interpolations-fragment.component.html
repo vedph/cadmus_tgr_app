@@ -5,38 +5,39 @@
         <mat-icon>textsms</mat-icon>
       </div>
       <mat-card-title
-        >Quotations with Variants Fragment {{ model?.location }}</mat-card-title
+        >Interpolations/Transcriptions Fragment
+        {{ model?.location }}</mat-card-title
       >
       <mat-card-subtitle> {{ model?.baseText }} </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <mat-tab-group [(selectedIndex)]="tabIndex">
-        <mat-tab label="quotations">
+        <mat-tab label="interpolations">
           <div>
             <button
               type="button"
               mat-icon-button
               color="primary"
-              (click)="addEntry()"
+              (click)="addInterpolation()"
             >
-              <mat-icon>add_circle</mat-icon> add quotation
+              <mat-icon>add_circle</mat-icon> add interpolation
             </button>
           </div>
-          <table *ngIf="entries?.value?.length">
+          <table *ngIf="interpolations?.value?.length">
             <thead>
               <tr>
                 <th></th>
-                <th>tag</th>
-                <th>authority</th>
-                <th>work</th>
-                <th>location</th>
+                <th>type</th>
+                <th>role</th>
+                <th>language</th>
+                <th>value</th>
               </tr>
             </thead>
             <tbody>
               <tr
                 *ngFor="
-                  let entry of entries?.value;
+                  let entry of interpolations?.value;
                   let i = index;
                   let first = first;
                   let last = last
@@ -47,26 +48,26 @@
                     type="button"
                     mat-icon-button
                     color="primary"
-                    matTooltip="Edit this quotation"
-                    (click)="editEntry(i)"
+                    matTooltip="Edit this interpolation"
+                    (click)="editInterpolation(i)"
                   >
                     <mat-icon>edit</mat-icon>
                   </button>
                   <button
                     type="button"
                     mat-icon-button
-                    matTooltip="Move this quotation up"
+                    matTooltip="Move this interpolation up"
                     [disabled]="first"
-                    (click)="moveEntryUp(i)"
+                    (click)="moveInterpolationUp(i)"
                   >
                     <mat-icon>arrow_upward</mat-icon>
                   </button>
                   <button
                     type="button"
                     mat-icon-button
-                    matTooltip="Move this quotation down"
+                    matTooltip="Move this interpolation down"
                     [disabled]="last"
-                    (click)="moveEntryDown(i)"
+                    (click)="moveInterpolationDown(i)"
                   >
                     <mat-icon>arrow_downward</mat-icon>
                   </button>
@@ -74,34 +75,39 @@
                     type="button"
                     mat-icon-button
                     color="warn"
-                    matTooltip="Delete this quotation"
-                    (click)="deleteEntry(i)"
+                    matTooltip="Delete this interpolation"
+                    (click)="deleteInterpolation(i)"
                   >
                     <mat-icon>remove_circle</mat-icon>
                   </button>
                 </td>
-                <td>{{resolveId(entry.tag, 't')}}</td>
-                <td>{{resolveId(entry.authority, 'a')}}</td>
-                <td>{{resolveId(entry.work, 'w')}}</td>
-                <td>{{entry.location}}</td>
+                <td [matTooltip]="getEntryTypeDsc(entry.type)">
+                  <mat-icon>{{ getEntryTypeIcon(entry.type) }}</mat-icon>
+                </td>
+                <td>{{ resolveId(entry.role) }}</td>
+                <td>{{ languagesToString(entry.languages) }}</td>
+                <td>{{ entry.value }}</td>
               </tr>
             </tbody>
           </table>
         </mat-tab>
 
-        <mat-tab label="quotation" *ngIf="editedEntry">
-          <tgr-var-quotation
-            [model]="editedEntry"
-            [quotTagEntries]="quotTagEntries"
-            [quotAuthEntries]="quotAuthEntries"
-            [workEntries]="workEntries"
-            [witEntries]="witEntries"
+        <mat-tab label="interpolation" *ngIf="editedInterpolation">
+          <tgr-interpolation
+            [model]="editedInterpolation"
             [authEntries]="authEntries"
             [authTagEntries]="authTagEntries"
-            (modelChange)="onEntrySave($event)"
-            (editorClose)="onEntryClose()"
+            [intLangEntries]="intLangEntries"
+            [intRoleEntries]="intRoleEntries"
+            [intTagEntries]="intTagEntries"
+            [quotAuthEntries]="quotAuthEntries"
+            [quotTagEntries]="quotTagEntries"
+            [witEntries]="witEntries"
+            [workEntries]="workEntries"
+            (modelChange)="onInterpolationSave($event)"
+            (editorClose)="onInterpolationClose()"
           >
-          </tgr-var-quotation>
+          </tgr-interpolation>
         </mat-tab>
       </mat-tab-group>
     </mat-card-content>

@@ -28,7 +28,7 @@ export interface QuotationVariant {
 /**
  * Quotation with variants.
  */
-export interface VarQuotationEntry {
+export interface VarQuotation {
   tag?: string;
   authority: string;
   work: string;
@@ -41,7 +41,7 @@ export interface VarQuotationEntry {
  * The quotations with variants layer fragment server model.
  */
 export interface VarQuotationsFragment extends Fragment {
-  entries: VarQuotationEntry[];
+  quotations: VarQuotation[];
 }
 
 export const VAR_QUOTATIONS_FRAGMENT_TYPEID = 'fr.it.vedph.tgr.var-quotations';
@@ -55,7 +55,7 @@ export const VAR_QUOTATIONS_FRAGMENT_SCHEMA = {
     '.json',
   type: 'object',
   title: 'VarQuotationsFragment',
-  required: ['location', 'entries'],
+  required: ['location', 'quotations'],
   properties: {
     location: {
       $id: '#/properties/location',
@@ -65,7 +65,7 @@ export const VAR_QUOTATIONS_FRAGMENT_SCHEMA = {
       $id: '#/properties/baseText',
       type: 'string',
     },
-    entries: {
+    quotations: {
       type: 'array',
       items: {
         anyOf: [

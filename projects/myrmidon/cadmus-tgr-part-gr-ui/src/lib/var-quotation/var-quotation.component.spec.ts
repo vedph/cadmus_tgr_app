@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VarQuotationEntryComponent } from './var-quotation-entry.component';
+import { VarQuotationComponent } from './var-quotation.component';
 
 describe('VarQuotationEntryComponent', () => {
-  let component: VarQuotationEntryComponent;
-  let fixture: ComponentFixture<VarQuotationEntryComponent>;
+  let component: VarQuotationComponent;
+  let fixture: ComponentFixture<VarQuotationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VarQuotationEntryComponent ]
+      declarations: [ VarQuotationComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VarQuotationEntryComponent);
+    fixture = TestBed.createComponent(VarQuotationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
