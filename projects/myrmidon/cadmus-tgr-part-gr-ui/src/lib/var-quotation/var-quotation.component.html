@@ -315,27 +315,27 @@
         </tgr-quotation-variant>
       </mat-expansion-panel>
     </mat-tab>
-
-    <!-- buttons -->
-    <div style="display: flex; justify-content: center">
-      <button
-        type="button"
-        color="warn"
-        mat-icon-button
-        matTooltip="Discard changes"
-        (click)="cancel()"
-      >
-        <mat-icon>clear</mat-icon>
-      </button>
-      <button
-        type="submit"
-        color="primary"
-        mat-icon-button
-        matTooltip="Accept changes"
-        [disabled]="form.invalid || form.pristine"
-      >
-        <mat-icon>check_circle</mat-icon>
-      </button>
-    </div>
   </mat-tab-group>
+
+  <!-- buttons -->
+  <div style="display: flex; justify-content: center">
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
 </form>
