@@ -7,7 +7,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { DialogService } from '@myrmidon/cadmus-ui';
+import { take } from 'rxjs/operators';
 import { InterpEntry, ReadingSource } from '../interp-fragment';
+import { VarQuotationEntry } from '../var-quotations-fragment';
 
 @Component({
   selector: 'tgr-interp-entry',
@@ -16,6 +19,10 @@ import { InterpEntry, ReadingSource } from '../interp-fragment';
 })
 export class InterpEntryComponent implements OnInit {
   private _model: InterpEntry | undefined;
+  private _editedIndex: number;
+
+  public tabIndex: number;
+  public editedQuotation: VarQuotationEntry | undefined;
 
   @Input()
   public get model(): InterpEntry | undefined {
@@ -46,6 +53,31 @@ export class InterpEntryComponent implements OnInit {
    */
   @Input()
   public witEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Quotation tags.
+   */
+  @Input()
+  public quotTagEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Quotation authorities.
+   */
+  @Input()
+  public quotAuthEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Authors and works.
+   */
+  @Input()
+  public workEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Authors.
+   */
+  @Input()
+  public authEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Author's tags.
+   */
+  @Input()
+  public authTagEntries: ThesaurusEntry[] | undefined;
 
   @Output()
   public modelChange: EventEmitter<InterpEntry>;
@@ -63,9 +95,14 @@ export class InterpEntryComponent implements OnInit {
   public sources: FormArray;
   public quotations: FormControl;
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _dialogService: DialogService
+  ) {
     this.modelChange = new EventEmitter<InterpEntry>();
     this.editorClose = new EventEmitter<any>();
+    this._editedIndex = -1;
+    this.tabIndex = 0;
     // form
     this.type = _formBuilder.control(0, Validators.required);
     this.role = _formBuilder.control(null, [
@@ -250,6 +287,102 @@ export class InterpEntryComponent implements OnInit {
       });
     }
     return entries.length ? entries : undefined;
+  }
+  //#endregion
+
+  //#region Quotations
+  public addQuotation(): void {
+    const quotation: VarQuotationEntry = {
+      authority: 'gram',
+      work: '',
+      location: '',
+    };
+    this.quotations.setValue([...this.quotations.value, quotation]);
+    this.editQuotation(this.quotations.value.length - 1);
+  }
+
+  public editQuotation(index: number): void {
+    if (index < 0) {
+      this._editedIndex = -1;
+      this.tabIndex = 0;
+      this.editedQuotation = undefined;
+    } else {
+      this._editedIndex = index;
+      this.editedQuotation = this.quotations.value[index];
+      setTimeout(() => {
+        this.tabIndex = 1;
+      }, 300);
+    }
+  }
+
+  public onQuotationSave(quotation: VarQuotationEntry): void {
+    this.quotations.setValue(
+      this.quotations.value.map((e: VarQuotationEntry, i: number) =>
+        i === this._editedIndex ? quotation : e
+      )
+    );
+    this.editQuotation(-1);
+  }
+
+  public onQuotationClose(): void {
+    this.editQuotation(-1);
+  }
+
+  public deleteQuotation(index: number): void {
+    this._dialogService
+      .confirm('Confirmation', 'Delete quotation?')
+      .pipe(take(1))
+      .subscribe((yes) => {
+        if (yes) {
+          const quotations = [...this.quotations.value];
+          quotations.splice(index, 1);
+          this.quotations.setValue(quotations);
+        }
+      });
+  }
+
+  public moveQuotationUp(index: number): void {
+    if (index < 1) {
+      return;
+    }
+    const quotation = this.quotations.value[index];
+    const quotations = [...this.quotations.value];
+    quotations.splice(index, 1);
+    quotations.splice(index - 1, 0, quotation);
+    this.quotations.setValue(quotations);
+  }
+
+  public moveQuotationDown(index: number): void {
+    if (index + 1 >= this.quotations.value.length) {
+      return;
+    }
+    const quotation = this.quotations.value[index];
+    const quotations = [...this.quotations.value];
+    quotations.splice(index, 1);
+    quotations.splice(index + 1, 0, quotation);
+    this.quotations.setValue(quotations);
+  }
+
+  public resolveId(id: string, thesaurus: string): string {
+    let entries: ThesaurusEntry[] | undefined;
+    switch (thesaurus) {
+      case 't':
+        entries = this.quotTagEntries;
+        break;
+      case 'a':
+        entries = this.authEntries;
+        break;
+      case 'w':
+        entries = this.workEntries;
+        break;
+    }
+    if (!entries) {
+      return id;
+    }
+    const entry = entries.find((e) => {
+      return e.id === id;
+    });
+    return entry ? entry.value : id;
   }
   //#endregion
 
