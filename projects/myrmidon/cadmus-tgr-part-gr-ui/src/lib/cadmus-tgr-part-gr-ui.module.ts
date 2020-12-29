@@ -11,9 +11,11 @@ import { VarQuotationEntryComponent } from './var-quotation-entry/var-quotation-
 import { QuotationVariantComponent } from './quotation-variant/quotation-variant.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { VarQuotationsFragmentComponent } from './var-quotations-fragment/var-quotations-fragment.component';
+import { InterpEntryComponent } from './interp-entry/interp-entry.component';
 
 @NgModule({
   declarations: [
+    InterpEntryComponent,
     LingTagsFragmentComponent,
     LingTaggedFormComponent,
     QuotationVariantComponent,
@@ -32,6 +34,7 @@ import { VarQuotationsFragmentComponent } from './var-quotations-fragment/var-qu
     CadmusTgrCoreModule,
   ],
   exports: [
+    InterpEntryComponent,
     LingTagsFragmentComponent,
     LingTaggedFormComponent,
     QuotationVariantComponent,
