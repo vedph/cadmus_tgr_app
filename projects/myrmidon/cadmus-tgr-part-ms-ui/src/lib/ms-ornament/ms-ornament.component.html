@@ -1,7 +1,7 @@
 <form [formGroup]="form" (submit)="save()">
   <div>
     <!-- type (bound) -->
-    <mat-form-field *ngIf="ornTypeEntries?.length" style="width: 8em">
+    <mat-form-field *ngIf="ornTypeEntries?.length" style="width: 14em">
       <mat-select [formControl]="type" placeholder="type">
         <mat-option *ngFor="let e of ornTypeEntries" [value]="e.id">{{
           e.value
@@ -13,7 +13,7 @@
     </mat-form-field>
 
     <!-- type (free) -->
-    <mat-form-field *ngIf="!ornTypeEntries?.length" style="width: 8em">
+    <mat-form-field *ngIf="!ornTypeEntries?.length" style="width: 14em">
       <input matInput [formControl]="type" placeholder="type" />
       <mat-error *ngIf="type.errors?.required && (type.dirty || type.touched)"
         >type required</mat-error
@@ -25,7 +25,7 @@
 
     &nbsp;
     <!-- start -->
-    <mat-form-field>
+    <mat-form-field style="width: 8em;">
       <input matInput [formControl]="start" placeholder="start" />
       <mat-error
         *ngIf="start.errors?.required && (start.dirty || start.touched)"
@@ -38,7 +38,7 @@
 
     &nbsp;
     <!-- end -->
-    <mat-form-field>
+    <mat-form-field style="width: 8em;">
       <input matInput [formControl]="end" placeholder="end" />
       <mat-error *ngIf="end.errors?.required && (end.dirty || end.touched)"
         >end required</mat-error
