@@ -11,7 +11,9 @@ import {
   AnnotatedValue,
   LocAnnotatedValue,
 } from '@myrmidon/cadmus-part-philology-ui';
+import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import { QuotationVariant } from '../var-quotations-fragment';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'tgr-quotation-variant',
@@ -45,6 +47,12 @@ export class QuotationVariantComponent implements OnInit {
    */
   @Input()
   public authTagEntries: ThesaurusEntry[] | undefined;
+  /**
+   * Author/work tags. This usually is alternative to authEntries,
+   * and allows picking the work from a tree of authors and works.
+   */
+  @Input()
+  public workEntries: ThesaurusEntry[] | undefined;
 
   @Output()
   public modelChange: EventEmitter<QuotationVariant>;
@@ -58,7 +66,8 @@ export class QuotationVariantComponent implements OnInit {
   public witnesses: FormArray;
   public authors: FormArray;
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(private _formBuilder: FormBuilder,
+    private _clipboard: Clipboard) {
     this.modelChange = new EventEmitter<QuotationVariant>();
     this.editorClose = new EventEmitter<any>();
     // form
@@ -236,6 +245,16 @@ export class QuotationVariantComponent implements OnInit {
       });
     }
     return entries.length ? entries : undefined;
+  }
+
+  public onEntryChange(entry: ThesaurusEntry): void {
+    if (entry) {
+      this._clipboard.copy(entry.id);
+    }
+  }
+
+  public renderLabel(label: string): string {
+    return renderLabelFromLastColon(label);
   }
   //#endregion
 

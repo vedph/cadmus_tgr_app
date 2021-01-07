@@ -311,6 +311,9 @@
           [witEntries]="witEntries"
           [authEntries]="authEntries"
           [authTagEntries]="authTagEntries"
+          [workEntries]="workEntries"
+          (modelChange)="onVariantSave($event)"
+          (editorClose)="onVariantClose()"
         >
         </tgr-quotation-variant>
       </mat-expansion-panel>

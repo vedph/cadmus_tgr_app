@@ -83,7 +83,7 @@ export class VarQuotationComponent implements OnInit {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private clipboard: Clipboard,
+    private _clipboard: Clipboard,
     private _dialogService: DialogService
   ) {
     this.modelChange = new EventEmitter<VarQuotation>();
@@ -291,7 +291,7 @@ export class VarQuotationComponent implements OnInit {
 
   public onEntryChange(entry: ThesaurusEntry): void {
     if (entry) {
-      this.clipboard.copy(entry.id);
+      this._clipboard.copy(entry.id);
     }
   }
 
