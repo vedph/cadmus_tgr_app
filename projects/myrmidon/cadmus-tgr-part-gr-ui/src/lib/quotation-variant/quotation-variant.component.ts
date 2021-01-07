@@ -48,8 +48,9 @@ export class QuotationVariantComponent implements OnInit {
   @Input()
   public authTagEntries: ThesaurusEntry[] | undefined;
   /**
-   * Author/work tags. This usually is alternative to authEntries,
-   * and allows picking the work from a tree of authors and works.
+   * Author/work tags. This can be alternative or additional
+   * to authEntries, and allows picking the work from a tree
+   * of authors and works.
    */
   @Input()
   public workEntries: ThesaurusEntry[] | undefined;

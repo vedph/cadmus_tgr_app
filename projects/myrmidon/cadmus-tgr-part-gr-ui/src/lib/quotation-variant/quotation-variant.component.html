@@ -276,7 +276,7 @@
     </button>
     <div *ngIf="workEntries?.length">
       <cadmus-thesaurus-tree
-        [entries]="workEntries || []"
+        [entries]="workEntries"
         rootLabel="works"
         [renderLabel]="renderLabel"
         (entryChange)="onEntryChange($event)"
