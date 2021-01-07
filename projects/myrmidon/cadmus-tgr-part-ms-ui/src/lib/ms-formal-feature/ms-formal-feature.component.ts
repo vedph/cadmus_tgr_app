@@ -5,7 +5,6 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -22,8 +21,6 @@ import { MsFormalFeature } from '../ms-formal-features-part';
 })
 export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
   private _model: MsFormalFeature | undefined;
-
-  @ViewChild('dsceditor') dscEditor: any;
 
   @Input()
   public get model(): MsFormalFeature | undefined {
@@ -42,14 +39,6 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
   public form: FormGroup;
   public handId: FormControl;
   public description: FormControl;
-
-  public editorOptions = {
-    theme: 'vs-light',
-    language: 'markdown',
-    wordWrap: 'on',
-    // https://github.com/atularen/ngx-monaco-editor/issues/19
-    automaticLayout: true,
-  };
 
   constructor(formBuilder: FormBuilder) {
     this.modelChange = new EventEmitter<MsFormalFeature>();
@@ -73,11 +62,6 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.updateForm(this.model);
-    // HACK: required to show the monaco editor when this component
-    // is used in some initially-hidden container, e.g. a tab
-    setTimeout(() => {
-      this.dscEditor._editor?.layout();
-    }, 150);
   }
 
   private updateForm(model: MsFormalFeature | undefined): void {

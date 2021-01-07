@@ -110,7 +110,6 @@ export class InterpolationComponent implements OnInit {
       Validators.maxLength(50),
     ]);
     this.tag = _formBuilder.control(null, [
-      Validators.required,
       Validators.maxLength(50),
     ]);
     this.value = _formBuilder.control(null, [

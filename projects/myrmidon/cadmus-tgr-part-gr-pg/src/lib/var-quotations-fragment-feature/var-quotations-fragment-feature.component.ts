@@ -48,12 +48,12 @@ export class VarQuotationsFragmentFeatureComponent
 
   ngOnInit() {
     this.initEditor([
-      'quotation-tags',
-      'quotation-authorities',
-      'author-works',
+      '!quotation-tags',
+      '!quotation-authorities',
+      '!author-works',
+      '!apparatus-author-tags',
       'apparatus-witnesses',
       'apparatus-authors',
-      'apparatus-author-tags',
     ]);
   }
 }

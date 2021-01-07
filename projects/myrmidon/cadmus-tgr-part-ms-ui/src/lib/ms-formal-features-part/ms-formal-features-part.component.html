@@ -79,7 +79,7 @@
           </table>
         </mat-tab>
 
-        <mat-tab label="unit" *ngIf="editedFeature">
+        <mat-tab label="feature" *ngIf="editedFeature">
           <tgr-ms-formal-feature
             [model]="editedFeature"
             (modelChange)="onFeatureSave($event)"

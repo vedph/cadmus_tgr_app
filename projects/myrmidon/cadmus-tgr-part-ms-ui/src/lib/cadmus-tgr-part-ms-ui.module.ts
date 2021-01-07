@@ -27,6 +27,7 @@ import { MsFormalFeatureComponent } from './ms-formal-feature/ms-formal-feature.
 import { MsOrnamentComponent } from './ms-ornament/ms-ornament.component';
 import { MsOrnamentsPartComponent } from './ms-ornaments-part/ms-ornaments-part.component';
 import { MsHistoryPartComponent } from './ms-history-part/ms-history-part.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MsHistoryPartComponent } from './ms-history-part/ms-history-part.compon
     FormsModule,
     ReactiveFormsModule,
     MonacoEditorModule,
+    MarkdownModule,
     // Cadmus
     CadmusCoreModule,
     CadmusMaterialModule,

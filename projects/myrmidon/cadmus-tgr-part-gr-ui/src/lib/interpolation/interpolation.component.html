@@ -50,17 +50,11 @@
               e.value
             }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="tag.errors?.required && (tag.dirty || tag.touched)"
-            >tag required</mat-error
-          >
         </mat-form-field>
 
         <!-- tag (free) -->
         <mat-form-field *ngIf="!intTagEntries?.length" style="width: 8em">
           <input matInput [formControl]="tag" placeholder="tag" />
-          <mat-error *ngIf="tag.errors?.required && (tag.dirty || tag.touched)"
-            >tag required</mat-error
-          >
           <mat-error *ngIf="tag.errors?.maxLength && (tag.dirty || tag.touched)"
             >tag too long</mat-error
           >

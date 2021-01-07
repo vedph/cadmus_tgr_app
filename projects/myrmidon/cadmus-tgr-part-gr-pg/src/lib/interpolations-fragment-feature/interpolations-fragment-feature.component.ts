@@ -48,15 +48,15 @@ export class InterpolationsFragmentFeatureComponent
 
   ngOnInit() {
     this.initEditor([
-      'interpolation-roles',
-      'interpolation-tags',
-      'interpolation-languages',
+      '!interpolation-roles',
+      '!interpolation-tags',
+      '!interpolation-languages',
+      '!quotation-tags',
+      '!quotation-authorities',
+      '!author-works',
+      '!apparatus-author-tags',
       'apparatus-witnesses',
-      'quotation-tags',
-      'quotation-authorities',
-      'author-works',
       'apparatus-authors',
-      'apparatus-author-tags',
     ]);
   }
 }

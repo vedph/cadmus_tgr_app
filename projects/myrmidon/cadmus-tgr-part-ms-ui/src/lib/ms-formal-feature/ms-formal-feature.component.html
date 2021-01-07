@@ -15,24 +15,30 @@
   </div>
   <!-- description -->
   <div>
-    <ngx-monaco-editor #dsceditor
-      [options]="editorOptions"
-      [formControl]="description"
-    ></ngx-monaco-editor>
-    <mat-error
-      *ngIf="
-        description.errors?.required&&
-        (description.touched || description.dirty)
-      "
-      >required</mat-error
-    >
-    <mat-error
-      *ngIf="
-        description.errors?.maxLength &&
-        (description.touched || description.dirty)
-      "
-      >too long</mat-error
-    >
+    <mat-form-field class="long-text">
+      <textarea
+        matInput
+        rows="3"
+        [formControl]="description"
+        placeholder="description"
+      ></textarea>
+      <mat-error
+        *ngIf="
+          description.errors?.required &&
+          (description.dirty || description.touched)
+        "
+        >description required</mat-error
+      >
+      <mat-error
+        *ngIf="
+          description.errors?.maxLength &&
+          (description.dirty || description.touched)
+        "
+        >description too long</mat-error
+      >
+    </mat-form-field>
+    <hr />
+    <markdown [data]="description?.value"></markdown>
   </div>
 
   <!-- buttons -->
