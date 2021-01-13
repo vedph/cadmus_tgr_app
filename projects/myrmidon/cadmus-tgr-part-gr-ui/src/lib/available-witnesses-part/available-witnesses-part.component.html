@@ -61,8 +61,8 @@
 
             <!-- child controls -->
             <!-- id (bound) -->
-            <mat-form-field *ngIf="witEntries?.length" style="width: 8em">
-              <mat-select formControlName="id" placeholder="id">
+            <mat-form-field *ngIf="witEntries?.length">
+              <mat-select formControlName="id" placeholder="ID">
                 <mat-option *ngFor="let e of witEntries" [value]="e.id">{{
                   e.value
                 }}</mat-option>
@@ -77,7 +77,7 @@
             </mat-form-field>
 
             <!-- id (free) -->
-            <mat-form-field>
+            <mat-form-field *ngIf="!witEntries?.length">
               <input matInput formControlName="id" placeholder="id" />
               <mat-error
                 *ngIf="
@@ -98,18 +98,20 @@
             &nbsp;
             <!-- partial -->
             <mat-checkbox formControlName="partial">partial</mat-checkbox>
-            &nbsp;
             <!-- note -->
-            <mat-form-field style="width: 150px">
-              <input matInput formControlName="note" placeholder="note" />
-              <mat-error
-                *ngIf="
-                  item['controls'].note.errors?.maxLength &&
-                  (item['controls'].note.dirty || item['controls'].note.touched)
-                "
-                >note too long</mat-error
-              >
-            </mat-form-field>
+            <div>
+              <mat-form-field style="margin-left: 135px;" class="long-text">
+                <input matInput formControlName="note" placeholder="note" />
+                <mat-error
+                  *ngIf="
+                    item['controls'].note.errors?.maxLength &&
+                    (item['controls'].note.dirty ||
+                      item['controls'].note.touched)
+                  "
+                  >note too long</mat-error
+                >
+              </mat-form-field>
+            </div>
           </div>
         </div>
       </div>
