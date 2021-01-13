@@ -14,7 +14,7 @@ export const LING_TAGS_FRAGMENT_SCHEMA = {
   definitions: {},
   $schema: 'http://json-schema.org/draft-07/schema#',
   $id:
-    'www.vedph.it/cadmus/fragments/tgr/' + LING_TAGS_FRAGMENT_TYPEID + '.json',
+    'www.vedph.it/cadmus/fragments/tgr/gr/' + LING_TAGS_FRAGMENT_TYPEID + '.json',
   type: 'object',
   title: 'LingTagsFragment',
   required: ['location', 'forms'],

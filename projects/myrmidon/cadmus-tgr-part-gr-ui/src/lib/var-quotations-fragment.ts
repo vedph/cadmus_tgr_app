@@ -50,7 +50,7 @@ export const VAR_QUOTATIONS_FRAGMENT_SCHEMA = {
   definitions: {},
   $schema: 'http://json-schema.org/draft-07/schema#',
   $id:
-    'www.vedph.it/cadmus/fragments/general/' +
+    'www.vedph.it/cadmus/fragments/tgr/gr/' +
     VAR_QUOTATIONS_FRAGMENT_TYPEID +
     '.json',
   type: 'object',

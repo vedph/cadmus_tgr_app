@@ -38,7 +38,7 @@ export const INTERPOLATIONS_FRAGMENT_SCHEMA = {
   definitions: {},
   $schema: 'http://json-schema.org/draft-07/schema#',
   $id:
-    'www.vedph.it/cadmus/fragments/general/' + INTERPOLATIONS_FRAGMENT_TYPEID + '.json',
+    'www.vedph.it/cadmus/fragments/tgr/gr/' + INTERPOLATIONS_FRAGMENT_TYPEID + '.json',
   type: 'object',
   title: 'InterpFragment',
   required: ['location', 'interpolations'],
