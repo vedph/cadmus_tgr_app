@@ -1,12 +1,19 @@
 import { Part } from '@myrmidon/cadmus-core';
 
 /**
- * The available witnesses part model.
+ * A witness available in the item's context.
  */
-export interface AvailableWitnessesPart extends Part {
+export interface AvailableWitness {
   id: string;
   isPartial?: boolean;
   note?: string;
+}
+
+/**
+ * The available witnesses part model.
+ */
+export interface AvailableWitnessesPart extends Part {
+  witnesses: AvailableWitness[];
 }
 
 /**

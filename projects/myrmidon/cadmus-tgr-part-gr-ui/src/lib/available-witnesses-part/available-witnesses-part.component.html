@@ -1,0 +1,125 @@
+<form [formGroup]="form" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>Available Witnesses Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div formArrayName="witnesses">
+        <div>
+          <button
+            type="button"
+            mat-icon-button
+            color="primary"
+            (click)="addWitness()"
+          >
+            <mat-icon>add_circle</mat-icon>
+            add witness
+          </button>
+        </div>
+        <div
+          *ngFor="
+            let item of witnesses.controls;
+            let i = index;
+            let first = first;
+            let last = last
+          "
+        >
+          <!-- child form -->
+          <div [formGroupName]="i">
+            <!-- child actions -->
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this witness"
+              color="warn"
+              (click)="removeWitness(i)"
+            >
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+            <button
+              [disabled]="first"
+              mat-icon-button
+              type="button"
+              matTooltip="Move witness up"
+              (click)="moveWitnessUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              [disabled]="last"
+              mat-icon-button
+              type="button"
+              matTooltip="Move witness down"
+              (click)="moveWitnessDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+
+            <!-- child controls -->
+            <!-- id (bound) -->
+            <mat-form-field *ngIf="witEntries?.length" style="width: 8em">
+              <mat-select formControlName="id" placeholder="id">
+                <mat-option *ngFor="let e of witEntries" [value]="e.id">{{
+                  e.value
+                }}</mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  item['controls'].id.errors?.required &&
+                  (item['controls'].id.dirty || item['controls'].id.touched)
+                "
+                >ID required</mat-error
+              >
+            </mat-form-field>
+
+            <!-- id (free) -->
+            <mat-form-field>
+              <input matInput formControlName="id" placeholder="id" />
+              <mat-error
+                *ngIf="
+                  item['controls'].id.errors?.required &&
+                  (item['controls'].id.dirty || item['controls'].id.touched)
+                "
+                >ID required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  item['controls'].id.errors?.maxLength &&
+                  (item['controls'].id.dirty || item['controls'].id.touched)
+                "
+                >ID too long</mat-error
+              >
+            </mat-form-field>
+
+            &nbsp;
+            <!-- partial -->
+            <mat-checkbox formControlName="partial">partial</mat-checkbox>
+            &nbsp;
+            <!-- note -->
+            <mat-form-field style="width: 150px">
+              <input matInput formControlName="note" placeholder="note" />
+              <mat-error
+                *ngIf="
+                  item['controls'].note.errors?.maxLength &&
+                  (item['controls'].note.dirty || item['controls'].note.touched)
+                "
+                >note too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

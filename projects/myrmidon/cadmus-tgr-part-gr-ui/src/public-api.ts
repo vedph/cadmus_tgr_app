@@ -2,6 +2,9 @@
  * Public API Surface of cadmus-tgr-part-gr-ui
  */
 
+export * from './lib/available-witnesses-part';
+export * from './lib/available-witnesses-part/available-witnesses-part.component';
+
 export * from './lib/interpolations-fragment';
 export * from './lib/interpolations-fragment/interpolations-fragment.component';
 

@@ -13,9 +13,11 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { VarQuotationsFragmentComponent } from './var-quotations-fragment/var-quotations-fragment.component';
 import { InterpolationComponent } from './interpolation/interpolation.component';
 import { InterpolationsFragmentComponent } from './interpolations-fragment/interpolations-fragment.component';
+import { AvailableWitnessesPartComponent } from './available-witnesses-part/available-witnesses-part.component';
 
 @NgModule({
   declarations: [
+    AvailableWitnessesPartComponent,
     InterpolationComponent,
     InterpolationsFragmentComponent,
     LingTagsFragmentComponent,
@@ -36,6 +38,7 @@ import { InterpolationsFragmentComponent } from './interpolations-fragment/inter
     CadmusTgrCoreModule,
   ],
   exports: [
+    AvailableWitnessesPartComponent,
     InterpolationComponent,
     InterpolationsFragmentComponent,
     LingTagsFragmentComponent,
