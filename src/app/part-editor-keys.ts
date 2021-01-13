@@ -20,6 +20,7 @@ import {
   LING_TAGS_FRAGMENT_TYPEID,
   VAR_QUOTATIONS_FRAGMENT_TYPEID,
   INTERPOLATIONS_FRAGMENT_TYPEID,
+  AVAILABLE_WITNESSES_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-gr-ui';
 import {
   MSPLACE_PART_TYPEID,
@@ -71,6 +72,9 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
   // },
   [TOKEN_TEXT_PART_TYPEID]: {
     part: GENERAL,
+  },
+  [AVAILABLE_WITNESSES_PART_TYPEID]: {
+    part: TGR_GR,
   },
   [MSSIGNATURES_PART_TYPEID]: {
     part: ITINERA_MS,

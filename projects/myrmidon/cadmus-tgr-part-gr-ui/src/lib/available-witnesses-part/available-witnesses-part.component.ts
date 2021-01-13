@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  FormControl,
   FormBuilder,
   Validators,
   FormArray,
@@ -15,7 +14,6 @@ import {
   AvailableWitnessesPart,
   AVAILABLE_WITNESSES_PART_TYPEID,
 } from '../available-witnesses-part';
-import { take } from 'rxjs/operators';
 
 /**
  * AvailableWitnessesPart editor component.

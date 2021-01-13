@@ -6,6 +6,7 @@ import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
 import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
 import { CadmusStateModule } from '@myrmidon/cadmus-state';
 import {
+  AVAILABLE_WITNESSES_PART_TYPEID,
   CadmusTgrPartGrUiModule,
   INTERPOLATIONS_FRAGMENT_TYPEID,
   LING_TAGS_FRAGMENT_TYPEID,
@@ -17,8 +18,15 @@ import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
 import { LingTagsFragmentFeatureComponent } from './ling-tags-fragment-feature/ling-tags-fragment-feature.component';
 import { VarQuotationsFragmentFeatureComponent } from './var-quotations-fragment-feature/var-quotations-fragment-feature.component';
 import { InterpolationsFragmentFeatureComponent } from './interpolations-fragment-feature/interpolations-fragment-feature.component';
+import { AvailableWitnessesPartFeatureComponent } from './available-witnesses-part-feature/available-witnesses-part-feature.component';
 
 export const RouterModuleForChild = RouterModule.forChild([
+  {
+    path: `${AVAILABLE_WITNESSES_PART_TYPEID}/:pid`,
+    pathMatch: 'full',
+    component: AvailableWitnessesPartFeatureComponent,
+    canDeactivate: [PendingChangesGuard],
+  },
   {
     path: `fragment/:pid/${INTERPOLATIONS_FRAGMENT_TYPEID}/:loc`,
     pathMatch: 'full',
@@ -41,6 +49,7 @@ export const RouterModuleForChild = RouterModule.forChild([
 
 @NgModule({
   declarations: [
+    AvailableWitnessesPartFeatureComponent,
     InterpolationsFragmentFeatureComponent,
     LingTagsFragmentFeatureComponent,
     VarQuotationsFragmentFeatureComponent,
@@ -59,6 +68,7 @@ export const RouterModuleForChild = RouterModule.forChild([
     CadmusTgrPartGrUiModule,
   ],
   exports: [
+    AvailableWitnessesPartFeatureComponent,
     InterpolationsFragmentFeatureComponent,
     LingTagsFragmentFeatureComponent,
     VarQuotationsFragmentFeatureComponent,

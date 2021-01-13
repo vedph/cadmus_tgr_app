@@ -1,0 +1,10 @@
+<cadmus-current-item-bar></cadmus-current-item-bar>
+<tgr-available-witnesses-part
+  [itemId]="itemId"
+  [roleId]="roleId"
+  [model]="part$ | async"
+  (modelChange)="save($event)"
+  [thesauri]="thesauri$ | async"
+  (editorClose)="close()"
+  (dirtyChange)="onDirtyChange($event)"
+></tgr-available-witnesses-part>
