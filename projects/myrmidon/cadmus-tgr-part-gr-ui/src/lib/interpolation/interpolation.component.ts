@@ -171,7 +171,7 @@ export class InterpolationComponent implements OnInit {
 
   private getModel(): Interpolation | null {
     return {
-      type: this.type.value?.trim(),
+      type: this.type.value,
       role: this.role.value?.trim(),
       tag: this.tag.value?.trim(),
       value: this.value.value?.trim(),
