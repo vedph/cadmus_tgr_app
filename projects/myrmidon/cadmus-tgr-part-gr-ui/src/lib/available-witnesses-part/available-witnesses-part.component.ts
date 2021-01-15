@@ -94,7 +94,7 @@ export class AvailableWitnessesPartComponent
   }
 
   private getWitnessGroup(witness?: AvailableWitness): FormGroup {
-    return this._formBuilder.group({
+    const g = this._formBuilder.group({
       id: this._formBuilder.control(witness?.id, [
         Validators.required,
         Validators.maxLength(50),
@@ -102,6 +102,10 @@ export class AvailableWitnessesPartComponent
       partial: this._formBuilder.control(witness?.isPartial),
       note: this._formBuilder.control(witness?.note, Validators.maxLength(300)),
     });
+    g.valueChanges.subscribe(_ => {
+      this.form.updateValueAndValidity();
+    });
+    return g;
   }
 
   public addWitness(item?: AvailableWitness): void {

@@ -5,6 +5,7 @@
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
       "ngx-monaco-editor": "ngx-monaco-editor",
+      "ngx-markdown": "ngx-markdown",
       "@myrmidon/cadmus-core": "@myrmidon/cadmus-core",
       "@myrmidon/cadmus-api": "@myrmidon/cadmus-api",
       "@myrmidon/cadmus-material": "@myrmidon/cadmus-material",
