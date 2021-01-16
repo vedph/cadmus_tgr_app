@@ -154,7 +154,7 @@ export class VarQuotationComponent implements OnInit {
 
   //#region Parallels
   private getParallelGroup(parallel?: QuotationParallel): FormGroup {
-    return this._formBuilder.group({
+    const g = this._formBuilder.group({
       work: this._formBuilder.control(parallel?.work, [
         Validators.required,
         Validators.maxLength(50),
@@ -165,6 +165,10 @@ export class VarQuotationComponent implements OnInit {
       ]),
       tag: this._formBuilder.control(parallel?.work, Validators.maxLength(50)),
     });
+    g.valueChanges.subscribe((_) => {
+      this.form.updateValueAndValidity();
+    });
+    return g;
   }
 
   public addParallel(parallel?: QuotationParallel): void {
@@ -242,6 +246,7 @@ export class VarQuotationComponent implements OnInit {
         i === this._editedIndex ? item : x
       )
     );
+    this.form.markAsDirty();
     this.editVariant(-1);
   }
 
@@ -258,6 +263,7 @@ export class VarQuotationComponent implements OnInit {
           const variants = [...this.variants.value];
           variants.splice(index, 1);
           this.variants.setValue(variants);
+          this.form.markAsDirty();
         }
       });
   }
@@ -271,6 +277,7 @@ export class VarQuotationComponent implements OnInit {
     variants.splice(index, 1);
     variants.splice(index - 1, 0, variant);
     this.variants.setValue(variants);
+    this.form.markAsDirty();
   }
 
   public moveVariantDown(index: number): void {
@@ -282,6 +289,7 @@ export class VarQuotationComponent implements OnInit {
     variants.splice(index, 1);
     variants.splice(index + 1, 0, variant);
     this.variants.setValue(variants);
+    this.form.markAsDirty();
   }
   //#endregion
 
