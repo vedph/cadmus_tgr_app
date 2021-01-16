@@ -31,6 +31,7 @@ export class LingTagsFragmentComponent
   public auxEntries$: BehaviorSubject<ThesaurusEntry[]>;
 
   public forms: FormControl;
+  public formCount: FormControl;
   public form: FormGroup;
   public editedForm: LingTaggedForm | undefined;
   public tabIndex: number;
@@ -42,9 +43,11 @@ export class LingTagsFragmentComponent
     this.tabIndex = 0;
     this._editedFormIndex = -1;
     // form
-    this.forms = formBuilder.control([], Validators.required);
+    this.forms = formBuilder.control([]);
+    this.formCount = formBuilder.control(0, Validators.min(1));
     this.form = formBuilder.group({
       forms: this.forms,
+      formCount: this.formCount
     });
   }
 
@@ -58,6 +61,7 @@ export class LingTagsFragmentComponent
       return;
     }
     this.forms.setValue(model.forms || []);
+    this.formCount.setValue(model.forms?.length || 0);
     this.form.markAsPristine();
   }
 
@@ -105,14 +109,20 @@ export class LingTagsFragmentComponent
 
   public addForm(item?: LingTaggedForm): void {
     this.forms.value.push(item || { tags: [] });
+    this.formCount.setValue(this.forms.value.length);
+    this.form.markAsDirty();
   }
 
   public addFormBelow(index: number): void {
-    this.forms.value.insert(index + 1, { tags: [] });
+    this.forms.value.splice(index + 1, 0, { tags: [] });
+    this.formCount.setValue(this.forms.value.length);
+    this.form.markAsDirty();
   }
 
   public removeForm(index: number): void {
-    this.forms.value.removeAt(index);
+    this.forms.value.splice(index, 1);
+    this.formCount.setValue(this.forms.value.length);
+    this.form.markAsDirty();
   }
 
   public moveFormUp(index: number): void {
@@ -120,8 +130,9 @@ export class LingTagsFragmentComponent
       return;
     }
     const item = this.forms.value[index];
-    this.forms.value.removeAt(index);
-    this.forms.value.insert(index - 1, item);
+    this.forms.value.splice(index, 1);
+    this.forms.value.splice(index - 1, 0, item);
+    this.form.markAsDirty();
   }
 
   public moveFormDown(index: number): void {
@@ -129,8 +140,9 @@ export class LingTagsFragmentComponent
       return;
     }
     const item = this.forms.value[index];
-    this.forms.value.removeAt(index);
-    this.forms.value.insert(index + 1, item);
+    this.forms.value.splice(index, 1);
+    this.forms.value.splice(index + 1, 0, item);
+    this.form.markAsDirty();
   }
 
   public editForm(index: number): void {

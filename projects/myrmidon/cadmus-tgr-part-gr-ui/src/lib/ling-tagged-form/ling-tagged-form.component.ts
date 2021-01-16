@@ -186,6 +186,7 @@ export class LingTaggedFormComponent implements OnInit {
     this.tags.splice(i, 0, {
       value: entry.id,
     });
+    this.tagCount.setValue(this.tags.length);
     this.form.markAsDirty();
   }
 

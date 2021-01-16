@@ -101,6 +101,7 @@
             [auxEntries]="(auxEntries$ | async) || []"
             [model]="editedForm"
             (modelChange)="onFormChange($event)"
+            (editorClose)="closeEditedForm()"
           ></tgr-ling-tagged-form>
         </mat-tab>
       </mat-tab-group>
