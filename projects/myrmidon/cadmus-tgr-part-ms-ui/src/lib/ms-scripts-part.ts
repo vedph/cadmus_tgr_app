@@ -130,14 +130,17 @@ export const MSSCRIPTS_PART_SCHEMA = {
                             n: {
                               type: 'integer',
                             },
-                            v: {
+                            r: {
+                              type: 'boolean'
+                            },
+                            s: {
                               type: 'string',
                             },
                             l: {
                               type: 'integer',
                             },
                           },
-                        },
+                                  },
                         end: {
                           type: 'object',
                           required: ['n'],
@@ -145,14 +148,17 @@ export const MSSCRIPTS_PART_SCHEMA = {
                             n: {
                               type: 'integer',
                             },
-                            v: {
+                            r: {
+                              type: 'boolean'
+                            },
+                            s: {
                               type: 'string',
                             },
                             l: {
                               type: 'integer',
                             },
                           },
-                        },
+                                  },
                         date: {
                           type: 'object',
                           required: ['a'],

@@ -59,7 +59,7 @@
     "@myrmidon/cadmus-ui": "0.0.25",
     "@myrmidon/cadmus-ui-pg": "0.0.7",
     "@myrmidon/cadmus-user": "0.0.5",
-    "@myrmidon/cadmus-itinera-core": "0.0.4",
+    "@myrmidon/cadmus-itinera-core": "0.0.5",
     "@myrmidon/cadmus-itinera-ui": "0.0.4",
     "@myrmidon/cadmus-itinera-part-ms-ui": "0.0.5",
     "@myrmidon/cadmus-itinera-part-ms-pg": "0.0.2"

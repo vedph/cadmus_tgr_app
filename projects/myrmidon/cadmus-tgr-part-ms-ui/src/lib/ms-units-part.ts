@@ -30,6 +30,7 @@ export interface MsUnit {
   start: MsLocation | null;
   end: MsLocation | null;
   material: string | null;
+  guardSheetMaterial?: string;
   sheetCount: number;
   guardSheetCount: number;
   groupId?: string;
@@ -42,7 +43,9 @@ export interface MsUnit {
   palimpsests?: MsPalimpsest[];
   guardSheets?: MsGuardSheet[];
   leafSizes?: PhysicalSize[];
+  leafSizeSamples?: MsLocation[];
   writtenAreaSize?: PhysicalSize;
+  writtenAreaSizeSamples?: MsLocation[];
   rulings?: MsRuling[];
   watermarks?: MsWatermark[];
 }
@@ -120,7 +123,10 @@ export const MSUNITS_PART_SCHEMA = {
         n: {
           type: 'integer',
         },
-        v: {
+        r: {
+          type: 'boolean',
+        },
+        s: {
           type: 'string',
         },
         l: {
@@ -135,7 +141,10 @@ export const MSUNITS_PART_SCHEMA = {
         n: {
           type: 'integer',
         },
-        v: {
+        r: {
+          type: 'boolean',
+        },
+        s: {
           type: 'string',
         },
         l: {
@@ -144,6 +153,9 @@ export const MSUNITS_PART_SCHEMA = {
       },
     },
     material: {
+      type: 'string',
+    },
+    guardSheetMaterial: {
       type: 'string',
     },
     sheetCount: {
@@ -192,7 +204,10 @@ export const MSUNITS_PART_SCHEMA = {
                         n: {
                           type: 'integer',
                         },
-                        v: {
+                        r: {
+                          type: 'boolean',
+                        },
+                        s: {
                           type: 'string',
                         },
                         l: {
@@ -382,6 +397,31 @@ export const MSUNITS_PART_SCHEMA = {
         ],
       },
     },
+    leafSizeSamples: {
+      type: 'array',
+      items: {
+        anyOf: [
+          {
+            type: 'object',
+            required: ['n'],
+            properties: {
+              n: {
+                type: 'integer',
+              },
+              r: {
+                type: 'boolean',
+              },
+              s: {
+                type: 'string',
+              },
+              l: {
+                type: 'integer',
+              },
+            },
+          },
+        ],
+      },
+    },
     writtenAreaSize: {
       type: 'object',
       required: [],
@@ -439,10 +479,34 @@ export const MSUNITS_PART_SCHEMA = {
         },
       },
     },
+    writtenAreaSizeSamples: {
+      type: 'array',
+      items: {
+        anyOf: [
+          {
+            type: 'object',
+            required: ['n'],
+            properties: {
+              n: {
+                type: 'integer',
+              },
+              r: {
+                type: 'boolean',
+              },
+              s: {
+                type: 'string',
+              },
+              l: {
+                type: 'integer',
+              },
+            },
+          },
+        ],
+      },
+    },
     rulings: {
       type: 'array',
       items: {
-        $id: '#/properties/rulings/items',
         anyOf: [
           {
             type: 'object',

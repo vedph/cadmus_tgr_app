@@ -50,6 +50,36 @@
           >
         </mat-form-field>
         &nbsp;
+
+        <!-- guard sheets material (bound) -->
+        <mat-form-field *ngIf="matEntries?.length" style="width: 8em">
+          <mat-select
+            [formControl]="guardSheetMaterial"
+            placeholder="guards material"
+          >
+            <mat-option *ngFor="let e of matEntries" [value]="e.id">{{
+              e.value
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- guard sheets material (free) -->
+        <mat-form-field *ngIf="!matEntries?.length" style="width: 8em">
+          <input
+            matInput
+            [formControl]="guardSheetMaterial"
+            placeholder="guards material"
+          />
+          <mat-error
+            *ngIf="
+              guardSheetMaterial.errors?.maxLength &&
+              (guardSheetMaterial.dirty || guardSheetMaterial.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+        &nbsp;
+
         <!-- sheetCount -->
         <mat-form-field style="width: 6em">
           <input
@@ -354,6 +384,36 @@
 
     <!-- LEAF SIZES -->
     <mat-tab label="leaf sizes">
+      <div>
+        <mat-form-field class="long-text">
+          <input
+            matInput
+            [formControl]="leafSizeSamples"
+            placeholder="samples (space-delimited)"
+          />
+          <mat-error
+            *ngIf="
+              leafSizeSamples.errors?.required &&
+              (leafSizeSamples.dirty || leafSizeSamples.touched)
+            "
+            >required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              leafSizeSamples.errors?.pattern &&
+              (leafSizeSamples.dirty || leafSizeSamples.touched)
+            "
+            >invalid</mat-error
+          >
+          <mat-error
+            *ngIf="
+              leafSizeSamples.errors?.maxLength &&
+              (leafSizeSamples.dirty || leafSizeSamples.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
       <button type="button" mat-icon-button color="primary">
         <mat-icon>add_circle</mat-icon> add size
       </button>
@@ -458,6 +518,37 @@
 
     <!-- AREA SIZE -->
     <mat-tab label="area size">
+      <div>
+        <mat-form-field class="long-text">
+          <input
+            matInput
+            [formControl]="areaSizeSamples"
+            placeholder="samples (space-delimited)"
+          />
+          <mat-error
+            *ngIf="
+              areaSizeSamples.errors?.required &&
+              (areaSizeSamples.dirty || areaSizeSamples.touched)
+            "
+            >required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              areaSizeSamples.errors?.pattern &&
+              (areaSizeSamples.dirty || areaSizeSamples.touched)
+            "
+            >invalid</mat-error
+          >
+          <mat-error
+            *ngIf="
+              areaSizeSamples.errors?.maxLength &&
+              (areaSizeSamples.dirty || areaSizeSamples.touched)
+            "
+            >too long</mat-error
+          >
+        </mat-form-field>
+      </div>
+
       <cadmus-physical-size
         [unitEntries]="szUnitEntries"
         [tagEntries]="szTagEntries"

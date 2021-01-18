@@ -11,8 +11,10 @@ import {
   PhysicalSize,
   ThesaurusEntry,
 } from '@myrmidon/cadmus-core';
-import { MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
+
+const MSLOCS_PATTERN = '(?:(?:[0-9]+)|(?:[IVX]+))(?:[a-z]{0,2})(?:[0-9]+)?s*';
 
 @Component({
   selector: 'tgr-ms-unit',
@@ -63,6 +65,7 @@ export class MsUnitComponent implements OnInit {
   public start: FormControl;
   public end: FormControl;
   public material: FormControl;
+  public guardSheetMaterial: FormControl;
   public sheetCount: FormControl;
   public guardSheetCount: FormControl;
   public groupId: FormControl;
@@ -77,8 +80,10 @@ export class MsUnitComponent implements OnInit {
   public editedLeafSize: PhysicalSize | undefined;
   public editedLeafSizeIndex: number;
   public editingLeafSize: boolean;
+  public leafSizeSamples: FormControl;
   // written area size
   public areaSize: PhysicalSize | undefined;
+  public areaSizeSamples: FormControl;
   // rulings
   public rulings: FormArray;
   // watermarks
@@ -86,7 +91,7 @@ export class MsUnitComponent implements OnInit {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _msLocation: MsLocationService
+    private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsUnit>();
     this.editorClose = new EventEmitter<any>();
@@ -103,6 +108,10 @@ export class MsUnitComponent implements OnInit {
       Validators.required,
       Validators.maxLength(50),
     ]);
+    this.guardSheetMaterial = _formBuilder.control(
+      null,
+      Validators.maxLength(50)
+    );
     this.sheetCount = _formBuilder.control(0);
     this.guardSheetCount = _formBuilder.control(0);
     this.groupId = _formBuilder.control(null, Validators.maxLength(50));
@@ -116,6 +125,14 @@ export class MsUnitComponent implements OnInit {
     this.leafSizes = [];
     this.editedLeafSizeIndex = -1;
     this.editingLeafSize = false;
+    this.leafSizeSamples = _formBuilder.control(null, [
+      Validators.pattern(MSLOCS_PATTERN),
+      Validators.maxLength(500),
+    ]);
+    this.areaSizeSamples = _formBuilder.control(null, [
+      Validators.pattern(MSLOCS_PATTERN),
+      Validators.maxLength(500),
+    ]);
     // rulings
     this.rulings = _formBuilder.array([]);
     // watermarks
@@ -125,6 +142,7 @@ export class MsUnitComponent implements OnInit {
       start: this.start,
       end: this.end,
       material: this.material,
+      guardSheetMaterial: this.guardSheetMaterial,
       sheetCount: this.sheetCount,
       guardSheetCount: this.guardSheetCount,
       groupId: this.groupId,
@@ -134,6 +152,8 @@ export class MsUnitComponent implements OnInit {
       quireNumbering: this.quireNumbering,
       state: this.state,
       binding: this.binding,
+      leafSizeSamples: this.leafSizeSamples,
+      areaSizeSamples: this.areaSizeSamples,
       // ruling
       rulings: this.rulings,
       // watermarks
@@ -152,9 +172,10 @@ export class MsUnitComponent implements OnInit {
     }
 
     // general
-    this.start.setValue(this._msLocation.locationToString(model.start));
-    this.end.setValue(this._msLocation.locationToString(model.end));
+    this.start.setValue(this._locService.locationToString(model.start));
+    this.end.setValue(this._locService.locationToString(model.end));
     this.material.setValue(model.material);
+    this.guardSheetMaterial.setValue(model.guardSheetMaterial);
     this.sheetCount.setValue(model.sheetCount);
     this.guardSheetCount.setValue(model.guardSheetCount);
     this.groupId.setValue(model.groupId);
@@ -167,8 +188,22 @@ export class MsUnitComponent implements OnInit {
     // leaf sizes
     this.editedLeafSize = undefined;
     this.leafSizes = model.leafSizes || [];
+    this.leafSizeSamples.setValue(
+      model.leafSizeSamples
+        ? model.leafSizeSamples
+            .map((l) => this._locService.locationToString(l))
+            .join(' ')
+        : undefined
+    );
     // written area size
     this.areaSize = model.writtenAreaSize;
+    this.areaSizeSamples.setValue(
+      model.writtenAreaSizeSamples
+        ? model.writtenAreaSizeSamples
+            .map((l) => this._locService.locationToString(l))
+            .join(' ')
+        : undefined
+    );
     // rulings
     this.rulings.clear();
     if (model.rulings?.length) {
@@ -219,12 +254,24 @@ export class MsUnitComponent implements OnInit {
     return watermarks.length ? watermarks : undefined;
   }
 
+  private parseLocations(text?: string): MsLocation[] | undefined {
+    if (!text) {
+      return undefined;
+    }
+    const locs: (MsLocation | null)[] = text
+      .split(' ')
+      .map((token: string) => this._locService.parseLocation(token))
+      .filter((l) => l);
+    return locs.length ? (locs as MsLocation[]) : undefined;
+  }
+
   private getModel(): MsUnit | null {
     return {
       // general
-      start: this._msLocation.parseLocation(this.start.value),
-      end: this._msLocation.parseLocation(this.end.value),
+      start: this._locService.parseLocation(this.start.value),
+      end: this._locService.parseLocation(this.end.value),
       material: this.material.value?.trim(),
+      guardSheetMaterial: this.guardSheetMaterial.value?.trim(),
       sheetCount: this.sheetCount.value,
       guardSheetCount: this.guardSheetCount.value,
       groupId: this.groupId.value?.trim(),
@@ -236,8 +283,10 @@ export class MsUnitComponent implements OnInit {
       binding: this.binding.value?.trim(),
       // leaf sizes
       leafSizes: this.leafSizes.length ? this.leafSizes : undefined,
+      leafSizeSamples: this.parseLocations(this.leafSizeSamples.value),
       // written area size
       writtenAreaSize: this.areaSize,
+      writtenAreaSizeSamples: this.parseLocations(this.areaSizeSamples.value),
       // rulings
       rulings: this.getRulings(),
       // watermarks

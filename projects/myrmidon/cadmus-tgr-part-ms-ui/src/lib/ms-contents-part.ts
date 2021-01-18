@@ -138,7 +138,10 @@ export const MSCONTENTS_PART_SCHEMA = {
                   n: {
                     type: 'integer',
                   },
-                  v: {
+                  r: {
+                    type: 'boolean'
+                  },
+                  s: {
                     type: 'string',
                   },
                   l: {
@@ -153,7 +156,10 @@ export const MSCONTENTS_PART_SCHEMA = {
                   n: {
                     type: 'integer',
                   },
-                  v: {
+                  r: {
+                    type: 'boolean'
+                  },
+                  s: {
                     type: 'string',
                   },
                   l: {
