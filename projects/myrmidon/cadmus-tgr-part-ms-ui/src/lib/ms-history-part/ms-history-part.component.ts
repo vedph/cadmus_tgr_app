@@ -111,7 +111,6 @@ export class MsHistoryPartComponent
 
   public ngOnInit(): void {
     this.initEditor();
-    this.provenances.updateValueAndValidity();
   }
 
   private updateForm(model: MsHistoryPart): void {
@@ -126,6 +125,7 @@ export class MsHistoryPartComponent
         this.provenances.controls.push(this.getProvenanceGroup(provenance));
       }
     }
+    this.provenances.updateValueAndValidity();
     this.history.setValue(model.history);
     // owners
     this.owners.clear();
@@ -223,10 +223,14 @@ export class MsHistoryPartComponent
 
   public addProvenance(item?: GeoAddress): void {
     this.provenances.push(this.getProvenanceGroup(item));
+    this.provenances.updateValueAndValidity();
+    this.form.markAsDirty();
   }
 
   public removeProvenance(index: number): void {
     this.provenances.removeAt(index);
+    this.provenances.updateValueAndValidity();
+    this.form.markAsDirty();
   }
 
   public moveProvenanceUp(index: number): void {
@@ -236,6 +240,7 @@ export class MsHistoryPartComponent
     const provenance = this.provenances.controls[index];
     this.provenances.removeAt(index);
     this.provenances.insert(index - 1, provenance);
+    this.form.markAsDirty();
   }
 
   public moveProvenanceDown(index: number): void {
@@ -245,6 +250,7 @@ export class MsHistoryPartComponent
     const provenance = this.provenances.controls[index];
     this.provenances.removeAt(index);
     this.provenances.insert(index + 1, provenance);
+    this.form.markAsDirty();
   }
 
   private getProvenances(): GeoAddress[] | undefined {

@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import {
@@ -13,8 +15,6 @@ import {
 } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
-
-const MSLOCS_PATTERN = '(?:(?:[0-9]+)|(?:[IVX]+))(?:[a-z]{0,2})(?:[0-9]+)?s*';
 
 @Component({
   selector: 'tgr-ms-unit',
@@ -126,11 +126,11 @@ export class MsUnitComponent implements OnInit {
     this.editedLeafSizeIndex = -1;
     this.editingLeafSize = false;
     this.leafSizeSamples = _formBuilder.control(null, [
-      Validators.pattern(MSLOCS_PATTERN),
+      this.locationsVal,
       Validators.maxLength(500),
     ]);
     this.areaSizeSamples = _formBuilder.control(null, [
-      Validators.pattern(MSLOCS_PATTERN),
+      this.locationsVal,
       Validators.maxLength(500),
     ]);
     // rulings
@@ -165,6 +165,22 @@ export class MsUnitComponent implements OnInit {
     this.updateForm(this.model);
   }
 
+  private locationsVal(control: AbstractControl): ValidationErrors | null {
+    const locService = new MsLocationService();
+    if (control.value) {
+      const err = control.value
+        .split(',')
+        .map((t: string) => {
+          return locService.parseLocation(t.trim());
+        })
+        .some((l: MsLocation) => !l);
+      if (err) {
+        return { invalid: true };
+      }
+    }
+    return null;
+  }
+
   private updateForm(model: MsUnit | undefined): void {
     if (!model) {
       this.form.reset();
@@ -192,7 +208,7 @@ export class MsUnitComponent implements OnInit {
       model.leafSizeSamples
         ? model.leafSizeSamples
             .map((l) => this._locService.locationToString(l))
-            .join(' ')
+            .join(', ')
         : undefined
     );
     // written area size
@@ -201,7 +217,7 @@ export class MsUnitComponent implements OnInit {
       model.writtenAreaSizeSamples
         ? model.writtenAreaSizeSamples
             .map((l) => this._locService.locationToString(l))
-            .join(' ')
+            .join(', ')
         : undefined
     );
     // rulings
@@ -259,8 +275,8 @@ export class MsUnitComponent implements OnInit {
       return undefined;
     }
     const locs: (MsLocation | null)[] = text
-      .split(' ')
-      .map((token: string) => this._locService.parseLocation(token))
+      .split(',')
+      .map((token: string) => this._locService.parseLocation(token.trim()))
       .filter((l) => l);
     return locs.length ? (locs as MsLocation[]) : undefined;
   }

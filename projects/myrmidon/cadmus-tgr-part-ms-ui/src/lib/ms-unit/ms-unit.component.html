@@ -389,15 +389,8 @@
           <input
             matInput
             [formControl]="leafSizeSamples"
-            placeholder="samples (space-delimited)"
+            placeholder="samples (comma delimited)"
           />
-          <mat-error
-            *ngIf="
-              leafSizeSamples.errors?.required &&
-              (leafSizeSamples.dirty || leafSizeSamples.touched)
-            "
-            >required</mat-error
-          >
           <mat-error
             *ngIf="
               leafSizeSamples.errors?.pattern &&
@@ -414,7 +407,12 @@
           >
         </mat-form-field>
       </div>
-      <button type="button" mat-icon-button color="primary">
+      <button
+        type="button"
+        mat-icon-button
+        color="primary"
+        (click)="addLeafSize()"
+      >
         <mat-icon>add_circle</mat-icon> add size
       </button>
       <table *ngIf="leafSizes?.length">
@@ -523,7 +521,7 @@
           <input
             matInput
             [formControl]="areaSizeSamples"
-            placeholder="samples (space-delimited)"
+            placeholder="samples (comma delimited)"
           />
           <mat-error
             *ngIf="

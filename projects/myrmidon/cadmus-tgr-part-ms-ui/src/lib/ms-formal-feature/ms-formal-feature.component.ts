@@ -44,10 +44,7 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
     this.modelChange = new EventEmitter<MsFormalFeature>();
     this.editorClose = new EventEmitter<any>();
     // form
-    this.handId = formBuilder.control(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]);
+    this.handId = formBuilder.control(null, Validators.maxLength(50));
     this.description = formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(500),

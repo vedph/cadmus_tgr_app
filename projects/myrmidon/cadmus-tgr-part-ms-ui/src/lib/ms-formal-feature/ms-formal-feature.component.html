@@ -4,10 +4,6 @@
     <mat-form-field>
       <input matInput [formControl]="handId" placeholder="hand ID" />
       <mat-error
-        *ngIf="handId.errors?.required && (handId.dirty || handId.touched)"
-        >required</mat-error
-      >
-      <mat-error
         *ngIf="handId.errors?.maxLength && (handId.dirty || handId.touched)"
         >too long</mat-error
       >

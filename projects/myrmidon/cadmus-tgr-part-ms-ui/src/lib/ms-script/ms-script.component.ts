@@ -208,11 +208,6 @@ export class MsScriptComponent implements OnInit {
         check: this._formBuilder.control(checked)
       });
       this.langChecks.push(g);
-      // on changes update the checked count
-      g.valueChanges.subscribe(_ => {
-        this.updateCheckedCount();
-        this.form.markAsDirty();
-      });
     });
   }
 
