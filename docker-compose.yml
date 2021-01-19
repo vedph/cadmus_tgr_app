@@ -58,7 +58,7 @@ services:
       - SENDGRID__SENDEREMAIL=info@cadmus.com
       - SENDGRID__SENDERNAME=cadmus
       - SENDGRID__APIKEY=todo
-      - SERILOG__CONNECTIONSTRING=mongodb://cadmus-mongo:27017/cadmus-tgr-log
+      - SERILOG__CONNECTIONSTRING=mongodb://cadmus-mongo:27017/{0}-log
       - STOCKUSERS__0__PASSWORD=P4ss-W0rd!
     networks:
       - cadmus-network
