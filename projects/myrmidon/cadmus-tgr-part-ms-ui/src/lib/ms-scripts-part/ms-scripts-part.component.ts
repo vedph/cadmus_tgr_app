@@ -14,7 +14,8 @@ import { take } from 'rxjs/operators';
 
 /**
  * MsScripts editor component.
- * Thesauri: ms-languages, ms-script-types, ms-script-roles (all optional).
+ * Thesauri: ms-languages (required); ms-script-types, ms-script-roles
+ * (optional).
  */
 @Component({
   selector: 'tgr-ms-scripts-part',
@@ -135,7 +136,7 @@ export class MsScriptsPartComponent
   public addScript(): void {
     const unit: MsScript = {
       role: '',
-      language: 'lat',
+      languages: ['lat'],
     };
     this.scripts.setValue([...this.scripts.value, unit]);
     this.editScript(this.scripts.value.length - 1);

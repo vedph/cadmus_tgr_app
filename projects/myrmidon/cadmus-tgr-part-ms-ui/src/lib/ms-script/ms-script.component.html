@@ -2,36 +2,20 @@
   <mat-tab-group [(selectedIndex)]="tabIndex">
     <mat-tab label="script">
       <div>
-        <!-- language (bound) -->
-        <mat-form-field *ngIf="langEntries?.length" style="width: 8em">
-          <mat-select [formControl]="language" placeholder="language">
-            <mat-option *ngFor="let e of langEntries" [value]="e.id">{{
-              e.value
-            }}</mat-option>
-          </mat-select>
-          <mat-error
-            *ngIf="
-              language.errors?.required && (language.dirty || language.touched)
-            "
-            >language required</mat-error
-          >
-        </mat-form-field>
-        <!-- language (free) -->
-        <mat-form-field *ngIf="!langEntries?.length" style="width: 8em">
-          <input matInput [formControl]="language" placeholder="language" />
-          <mat-error
-            *ngIf="
-              language.errors?.required && (language.dirty || language.touched)
-            "
-            >required</mat-error
-          >
-          <mat-error
-            *ngIf="
-              language.errors?.maxLength && (language.dirty || language.touched)
-            "
-            >too long</mat-error
-          >
-        </mat-form-field>
+        <!-- languages (bound) -->
+        <div
+          formArrayName="langChecks"
+          *ngIf="langEntries?.length"
+          style="margin: 8px"
+        >
+          <div *ngFor="let c of langChecks.controls; let i = index">
+            <div [formGroupName]="i">
+              <mat-checkbox formControlName="check">{{
+                langEntries[i].value
+              }}</mat-checkbox>
+            </div>
+          </div>
+        </div>
 
         &nbsp;
         <!-- role (bound) -->
@@ -62,7 +46,8 @@
 
       <div>
         <!-- type -->
-        <cadmus-thesaurus-tree *ngIf="scrTypeEntries?.length"
+        <cadmus-thesaurus-tree
+          *ngIf="scrTypeEntries?.length"
           [entries]="scrTypeEntries"
           rootLabel="scripts"
           [renderLabel]="renderLabel"
@@ -163,7 +148,7 @@
   </mat-tab-group>
 
   <!-- buttons -->
-  <hr>
+  <hr />
   <div>
     <button
       type="button"
@@ -179,7 +164,7 @@
       color="primary"
       mat-icon-button
       matTooltip="Accept script changes"
-      [disabled]="form.invalid || form.pristine"
+      [disabled]="form.invalid"
     >
       <mat-icon>check_circle</mat-icon> script
     </button>

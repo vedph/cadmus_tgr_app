@@ -28,7 +28,7 @@ export interface MsHand {
  */
 export interface MsScript {
   role: string;
-  language: string;
+  languages: string[];
   type?: string;
   hands?: MsHand[];
 }
@@ -106,8 +106,15 @@ export const MSSCRIPTS_PART_SCHEMA = {
               role: {
                 type: 'string',
               },
-              language: {
-                type: 'string',
+              languages: {
+                type: 'array',
+                items: {
+                  anyOf: [
+                    {
+                      type: 'string',
+                    },
+                  ],
+                },
               },
               type: {
                 type: 'string',
@@ -131,7 +138,7 @@ export const MSSCRIPTS_PART_SCHEMA = {
                               type: 'integer',
                             },
                             r: {
-                              type: 'boolean'
+                              type: 'boolean',
                             },
                             s: {
                               type: 'string',
@@ -140,7 +147,7 @@ export const MSSCRIPTS_PART_SCHEMA = {
                               type: 'integer',
                             },
                           },
-                                  },
+                        },
                         end: {
                           type: 'object',
                           required: ['n'],
@@ -149,7 +156,7 @@ export const MSSCRIPTS_PART_SCHEMA = {
                               type: 'integer',
                             },
                             r: {
-                              type: 'boolean'
+                              type: 'boolean',
                             },
                             s: {
                               type: 'string',
@@ -158,7 +165,7 @@ export const MSSCRIPTS_PART_SCHEMA = {
                               type: 'integer',
                             },
                           },
-                                  },
+                        },
                         date: {
                           type: 'object',
                           required: ['a'],
