@@ -3,9 +3,6 @@
     <!-- id -->
     <mat-form-field style="width: 8em">
       <input matInput [formControl]="id" placeholder="id" />
-      <mat-error *ngIf="id.errors?.required && (id.dirty || id.touched)"
-        >id required</mat-error
-      >
       <mat-error *ngIf="id.errors?.maxLength && (id.dirty || id.touched)"
         >id too long</mat-error
       >

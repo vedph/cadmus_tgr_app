@@ -40,10 +40,7 @@ export class MsHandComponent implements OnInit {
     this.modelChange = new EventEmitter<MsHand>();
     this.editorClose = new EventEmitter<any>();
     // form
-    this.id = _formBuilder.control(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]);
+    this.id = _formBuilder.control(null, Validators.maxLength(50));
     this.start = _formBuilder.control(null, [
       Validators.required,
       Validators.pattern(MsLocationService.locRegexp),
