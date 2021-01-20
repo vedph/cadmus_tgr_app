@@ -49,7 +49,7 @@
     "@myrmidon/cadmus-login": "0.0.5",
     "@myrmidon/cadmus-material": "0.0.5",
     "@myrmidon/cadmus-part-general-pg": "0.0.9",
-    "@myrmidon/cadmus-part-general-ui": "0.0.17",
+    "@myrmidon/cadmus-part-general-ui": "0.0.18",
     "@myrmidon/cadmus-part-philology-pg": "0.0.8",
     "@myrmidon/cadmus-part-philology-ui": "0.0.10",
     "@myrmidon/cadmus-reset-password": "0.0.5",
