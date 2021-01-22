@@ -28,6 +28,8 @@ import { MsOrnamentComponent } from './ms-ornament/ms-ornament.component';
 import { MsOrnamentsPartComponent } from './ms-ornaments-part/ms-ornaments-part.component';
 import { MsHistoryPartComponent } from './ms-history-part/ms-history-part.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { MsPlacesPartComponent } from './ms-places-part/ms-places-part.component';
+import { MsPlaceComponent } from './ms-place/ms-place.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { MarkdownModule } from 'ngx-markdown';
     MsScriptsPartComponent,
     MsUnitComponent,
     MsUnitsPartComponent,
+    MsPlacesPartComponent,
+    MsPlaceComponent,
   ],
   imports: [
     CommonModule,

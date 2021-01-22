@@ -1,0 +1,99 @@
+<form [formGroup]="form" (submit)="save()">
+  <div>
+    <!-- area (bound) -->
+    <mat-form-field *ngIf="areaEntries?.length">
+      <mat-select [formControl]="area" placeholder="area">
+        <mat-option *ngFor="let e of areaEntries" [value]="e.id">{{
+          e.value
+        }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="area.errors?.required && (area.dirty || area.touched)"
+        >area required</mat-error
+      >
+    </mat-form-field>
+
+    <!-- area (free) -->
+    <mat-form-field *ngIf="!areaEntries?.length">
+      <input matInput [formControl]="area" placeholder="area" />
+      <mat-error *ngIf="area.errors?.required && (area.dirty || area.touched)"
+        >area required</mat-error
+      >
+      <mat-error *ngIf="area.errors?.maxLength && (area.dirty || area.touched)"
+        >area too long</mat-error
+      >
+    </mat-form-field>
+
+    &nbsp;
+    <!-- address -->
+    <mat-form-field style="width: 30em">
+      <input matInput [formControl]="address" placeholder="address" />
+      <mat-error
+        *ngIf="address.errors?.maxLength && (address.dirty || address.touched)"
+        >address too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <!-- city -->
+  <div>
+    <mat-form-field>
+      <input matInput [formControl]="city" placeholder="city" />
+      <mat-error *ngIf="city.errors?.maxLength && (city.dirty || city.touched)"
+        >city too long</mat-error
+      >
+    </mat-form-field>
+
+    &nbsp;
+    <!-- site -->
+    <mat-form-field>
+      <input matInput [formControl]="site" placeholder="site" />
+      <mat-error *ngIf="site.errors?.maxLength && (site.dirty || site.touched)"
+        >site too long</mat-error
+      >
+    </mat-form-field>
+
+    &nbsp;
+    <!-- rank -->
+    <mat-form-field style="width: 4em;">
+      <input
+        matInput
+        type="number"
+        min="0"
+        [formControl]="rank"
+        placeholder="rank"
+      />
+    </mat-form-field>
+  </div>
+
+  <!-- sources -->
+  <div>
+    <h4>sources</h4>
+    <cadmus-doc-references
+      [model$]="sources$"
+      [tagEntries]="tagEntries"
+      (modelChange)="onSourcesChange($event)"
+    ></cadmus-doc-references>
+  </div>
+
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard place changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept place changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+</form>

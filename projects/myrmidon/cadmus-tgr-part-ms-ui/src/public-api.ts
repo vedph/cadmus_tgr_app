@@ -17,6 +17,9 @@ export * from './lib/ms-ornaments-part';
 export * from './lib/ms-ornament/ms-ornament.component';
 export * from './lib/ms-ornaments-part/ms-ornaments-part.component';
 
+export * from './lib/ms-places-part';
+export * from './lib/ms-places-part/ms-places-part.component';
+
 export * from './lib/ms-scripts-part';
 export * from './lib/ms-hand/ms-hand.component';
 export * from './lib/ms-script/ms-script.component';

@@ -155,6 +155,7 @@ export class MsUnitsPartComponent
       material: null,
       sheetCount: 0,
       guardSheetCount: 0,
+      backGuardSheetCount: 0
     };
     this.units.setValue([...this.units.value, unit]);
     this.editUnit(this.units.value.length - 1);
