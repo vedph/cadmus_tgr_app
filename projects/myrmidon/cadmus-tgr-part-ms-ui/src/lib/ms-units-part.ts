@@ -33,6 +33,7 @@ export interface MsUnit {
   guardSheetMaterial?: string;
   sheetCount: number;
   guardSheetCount: number;
+  backGuardSheetCount: number;
   groupId?: string;
   groupOrdinal?: number;
   quires?: string;
@@ -84,6 +85,7 @@ export const MSUNITS_PART_SCHEMA = {
     'material',
     'sheetCount',
     'guardSheetCount',
+    'backGuardSheetCount'
   ],
   properties: {
     timeCreated: {
@@ -162,6 +164,9 @@ export const MSUNITS_PART_SCHEMA = {
       type: 'integer',
     },
     guardSheetCount: {
+      type: 'integer',
+    },
+    backGuardSheetCount: {
       type: 'integer',
     },
     groupId: {

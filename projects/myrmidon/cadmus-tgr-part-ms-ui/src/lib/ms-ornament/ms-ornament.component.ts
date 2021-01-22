@@ -54,6 +54,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
   public start: FormControl;
   public end: FormControl;
   public description: FormControl;
+  public note: FormControl;
   public hasSize: FormControl;
   public size: PhysicalSize | undefined;
 
@@ -84,13 +85,15 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
       Validators.required,
       Validators.pattern(MsLocationService.locRegexp),
     ]);
-    this.description = formBuilder.control(null, Validators.maxLength(500));
+    this.description = formBuilder.control(null, Validators.maxLength(1000));
+    this.note = formBuilder.control(null, Validators.maxLength(500));
     this.hasSize = formBuilder.control(false);
     this.form = formBuilder.group({
       type: this.type,
       start: this.start,
       end: this.end,
       description: this.description,
+      note: this.note,
       hasSize: this.hasSize,
     });
   }
@@ -119,6 +122,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
     this.start.setValue(this._locService.locationToString(model.start));
     this.end.setValue(this._locService.locationToString(model.end));
     this.description.setValue(model.description);
+    this.note.setValue(model.note);
 
     if (model.size) {
       this.size = model.size;
@@ -138,6 +142,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
       end: this._locService.parseLocation(this.end.value) as MsLocation,
       size: this.hasSize.value ? this.size : undefined,
       description: this.description.value?.trim(),
+      note: this.note.value?.trim()
     };
   }
 

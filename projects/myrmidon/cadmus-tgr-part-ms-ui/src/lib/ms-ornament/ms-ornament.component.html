@@ -25,7 +25,7 @@
 
     &nbsp;
     <!-- start -->
-    <mat-form-field style="width: 8em;">
+    <mat-form-field style="width: 8em">
       <input matInput [formControl]="start" placeholder="start" />
       <mat-error
         *ngIf="start.errors?.required && (start.dirty || start.touched)"
@@ -38,7 +38,7 @@
 
     &nbsp;
     <!-- end -->
-    <mat-form-field style="width: 8em;">
+    <mat-form-field style="width: 8em">
       <input matInput [formControl]="end" placeholder="end" />
       <mat-error *ngIf="end.errors?.required && (end.dirty || end.touched)"
         >end required</mat-error
@@ -67,7 +67,8 @@
 
   <div>
     <!-- description -->
-    <ngx-monaco-editor #dsceditor
+    <ngx-monaco-editor
+      #dsceditor
       [options]="editorOptions"
       [formControl]="description"
     ></ngx-monaco-editor>
@@ -78,6 +79,22 @@
       "
       >too long</mat-error
     >
+  </div>
+
+  <div>
+    <!-- note -->
+    <mat-form-field>
+      <textarea
+        rows="2"
+        matInput
+        [formControl]="note"
+        placeholder="note"
+        class="long-text"
+      ></textarea>
+      <mat-error *ngIf="note.errors?.maxLength && (note.dirty || note.touched)"
+        >note too long</mat-error
+      >
+    </mat-form-field>
   </div>
 
   <!-- buttons -->

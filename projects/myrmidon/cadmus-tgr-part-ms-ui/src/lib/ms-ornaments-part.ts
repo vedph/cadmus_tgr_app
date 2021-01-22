@@ -10,6 +10,7 @@ export interface MsOrnament {
   end: MsLocation;
   size?: PhysicalSize;
   description?: string;
+  note?: string;
 }
 
 /**
@@ -179,6 +180,9 @@ export const MSORNAMENTS_PART_SCHEMA = {
                 },
               },
               description: {
+                type: 'string',
+              },
+              note: {
                 type: 'string',
               },
             },

@@ -68,6 +68,7 @@ export class MsUnitComponent implements OnInit {
   public guardSheetMaterial: FormControl;
   public sheetCount: FormControl;
   public guardSheetCount: FormControl;
+  public backGuardSheetCount: FormControl;
   public groupId: FormControl;
   public groupOrdinal: FormControl;
   public quires: FormControl;
@@ -114,6 +115,7 @@ export class MsUnitComponent implements OnInit {
     );
     this.sheetCount = _formBuilder.control(0);
     this.guardSheetCount = _formBuilder.control(0);
+    this.backGuardSheetCount = _formBuilder.control(0);
     this.groupId = _formBuilder.control(null, Validators.maxLength(50));
     this.groupOrdinal = _formBuilder.control(0);
     this.quires = _formBuilder.control(null, Validators.maxLength(500));
@@ -145,6 +147,7 @@ export class MsUnitComponent implements OnInit {
       guardSheetMaterial: this.guardSheetMaterial,
       sheetCount: this.sheetCount,
       guardSheetCount: this.guardSheetCount,
+      backGuardSheetCount: this.backGuardSheetCount,
       groupId: this.groupId,
       groupOrdinal: this.groupOrdinal,
       quires: this.quires,
@@ -194,6 +197,7 @@ export class MsUnitComponent implements OnInit {
     this.guardSheetMaterial.setValue(model.guardSheetMaterial);
     this.sheetCount.setValue(model.sheetCount);
     this.guardSheetCount.setValue(model.guardSheetCount);
+    this.backGuardSheetCount.setValue(model.backGuardSheetCount);
     this.groupId.setValue(model.groupId);
     this.groupOrdinal.setValue(model.groupOrdinal);
     this.quires.setValue(model.quires);
@@ -290,6 +294,7 @@ export class MsUnitComponent implements OnInit {
       guardSheetMaterial: this.guardSheetMaterial.value?.trim(),
       sheetCount: this.sheetCount.value,
       guardSheetCount: this.guardSheetCount.value,
+      backGuardSheetCount: this.backGuardSheetCount.value,
       groupId: this.groupId.value?.trim(),
       groupOrdinal: this.groupOrdinal.value,
       quires: this.quires.value?.trim(),
