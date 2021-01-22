@@ -20,6 +20,7 @@ import {
   MSFORMAL_FEATURES_PART_TYPEID,
   MSHISTORY_PART_TYPEID,
   MSORNAMENTS_PART_TYPEID,
+  MSPLACES_PART_TYPEID,
   MSSCRIPTS_PART_TYPEID,
   MSUNITS_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-ms-ui';
@@ -30,6 +31,7 @@ import { MsScriptsPartFeatureComponent } from './ms-scripts-part-feature/ms-scri
 import { MsFormalFeaturesPartFeatureComponent } from './ms-formal-features-part-feature/ms-formal-features-part-feature.component';
 import { MsOrnamentsPartFeatureComponent } from './ms-ornaments-part-feature/ms-ornaments-part-feature.component';
 import { MsHistoryPartFeatureComponent } from './ms-history-part-feature/ms-history-part-feature.component';
+import { MsPlacesPartFeatureComponent } from './ms-places-part-feature/ms-places-part-feature.component';
 
 // https://github.com/ng-packagr/ng-packagr/issues/778
 export const RouterModuleForChild = RouterModule.forChild([
@@ -58,6 +60,12 @@ export const RouterModuleForChild = RouterModule.forChild([
     canDeactivate: [PendingChangesGuard],
   },
   {
+    path: `${MSPLACES_PART_TYPEID}/:pid`,
+    pathMatch: 'full',
+    component: MsPlacesPartFeatureComponent,
+    canDeactivate: [PendingChangesGuard],
+  },
+  {
     path: `${MSSCRIPTS_PART_TYPEID}/:pid`,
     pathMatch: 'full',
     component: MsScriptsPartFeatureComponent,
@@ -77,6 +85,7 @@ export const RouterModuleForChild = RouterModule.forChild([
     MsFormalFeaturesPartFeatureComponent,
     MsHistoryPartFeatureComponent,
     MsOrnamentsPartFeatureComponent,
+    MsPlacesPartFeatureComponent,
     MsScriptsPartFeatureComponent,
     MsUnitsPartFeatureComponent,
   ],
@@ -101,6 +110,7 @@ export const RouterModuleForChild = RouterModule.forChild([
     MsFormalFeaturesPartFeatureComponent,
     MsHistoryPartFeatureComponent,
     MsOrnamentsPartFeatureComponent,
+    MsPlacesPartFeatureComponent,
     MsScriptsPartFeatureComponent,
     MsUnitsPartFeatureComponent
   ],
