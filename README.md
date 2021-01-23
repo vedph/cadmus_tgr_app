@@ -4,7 +4,7 @@ Quick Docker image build:
 
 1. `npm run build-all`
 2. `ng build --prod`
-3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.10 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.11 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
 
 Web application frontend for Cadmus _TGR_. This application is built by packing together a number of components:
 
@@ -21,5 +21,5 @@ ng new cadmus-tgr-app --prefix cadmus
 Each library is added like this:
 
 ```bash
-ng generate library @myrmidon/cadmus-tgr-core --prefix cadmus
+ng generate library @myrmidon/cadmus-tgr-core --prefix tgr
 ```
