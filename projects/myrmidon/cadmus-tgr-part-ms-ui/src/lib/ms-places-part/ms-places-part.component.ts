@@ -7,6 +7,10 @@ import { ThesaurusEntry, deepCopy } from '@myrmidon/cadmus-core';
 import { MsPlace, MsPlacesPart, MSPLACES_PART_TYPEID } from '../ms-places-part';
 import { take } from 'rxjs/operators';
 
+/**
+ * Manuscript's place(s) of origin part editor.
+ * Thesauri: ms-place-areas, doc-reference-tags (all optional).
+ */
 @Component({
   selector: 'tgr-ms-places-part',
   templateUrl: './ms-places-part.component.html',

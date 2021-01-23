@@ -1,1 +1,10 @@
-<p>ms-places-part-feature works!</p>
+<cadmus-current-item-bar></cadmus-current-item-bar>
+<tgr-ms-places-part
+  [itemId]="itemId"
+  [roleId]="roleId"
+  [model]="part$ | async"
+  (modelChange)="save($event)"
+  [thesauri]="thesauri$ | async"
+  (editorClose)="close()"
+  (dirtyChange)="onDirtyChange($event)"
+></tgr-ms-places-part>

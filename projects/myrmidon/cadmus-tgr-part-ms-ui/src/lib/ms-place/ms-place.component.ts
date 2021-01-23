@@ -92,7 +92,7 @@ export class MsPlaceComponent implements OnInit {
     this.city.setValue(model.city);
     this.site.setValue(model.site);
     this.rank.setValue(model.rank || 0);
-    this.sources.setValue(model.sources || []);
+    this.sources$.next(model.sources || []);
 
     this.form.markAsPristine();
   }

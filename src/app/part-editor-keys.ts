@@ -5,7 +5,6 @@ import {
   INDEX_KEYWORDS_PART_TYPEID,
   NOTE_PART_TYPEID,
   TOKEN_TEXT_PART_TYPEID,
-  // TILED_TEXT_PART_TYPEID,
   COMMENT_FRAGMENT_TYPEID,
   BIBLIOGRAPHY_PART_TYPEID,
   CHRONOLOGY_FRAGMENT_TYPEID,
@@ -22,15 +21,13 @@ import {
   INTERPOLATIONS_FRAGMENT_TYPEID,
   AVAILABLE_WITNESSES_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-gr-ui';
-import {
-  MSPLACE_PART_TYPEID,
-  MSSIGNATURES_PART_TYPEID,
-} from '@myrmidon/cadmus-itinera-part-ms-ui';
+import { MSSIGNATURES_PART_TYPEID } from '@myrmidon/cadmus-itinera-part-ms-ui';
 import {
   MSCONTENTS_PART_TYPEID,
   MSFORMAL_FEATURES_PART_TYPEID,
   MSHISTORY_PART_TYPEID,
   MSORNAMENTS_PART_TYPEID,
+  MSPLACES_PART_TYPEID,
   MSSCRIPTS_PART_TYPEID,
   MSUNITS_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-ms-ui';
@@ -67,9 +64,6 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
   [NOTE_PART_TYPEID]: {
     part: GENERAL,
   },
-  // [TILED_TEXT_PART_TYPEID]: {
-  //   part: GENERAL,
-  // },
   [TOKEN_TEXT_PART_TYPEID]: {
     part: GENERAL,
   },
@@ -79,8 +73,8 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
   [MSSIGNATURES_PART_TYPEID]: {
     part: ITINERA_MS,
   },
-  [MSPLACE_PART_TYPEID]: {
-    part: ITINERA_MS,
+  [MSPLACES_PART_TYPEID]: {
+    part: TGR_MS,
   },
   [MSCONTENTS_PART_TYPEID]: {
     part: TGR_MS,
@@ -114,14 +108,4 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
       [LING_TAGS_FRAGMENT_TYPEID]: TGR_GR,
     },
   },
-  // [TILED_TEXT_LAYER_PART_TYPEID]: {
-  //   part: GENERAL,
-  //   fragments: {
-  //     [CHRONOLOGY_FRAGMENT_TYPEID]: GENERAL,
-  //     [COMMENT_FRAGMENT_TYPEID]: GENERAL,
-  //     [APPARATUS_FRAGMENT_TYPEID]: PHILOLOGY,
-  //     [ORTHOGRAPHY_FRAGMENT_TYPEID]: PHILOLOGY,
-  //     [QUOTATIONS_FRAGMENT_TYPEID]: PHILOLOGY,
-  //   },
-  // },
 };
