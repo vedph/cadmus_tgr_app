@@ -73,7 +73,6 @@ export class MsHistoryPartComponent
       this.locationsVal,
     ]);
     this.subLanguage = _formBuilder.control(null, [
-      Validators.required,
       Validators.maxLength(50),
     ]);
     this.subHandId = _formBuilder.control(null, Validators.maxLength(50));
