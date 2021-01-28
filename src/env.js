@@ -5,5 +5,4 @@
   // environment-dependent settings
   window.__env.apiUrl = "http://localhost:59590/api/";
   window.__env.databaseId = "cadmus-tgr";
-  window.__env.name = "TGR";
 })(this);

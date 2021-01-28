@@ -7,6 +7,14 @@
       <mat-card-title>Available Witnesses Part</mat-card-title>
     </mat-card-header>
     <mat-card-content>
+      <button
+        type="button"
+        mat-icon-button
+        *ngIf="witEntries?.length"
+        (click)="addAllWitnesses()"
+      >
+        <mat-icon color="primary">done_all</mat-icon> add all
+      </button>
       <div formArrayName="witnesses">
         <div>
           <button
@@ -100,7 +108,7 @@
             <mat-checkbox formControlName="partial">partial</mat-checkbox>
             <!-- note -->
             <div>
-              <mat-form-field style="margin-left: 135px;" class="long-text">
+              <mat-form-field style="margin-left: 135px" class="long-text">
                 <input matInput formControlName="note" placeholder="note" />
                 <mat-error
                   *ngIf="

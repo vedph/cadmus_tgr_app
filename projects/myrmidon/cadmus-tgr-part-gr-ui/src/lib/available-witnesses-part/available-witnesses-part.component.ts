@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormArray,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
@@ -34,11 +40,11 @@ export class AvailableWitnessesPartComponent
     super(authService);
     // form
     // HACK: for some reason, Validators.required does not work on FA
-    this.witnesses = _formBuilder.array([]/*, Validators.required*/);
+    this.witnesses = _formBuilder.array([] /*, Validators.required*/);
     this.count = _formBuilder.control(0, Validators.min(1));
     this.form = _formBuilder.group({
       witnesses: this.witnesses,
-      count: this.count
+      count: this.count,
     });
   }
 
@@ -102,7 +108,7 @@ export class AvailableWitnessesPartComponent
       partial: this._formBuilder.control(witness?.isPartial),
       note: this._formBuilder.control(witness?.note, Validators.maxLength(300)),
     });
-    g.valueChanges.subscribe(_ => {
+    g.valueChanges.subscribe((_) => {
       this.form.updateValueAndValidity();
     });
     return g;
@@ -137,6 +143,21 @@ export class AvailableWitnessesPartComponent
     const item = this.witnesses.controls[index];
     this.witnesses.removeAt(index);
     this.witnesses.insert(index + 1, item);
+    this.form.markAsDirty();
+  }
+
+  public addAllWitnesses(): void {
+    if (!this.witEntries?.length) {
+      return;
+    }
+    const present = this.getWitnesses();
+    this.witEntries.forEach((e) => {
+      if (!present.find((p) => p.id === e.id)) {
+        this.addWitness({
+          id: e.id
+        });
+      }
+    });
     this.form.markAsDirty();
   }
 
