@@ -81,7 +81,7 @@ export class AvailableWitnessesPartComponent
   }
 
   protected getModelFromForm(): AvailableWitnessesPart {
-    let part = this.model;
+    let part = deepCopy(this.model);
     if (!part) {
       part = {
         itemId: this.itemId,

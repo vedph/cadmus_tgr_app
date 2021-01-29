@@ -7,26 +7,27 @@
       <mat-card-title>Available Witnesses Part</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <button
-        type="button"
-        mat-icon-button
-        *ngIf="witEntries?.length"
-        (click)="addAllWitnesses()"
-      >
-        <mat-icon color="primary">done_all</mat-icon> add all
-      </button>
+      <div>
+        <button
+          type="button"
+          mat-icon-button
+          *ngIf="witEntries?.length"
+          matTooltip="Add all the witnesses"
+          (click)="addAllWitnesses()"
+        >
+          <mat-icon color="primary">done_all</mat-icon>
+        </button>
+        <button
+          type="button"
+          mat-icon-button
+          matTooltip="Add a new witness"
+          color="primary"
+          (click)="addWitness()"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
       <div formArrayName="witnesses">
-        <div>
-          <button
-            type="button"
-            mat-icon-button
-            color="primary"
-            (click)="addWitness()"
-          >
-            <mat-icon>add_circle</mat-icon>
-            add witness
-          </button>
-        </div>
         <div
           *ngFor="
             let item of witnesses.controls;
