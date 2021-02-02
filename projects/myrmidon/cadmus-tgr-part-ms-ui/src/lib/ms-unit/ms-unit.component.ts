@@ -9,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import {
+  HistoricalDateModel,
   PhysicalDimension,
   PhysicalSize,
   ThesaurusEntry,
@@ -83,8 +84,14 @@ export class MsUnitComponent implements OnInit {
   public editingLeafSize: boolean;
   public leafSizeSamples: FormControl;
   // written area size
-  public areaSize: PhysicalSize | undefined;
+  public areaSizes: PhysicalSize[];
+  public editedAreaSize: PhysicalSize | undefined;
+  public editedAreaSizeIndex: number;
+  public editingAreaSize: boolean;
   public areaSizeSamples: FormControl;
+  // date
+  public hasDate: FormControl;
+  public date?: HistoricalDateModel;
   // rulings
   public rulings: FormArray;
   // watermarks
@@ -118,6 +125,7 @@ export class MsUnitComponent implements OnInit {
     this.backGuardSheetCount = _formBuilder.control(0);
     this.groupId = _formBuilder.control(null, Validators.maxLength(50));
     this.groupOrdinal = _formBuilder.control(0);
+    this.hasDate = _formBuilder.control(false);
     this.quires = _formBuilder.control(null, Validators.maxLength(500));
     this.sheetNumbering = _formBuilder.control(null, Validators.maxLength(500));
     this.quireNumbering = _formBuilder.control(null, Validators.maxLength(500));
@@ -127,6 +135,9 @@ export class MsUnitComponent implements OnInit {
     this.leafSizes = [];
     this.editedLeafSizeIndex = -1;
     this.editingLeafSize = false;
+    this.areaSizes = [];
+    this.editedAreaSizeIndex = -1;
+    this.editingAreaSize = false;
     this.leafSizeSamples = _formBuilder.control(null, [
       this.locationsVal,
       Validators.maxLength(500),
@@ -150,6 +161,7 @@ export class MsUnitComponent implements OnInit {
       backGuardSheetCount: this.backGuardSheetCount,
       groupId: this.groupId,
       groupOrdinal: this.groupOrdinal,
+      hasDate: this.hasDate,
       quires: this.quires,
       sheetNumbering: this.sheetNumbering,
       quireNumbering: this.quireNumbering,
@@ -200,6 +212,8 @@ export class MsUnitComponent implements OnInit {
     this.backGuardSheetCount.setValue(model.backGuardSheetCount);
     this.groupId.setValue(model.groupId);
     this.groupOrdinal.setValue(model.groupOrdinal);
+    this.hasDate.setValue(model.date? true : false);
+    this.date = model.date;
     this.quires.setValue(model.quires);
     this.sheetNumbering.setValue(model.sheetNumbering);
     this.quireNumbering.setValue(model.quireNumbering);
@@ -207,6 +221,7 @@ export class MsUnitComponent implements OnInit {
     this.binding.setValue(model.binding);
     // leaf sizes
     this.editedLeafSize = undefined;
+    this.editedLeafSizeIndex = -1;
     this.leafSizes = model.leafSizes || [];
     this.leafSizeSamples.setValue(
       model.leafSizeSamples
@@ -215,8 +230,10 @@ export class MsUnitComponent implements OnInit {
             .join(', ')
         : undefined
     );
-    // written area size
-    this.areaSize = model.writtenAreaSize;
+    // written area sizes
+    this.editedAreaSize = undefined;
+    this.editedAreaSizeIndex = -1;
+    this.areaSizes = model.writtenAreaSizes || [];
     this.areaSizeSamples.setValue(
       model.writtenAreaSizeSamples
         ? model.writtenAreaSizeSamples
@@ -297,6 +314,7 @@ export class MsUnitComponent implements OnInit {
       backGuardSheetCount: this.backGuardSheetCount.value,
       groupId: this.groupId.value?.trim(),
       groupOrdinal: this.groupOrdinal.value,
+      date: this.hasDate.value? this.date : undefined,
       quires: this.quires.value?.trim(),
       sheetNumbering: this.sheetNumbering.value?.trim(),
       quireNumbering: this.quireNumbering.value?.trim(),
@@ -306,7 +324,7 @@ export class MsUnitComponent implements OnInit {
       leafSizes: this.leafSizes.length ? this.leafSizes : undefined,
       leafSizeSamples: this.parseLocations(this.leafSizeSamples.value),
       // written area size
-      writtenAreaSize: this.areaSize,
+      writtenAreaSizes: this.areaSizes.length ? this.areaSizes : undefined,
       writtenAreaSizeSamples: this.parseLocations(this.areaSizeSamples.value),
       // rulings
       rulings: this.getRulings(),
@@ -372,6 +390,62 @@ export class MsUnitComponent implements OnInit {
 
   public dimToString(dim: PhysicalDimension | undefined): string {
     return dim ? `${dim.value} ${dim.unit}` : '';
+  }
+  //#endregion
+
+  //#region Area Sizes
+  public editAreaSize(index: number): void {
+    this.editedAreaSizeIndex = index;
+    if (index === -1) {
+      this.editingAreaSize = false;
+      this.editedAreaSize = undefined;
+    } else {
+      this.editingAreaSize = true;
+      this.editedAreaSize = this.areaSizes[index];
+    }
+  }
+
+  public saveAreaSize(): void {
+    if (this.editedAreaSize) {
+      this.areaSizes.splice(this.editedAreaSizeIndex, 1, this.editedAreaSize);
+      this.form.markAsDirty();
+      this.editAreaSize(-1);
+    }
+  }
+
+  public onEditedAreaSizeChange(size: PhysicalSize): void {
+    this.editedAreaSize = size;
+  }
+
+  public addAreaSize(): void {
+    this.areaSizes.push({});
+    this.editAreaSize(this.areaSizes.length - 1);
+    this.form.markAsDirty();
+  }
+
+  public removeAreaSize(index: number): void {
+    this.areaSizes.splice(index, 1);
+    this.form.markAsDirty();
+  }
+
+  public moveAreaSizeUp(index: number): void {
+    if (index < 1) {
+      return;
+    }
+    const size = this.areaSizes[index];
+    this.areaSizes.splice(index, 1);
+    this.areaSizes.splice(index - 1, 0, size);
+    this.form.markAsDirty();
+  }
+
+  public moveAreaSizeDown(index: number): void {
+    if (index + 1 >= this.areaSizes.length) {
+      return;
+    }
+    const size = this.areaSizes[index];
+    this.areaSizes.splice(index, 1);
+    this.areaSizes.splice(index + 1, 0, size);
+    this.form.markAsDirty();
   }
   //#endregion
 
@@ -462,8 +536,8 @@ export class MsUnitComponent implements OnInit {
   }
   //#endregion
 
-  public onAreaSizeChange(size: PhysicalSize): void {
-    this.areaSize = size;
+  public onDateChange(date: HistoricalDateModel): void {
+    this.date = date;
     this.form.markAsDirty();
   }
 

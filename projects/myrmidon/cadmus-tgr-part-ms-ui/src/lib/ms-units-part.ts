@@ -36,6 +36,7 @@ export interface MsUnit {
   backGuardSheetCount: number;
   groupId?: string;
   groupOrdinal?: number;
+  date?: HistoricalDateModel;
   quires?: string;
   sheetNumbering?: string;
   quireNumbering?: string;
@@ -45,7 +46,7 @@ export interface MsUnit {
   guardSheets?: MsGuardSheet[];
   leafSizes?: PhysicalSize[];
   leafSizeSamples?: MsLocation[];
-  writtenAreaSize?: PhysicalSize;
+  writtenAreaSizes?: PhysicalSize[];
   writtenAreaSizeSamples?: MsLocation[];
   rulings?: MsRuling[];
   watermarks?: MsWatermark[];
@@ -85,7 +86,7 @@ export const MSUNITS_PART_SCHEMA = {
     'material',
     'sheetCount',
     'guardSheetCount',
-    'backGuardSheetCount'
+    'backGuardSheetCount',
   ],
   properties: {
     timeCreated: {
@@ -174,6 +175,72 @@ export const MSUNITS_PART_SCHEMA = {
     },
     groupOrdinal: {
       type: 'integer',
+    },
+    date: {
+      type: 'object',
+      required: ['a'],
+      properties: {
+        a: {
+          type: 'object',
+          required: ['value'],
+          properties: {
+            value: {
+              type: 'integer',
+            },
+            isCentury: {
+              type: 'boolean',
+            },
+            isSpan: {
+              type: 'boolean',
+            },
+            isApproximate: {
+              type: 'boolean',
+            },
+            isDubious: {
+              type: 'boolean',
+            },
+            day: {
+              type: 'integer',
+            },
+            month: {
+              type: 'integer',
+            },
+            hint: {
+              type: ['string', 'null'],
+            },
+          },
+        },
+        b: {
+          type: 'object',
+          required: ['value'],
+          properties: {
+            value: {
+              type: 'integer',
+            },
+            isCentury: {
+              type: 'boolean',
+            },
+            isSpan: {
+              type: 'boolean',
+            },
+            isApproximate: {
+              type: 'boolean',
+            },
+            isDubious: {
+              type: 'boolean',
+            },
+            day: {
+              type: 'integer',
+            },
+            month: {
+              type: 'integer',
+            },
+            hint: {
+              type: ['string', 'null'],
+            },
+          },
+        },
+      },
     },
     quires: {
       type: 'string',
@@ -427,61 +494,68 @@ export const MSUNITS_PART_SCHEMA = {
         ],
       },
     },
-    writtenAreaSize: {
-      type: 'object',
-      required: [],
-      properties: {
-        tag: {
-          type: 'string',
-        },
-        w: {
-          type: 'object',
-          required: ['value', 'unit'],
-          properties: {
-            tag: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-            unit: {
-              type: 'string',
+    writtenAreaSizes: {
+      type: 'array',
+      items: {
+        anyOf: [
+          {
+            type: 'object',
+            required: [],
+            properties: {
+              tag: {
+                type: 'string',
+              },
+              w: {
+                type: 'object',
+                required: ['value', 'unit'],
+                properties: {
+                  tag: {
+                    type: 'string',
+                  },
+                  value: {
+                    type: 'number',
+                  },
+                  unit: {
+                    type: 'string',
+                  },
+                },
+              },
+              d: {
+                type: 'object',
+                required: ['value', 'unit'],
+                properties: {
+                  tag: {
+                    type: 'string',
+                  },
+                  value: {
+                    type: 'number',
+                  },
+                  unit: {
+                    type: 'string',
+                  },
+                },
+              },
+              h: {
+                type: 'object',
+                required: ['value', 'unit'],
+                properties: {
+                  tag: {
+                    type: 'string',
+                  },
+                  value: {
+                    type: 'number',
+                  },
+                  unit: {
+                    type: 'string',
+                  },
+                },
+              },
+              note: {
+                type: 'string',
+              },
             },
           },
-        },
-        d: {
-          type: 'object',
-          required: ['value', 'unit'],
-          properties: {
-            tag: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-            unit: {
-              type: 'string',
-            },
-          },
-        },
-        h: {
-          type: 'object',
-          required: ['value', 'unit'],
-          properties: {
-            tag: {
-              type: 'string',
-            },
-            value: {
-              type: 'number',
-            },
-            unit: {
-              type: 'string',
-            },
-          },
-        },
-        note: {
-          type: 'string',
-        },
+        ],
       },
     },
     writtenAreaSizeSamples: {

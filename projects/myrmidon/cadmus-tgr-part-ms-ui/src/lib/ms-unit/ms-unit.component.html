@@ -81,7 +81,7 @@
         &nbsp;
 
         <!-- sheetCount -->
-        <mat-form-field style="width: 6em">
+        <mat-form-field style="width: 5em">
           <input
             matInput
             [formControl]="sheetCount"
@@ -94,7 +94,7 @@
 
         &nbsp;
         <!-- guardSheetCount -->
-        <mat-form-field style="width: 6em">
+        <mat-form-field style="width: 5em">
           <input
             matInput
             [formControl]="guardSheetCount"
@@ -107,7 +107,7 @@
 
         &nbsp;
         <!-- backGuardSheetCount -->
-        <mat-form-field style="width: 6em">
+        <mat-form-field style="width: 5em">
           <input
             matInput
             [formControl]="backGuardSheetCount"
@@ -133,7 +133,7 @@
 
         &nbsp;
         <!-- groupOrdinal -->
-        <mat-form-field style="width: 6em">
+        <mat-form-field style="width: 5em">
           <input
             matInput
             [formControl]="groupOrdinal"
@@ -142,6 +142,16 @@
             placeholder="group ordinal"
           />
         </mat-form-field>
+      </div>
+
+      <!-- date -->
+      <div>
+        <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
+        <cadmus-historical-date-editor
+          *ngIf="hasDate?.value"
+          [date]="date"
+          (dateChange)="onDateChange($event)"
+        ></cadmus-historical-date-editor>
       </div>
 
       <!-- quires -->
@@ -527,8 +537,8 @@
       </mat-expansion-panel>
     </mat-tab>
 
-    <!-- AREA SIZE -->
-    <mat-tab label="area size">
+    <!-- AREA SIZES -->
+    <mat-tab label="area sizes">
       <div>
         <mat-form-field class="long-text">
           <input
@@ -536,13 +546,6 @@
             [formControl]="areaSizeSamples"
             placeholder="samples (comma delimited)"
           />
-          <mat-error
-            *ngIf="
-              areaSizeSamples.errors?.required &&
-              (areaSizeSamples.dirty || areaSizeSamples.touched)
-            "
-            >required</mat-error
-          >
           <mat-error
             *ngIf="
               areaSizeSamples.errors?.pattern &&
@@ -559,14 +562,111 @@
           >
         </mat-form-field>
       </div>
-
-      <cadmus-physical-size
-        [unitEntries]="szUnitEntries"
-        [tagEntries]="szTagEntries"
-        [dimTagEntries]="szDimTagEntries"
-        [size]="areaSize"
-        (sizeChange)="onAreaSizeChange($event)"
-      ></cadmus-physical-size>
+      <button
+        type="button"
+        mat-icon-button
+        color="primary"
+        (click)="addAreaSize()"
+      >
+        <mat-icon>add_circle</mat-icon> add size
+      </button>
+      <table *ngIf="areaSizes?.length">
+        <thead>
+          <tr>
+            <th></th>
+            <th>tag</th>
+            <th>w</th>
+            <th>h</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let size of areaSizes;
+              let i = index;
+              let first = first;
+              let last = last
+            "
+          >
+            <td>
+              <button
+                mat-icon-button
+                type="button"
+                color="primary"
+                matTooltip="Edit this size"
+                (click)="editAreaSize(i)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Remove this size"
+                color="warn"
+                (click)="removeAreaSize(i)"
+              >
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move size up"
+                (click)="moveAreaSizeUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move size down"
+                (click)="moveAreaSizeDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </td>
+            <td>
+              {{ size.tag }}
+            </td>
+            <td>
+              {{ dimToString(size.w) }}
+            </td>
+            <td>
+              {{ dimToString(size.h) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-expansion-panel
+        [expanded]="editingAreaSize"
+        [disabled]="!editingAreaSize"
+      >
+        <mat-expansion-panel-header>size</mat-expansion-panel-header>
+        <cadmus-physical-size
+          [unitEntries]="szUnitEntries"
+          [tagEntries]="szTagEntries"
+          [dimTagEntries]="szDimTagEntries"
+          [size]="editedAreaSize"
+          (sizeChange)="onEditedAreaSizeChange($event)"
+        ></cadmus-physical-size>
+        <button
+          type="button"
+          mat-icon-button
+          (click)="editAreaSize(-1)"
+          matTooltip="Discard size"
+        >
+          <mat-icon color="warn">clear</mat-icon>
+        </button>
+        <button
+          type="button"
+          mat-icon-button
+          (click)="saveAreaSize()"
+          matTooltip="Save size"
+        >
+          <mat-icon color="primary">check_circle</mat-icon>
+        </button>
+      </mat-expansion-panel>
     </mat-tab>
 
     <!-- WATERMARKS -->
