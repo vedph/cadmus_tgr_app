@@ -62,7 +62,7 @@ export class MsHistoryPartComponent
   ) {
     super(authService);
     // form
-    this.provenances = _formBuilder.array([], Validators.required);
+    this.provenances = _formBuilder.array([]);
     this.history = _formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(5000),
@@ -181,12 +181,11 @@ export class MsHistoryPartComponent
         creatorId: '',
         timeModified: new Date(),
         userId: '',
-        provenances: [],
         history: '',
       };
     }
 
-    part.provenances = this.getProvenances() || [];
+    part.provenances = this.getProvenances();
     part.history = this.history.value?.trim();
     part.owners = this.getOwners();
     part.annotations = this.getAnnotations();

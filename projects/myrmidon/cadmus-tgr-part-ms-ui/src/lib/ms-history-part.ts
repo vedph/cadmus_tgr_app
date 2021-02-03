@@ -25,7 +25,7 @@ export interface MsAnnotation {
  * The manuscript's history part model.
  */
 export interface MsHistoryPart extends Part {
-  provenances: GeoAddress[];
+  provenances?: GeoAddress[];
   history: string;
   owners?: string[];
   subscription?: MsSubscription;
@@ -54,7 +54,6 @@ export const MSHISTORY_PART_SCHEMA = {
     'creatorId',
     'timeModified',
     'userId',
-    'provenances',
     'history',
   ],
   properties: {
