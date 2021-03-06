@@ -4,7 +4,7 @@ Quick Docker image build:
 
 1. `npm run build-all`
 2. `ng build --prod`
-3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.16 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.17 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
 
 Web application frontend for Cadmus _TGR_. This application is built by packing together a number of components:
 
@@ -33,7 +33,9 @@ ng generate library @myrmidon/cadmus-tgr-core --prefix tgr
 window.__env.apiUrl = "http://100.101.102.103:59590/api/";
 ```
 
-3. in `docker-compose.yml`, ensure that your web app IP is found in the `AllowedOrigins` of the API layer, e.g.:
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.17-prod` and then push the image.
+
+CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the `AllowedOrigins` of the API layer, e.g.:
 
 ```yml
 - ALLOWEDORIGINS__0=http://100.101.102.103
