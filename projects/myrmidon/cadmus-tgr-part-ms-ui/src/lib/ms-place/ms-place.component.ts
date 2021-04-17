@@ -1,13 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { DocReference, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { BehaviorSubject } from 'rxjs';
 import { MsPlace } from '../ms-places-part';
 
 @Component({
@@ -40,7 +38,7 @@ export class MsPlaceComponent implements OnInit {
   public rank: FormControl;
   public sources: FormControl;
 
-  public sources$: BehaviorSubject<DocReference[]>;
+  public initialSources: DocReference[];
 
   /**
    * ms-place-areas thesaurus entries.
@@ -56,7 +54,7 @@ export class MsPlaceComponent implements OnInit {
   constructor(formBuilder: FormBuilder) {
     this.modelChange = new EventEmitter<MsPlace>();
     this.editorClose = new EventEmitter<any>();
-    this.sources$ = new BehaviorSubject<DocReference[]>([]);
+    this.initialSources = [];
     // form
     this.area = formBuilder.control(null, [
       Validators.required,
@@ -92,7 +90,7 @@ export class MsPlaceComponent implements OnInit {
     this.city.setValue(model.city);
     this.site.setValue(model.site);
     this.rank.setValue(model.rank || 0);
-    this.sources$.next(model.sources || []);
+    this.initialSources = model.sources || [];
 
     this.form.markAsPristine();
   }

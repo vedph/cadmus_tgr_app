@@ -54,7 +54,7 @@
 
     &nbsp;
     <!-- rank -->
-    <mat-form-field style="width: 4em;">
+    <mat-form-field style="width: 4em">
       <input
         matInput
         type="number"
@@ -69,9 +69,9 @@
   <div>
     <h4>sources</h4>
     <cadmus-doc-references
-      [model$]="sources$"
       [tagEntries]="tagEntries"
-      (modelChange)="onSourcesChange($event)"
+      [references]="initialSources"
+      (referencesChange)="onSourcesChange($event)"
     ></cadmus-doc-references>
   </div>
 

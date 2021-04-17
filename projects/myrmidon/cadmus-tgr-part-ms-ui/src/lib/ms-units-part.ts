@@ -27,9 +27,9 @@ export interface MsRuling {
 }
 
 export interface MsUnit {
-  start: MsLocation | null;
-  end: MsLocation | null;
-  material: string | null;
+  start?: MsLocation | null;
+  end?: MsLocation | null;
+  material?: string | null;
   guardSheetMaterial?: string;
   sheetCount: number;
   guardSheetCount: number;

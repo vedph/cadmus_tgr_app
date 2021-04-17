@@ -8,7 +8,6 @@ import {
 import { DocReference, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
-import { BehaviorSubject } from 'rxjs';
 import { MsContent } from '../ms-contents-part';
 
 @Component({
@@ -32,7 +31,6 @@ export class MsContentComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
   public start: FormControl;
   public end: FormControl;
   public work: FormControl;
@@ -41,9 +39,10 @@ export class MsContentComponent implements OnInit {
   public incipit: FormControl;
   public explicit: FormControl;
   public note: FormControl;
+  public editions: FormControl;
+  public form: FormGroup;
 
-  public editions$: BehaviorSubject<DocReference[]>;
-  public editions: DocReference[];
+  public initialEditions: DocReference[];
 
   constructor(
     formBuilder: FormBuilder,
@@ -51,8 +50,7 @@ export class MsContentComponent implements OnInit {
   ) {
     this.modelChange = new EventEmitter<MsContent>();
     this.editorClose = new EventEmitter<any>();
-    this.editions$ = new BehaviorSubject<DocReference[]>([]);
-    this.editions = [];
+    this.initialEditions = [];
     // form
     this.start = formBuilder.control(null, [
       Validators.required,
@@ -68,6 +66,7 @@ export class MsContentComponent implements OnInit {
     this.incipit = formBuilder.control(null, Validators.maxLength(500));
     this.explicit = formBuilder.control(null, Validators.maxLength(500));
     this.note = formBuilder.control(null, Validators.maxLength(500));
+    this.editions = formBuilder.control([]);
     this.form = formBuilder.group({
       start: this.start,
       end: this.end,
@@ -76,7 +75,8 @@ export class MsContentComponent implements OnInit {
       title: this.title,
       incipit: this.incipit,
       explicit: this.explicit,
-      note: this.note
+      note: this.note,
+      editions: this.editions,
     });
   }
 
@@ -98,8 +98,7 @@ export class MsContentComponent implements OnInit {
     this.incipit.setValue(model.incipit);
     this.explicit.setValue(model.explicit);
     this.note.setValue(model.note);
-    // editions
-    this.editions$.next(model.editions || []);
+    this.initialEditions = model.editions || [];
 
     this.form.markAsPristine();
   }
@@ -114,8 +113,7 @@ export class MsContentComponent implements OnInit {
       incipit: this.incipit.value?.trim(),
       explicit: this.explicit.value?.trim(),
       note: this.note.value?.trim(),
-      // editions
-      editions: this.editions?.length? this.editions : undefined
+      editions: this.editions.value?.length ? this.editions.value : undefined,
     };
   }
 
@@ -128,7 +126,7 @@ export class MsContentComponent implements OnInit {
   }
 
   public onEditionsChange(editions: DocReference[]): void {
-    this.editions = editions;
+    this.editions.setValue(editions);
     this.form.markAsDirty();
   }
 

@@ -191,7 +191,7 @@ export class MsOrnamentsPartComponent
     this.ornaments.setValue(ornaments);
   }
 
-  public locationToString(location: MsLocation | null): string {
+  public locationToString(location?: MsLocation): string {
     return this._locService.locationToString(location) ?? '';
   }
 }

@@ -152,7 +152,7 @@ export class MsUnitsPartComponent
     const unit: MsUnit = {
       start: { n: 0 },
       end: { n: 0 },
-      material: null,
+      material: undefined,
       sheetCount: 0,
       guardSheetCount: 0,
       backGuardSheetCount: 0

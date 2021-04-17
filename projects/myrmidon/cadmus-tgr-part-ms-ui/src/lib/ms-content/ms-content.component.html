@@ -30,11 +30,11 @@
 
       <div *ngIf="workEntries?.length">
         <cadmus-thesaurus-tree
-        [entries]="workEntries"
-        rootLabel="works"
-        [renderLabel]="renderLabel"
-        (entryChange)="onWorkEntryChange($event)"
-      ></cadmus-thesaurus-tree>
+          [entries]="workEntries"
+          rootLabel="works"
+          [renderLabel]="renderLabel"
+          (entryChange)="onWorkEntryChange($event)"
+        ></cadmus-thesaurus-tree>
       </div>
       <div>
         <!-- work -->
@@ -125,10 +125,10 @@
     <!-- EDITIONS -->
     <mat-tab label="editions">
       <cadmus-doc-references
-      [model$]="editions$"
-      [tagEntries]="docTagEntries"
-      (modelChange)="onEditionsChange($event)"
-    ></cadmus-doc-references>
+        [tagEntries]="docTagEntries"
+        [references]="initialEditions"
+        (referencesChange)="onEditionsChange($event)"
+      ></cadmus-doc-references>
     </mat-tab>
   </mat-tab-group>
 
