@@ -68,17 +68,17 @@
                   <input matInput formControlName="area" placeholder="area" />
                   <mat-error
                     *ngIf="
-                      item['controls'].area.errors?.required &&
-                      (item['controls'].area.dirty ||
-                        item['controls'].area.touched)
+                      $any(item)['controls'].area.errors?.required &&
+                      ($any(item)['controls'].area.dirty ||
+                        $any(item)['controls'].area.touched)
                     "
                     >area required</mat-error
                   >
                   <mat-error
                     *ngIf="
-                      item['controls'].area.errors?.maxLength &&
-                      (item['controls'].area.dirty ||
-                        item['controls'].area.touched)
+                      $any(item)['controls'].area.errors?.maxLength &&
+                      ($any(item)['controls'].area.dirty ||
+                        $any(item)['controls'].area.touched)
                     "
                     >area too long</mat-error
                   >
@@ -92,9 +92,9 @@
                   />
                   <mat-error
                     *ngIf="
-                      item['controls'].address.errors?.maxLength &&
-                      (item['controls'].address.dirty ||
-                        item['controls'].address.touched)
+                      $any(item)['controls'].address.errors?.maxLength &&
+                      ($any(item)['controls'].address.dirty ||
+                        $any(item)['controls'].address.touched)
                     "
                     >address too long</mat-error
                   >
@@ -175,17 +175,17 @@
                   <input matInput formControlName="name" placeholder="name" />
                   <mat-error
                     *ngIf="
-                      item['controls'].name.errors?.required &&
-                      (item['controls'].name.dirty ||
-                        item['controls'].name.touched)
+                      $any(item)['controls'].name.errors?.required &&
+                      ($any(item)['controls'].name.dirty ||
+                        $any(item)['controls'].name.touched)
                     "
                     >name required</mat-error
                   >
                   <mat-error
                     *ngIf="
-                      item['controls'].name.errors?.maxLength &&
-                      (item['controls'].name.dirty ||
-                        item['controls'].name.touched)
+                      $any(item)['controls'].name.errors?.maxLength &&
+                      ($any(item)['controls'].name.dirty ||
+                        $any(item)['controls'].name.touched)
                     "
                     >name too long</mat-error
                   >
@@ -394,9 +394,9 @@
                   </mat-select>
                   <mat-error
                     *ngIf="
-                      item['controls'].language.errors?.required &&
-                      (item['controls'].language.dirty ||
-                        item['controls'].language.touched)
+                      $any(item)['controls'].language.errors?.required &&
+                      ($any(item)['controls'].language.dirty ||
+                        $any(item)['controls'].language.touched)
                     "
                     >required</mat-error
                   >
@@ -411,17 +411,17 @@
                   />
                   <mat-error
                     *ngIf="
-                      item['controls'].language.errors?.required &&
-                      (item['controls'].language.dirty ||
-                        item['controls'].language.touched)
+                      $any(item)['controls'].language.errors?.required &&
+                      ($any(item)['controls'].language.dirty ||
+                        $any(item)['controls'].language.touched)
                     "
                     >required</mat-error
                   >
                   <mat-error
                     *ngIf="
-                      item['controls'].language.errors?.maxLength &&
-                      (item['controls'].language.dirty ||
-                        item['controls'].language.touched)
+                      $any(item)['controls'].language.errors?.maxLength &&
+                      ($any(item)['controls'].language.dirty ||
+                        $any(item)['controls'].language.touched)
                     "
                     >too long</mat-error
                   >
@@ -437,9 +437,9 @@
                   />
                   <mat-error
                     *ngIf="
-                      item['controls'].handId.errors?.maxLength &&
-                      (item['controls'].handId.dirty ||
-                        item['controls'].handId.touched)
+                      $any(item)['controls'].handId.errors?.maxLength &&
+                      ($any(item)['controls'].handId.dirty ||
+                        $any(item)['controls'].handId.touched)
                     "
                     >too long</mat-error
                   >
@@ -451,9 +451,9 @@
                     <input matInput formControlName="note" placeholder="note" />
                     <mat-error
                       *ngIf="
-                        item['controls'].note.errors?.maxLength &&
-                        (item['controls'].note.dirty ||
-                          item['controls'].note.touched)
+                        $any(item)['controls'].note.errors?.maxLength &&
+                        ($any(item)['controls'].note.dirty ||
+                          $any(item)['controls'].note.touched)
                       "
                       >too long</mat-error
                     >

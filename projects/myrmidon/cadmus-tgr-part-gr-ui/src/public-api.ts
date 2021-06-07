@@ -5,6 +5,7 @@
 export * from './lib/available-witnesses-part';
 export * from './lib/available-witnesses-part/available-witnesses-part.component';
 
+export * from './lib/interpolation/interpolation.component';
 export * from './lib/interpolations-fragment';
 export * from './lib/interpolations-fragment/interpolations-fragment.component';
 

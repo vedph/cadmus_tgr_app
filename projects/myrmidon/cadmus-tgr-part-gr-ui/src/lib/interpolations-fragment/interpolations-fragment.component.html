@@ -84,7 +84,7 @@
                 <td [matTooltip]="getEntryTypeDsc(entry.type)">
                   <mat-icon>{{ getEntryTypeIcon(entry.type) }}</mat-icon>
                 </td>
-                <td>{{ resolveId(entry.role) }}</td>
+                <td>{{ resolveId(entry.role, 'r') }}</td>
                 <td>{{ languagesToString(entry.languages) }}</td>
                 <td>{{ entry.value }}</td>
               </tr>

@@ -42,7 +42,7 @@
     ></cadmus-historical-date-editor>
   </div>
 
-  <br>
+  <br />
   <div>
     <!-- description -->
     <mat-form-field class="long-text">
@@ -140,17 +140,17 @@
             <input matInput formControlName="letter" placeholder="letter" />
             <mat-error
               *ngIf="
-                item['controls'].letter.errors?.required &&
-                (item['controls'].letter.dirty ||
-                  item['controls'].letter.touched)
+                $any(item)['controls'].letter.errors?.required &&
+                ($any(item)['controls'].letter.dirty ||
+                  $any(item)['controls'].letter.touched)
               "
               >letter required</mat-error
             >
             <mat-error
               *ngIf="
-                item['controls'].letter.errors?.maxLength &&
-                (item['controls'].letter.dirty ||
-                  item['controls'].letter.touched)
+                $any(item)['controls'].letter.errors?.maxLength &&
+                ($any(item)['controls'].letter.dirty ||
+                  $any(item)['controls'].letter.touched)
               "
               >too long</mat-error
             >
@@ -161,9 +161,9 @@
             <input matInput formControlName="imageId" placeholder="imageId" />
             <mat-error
               *ngIf="
-                item['controls'].imageId.errors?.maxLength &&
-                (item['controls'].imageId.dirty ||
-                  item['controls'].imageId.touched)
+                $any(item)['controls'].imageId.errors?.maxLength &&
+                ($any(item)['controls'].imageId.dirty ||
+                  $any(item)['controls'].imageId.touched)
               "
               >too long</mat-error
             >
@@ -179,17 +179,17 @@
               />
               <mat-error
                 *ngIf="
-                  item['controls'].description.errors?.required &&
-                  (item['controls'].description.dirty ||
-                    item['controls'].description.touched)
+                  $any(item)['controls'].description.errors?.required &&
+                  ($any(item)['controls'].description.dirty ||
+                    $any(item)['controls'].description.touched)
                 "
                 >required</mat-error
               >
               <mat-error
                 *ngIf="
-                  item['controls'].description.errors?.maxLength &&
-                  (item['controls'].description.dirty ||
-                    item['controls'].description.touched)
+                  $any(item)['controls'].description.errors?.maxLength &&
+                  ($any(item)['controls'].description.dirty ||
+                    $any(item)['controls'].description.touched)
                 "
                 >too long</mat-error
               >

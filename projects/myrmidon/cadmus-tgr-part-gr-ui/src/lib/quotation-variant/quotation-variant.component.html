@@ -94,8 +94,9 @@
             </mat-select>
             <mat-error
               *ngIf="
-                item['controls'].value.errors?.required &&
-                (item['controls'].value.dirty || item['controls'].value.touched)
+                $any(item)['controls'].value.errors?.required &&
+                ($any(item)['controls'].value.dirty ||
+                  $any(item)['controls'].value.touched)
               "
               >value required</mat-error
             >
@@ -105,15 +106,17 @@
             <input matInput formControlName="value" placeholder="value" />
             <mat-error
               *ngIf="
-                item['controls'].value.errors?.required &&
-                (item['controls'].value.dirty || item['controls'].value.touched)
+                $any(item)['controls'].value.errors?.required &&
+                ($any(item)['controls'].value.dirty ||
+                  $any(item)['controls'].value.touched)
               "
               >value required</mat-error
             >
             <mat-error
               *ngIf="
-                item['controls'].value.errors?.maxLength &&
-                (item['controls'].value.dirty || item['controls'].value.touched)
+                $any(item)['controls'].value.errors?.maxLength &&
+                ($any(item)['controls'].value.dirty ||
+                  $any(item)['controls'].value.touched)
               "
               >value too long</mat-error
             >
@@ -124,8 +127,9 @@
             <input matInput formControlName="note" placeholder="note" />
             <mat-error
               *ngIf="
-                item['controls'].note.errors?.maxLength &&
-                (item['controls'].note.dirty || item['controls'].note.touched)
+                $any(item)['controls'].note.errors?.maxLength &&
+                ($any(item)['controls'].note.dirty ||
+                  $any(item)['controls'].note.touched)
               "
               >note too long</mat-error
             >
@@ -199,8 +203,9 @@
             </mat-select>
             <mat-error
               *ngIf="
-                item['controls'].value.errors?.required &&
-                (item['controls'].value.dirty || item['controls'].value.touched)
+                $any(item)['controls'].value.errors?.required &&
+                ($any(item)['controls'].value.dirty ||
+                  $any(item)['controls'].value.touched)
               "
               >value required</mat-error
             >
@@ -210,15 +215,17 @@
             <input matInput formControlName="value" placeholder="value" />
             <mat-error
               *ngIf="
-                item['controls'].value.errors?.required &&
-                (item['controls'].value.dirty || item['controls'].value.touched)
+                $any(item)['controls'].value.errors?.required &&
+                ($any(item)['controls'].value.dirty ||
+                  $any(item)['controls'].value.touched)
               "
               >value required</mat-error
             >
             <mat-error
               *ngIf="
-                item['controls'].value.errors?.maxLength &&
-                (item['controls'].value.dirty || item['controls'].value.touched)
+                $any(item)['controls'].value.errors?.maxLength &&
+                ($any(item)['controls'].value.dirty ||
+                  $any(item)['controls'].value.touched)
               "
               >value too long</mat-error
             >
@@ -229,9 +236,9 @@
             <input matInput formControlName="location" placeholder="location" />
             <mat-error
               *ngIf="
-                item['controls'].location.errors?.maxLength &&
-                (item['controls'].location.dirty ||
-                  item['controls'].location.touched)
+                $any(item)['controls'].location.errors?.maxLength &&
+                ($any(item)['controls'].location.dirty ||
+                  $any(item)['controls'].location.touched)
               "
               >loc. too long</mat-error
             >
@@ -250,8 +257,9 @@
             <input matInput formControlName="tag" placeholder="tag" />
             <mat-error
               *ngIf="
-                item['controls'].tag.errors?.maxLength &&
-                (item['controls'].tag.dirty || item['controls'].tag.touched)
+                $any(item)['controls'].tag.errors?.maxLength &&
+                ($any(item)['controls'].tag.dirty ||
+                  $any(item)['controls'].tag.touched)
               "
               >tag too long</mat-error
             >
@@ -262,8 +270,9 @@
             <input matInput formControlName="note" placeholder="note" />
             <mat-error
               *ngIf="
-                item['controls'].note.errors?.maxLength &&
-                (item['controls'].note.dirty || item['controls'].note.touched)
+                $any(item)['controls'].note.errors?.maxLength &&
+                ($any(item)['controls'].note.dirty ||
+                  $any(item)['controls'].note.touched)
               "
               >note too long</mat-error
             >
@@ -276,7 +285,7 @@
     </button>
     <div *ngIf="workEntries?.length">
       <cadmus-thesaurus-tree
-        [entries]="workEntries"
+        [entries]="workEntries || []"
         rootLabel="works"
         [renderLabel]="renderLabel"
         (entryChange)="onEntryChange($event)"

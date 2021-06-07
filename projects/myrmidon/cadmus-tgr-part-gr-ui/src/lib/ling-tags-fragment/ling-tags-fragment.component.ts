@@ -72,14 +72,14 @@ export class LingTagsFragmentComponent
   protected onThesauriSet(): void {
     let key = 'ling-tags';
     if (this.thesauri && this.thesauri[key]) {
-      this.tagEntries$.next(this.thesauri[key].entries);
+      this.tagEntries$.next(this.thesauri[key].entries || []);
     } else {
       this.tagEntries$.next([]);
     }
 
     key = 'ling-tags-aux';
     if (this.thesauri && this.thesauri[key]) {
-      this.auxEntries$.next(this.thesauri[key].entries);
+      this.auxEntries$.next(this.thesauri[key].entries || []);
     } else {
       this.auxEntries$.next([]);
     }

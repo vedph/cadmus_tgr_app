@@ -78,8 +78,9 @@
               </mat-select>
               <mat-error
                 *ngIf="
-                  item['controls'].id.errors?.required &&
-                  (item['controls'].id.dirty || item['controls'].id.touched)
+                  $any(item)['controls'].id.errors?.required &&
+                  ($any(item)['controls'].id.dirty ||
+                    $any(item)['controls'].id.touched)
                 "
                 >ID required</mat-error
               >
@@ -90,15 +91,17 @@
               <input matInput formControlName="id" placeholder="id" />
               <mat-error
                 *ngIf="
-                  item['controls'].id.errors?.required &&
-                  (item['controls'].id.dirty || item['controls'].id.touched)
+                  $any(item)['controls'].id.errors?.required &&
+                  ($any(item)['controls'].id.dirty ||
+                    $any(item)['controls'].id.touched)
                 "
                 >ID required</mat-error
               >
               <mat-error
                 *ngIf="
-                  item['controls'].id.errors?.maxLength &&
-                  (item['controls'].id.dirty || item['controls'].id.touched)
+                  $any(item)['controls'].id.errors?.maxLength &&
+                  ($any(item)['controls'].id.dirty ||
+                    $any(item)['controls'].id.touched)
                 "
                 >ID too long</mat-error
               >
@@ -113,9 +116,9 @@
                 <input matInput formControlName="note" placeholder="note" />
                 <mat-error
                   *ngIf="
-                    item['controls'].note.errors?.maxLength &&
-                    (item['controls'].note.dirty ||
-                      item['controls'].note.touched)
+                    $any(item)['controls'].note.errors?.maxLength &&
+                    ($any(item)['controls'].note.dirty ||
+                      $any(item)['controls'].note.touched)
                   "
                   >note too long</mat-error
                 >

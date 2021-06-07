@@ -158,17 +158,17 @@
                 <input matInput formControlName="work" placeholder="work" />
                 <mat-error
                   *ngIf="
-                    item['controls'].work.errors?.required &&
-                    (item['controls'].work.dirty ||
-                      item['controls'].work.touched)
+                    $any(item)['controls'].work.errors?.required &&
+                    ($any(item)['controls'].work.dirty ||
+                      $any(item)['controls'].work.touched)
                   "
                   >required</mat-error
                 >
                 <mat-error
                   *ngIf="
-                    item['controls'].work.errors?.maxLength &&
-                    (item['controls'].work.dirty ||
-                      item['controls'].work.touched)
+                    $any(item)['controls'].work.errors?.maxLength &&
+                    ($any(item)['controls'].work.dirty ||
+                      $any(item)['controls'].work.touched)
                   "
                   >too long</mat-error
                 >
@@ -183,17 +183,17 @@
                 />
                 <mat-error
                   *ngIf="
-                    item['controls'].location.errors?.required &&
-                    (item['controls'].location.dirty ||
-                      item['controls'].location.touched)
+                    $any(item)['controls'].location.errors?.required &&
+                    ($any(item)['controls'].location.dirty ||
+                      $any(item)['controls'].location.touched)
                   "
                   >required</mat-error
                 >
                 <mat-error
                   *ngIf="
-                    item['controls'].location.errors?.maxLength &&
-                    (item['controls'].location.dirty ||
-                      item['controls'].location.touched)
+                    $any(item)['controls'].location.errors?.maxLength &&
+                    ($any(item)['controls'].location.dirty ||
+                      $any(item)['controls'].location.touched)
                   "
                   >too long</mat-error
                 >
@@ -216,8 +216,9 @@
                 <input matInput formControlName="tag" placeholder="tag" />
                 <mat-error
                   *ngIf="
-                    item['controls'].tag.errors?.maxLength &&
-                    (item['controls'].tag.dirty || item['controls'].tag.touched)
+                    $any(item).controls.tag.errors?.maxLength &&
+                    ($any(item)['controls'].tag.dirty ||
+                      $any(item)['controls'].tag.touched)
                   "
                   >too long</mat-error
                 >

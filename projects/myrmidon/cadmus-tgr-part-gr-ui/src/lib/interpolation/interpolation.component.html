@@ -157,8 +157,9 @@
               </mat-select>
               <mat-error
                 *ngIf="
-                  item['controls'].id.errors?.required &&
-                  (item['controls'].id.dirty || item['controls'].id.touched)
+                  $any(item)['controls'].id.errors?.required &&
+                  ($any(item)['controls'].id.dirty ||
+                    $any(item)['controls'].id.touched)
                 "
                 >id required</mat-error
               >
@@ -169,15 +170,17 @@
               <input matInput formControlName="id" placeholder="id" />
               <mat-error
                 *ngIf="
-                  item['controls'].id.errors?.required &&
-                  (item['controls'].id.dirty || item['controls'].id.touched)
+                  $any(item)['controls'].id.errors?.required &&
+                  ($any(item)['controls'].id.dirty ||
+                    $any(item)['controls'].id.touched)
                 "
                 >required</mat-error
               >
               <mat-error
                 *ngIf="
-                  item['controls'].id.errors?.maxLength &&
-                  (item['controls'].id.dirty || item['controls'].id.touched)
+                  $any(item)['controls'].id.errors?.maxLength &&
+                  ($any(item)['controls'].id.dirty ||
+                    $any(item)['controls'].id.touched)
                 "
                 >too long</mat-error
               >
@@ -264,9 +267,9 @@
               </mat-select>
               <mat-error
                 *ngIf="
-                  item['controls'].witness.errors?.required &&
-                  (item['controls'].witness.dirty ||
-                    item['controls'].witness.touched)
+                  $any(item)['controls'].witness.errors?.required &&
+                  ($any(item)['controls'].witness.dirty ||
+                    $any(item)['controls'].witness.touched)
                 "
                 >required</mat-error
               >
@@ -276,17 +279,17 @@
               <input matInput formControlName="witness" placeholder="witness" />
               <mat-error
                 *ngIf="
-                  item['controls'].witness.errors?.required &&
-                  (item['controls'].witness.dirty ||
-                    item['controls'].witness.touched)
+                  $any(item)['controls'].witness.errors?.required &&
+                  ($any(item)['controls'].witness.dirty ||
+                    $any(item)['controls'].witness.touched)
                 "
                 >required</mat-error
               >
               <mat-error
                 *ngIf="
-                  item['controls'].witness.errors?.maxLength &&
-                  (item['controls'].witness.dirty ||
-                    item['controls'].witness.touched)
+                  $any(item)['controls'].witness.errors?.maxLength &&
+                  ($any(item)['controls'].witness.dirty ||
+                    $any(item)['controls'].witness.touched)
                 "
                 >too long</mat-error
               >
@@ -297,9 +300,9 @@
               <input matInput formControlName="handId" placeholder="hand ID" />
               <mat-error
                 *ngIf="
-                  item['controls'].handId.errors?.maxLength &&
-                  (item['controls'].handId.dirty ||
-                    item['controls'].handId.touched)
+                  $any(item)['controls'].handId.errors?.maxLength &&
+                  ($any(item)['controls'].handId.dirty ||
+                    $any(item)['controls'].handId.touched)
                 "
                 >ID too long</mat-error
               >
