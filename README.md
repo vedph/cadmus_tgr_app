@@ -30,7 +30,7 @@ ng generate library @myrmidon/cadmus-tgr-core --prefix tgr
 2. in the `dist` folder, edit the `env.js` file and replace the `localhost` server with the IP address of your API, e.g.:
 
 ```js
-window.__env.apiUrl = "http://100.101.102.103:59590/api/";
+window.__env.apiUrl = "https://90.147.166.176:59591/api/";
 ```
 
 (note the API port number; the standard port 80/443 is reserved for this frontend).
@@ -40,5 +40,5 @@ window.__env.apiUrl = "http://100.101.102.103:59590/api/";
 CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the `AllowedOrigins` of the API layer, e.g.:
 
 ```yml
-- ALLOWEDORIGINS__0=http://100.101.102.103
+- ALLOWEDORIGINS__0=http://90.147.166.176
 ```
