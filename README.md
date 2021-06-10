@@ -30,12 +30,14 @@ ng generate library @myrmidon/cadmus-tgr-core --prefix tgr
 2. in the `dist` folder, edit the `env.js` file and replace the `localhost` server with the IP address of your API, e.g.:
 
 ```js
-window.__env.apiUrl = "https://90.147.166.176:59591/api/";
+window.__env.apiUrl = "https://ip-90-147-166-176.ct1.garrservices.it:59591/api/";
 ```
+
+Swagger at <https://ip-90-147-166-176.ct1.garrservices.it:59591/swagger/index.html>.
 
 (note the API port number; the standard port 80/443 is reserved for this frontend).
 
-3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.23-prod` and then push the image.
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.24-prod` and then push the image.
 
 CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the `AllowedOrigins` of the API layer, e.g.:
 
