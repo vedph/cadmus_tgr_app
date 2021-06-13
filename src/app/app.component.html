@@ -3,7 +3,7 @@
     <span style="flex: 0 0 60px"
       ><img src="./assets/img/logo-white-40.png" alt="Fusisoft"
     /></span>
-    <a mat-button routerLink="/home">Cadmus TGR</a>
+    <a mat-button routerLink="/home">Cadmus TAL</a>
 
     <button
       mat-button
@@ -31,7 +31,8 @@
       mat-button
       routerLink="/thesauri"
       *ngIf="
-        user && (user?.roles?.includes('admin') || user?.roles?.includes('editor'))
+        user &&
+        (user?.roles?.includes('admin') || user?.roles?.includes('editor'))
       "
       >Thesauri</a
     >
@@ -82,12 +83,12 @@
   <div layout="row" layout-align="center center">
     <p>
       <a href="https://www.uniroma1.it" target="_blank"
-        >Università degli Studi di Roma "Sapienza"</a
+        >Sapienza Università di Roma</a
       >
       -
-      <a href="https://www.uniroma3.it" target="_blank"
-        >Università degli Studi Roma Tre</a
-      >
+      <a href="https://www.uniroma3.it" target="_blank">Università Roma Tre</a>
+      -
+      <a href="https://www.unipi.it/" target="_blank">Università di Pisa</a>
       - Cadmus by
       <a href="https://www.fusisoft.net" target="_blank">Daniele Fusi</a> at
       <a href="https://www.unive.it/pag/39287" target="_blank">VeDPH</a>
