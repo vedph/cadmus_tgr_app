@@ -4,7 +4,7 @@ Quick Docker image build:
 
 1. `npm run build-all`
 2. `ng build --configuration production`
-3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.21 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.22 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
 
 Web application frontend for Cadmus _TGR_. This application is built by packing together a number of components:
 
@@ -37,7 +37,7 @@ Swagger at <https://ip-90-147-166-176.ct1.garrservices.it:59591/swagger/index.ht
 
 (note the API port number; the standard port 80/443 is reserved for this frontend).
 
-3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.24-prod` and then push the image.
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.25-prod` and then push the image.
 
 CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the `AllowedOrigins` of the API layer, e.g.:
 

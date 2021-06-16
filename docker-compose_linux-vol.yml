@@ -70,7 +70,7 @@ services:
       - cadmus-network
 
   cadmus-web:
-    image: vedph2020/cadmus-tgr-app:1.0.20
+    image: vedph2020/cadmus-tgr-app:1.0.22
     ports:
       - 4200:80
     depends_on:
