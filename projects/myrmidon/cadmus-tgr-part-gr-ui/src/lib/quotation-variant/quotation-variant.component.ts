@@ -79,7 +79,7 @@ export class QuotationVariantComponent implements OnInit {
     ]);
     this.value = _formBuilder.control(null, [
       Validators.required,
-      Validators.maxLength(100),
+      Validators.maxLength(300),
     ]);
     this.witnesses = _formBuilder.array([]);
     this.authors = _formBuilder.array([]);
