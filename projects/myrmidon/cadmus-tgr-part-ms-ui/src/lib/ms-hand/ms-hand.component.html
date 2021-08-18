@@ -37,7 +37,7 @@
   <!-- date -->
   <div>
     <cadmus-historical-date-editor
-      [date]="date"
+      [date]="$any(date)"
       (dateChange)="onDateChange($event)"
     ></cadmus-historical-date-editor>
   </div>

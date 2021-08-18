@@ -18,6 +18,7 @@ export * from './lib/ms-ornament/ms-ornament.component';
 export * from './lib/ms-ornaments-part/ms-ornaments-part.component';
 
 export * from './lib/ms-places-part';
+export * from './lib/ms-place/ms-place.component';
 export * from './lib/ms-places-part/ms-places-part.component';
 
 export * from './lib/ms-scripts-part';

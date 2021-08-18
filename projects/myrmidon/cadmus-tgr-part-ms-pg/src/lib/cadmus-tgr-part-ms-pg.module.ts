@@ -32,6 +32,7 @@ import { MsFormalFeaturesPartFeatureComponent } from './ms-formal-features-part-
 import { MsOrnamentsPartFeatureComponent } from './ms-ornaments-part-feature/ms-ornaments-part-feature.component';
 import { MsHistoryPartFeatureComponent } from './ms-history-part-feature/ms-history-part-feature.component';
 import { MsPlacesPartFeatureComponent } from './ms-places-part-feature/ms-places-part-feature.component';
+import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
 
 // https://github.com/ng-packagr/ng-packagr/issues/778
 export const RouterModuleForChild = RouterModule.forChild([
@@ -98,6 +99,7 @@ export const RouterModuleForChild = RouterModule.forChild([
     CadmusCoreModule,
     CadmusMaterialModule,
     CadmusUiModule,
+    CadmusUiPgModule,
     // Cadmus itinera
     CadmusItineraCoreModule,
     CadmusItineraUiModule,

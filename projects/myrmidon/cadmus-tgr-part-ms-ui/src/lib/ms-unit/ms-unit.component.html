@@ -149,7 +149,7 @@
         <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
         <cadmus-historical-date-editor
           *ngIf="hasDate?.value"
-          [date]="date"
+          [date]="$any(date)"
           (dateChange)="onDateChange($event)"
         ></cadmus-historical-date-editor>
       </div>
@@ -513,10 +513,10 @@
       >
         <mat-expansion-panel-header>size</mat-expansion-panel-header>
         <cadmus-physical-size
-          [unitEntries]="szUnitEntries"
-          [tagEntries]="szTagEntries"
-          [dimTagEntries]="szDimTagEntries"
-          [size]="editedLeafSize"
+          [unitEntries]="$any(szUnitEntries)"
+          [tagEntries]="$any(szTagEntries)"
+          [dimTagEntries]="$any(szDimTagEntries)"
+          [size]="$any(editedLeafSize)"
           (sizeChange)="onEditedLeafSizeChange($event)"
         ></cadmus-physical-size>
         <button
@@ -645,10 +645,10 @@
       >
         <mat-expansion-panel-header>size</mat-expansion-panel-header>
         <cadmus-physical-size
-          [unitEntries]="szUnitEntries"
-          [tagEntries]="szTagEntries"
-          [dimTagEntries]="szDimTagEntries"
-          [size]="editedAreaSize"
+          [unitEntries]="$any(szUnitEntries)"
+          [tagEntries]="$any(szTagEntries)"
+          [dimTagEntries]="$any(szDimTagEntries)"
+          [size]="$any(editedAreaSize)"
           (sizeChange)="onEditedAreaSizeChange($event)"
         ></cadmus-physical-size>
         <button

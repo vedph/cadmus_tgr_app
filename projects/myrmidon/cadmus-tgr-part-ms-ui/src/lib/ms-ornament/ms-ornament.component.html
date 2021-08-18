@@ -56,10 +56,10 @@
     <!-- size-->
     <cadmus-physical-size
       *ngIf="hasSize.value"
-      [size]="size"
-      [unitEntries]="szUnitEntries"
-      [tagEntries]="szTagEntries"
-      [dimTagEntries]="szDimTagEntries"
+      [size]="$any(size)"
+      [unitEntries]="$any(szUnitEntries)"
+      [tagEntries]="$any(szTagEntries)"
+      [dimTagEntries]="$any(szDimTagEntries)"
       (sizeChange)="onSizeChange($event)"
     >
     </cadmus-physical-size>

@@ -11,7 +11,7 @@
           <div *ngFor="let c of langChecks.controls; let i = index">
             <div [formGroupName]="i">
               <mat-checkbox formControlName="check">{{
-                langEntries[i].value
+                $any(langEntries)[i].value
               }}</mat-checkbox>
             </div>
           </div>
@@ -48,7 +48,7 @@
         <!-- type -->
         <cadmus-thesaurus-tree
           *ngIf="scrTypeEntries?.length"
-          [entries]="scrTypeEntries"
+          [entries]="$any(scrTypeEntries)"
           rootLabel="scripts"
           [renderLabel]="renderLabel"
           (entryChange)="onScrTypeEntryChange($event)"

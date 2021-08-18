@@ -30,7 +30,7 @@
 
       <div *ngIf="workEntries?.length">
         <cadmus-thesaurus-tree
-          [entries]="workEntries"
+          [entries]="$any(workEntries)"
           rootLabel="works"
           [renderLabel]="renderLabel"
           (entryChange)="onWorkEntryChange($event)"
