@@ -124,11 +124,12 @@
 
     <!-- EDITIONS -->
     <mat-tab label="editions">
-      <cadmus-doc-references
+      <cadmus-refs-doc-references
+        [typeEntries]="docTypeEntries"
         [tagEntries]="docTagEntries"
         [references]="initialEditions"
         (referencesChange)="onEditionsChange($event)"
-      ></cadmus-doc-references>
+      ></cadmus-refs-doc-references>
     </mat-tab>
   </mat-tab-group>
 

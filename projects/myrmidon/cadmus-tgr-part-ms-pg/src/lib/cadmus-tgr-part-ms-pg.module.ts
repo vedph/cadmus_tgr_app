@@ -8,10 +8,6 @@ import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
 import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 
-// project-specific modules
-import { CadmusItineraCoreModule } from '@myrmidon/cadmus-itinera-core';
-import { CadmusItineraUiModule } from '@myrmidon/cadmus-itinera-ui';
-
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
 import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
 import {
@@ -22,8 +18,11 @@ import {
   MSORNAMENTS_PART_TYPEID,
   MSPLACES_PART_TYPEID,
   MSSCRIPTS_PART_TYPEID,
+  MSSIGNATURES_PART_TYPEID,
   MSUNITS_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-ms-ui';
+
+import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
 
 import { MsContentsPartFeatureComponent } from './ms-contents-part-feature/ms-contents-part-feature.component';
 import { MsUnitsPartFeatureComponent } from './ms-units-part-feature/ms-units-part-feature.component';
@@ -32,7 +31,7 @@ import { MsFormalFeaturesPartFeatureComponent } from './ms-formal-features-part-
 import { MsOrnamentsPartFeatureComponent } from './ms-ornaments-part-feature/ms-ornaments-part-feature.component';
 import { MsHistoryPartFeatureComponent } from './ms-history-part-feature/ms-history-part-feature.component';
 import { MsPlacesPartFeatureComponent } from './ms-places-part-feature/ms-places-part-feature.component';
-import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
+import { MsSignaturesPartFeatureComponent } from './ms-signatures-part-feature/ms-signatures-part-feature.component';
 
 // https://github.com/ng-packagr/ng-packagr/issues/778
 export const RouterModuleForChild = RouterModule.forChild([
@@ -73,6 +72,12 @@ export const RouterModuleForChild = RouterModule.forChild([
     canDeactivate: [PendingChangesGuard],
   },
   {
+    path: `${MSSIGNATURES_PART_TYPEID}/:pid`,
+    pathMatch: 'full',
+    component: MsSignaturesPartFeatureComponent,
+    canDeactivate: [PendingChangesGuard],
+  },
+  {
     path: `${MSUNITS_PART_TYPEID}/:pid`,
     pathMatch: 'full',
     component: MsUnitsPartFeatureComponent,
@@ -88,6 +93,7 @@ export const RouterModuleForChild = RouterModule.forChild([
     MsOrnamentsPartFeatureComponent,
     MsPlacesPartFeatureComponent,
     MsScriptsPartFeatureComponent,
+    MsSignaturesPartFeatureComponent,
     MsUnitsPartFeatureComponent,
   ],
   imports: [
@@ -100,9 +106,6 @@ export const RouterModuleForChild = RouterModule.forChild([
     CadmusMaterialModule,
     CadmusUiModule,
     CadmusUiPgModule,
-    // Cadmus itinera
-    CadmusItineraCoreModule,
-    CadmusItineraUiModule,
     CadmusTgrCoreModule,
     CadmusTgrUiModule,
     CadmusTgrPartMsUiModule,
@@ -114,7 +117,8 @@ export const RouterModuleForChild = RouterModule.forChild([
     MsOrnamentsPartFeatureComponent,
     MsPlacesPartFeatureComponent,
     MsScriptsPartFeatureComponent,
-    MsUnitsPartFeatureComponent
+    MsSignaturesPartFeatureComponent,
+    MsUnitsPartFeatureComponent,
   ],
 })
 export class CadmusTgrPartMsPgModule {}

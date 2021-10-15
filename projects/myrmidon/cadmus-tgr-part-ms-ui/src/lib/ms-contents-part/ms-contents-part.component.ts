@@ -5,11 +5,15 @@ import { deepCopy, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
 import { DialogService, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { take } from 'rxjs/operators';
-import { MsContent, MsContentsPart, MSCONTENTS_PART_TYPEID } from '../ms-contents-part';
+import {
+  MsContent,
+  MsContentsPart,
+  MSCONTENTS_PART_TYPEID,
+} from '../ms-contents-part';
 
 /**
  * MsContentsPart editor component.
- * Thesauri: author-works, doc-reference-tags (all optional).
+ * Thesauri: author-works, doc-reference-tags, doc-reference-types (all optional).
  */
 @Component({
   selector: 'tgr-ms-contents-part',
@@ -18,7 +22,8 @@ import { MsContent, MsContentsPart, MSCONTENTS_PART_TYPEID } from '../ms-content
 })
 export class MsContentsPartComponent
   extends ModelEditorComponentBase<MsContentsPart>
-  implements OnInit {
+  implements OnInit
+{
   private _editedIndex: number;
 
   public tabIndex: number;
@@ -29,15 +34,15 @@ export class MsContentsPartComponent
    * Manuscript's materials.
    */
   public workEntries: ThesaurusEntry[] | undefined;
-  /**
-   * Manuscript's ruling: manners of execution.
-   */
   public docTagEntries: ThesaurusEntry[] | undefined;
+  public docTypeEntries: ThesaurusEntry[] | undefined;
 
-  constructor(authService: AuthService,
+  constructor(
+    authService: AuthService,
     formBuilder: FormBuilder,
     private _dialogService: DialogService,
-    private _locService: MsLocationService) {
+    private _locService: MsLocationService
+  ) {
     super(authService);
     this._editedIndex = -1;
     this.tabIndex = 0;
@@ -79,6 +84,13 @@ export class MsContentsPartComponent
     } else {
       this.docTagEntries = undefined;
     }
+
+    key = 'doc-reference-types';
+    if (this.thesauri && this.thesauri[key]) {
+      this.docTypeEntries = this.thesauri[key].entries;
+    } else {
+      this.docTypeEntries = undefined;
+    }
   }
 
   protected getModelFromForm(): MsContentsPart {
@@ -105,7 +117,7 @@ export class MsContentsPartComponent
       start: { n: 0 },
       end: { n: 0 },
       incipit: '',
-      explicit: ''
+      explicit: '',
     };
     this.contents.setValue([...this.contents.value, content]);
     this.editContent(this.contents.value.length - 1);

@@ -1,5 +1,6 @@
-import { Part, DocReference } from '@myrmidon/cadmus-core';
+import { Part } from '@myrmidon/cadmus-core';
 import { MsLocation } from '@myrmidon/cadmus-itinera-core';
+import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 
 export interface MsContent {
   start: MsLocation;
@@ -196,13 +197,10 @@ export const MSCONTENTS_PART_SCHEMA = {
                         tag: {
                           type: 'string',
                         },
-                        author: {
+                        type: {
                           type: 'string',
                         },
-                        work: {
-                          type: 'string',
-                        },
-                        location: {
+                        citation: {
                           type: 'string',
                         },
                         note: {

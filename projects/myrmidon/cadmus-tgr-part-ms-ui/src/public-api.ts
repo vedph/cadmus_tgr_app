@@ -26,6 +26,9 @@ export * from './lib/ms-hand/ms-hand.component';
 export * from './lib/ms-script/ms-script.component';
 export * from './lib/ms-scripts-part/ms-scripts-part.component';
 
+export * from './lib/ms-signatures-part';
+export * from './lib/ms-signatures-part/ms-signatures-part.component';
+
 export * from './lib/ms-units-part';
 export * from './lib/ms-guard-sheet/ms-guard-sheet.component';
 export * from './lib/ms-palimpsest/ms-palimpsest.component';

@@ -1,0 +1,181 @@
+<form [formGroup]="form" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>MS Signatures Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div formArrayName="signatures">
+        <div>
+          <button
+            type="button"
+            mat-stroked-button
+            color="primary"
+            (click)="addSignature()"
+          >
+            <mat-icon>add_circle</mat-icon>
+            add signature
+          </button>
+        </div>
+        <div
+          *ngFor="
+            let item of signatures.controls;
+            let i = index;
+            let first = first;
+            let last = last
+          "
+        >
+          <!-- child form -->
+          <div [formGroupName]="i">
+            <!-- child actions -->
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this signature"
+              color="warn"
+              (click)="removeSignature(i)"
+            >
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+            <button
+              [disabled]="first"
+              mat-icon-button
+              type="button"
+              matTooltip="Move signature up"
+              (click)="moveSignatureUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              [disabled]="last"
+              mat-icon-button
+              type="button"
+              matTooltip="Move signature down"
+              (click)="moveSignatureDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+
+            <!-- child controls -->
+            <!-- tag (bound) -->
+            <mat-form-field style="width: 6em" *ngIf="tagEntries?.length">
+              <mat-select formControlName="tag" placeholder="tag">
+                <mat-option *ngFor="let e of tagEntries" [value]="e.id">{{
+                  e.value
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- tag (free) -->
+            <mat-form-field style="width: 5em" *ngIf="!tagEntries?.length">
+              <input matInput formControlName="tag" placeholder="tag" />
+              <mat-error
+                *ngIf="
+                  $any(item)['controls'].tag.errors?.maxLength &&
+                  ($any(item)['controls'].tag.dirty || $any(item)['controls'].tag.touched)
+                "
+                >tag too long
+              </mat-error>
+            </mat-form-field>
+
+            <!-- city -->
+            &nbsp;
+            <mat-form-field style="width: 10em">
+              <input matInput formControlName="city" placeholder="city" #city />
+              <mat-error
+                *ngIf="
+                  $any(item)['controls'].city.errors?.required &&
+                  ($any(item)['controls'].city.dirty ||
+                    $any(item)['controls'].city.touched)
+                "
+                >city required
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  $any(item)['controls'].city.errors?.maxLength &&
+                  ($any(item)['controls'].city.dirty ||
+                    $any(item)['controls'].city.touched)
+                "
+                >city too long
+              </mat-error>
+            </mat-form-field>
+
+            <!-- library -->
+            &nbsp;
+            <mat-form-field style="width: 20em">
+              <input matInput formControlName="library" placeholder="library" />
+              <mat-error
+                *ngIf="
+                  $any(item)['controls'].library.errors?.required &&
+                  ($any(item)['controls'].library.dirty ||
+                    $any(item)['controls'].library.touched)
+                "
+                >library required
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  $any(item)['controls'].library.errors?.maxLength &&
+                  ($any(item)['controls'].library.dirty ||
+                    $any(item)['controls'].library.touched)
+                "
+                >library too long
+              </mat-error>
+            </mat-form-field>
+
+            <div class="fund-row">
+              <!-- fund -->
+              <mat-form-field style="width: 10em">
+                <input matInput formControlName="fund" placeholder="fund" />
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].fund.errors?.maxLength &&
+                    ($any(item)['controls'].fund.dirty ||
+                      $any(item)['controls'].fund.touched)
+                  "
+                  >fund too long
+                </mat-error>
+              </mat-form-field>
+
+              <!-- location -->
+              &nbsp;
+              <mat-form-field style="width: 8em">
+                <input
+                  matInput
+                  formControlName="location"
+                  placeholder="location"
+                />
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].location.errors?.required &&
+                    ($any(item)['controls'].location.dirty ||
+                      $any(item)['controls'].location.touched)
+                  "
+                  >location required
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].location.errors?.maxLength &&
+                    ($any(item)['controls'].location.dirty ||
+                      $any(item)['controls'].location.touched)
+                  "
+                  >location too long
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      >
+      </cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

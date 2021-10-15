@@ -9,8 +9,6 @@ import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 
 // project-specific modules
-import { CadmusItineraCoreModule } from '@myrmidon/cadmus-itinera-core';
-import { CadmusItineraUiModule } from '@myrmidon/cadmus-itinera-ui';
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
 import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
 import { MsUnitsPartComponent } from './ms-units-part/ms-units-part.component';
@@ -30,6 +28,8 @@ import { MsHistoryPartComponent } from './ms-history-part/ms-history-part.compon
 import { MarkdownModule } from 'ngx-markdown';
 import { MsPlacesPartComponent } from './ms-places-part/ms-places-part.component';
 import { MsPlaceComponent } from './ms-place/ms-place.component';
+import { MsSignaturesPartComponent } from './ms-signatures-part/ms-signatures-part.component';
+import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
 
 @NgModule({
   declarations: [
@@ -47,6 +47,7 @@ import { MsPlaceComponent } from './ms-place/ms-place.component';
     MsPlacesPartComponent,
     MsScriptComponent,
     MsScriptsPartComponent,
+    MsSignaturesPartComponent,
     MsUnitComponent,
     MsUnitsPartComponent,
   ],
@@ -60,9 +61,7 @@ import { MsPlaceComponent } from './ms-place/ms-place.component';
     CadmusCoreModule,
     CadmusMaterialModule,
     CadmusUiModule,
-    // Cadmus itinera
-    CadmusItineraCoreModule,
-    CadmusItineraUiModule,
+    CadmusRefsDocReferencesModule,
     CadmusTgrCoreModule,
     CadmusTgrUiModule,
   ],
@@ -81,6 +80,7 @@ import { MsPlaceComponent } from './ms-place/ms-place.component';
     MsPlacesPartComponent,
     MsScriptComponent,
     MsScriptsPartComponent,
+    MsSignaturesPartComponent,
     MsUnitComponent,
     MsUnitsPartComponent
   ],

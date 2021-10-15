@@ -17,7 +17,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class MsContentsPartFeatureComponent
   extends EditPartFeatureBase
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     router: Router,
     route: ActivatedRoute,
@@ -39,6 +40,10 @@ export class MsContentsPartFeatureComponent
   }
 
   public ngOnInit(): void {
-    this.initEditor(['author-works', 'doc-reference-tags']);
+    this.initEditor([
+      'author-works',
+      'doc-reference-tags',
+      'doc-reference-types',
+    ]);
   }
 }

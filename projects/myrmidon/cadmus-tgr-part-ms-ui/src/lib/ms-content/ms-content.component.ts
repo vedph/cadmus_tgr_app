@@ -5,8 +5,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { DocReference, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import { MsContent } from '../ms-contents-part';
 
@@ -24,6 +25,8 @@ export class MsContentComponent implements OnInit {
    */
   @Input()
   public workEntries: ThesaurusEntry[] | undefined;
+  @Input()
+  public docTypeEntries: ThesaurusEntry[] | undefined;
   @Input()
   public docTagEntries: ThesaurusEntry[] | undefined;
   @Output()

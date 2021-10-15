@@ -1,0 +1,10 @@
+<cadmus-current-item-bar></cadmus-current-item-bar>
+<tgr-ms-signatures-part
+  [itemId]="itemId"
+  [roleId]="roleId"
+  [model]="$any(part$ | async)"
+  (modelChange)="save($event)"
+  [thesauri]="thesauri$ | async"
+  (editorClose)="close()"
+  (dirtyChange)="onDirtyChange($event)"
+></tgr-ms-signatures-part>
