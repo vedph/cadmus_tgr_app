@@ -5,8 +5,7 @@ import {
   EditPartStoreApi,
   editPartInitialState,
 } from '@myrmidon/cadmus-state';
-
-import { MSSIGNATURES_PART_TYPEID } from '@myrmidon/cadmus-itinera-part-ms-ui';
+import { MSSIGNATURES_PART_TYPEID } from '@myrmidon/cadmus-tgr-part-ms-ui';
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: MSSIGNATURES_PART_TYPEID })

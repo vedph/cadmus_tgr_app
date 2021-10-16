@@ -82,7 +82,7 @@ export class MsSignaturesPartComponent
       return;
     }
     this.signatures.clear();
-    for (const signature of model.signatures) {
+    for (const signature of model.signatures || []) {
       this.addSignature(signature);
     }
     this.form.markAsPristine();

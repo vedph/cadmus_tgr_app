@@ -36,8 +36,6 @@
     "@myrmidon/cadmus-item-list": "0.0.6",
     "@myrmidon/cadmus-item-search": "0.0.8",
     "@myrmidon/cadmus-itinera-core": "0.0.10",
-    "@myrmidon/cadmus-itinera-part-ms-pg": "0.0.6",
-    "@myrmidon/cadmus-itinera-part-ms-ui": "0.0.9",
     "@myrmidon/cadmus-itinera-ui": "0.0.8",
     "@myrmidon/cadmus-login": "0.0.6",
     "@myrmidon/cadmus-material": "0.0.6",

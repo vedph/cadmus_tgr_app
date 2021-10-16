@@ -21,7 +21,6 @@ import {
   INTERPOLATIONS_FRAGMENT_TYPEID,
   AVAILABLE_WITNESSES_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-gr-ui';
-import { MSSIGNATURES_PART_TYPEID } from '@myrmidon/cadmus-itinera-part-ms-ui';
 import {
   MSCONTENTS_PART_TYPEID,
   MSFORMAL_FEATURES_PART_TYPEID,
@@ -29,12 +28,12 @@ import {
   MSORNAMENTS_PART_TYPEID,
   MSPLACES_PART_TYPEID,
   MSSCRIPTS_PART_TYPEID,
+  MSSIGNATURES_PART_TYPEID,
   MSUNITS_PART_TYPEID,
 } from '@myrmidon/cadmus-tgr-part-ms-ui';
 
 const GENERAL = 'general';
 const PHILOLOGY = 'philology';
-const ITINERA_MS = 'itinera-ms';
 const TGR_GR = 'tgr-gr';
 const TGR_MS = 'tgr-ms';
 const TOKEN_TEXT_LAYER_PART_TYPEID = 'it.vedph.token-text-layer';
@@ -71,7 +70,7 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
     part: TGR_GR,
   },
   [MSSIGNATURES_PART_TYPEID]: {
-    part: ITINERA_MS,
+    part: TGR_MS,
   },
   [MSPLACES_PART_TYPEID]: {
     part: TGR_MS,
