@@ -8,9 +8,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-core": "ng build @myrmidon/cadmus-tgr-core && ng build @myrmidon/cadmus-tgr-ui",
-    "build-gr": "ng build @myrmidon/cadmus-tgr-part-gr-ui && ng build @myrmidon/cadmus-tgr-part-gr-pg",
-    "build-ms": "ng build @myrmidon/cadmus-tgr-part-ms-ui && ng build @myrmidon/cadmus-tgr-part-ms-pg",
+    "build-core": "ng build @myrmidon/cadmus-tgr-core --configuration=production && ng build @myrmidon/cadmus-tgr-ui --configuration=production",
+    "build-gr": "ng build @myrmidon/cadmus-tgr-part-gr-ui --configuration=production && ng build @myrmidon/cadmus-tgr-part-gr-pg --configuration=production",
+    "build-ms": "ng build @myrmidon/cadmus-tgr-part-ms-ui --configuration=production && ng build @myrmidon/cadmus-tgr-part-ms-pg --configuration=production",
     "build-all": "npm run-script build-core && npm run-script build-gr && npm run-script build-ms"
   },
   "private": true,
