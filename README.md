@@ -1,10 +1,10 @@
-# CadmusTgrApp
+# Cadmus TGR App
 
 Quick Docker image build:
 
 1. `npm run build-all`
 2. `ng build --configuration production`
-3. `docker build . -t vedph2020/cadmus-tgr-app:1.1.0 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.1.1 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
 
 Web application frontend for Cadmus _TGR_. This application is built by packing together a number of components:
 
@@ -44,3 +44,7 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 ```yml
 - ALLOWEDORIGINS__0=http://90.147.166.176
 ```
+
+## History
+
+- 2011-11-11: upgraded Angular and thesaurus related libraries.

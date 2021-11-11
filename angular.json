@@ -113,17 +113,6 @@
             "scripts": []
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": ["**/node_modules/**"]
-          }
-        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -163,16 +152,6 @@
             "tsConfig": "projects/myrmidon/cadmus-tgr-core/tsconfig.spec.json",
             "karmaConfig": "projects/myrmidon/cadmus-tgr-core/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/myrmidon/cadmus-tgr-core/tsconfig.lib.json",
-              "projects/myrmidon/cadmus-tgr-core/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
     },
@@ -200,18 +179,6 @@
             "main": "projects/myrmidon/cadmus-tgr-ui/src/test.ts",
             "tsConfig": "projects/myrmidon/cadmus-tgr-ui/tsconfig.spec.json",
             "karmaConfig": "projects/myrmidon/cadmus-tgr-ui/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/myrmidon/cadmus-tgr-ui/tsconfig.lib.json",
-              "projects/myrmidon/cadmus-tgr-ui/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -241,18 +208,6 @@
             "tsConfig": "projects/myrmidon/cadmus-tgr-part-gr-ui/tsconfig.spec.json",
             "karmaConfig": "projects/myrmidon/cadmus-tgr-part-gr-ui/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/myrmidon/cadmus-tgr-part-gr-ui/tsconfig.lib.json",
-              "projects/myrmidon/cadmus-tgr-part-gr-ui/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -280,18 +235,6 @@
             "main": "projects/myrmidon/cadmus-tgr-part-gr-pg/src/test.ts",
             "tsConfig": "projects/myrmidon/cadmus-tgr-part-gr-pg/tsconfig.spec.json",
             "karmaConfig": "projects/myrmidon/cadmus-tgr-part-gr-pg/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/myrmidon/cadmus-tgr-part-gr-pg/tsconfig.lib.json",
-              "projects/myrmidon/cadmus-tgr-part-gr-pg/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -321,18 +264,6 @@
             "tsConfig": "projects/myrmidon/cadmus-tgr-part-ms-ui/tsconfig.spec.json",
             "karmaConfig": "projects/myrmidon/cadmus-tgr-part-ms-ui/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/myrmidon/cadmus-tgr-part-ms-ui/tsconfig.lib.json",
-              "projects/myrmidon/cadmus-tgr-part-ms-ui/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -360,18 +291,6 @@
             "main": "projects/myrmidon/cadmus-tgr-part-ms-pg/src/test.ts",
             "tsConfig": "projects/myrmidon/cadmus-tgr-part-ms-pg/tsconfig.spec.json",
             "karmaConfig": "projects/myrmidon/cadmus-tgr-part-ms-pg/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/myrmidon/cadmus-tgr-part-ms-pg/tsconfig.lib.json",
-              "projects/myrmidon/cadmus-tgr-part-ms-pg/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
