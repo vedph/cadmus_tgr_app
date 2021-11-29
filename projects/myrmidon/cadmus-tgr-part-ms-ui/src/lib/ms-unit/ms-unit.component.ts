@@ -14,7 +14,7 @@ import {
   PhysicalSize,
   ThesaurusEntry,
 } from '@myrmidon/cadmus-core';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
 
 @Component({

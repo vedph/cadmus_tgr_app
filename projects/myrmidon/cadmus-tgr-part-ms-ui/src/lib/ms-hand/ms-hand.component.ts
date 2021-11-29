@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { HistoricalDateModel } from '@myrmidon/cadmus-core';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { MsHand, MsHandLetter } from '../ms-scripts-part';
 
 @Component({

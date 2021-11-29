@@ -1,5 +1,5 @@
 import { HistoricalDateModel, Part, PhysicalSize } from '@myrmidon/cadmus-core';
-import { MsLocation } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation } from '@myrmidon/cadmus-tgr-core';
 
 export interface MsPalimpsest {
   locations?: MsLocation[];

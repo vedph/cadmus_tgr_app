@@ -11,7 +11,7 @@ import {
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
-import { ThesaurusEntry, deepCopy } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   MsAnnotation,
   MsHistoryPart,
@@ -21,7 +21,8 @@ import {
   GeoAddress,
   MsLocation,
   MsLocationService,
-} from '@myrmidon/cadmus-itinera-core';
+} from '@myrmidon/cadmus-tgr-core';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * Manuscript's history part editor component.
@@ -114,7 +115,7 @@ export class MsHistoryPartComponent
 
   private updateForm(model: MsHistoryPart): void {
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       return;
     }
     // provenances
@@ -153,7 +154,7 @@ export class MsHistoryPartComponent
         this.annotations.controls.push(this.getAnnotationGroup(annotation));
       }
     }
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: MsHistoryPart): void {
@@ -173,7 +174,7 @@ export class MsHistoryPartComponent
     let part = this.model;
     if (!part) {
       part = {
-        itemId: this.itemId,
+        itemId: this.itemId || '',
         id: '',
         typeId: MSHISTORY_PART_TYPEID,
         roleId: this.roleId,
@@ -222,13 +223,13 @@ export class MsHistoryPartComponent
   public addProvenance(item?: GeoAddress): void {
     this.provenances.push(this.getProvenanceGroup(item));
     this.provenances.updateValueAndValidity();
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public removeProvenance(index: number): void {
     this.provenances.removeAt(index);
     this.provenances.updateValueAndValidity();
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public moveProvenanceUp(index: number): void {
@@ -238,7 +239,7 @@ export class MsHistoryPartComponent
     const provenance = this.provenances.controls[index];
     this.provenances.removeAt(index);
     this.provenances.insert(index - 1, provenance);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public moveProvenanceDown(index: number): void {
@@ -248,7 +249,7 @@ export class MsHistoryPartComponent
     const provenance = this.provenances.controls[index];
     this.provenances.removeAt(index);
     this.provenances.insert(index + 1, provenance);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   private getProvenances(): GeoAddress[] | undefined {

@@ -16,11 +16,7 @@ import { MarkdownModule } from 'ngx-markdown';
 // Akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
-import {
-  CadmusCoreModule,
-  PendingChangesGuard,
-  EnvServiceProvider,
-} from '@myrmidon/cadmus-core';
+import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { CadmusPartGeneralUiModule } from '@myrmidon/cadmus-part-general-ui';
 import { CadmusPartPhilologyUiModule } from '@myrmidon/cadmus-part-philology-ui';
@@ -35,12 +31,10 @@ import {
 import { PART_EDITOR_KEYS } from './part-editor-keys';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
+import { EnvServiceProvider } from '@myrmidon/ng-tools';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-  ],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -54,7 +48,9 @@ import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
         {
           path: 'login',
           loadChildren: () =>
-            import('@myrmidon/cadmus-login').then((module) => module.CadmusLoginModule),
+            import('@myrmidon/cadmus-login').then(
+              (module) => module.CadmusLoginModule
+            ),
         },
         {
           path: 'items',
@@ -132,13 +128,17 @@ import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
         {
           path: 'admin',
           loadChildren: () =>
-            import('@myrmidon/cadmus-admin').then((module) => module.CadmusAdminModule),
+            import('@myrmidon/cadmus-admin').then(
+              (module) => module.CadmusAdminModule
+            ),
           canActivate: [AdminGuardService],
         },
         {
           path: 'user',
           loadChildren: () =>
-            import('@myrmidon/cadmus-user').then((module) => module.CadmusUserModule),
+            import('@myrmidon/cadmus-user').then(
+              (module) => module.CadmusUserModule
+            ),
           canActivate: [AuthGuardService],
         },
         {
@@ -159,10 +159,10 @@ import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
         { path: '**', component: HomeComponent },
       ],
       {
-    initialNavigation: 'enabled',
-    useHash: true,
-    relativeLinkResolution: 'legacy'
-}
+        initialNavigation: 'enabled',
+        useHash: true,
+        relativeLinkResolution: 'legacy',
+      }
     ),
     // flex
     FlexLayoutModule,
@@ -177,7 +177,7 @@ import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
     CadmusMaterialModule,
     CadmusPartGeneralUiModule,
     CadmusPartPhilologyUiModule,
-    CadmusUiModule
+    CadmusUiModule,
   ],
   providers: [
     EnvServiceProvider,

@@ -8,11 +8,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@myrmidon/cadmus-api';
-import {
-  CadmusValidators,
-  deepCopy,
-  ThesaurusEntry,
-} from '@myrmidon/cadmus-core';
+import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import {
   MsSignature,
@@ -21,6 +17,7 @@ import {
 } from '../ms-signatures-part';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * Manuscript's signatures part.

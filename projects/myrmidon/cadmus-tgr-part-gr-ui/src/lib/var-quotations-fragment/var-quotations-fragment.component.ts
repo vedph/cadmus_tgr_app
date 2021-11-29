@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '@myrmidon/cadmus-api';
-import { deepCopy, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { DialogService, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { deepCopy } from '@myrmidon/ng-tools';
 import { take } from 'rxjs/operators';
 import {
   VarQuotation,
@@ -75,11 +77,11 @@ export class VarQuotationsFragmentComponent
 
   private updateForm(model: VarQuotationsFragment): void {
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       return;
     }
     this.entries.setValue(model.quotations || []);
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: VarQuotationsFragment): void {

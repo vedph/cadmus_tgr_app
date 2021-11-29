@@ -1,5 +1,5 @@
 import { Part, PhysicalSize } from '@myrmidon/cadmus-core';
-import { MsLocation } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation } from '@myrmidon/cadmus-tgr-core';
 
 /**
  * A manuscript's ornamentation.

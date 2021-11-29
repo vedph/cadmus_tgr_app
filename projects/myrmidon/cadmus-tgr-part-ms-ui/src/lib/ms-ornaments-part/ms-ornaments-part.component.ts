@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
-import { ModelEditorComponentBase, DialogService } from '@myrmidon/cadmus-ui';
+import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
-import { ThesaurusEntry, deepCopy } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   MsOrnament,
   MsOrnamentsPart,
   MSORNAMENTS_PART_TYPEID,
 } from '../ms-ornaments-part';
 import { take } from 'rxjs/operators';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * Manuscript's ornamentations part editor component.
@@ -24,7 +26,8 @@ import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
 })
 export class MsOrnamentsPartComponent
   extends ModelEditorComponentBase<MsOrnamentsPart>
-  implements OnInit {
+  implements OnInit
+{
   private _editedIndex: number;
 
   public tabIndex: number;
@@ -59,11 +62,11 @@ export class MsOrnamentsPartComponent
 
   private updateForm(model: MsOrnamentsPart): void {
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       return;
     }
     this.ornaments.setValue(model.ornaments || []);
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: MsOrnamentsPart): void {
@@ -104,7 +107,7 @@ export class MsOrnamentsPartComponent
     let part = this.model;
     if (!part) {
       part = {
-        itemId: this.itemId,
+        itemId: this.itemId || '',
         id: '',
         typeId: MSORNAMENTS_PART_TYPEID,
         roleId: this.roleId,

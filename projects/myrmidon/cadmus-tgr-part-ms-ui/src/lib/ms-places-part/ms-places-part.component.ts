@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
-import { ModelEditorComponentBase, DialogService } from '@myrmidon/cadmus-ui';
+import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
-import { ThesaurusEntry, deepCopy } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsPlace, MsPlacesPart, MSPLACES_PART_TYPEID } from '../ms-places-part';
 import { take } from 'rxjs/operators';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * Manuscript's place(s) of origin part editor.
@@ -18,7 +20,8 @@ import { take } from 'rxjs/operators';
 })
 export class MsPlacesPartComponent
   extends ModelEditorComponentBase<MsPlacesPart>
-  implements OnInit {
+  implements OnInit
+{
   private _editedIndex: number;
 
   public tabIndex: number;
@@ -50,11 +53,11 @@ export class MsPlacesPartComponent
 
   private updateForm(model: MsPlacesPart): void {
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       return;
     }
     this.places.setValue(model.places || []);
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: MsPlacesPart): void {
@@ -80,7 +83,7 @@ export class MsPlacesPartComponent
     let part = this.model;
     if (!part) {
       part = {
-        itemId: this.itemId,
+        itemId: this.itemId || '',
         id: '',
         typeId: MSPLACES_PART_TYPEID,
         roleId: this.roleId,
@@ -124,7 +127,7 @@ export class MsPlacesPartComponent
       )
     );
     this.editPlace(-1);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public onPlaceClose(): void {
@@ -140,7 +143,7 @@ export class MsPlacesPartComponent
           const places = [...this.places.value];
           places.splice(index, 1);
           this.places.setValue(places);
-          this.form.markAsDirty();
+          this.form?.markAsDirty();
         }
       });
   }
@@ -154,7 +157,7 @@ export class MsPlacesPartComponent
     places.splice(index, 1);
     places.splice(index - 1, 0, place);
     this.places.setValue(places);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public movePlaceDown(index: number): void {
@@ -166,6 +169,6 @@ export class MsPlacesPartComponent
     places.splice(index, 1);
     places.splice(index + 1, 0, place);
     this.places.setValue(places);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 }

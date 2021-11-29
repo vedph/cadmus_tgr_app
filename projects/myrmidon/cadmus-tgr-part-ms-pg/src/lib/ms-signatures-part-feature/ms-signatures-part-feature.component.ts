@@ -6,7 +6,7 @@ import { EditMsSignaturesPartQuery } from './edit-ms-signatures-part.query';
 import { EditMsSignaturesPartService } from './edit-ms-signatures-part.service';
 
 @Component({
-  selector: 'itinera-ms-signatures-part-feature',
+  selector: 'tgr-ms-signatures-part-feature',
   templateUrl: './ms-signatures-part-feature.component.html',
   styleUrls: ['./ms-signatures-part-feature.component.css'],
 })

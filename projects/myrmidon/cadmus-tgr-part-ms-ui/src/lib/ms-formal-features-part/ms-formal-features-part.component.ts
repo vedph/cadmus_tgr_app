@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
-import { ModelEditorComponentBase, DialogService } from '@myrmidon/cadmus-ui';
+import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
-import { deepCopy } from '@myrmidon/cadmus-core';
 import {
   MsFormalFeature,
   MsFormalFeaturesPart,
   MSFORMAL_FEATURES_PART_TYPEID,
 } from '../ms-formal-features-part';
 import { take } from 'rxjs/operators';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * Manuscript's formal features part editor component.
@@ -22,7 +23,8 @@ import { take } from 'rxjs/operators';
 })
 export class MsFormalFeaturesPartComponent
   extends ModelEditorComponentBase<MsFormalFeaturesPart>
-  implements OnInit {
+  implements OnInit
+{
   private _editedIndex: number;
 
   public tabIndex: number;
@@ -51,11 +53,11 @@ export class MsFormalFeaturesPartComponent
 
   private updateForm(model: MsFormalFeaturesPart): void {
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       return;
     }
     this.features.setValue(model.features || []);
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: MsFormalFeaturesPart): void {
@@ -66,7 +68,7 @@ export class MsFormalFeaturesPartComponent
     let part = this.model;
     if (!part) {
       part = {
-        itemId: this.itemId,
+        itemId: this.itemId || '',
         id: '',
         typeId: MSFORMAL_FEATURES_PART_TYPEID,
         roleId: this.roleId,
@@ -84,7 +86,7 @@ export class MsFormalFeaturesPartComponent
   public addFeature(): void {
     const feature: MsFormalFeature = {
       handId: '',
-      description: ''
+      description: '',
     };
     this.features.setValue([...this.features.value, feature]);
     this.editFeature(this.features.value.length - 1);

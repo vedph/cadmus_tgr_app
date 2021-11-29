@@ -9,12 +9,13 @@ import {
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
-import { ThesaurusEntry, deepCopy } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   AvailableWitness,
   AvailableWitnessesPart,
   AVAILABLE_WITNESSES_PART_TYPEID,
 } from '../available-witnesses-part';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * AvailableWitnessesPart editor component.
@@ -27,7 +28,8 @@ import {
 })
 export class AvailableWitnessesPartComponent
   extends ModelEditorComponentBase<AvailableWitnessesPart>
-  implements OnInit {
+  implements OnInit
+{
   /**
    * The witnesses entries.
    */
@@ -54,7 +56,7 @@ export class AvailableWitnessesPartComponent
 
   private updateForm(model: AvailableWitnessesPart): void {
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       return;
     }
     this.witnesses.clear();
@@ -64,7 +66,7 @@ export class AvailableWitnessesPartComponent
       }
     }
     this.count.setValue(this.witnesses.length);
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: AvailableWitnessesPart): void {
@@ -109,7 +111,7 @@ export class AvailableWitnessesPartComponent
       note: this._formBuilder.control(witness?.note, Validators.maxLength(300)),
     });
     g.valueChanges.subscribe((_) => {
-      this.form.updateValueAndValidity();
+      this.form?.updateValueAndValidity();
     });
     return g;
   }
@@ -117,13 +119,13 @@ export class AvailableWitnessesPartComponent
   public addWitness(item?: AvailableWitness): void {
     this.witnesses.push(this.getWitnessGroup(item));
     this.count.setValue(this.witnesses.length);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public removeWitness(index: number): void {
     this.witnesses.removeAt(index);
     this.count.setValue(this.witnesses.length);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public moveWitnessUp(index: number): void {
@@ -133,7 +135,7 @@ export class AvailableWitnessesPartComponent
     const item = this.witnesses.controls[index];
     this.witnesses.removeAt(index);
     this.witnesses.insert(index - 1, item);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public moveWitnessDown(index: number): void {
@@ -143,7 +145,7 @@ export class AvailableWitnessesPartComponent
     const item = this.witnesses.controls[index];
     this.witnesses.removeAt(index);
     this.witnesses.insert(index + 1, item);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public addAllWitnesses(): void {
@@ -154,11 +156,11 @@ export class AvailableWitnessesPartComponent
     this.witEntries.forEach((e) => {
       if (!present.find((p) => p.id === e.id)) {
         this.addWitness({
-          id: e.id
+          id: e.id,
         });
       }
     });
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   private getWitnesses(): AvailableWitness[] {

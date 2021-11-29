@@ -39,6 +39,6 @@ export class MsFormalFeaturesPartFeatureComponent
   }
 
   public ngOnInit(): void {
-    this.initEditor(null);
+    this.initEditor();
   }
 }

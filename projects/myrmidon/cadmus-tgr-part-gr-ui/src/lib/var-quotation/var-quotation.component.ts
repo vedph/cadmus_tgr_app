@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { DialogService, renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
+import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import {
   QuotationParallel,
   QuotationVariant,
@@ -15,6 +15,7 @@ import {
 } from '../var-quotations-fragment';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { take } from 'rxjs/operators';
+import { DialogService } from '@myrmidon/ng-mat-tools';
 
 @Component({
   selector: 'tgr-var-quotation',

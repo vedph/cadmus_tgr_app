@@ -1,6 +1,6 @@
 import { Part } from '@myrmidon/cadmus-core';
-import { MsLocation } from '@myrmidon/cadmus-itinera-core';
 import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
+import { MsLocation } from '@myrmidon/cadmus-tgr-core';
 
 export interface MsContent {
   start: MsLocation;

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
-import { ModelEditorComponentBase, DialogService } from '@myrmidon/cadmus-ui';
+import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
-import { ThesaurusEntry, deepCopy } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsUnit, MsUnitsPart, MSUNITS_PART_TYPEID } from '../ms-units-part';
 import { take } from 'rxjs/operators';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * MsUnitsPart editor component.
@@ -21,7 +23,8 @@ import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
 })
 export class MsUnitsPartComponent
   extends ModelEditorComponentBase<MsUnitsPart>
-  implements OnInit {
+  implements OnInit
+{
   private _editedIndex: number;
 
   public tabIndex: number;
@@ -54,10 +57,12 @@ export class MsUnitsPartComponent
 
   public units: FormControl;
 
-  constructor(authService: AuthService,
+  constructor(
+    authService: AuthService,
     formBuilder: FormBuilder,
     private _dialogService: DialogService,
-    private _locService: MsLocationService) {
+    private _locService: MsLocationService
+  ) {
     super(authService);
     this._editedIndex = -1;
     this.tabIndex = 0;
@@ -74,11 +79,11 @@ export class MsUnitsPartComponent
 
   private updateForm(model: MsUnitsPart): void {
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       return;
     }
     this.units.setValue(model.units || []);
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: MsUnitsPart): void {
@@ -133,7 +138,7 @@ export class MsUnitsPartComponent
     let part = this.model;
     if (!part) {
       part = {
-        itemId: this.itemId,
+        itemId: this.itemId || '',
         id: '',
         typeId: MSUNITS_PART_TYPEID,
         roleId: this.roleId,
@@ -155,7 +160,7 @@ export class MsUnitsPartComponent
       material: undefined,
       sheetCount: 0,
       guardSheetCount: 0,
-      backGuardSheetCount: 0
+      backGuardSheetCount: 0,
     };
     this.units.setValue([...this.units.value, unit]);
     this.editUnit(this.units.value.length - 1);

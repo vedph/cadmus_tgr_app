@@ -1,5 +1,5 @@
 import { HistoricalDateModel, Part } from '@myrmidon/cadmus-core';
-import { MsLocation } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation } from '@myrmidon/cadmus-tgr-core';
 
 /**
  * A letter's description in a MsHand.

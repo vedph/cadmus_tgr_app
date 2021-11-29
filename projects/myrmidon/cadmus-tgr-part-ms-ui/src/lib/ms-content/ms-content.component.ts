@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import { MsContent } from '../ms-contents-part';

@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreConfig, Store } from '@datorama/akita';
 
-import {
-  EditPartState,
-  EditPartStoreApi,
-  editPartInitialState,
-} from '@myrmidon/cadmus-state';
+import { EditPartState, EditPartStoreApi } from '@myrmidon/cadmus-state';
 
 import { AVAILABLE_WITNESSES_PART_TYPEID } from '@myrmidon/cadmus-tgr-part-gr-ui';
 
@@ -13,9 +9,10 @@ import { AVAILABLE_WITNESSES_PART_TYPEID } from '@myrmidon/cadmus-tgr-part-gr-ui
 @StoreConfig({ name: AVAILABLE_WITNESSES_PART_TYPEID })
 export class EditAvailableWitnessesPartStore
   extends Store<EditPartState>
-  implements EditPartStoreApi {
+  implements EditPartStoreApi
+{
   constructor() {
-    super(editPartInitialState);
+    super({});
   }
 
   public setDirty(value: boolean): void {

@@ -7,11 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
-import { DialogService } from '@myrmidon/cadmus-ui';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { take } from 'rxjs/operators';
-import { MsHand, MsScript } from '../ms-scripts-part';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+
+import { MsHand, MsScript } from '../ms-scripts-part';
 
 @Component({
   selector: 'tgr-ms-script',
@@ -204,7 +205,7 @@ export class MsScriptComponent implements OnInit {
     this._langEntries.forEach((e) => {
       const checked = ids.some((s: string) => s === e.id);
       const g = this._formBuilder.group({
-        check: this._formBuilder.control(checked)
+        check: this._formBuilder.control(checked),
       });
       this.langChecks.push(g);
     });

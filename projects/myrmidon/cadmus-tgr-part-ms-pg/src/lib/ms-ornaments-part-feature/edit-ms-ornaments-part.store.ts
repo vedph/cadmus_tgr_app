@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreConfig, Store } from '@datorama/akita';
 
-import {
-  EditPartState,
-  EditPartStoreApi,
-  editPartInitialState,
-} from '@myrmidon/cadmus-state';
+import { EditPartState, EditPartStoreApi } from '@myrmidon/cadmus-state';
 
 import { MSORNAMENTS_PART_TYPEID } from '@myrmidon/cadmus-tgr-part-ms-ui';
 
@@ -13,9 +9,10 @@ import { MSORNAMENTS_PART_TYPEID } from '@myrmidon/cadmus-tgr-part-ms-ui';
 @StoreConfig({ name: MSORNAMENTS_PART_TYPEID })
 export class EditMsOrnamentsPartStore
   extends Store<EditPartState>
-  implements EditPartStoreApi {
+  implements EditPartStoreApi
+{
   constructor() {
-    super(editPartInitialState);
+    super({});
   }
 
   public setDirty(value: boolean): void {

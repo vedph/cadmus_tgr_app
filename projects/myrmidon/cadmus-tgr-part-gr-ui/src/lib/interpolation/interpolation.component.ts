@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { DialogService } from '@myrmidon/cadmus-ui';
+import { DialogService } from '@myrmidon/ng-mat-tools';
 import { take } from 'rxjs/operators';
 import { Interpolation, ReadingSource } from '../interpolations-fragment';
 import { VarQuotation } from '../var-quotations-fragment';
@@ -109,9 +109,7 @@ export class InterpolationComponent implements OnInit {
       Validators.required,
       Validators.maxLength(50),
     ]);
-    this.tag = _formBuilder.control(null, [
-      Validators.maxLength(50),
-    ]);
+    this.tag = _formBuilder.control(null, [Validators.maxLength(50)]);
     this.value = _formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(500),

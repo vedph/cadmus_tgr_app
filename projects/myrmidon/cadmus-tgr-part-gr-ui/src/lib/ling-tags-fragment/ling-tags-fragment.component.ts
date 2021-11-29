@@ -5,13 +5,14 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { deepCopy, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { AuthService } from '@myrmidon/cadmus-api';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 
 import { LingTagsFragment } from '../ling-tags-fragment';
 import { BehaviorSubject } from 'rxjs';
 import { AnnotatedTag, LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * Linguistic tags fragment editor component.

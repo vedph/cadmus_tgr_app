@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
-import { ModelEditorComponentBase, DialogService } from '@myrmidon/cadmus-ui';
+import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
-import { ThesaurusEntry, deepCopy } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 
 import {
   MsScript,
@@ -11,6 +11,8 @@ import {
   MSSCRIPTS_PART_TYPEID,
 } from '../ms-scripts-part';
 import { take } from 'rxjs/operators';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * MsScripts editor component.
@@ -24,7 +26,8 @@ import { take } from 'rxjs/operators';
 })
 export class MsScriptsPartComponent
   extends ModelEditorComponentBase<MsScriptsPart>
-  implements OnInit {
+  implements OnInit
+{
   private _editedIndex: number;
 
   public tabIndex: number;
@@ -57,11 +60,11 @@ export class MsScriptsPartComponent
 
   private updateForm(model: MsScriptsPart): void {
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       return;
     }
     this.scripts.setValue(model.scripts || []);
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: MsScriptsPart): void {
@@ -118,7 +121,7 @@ export class MsScriptsPartComponent
     let part = this.model;
     if (!part) {
       part = {
-        itemId: this.itemId,
+        itemId: this.itemId || '',
         id: '',
         typeId: MSSCRIPTS_PART_TYPEID,
         roleId: this.roleId,

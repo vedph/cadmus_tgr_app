@@ -4,7 +4,7 @@
   [roleId]="roleId"
   [model]="$any(part$ | async)"
   (modelChange)="save($event)"
-  [thesauri]="thesauri$ | async"
+  [thesauri]="$any(thesauri$ | async)"
   (editorClose)="close()"
   (dirtyChange)="onDirtyChange($event)"
 ></tgr-ms-places-part>

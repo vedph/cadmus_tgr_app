@@ -1,5 +1,5 @@
 import { Part } from '@myrmidon/cadmus-core';
-import { GeoAddress, MsLocation } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation, GeoAddress } from '@myrmidon/cadmus-tgr-core';
 
 /**
  * A subscription in a MsHistoryPart.

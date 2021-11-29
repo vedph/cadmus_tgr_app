@@ -2,13 +2,13 @@
 <div class="base-text">
   <cadmus-decorated-token-text
     [baseText]="$any(baseText$ | async)"
-    [locations]="[frLoc]"
+    [locations]="[$any(frLoc)]"
   ></cadmus-decorated-token-text>
 </div>
 <tgr-var-quotations-fragment
   [model]="$any(fragment$ | async)"
   (modelChange)="save($event)"
-  [thesauri]="thesauri$ | async"
+  [thesauri]="$any(thesauri$ | async)"
   (editorClose)="close()"
   (dirtyChange)="onDirtyChange($event)"
 ></tgr-var-quotations-fragment>

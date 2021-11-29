@@ -14,7 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { PhysicalSize, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-itinera-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { MsOrnament } from '../ms-ornaments-part';
 
 @Component({
