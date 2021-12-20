@@ -1,10 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
-import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
+
 import { LingTagsFragmentComponent } from './ling-tags-fragment/ling-tags-fragment.component';
 import { LingTaggedFormComponent } from './ling-tagged-form/ling-tagged-form.component';
 import { VarQuotationComponent } from './var-quotation/var-quotation.component';
@@ -14,6 +30,7 @@ import { VarQuotationsFragmentComponent } from './var-quotations-fragment/var-qu
 import { InterpolationComponent } from './interpolation/interpolation.component';
 import { InterpolationsFragmentComponent } from './interpolations-fragment/interpolations-fragment.component';
 import { AvailableWitnessesPartComponent } from './available-witnesses-part/available-witnesses-part.component';
+import { NgToolsModule } from '@myrmidon/ng-tools';
 
 @NgModule({
   declarations: [
@@ -32,8 +49,22 @@ import { AvailableWitnessesPartComponent } from './available-witnesses-part/avai
     ReactiveFormsModule,
     MonacoEditorModule,
     ClipboardModule,
+    // material
+    MatAutocompleteModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatTabsModule,
+    MatTooltipModule,
+    FlexLayoutModule,
     // Cadmus
-    CadmusMaterialModule,
+    NgToolsModule,
     CadmusUiModule,
     CadmusTgrCoreModule,
   ],
