@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { AuthService } from '@myrmidon/cadmus-api';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsUnit, MsUnitsPart, MSUNITS_PART_TYPEID } from '../ms-units-part';
 import { take } from 'rxjs/operators';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { DialogService } from '@myrmidon/ng-mat-tools';
 import { deepCopy } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * MsUnitsPart editor component.
@@ -58,7 +58,7 @@ export class MsUnitsPartComponent
   public units: FormControl;
 
   constructor(
-    authService: AuthService,
+    authService: AuthJwtService,
     formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService

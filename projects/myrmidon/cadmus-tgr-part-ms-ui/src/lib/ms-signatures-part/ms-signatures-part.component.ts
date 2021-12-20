@@ -7,7 +7,6 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '@myrmidon/cadmus-api';
 import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import {
@@ -18,6 +17,7 @@ import {
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { deepCopy } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * Manuscript's signatures part.
@@ -41,7 +41,7 @@ export class MsSignaturesPartComponent
 
   @ViewChildren('city') cityQueryList?: QueryList<any>;
 
-  constructor(authService: AuthService, private _formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
     super(authService);
     // form
     this.signatures = _formBuilder.array(

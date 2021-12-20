@@ -5,7 +5,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { DocReference, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 import { MsPlace } from '../ms-places-part';
 
 @Component({

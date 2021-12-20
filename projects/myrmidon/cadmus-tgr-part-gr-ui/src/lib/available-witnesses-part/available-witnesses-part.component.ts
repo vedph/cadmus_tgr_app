@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { AuthService } from '@myrmidon/cadmus-api';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   AvailableWitness,
@@ -16,6 +15,7 @@ import {
   AVAILABLE_WITNESSES_PART_TYPEID,
 } from '../available-witnesses-part';
 import { deepCopy } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * AvailableWitnessesPart editor component.
@@ -38,7 +38,7 @@ export class AvailableWitnessesPartComponent
   public witnesses: FormArray;
   public count: FormControl;
 
-  constructor(authService: AuthService, private _formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
     super(authService);
     // form
     // HACK: for some reason, Validators.required does not work on FA

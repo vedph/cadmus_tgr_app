@@ -6,13 +6,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { AuthService } from '@myrmidon/cadmus-api';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 
 import { LingTagsFragment } from '../ling-tags-fragment';
 import { BehaviorSubject } from 'rxjs';
 import { AnnotatedTag, LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
 import { deepCopy } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * Linguistic tags fragment editor component.
@@ -37,7 +37,7 @@ export class LingTagsFragmentComponent
   public editedForm: LingTaggedForm | undefined;
   public tabIndex: number;
 
-  constructor(authService: AuthService, formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
     super(authService);
     this.tagEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
     this.auxEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);

@@ -10,7 +10,6 @@ import {
 } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { AuthService } from '@myrmidon/cadmus-api';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   MsAnnotation,
@@ -23,6 +22,7 @@ import {
   MsLocationService,
 } from '@myrmidon/cadmus-tgr-core';
 import { deepCopy } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * Manuscript's history part editor component.
@@ -57,7 +57,7 @@ export class MsHistoryPartComponent
   };
 
   constructor(
-    authService: AuthService,
+    authService: AuthJwtService,
     private _formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {

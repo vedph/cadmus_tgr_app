@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { AuthService } from '@myrmidon/cadmus-api';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { DialogService } from '@myrmidon/ng-mat-tools';
@@ -71,7 +71,7 @@ export class InterpolationsFragmentComponent
   public interpolations: FormControl;
 
   constructor(
-    authService: AuthService,
+    authService: AuthJwtService,
     formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {

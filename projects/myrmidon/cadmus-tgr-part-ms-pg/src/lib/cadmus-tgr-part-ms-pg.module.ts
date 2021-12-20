@@ -3,13 +3,24 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 // general Cadmus modules
 import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
-import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
-import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
 import {
   CadmusTgrPartMsUiModule,
   MSCONTENTS_PART_TYPEID,
@@ -32,6 +43,9 @@ import { MsOrnamentsPartFeatureComponent } from './ms-ornaments-part-feature/ms-
 import { MsHistoryPartFeatureComponent } from './ms-history-part-feature/ms-history-part-feature.component';
 import { MsPlacesPartFeatureComponent } from './ms-places-part-feature/ms-places-part-feature.component';
 import { MsSignaturesPartFeatureComponent } from './ms-signatures-part-feature/ms-signatures-part-feature.component';
+import { NgToolsModule } from '@myrmidon/ng-tools';
+import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
+import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
 
 // https://github.com/ng-packagr/ng-packagr/issues/778
 export const RouterModuleForChild = RouterModule.forChild([
@@ -101,14 +115,28 @@ export const RouterModuleForChild = RouterModule.forChild([
     FormsModule,
     ReactiveFormsModule,
     RouterModuleForChild,
+    // material
+    MatCardModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatTabsModule,
+    MatTooltipModule,
+    FlexLayoutModule,
     // Cadmus
+    NgToolsModule,
     CadmusCoreModule,
-    CadmusMaterialModule,
     CadmusUiModule,
     CadmusUiPgModule,
     CadmusTgrCoreModule,
-    CadmusTgrUiModule,
     CadmusTgrPartMsUiModule,
+    CadmusRefsDocReferencesModule,
+    CadmusRefsHistoricalDateModule
   ],
   exports: [
     MsContentsPartFeatureComponent,

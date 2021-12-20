@@ -2,8 +2,21 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
-import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
 import { CadmusStateModule } from '@myrmidon/cadmus-state';
 import {
   AVAILABLE_WITNESSES_PART_TYPEID,
@@ -19,6 +32,8 @@ import { LingTagsFragmentFeatureComponent } from './ling-tags-fragment-feature/l
 import { VarQuotationsFragmentFeatureComponent } from './var-quotations-fragment-feature/var-quotations-fragment-feature.component';
 import { InterpolationsFragmentFeatureComponent } from './interpolations-fragment-feature/interpolations-fragment-feature.component';
 import { AvailableWitnessesPartFeatureComponent } from './available-witnesses-part-feature/available-witnesses-part-feature.component';
+import { NgToolsModule } from '@myrmidon/ng-tools';
+import { AuthJwtLoginModule } from '@myrmidon/auth-jwt-login';
 
 export const RouterModuleForChild = RouterModule.forChild([
   {
@@ -58,10 +73,24 @@ export const RouterModuleForChild = RouterModule.forChild([
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    // material
+    MatCardModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatTabsModule,
+    MatTooltipModule,
+    FlexLayoutModule,
     // Cadmus
+    NgToolsModule,
+    AuthJwtLoginModule,
     RouterModuleForChild,
     CadmusCoreModule,
-    CadmusMaterialModule,
     CadmusStateModule,
     CadmusUiModule,
     CadmusUiPgModule,

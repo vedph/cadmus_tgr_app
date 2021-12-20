@@ -31,6 +31,7 @@ import { InterpolationComponent } from './interpolation/interpolation.component'
 import { InterpolationsFragmentComponent } from './interpolations-fragment/interpolations-fragment.component';
 import { AvailableWitnessesPartComponent } from './available-witnesses-part/available-witnesses-part.component';
 import { NgToolsModule } from '@myrmidon/ng-tools';
+import { AuthJwtLoginModule } from '@myrmidon/auth-jwt-login';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { NgToolsModule } from '@myrmidon/ng-tools';
     FlexLayoutModule,
     // Cadmus
     NgToolsModule,
+    AuthJwtLoginModule,
     CadmusUiModule,
     CadmusTgrCoreModule,
   ],

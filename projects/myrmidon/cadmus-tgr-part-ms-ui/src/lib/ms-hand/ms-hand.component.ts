@@ -6,7 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { HistoricalDateModel } from '@myrmidon/cadmus-core';
+import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { MsHand, MsHandLetter } from '../ms-scripts-part';
 

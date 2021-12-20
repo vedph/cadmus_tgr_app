@@ -147,11 +147,11 @@
       <!-- date -->
       <div>
         <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
-        <cadmus-historical-date-editor
+        <cadmus-refs-historical-date
           *ngIf="hasDate?.value"
           [date]="$any(date)"
           (dateChange)="onDateChange($event)"
-        ></cadmus-historical-date-editor>
+        ></cadmus-refs-historical-date>
       </div>
 
       <!-- quires -->
@@ -238,7 +238,6 @@
         </mat-form-field>
       </div>
     </mat-tab>
-
     <!-- RULINGS -->
     <mat-tab label="rulings">
       <div formArrayName="rulings">
@@ -261,9 +260,7 @@
             let last = last
           "
         >
-          <!-- child form -->
           <div [formGroupName]="i">
-            <!-- child actions -->
             {{ i + 1 }}.
             <button
               mat-icon-button
@@ -405,7 +402,6 @@
         </div>
       </div>
     </mat-tab>
-
     <!-- LEAF SIZES -->
     <mat-tab label="leaf sizes">
       <div>
@@ -537,7 +533,6 @@
         </button>
       </mat-expansion-panel>
     </mat-tab>
-
     <!-- AREA SIZES -->
     <mat-tab label="area sizes">
       <div>
@@ -669,7 +664,6 @@
         </button>
       </mat-expansion-panel>
     </mat-tab>
-
     <!-- WATERMARKS -->
     <mat-tab label="watermarks">
       <div formArrayName="watermarks">

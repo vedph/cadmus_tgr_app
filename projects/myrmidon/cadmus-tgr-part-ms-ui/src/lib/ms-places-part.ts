@@ -1,4 +1,5 @@
-import { DocReference, Part } from '@myrmidon/cadmus-core';
+import { Part } from '@myrmidon/cadmus-core';
+import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 
 /**
  * A place of origin for a manuscript.
@@ -75,24 +76,7 @@ export const MsPlaces_PART_SCHEMA = {
       pattern: '^([a-z][-0-9a-z._]*)?$',
     },
     places: {
-      $id: '#/properties/places',
       type: 'array',
-      title: 'The places schema',
-      description: 'An explanation about the purpose of this instance.',
-      default: [],
-      examples: [
-        [
-          {
-            area: '',
-            address: '',
-            city: '',
-            site: '',
-            rank: 1,
-            sources: [{}],
-          },
-        ],
-      ],
-      additionalItems: true,
       items: {
         anyOf: [
           {
@@ -120,18 +104,15 @@ export const MsPlaces_PART_SCHEMA = {
                   anyOf: [
                     {
                       type: 'object',
-                      required: ['author', 'work'],
+                      required: ['citation'],
                       properties: {
                         tag: {
                           type: 'string',
                         },
-                        author: {
+                        type: {
                           type: 'string',
                         },
-                        work: {
-                          type: 'string',
-                        },
-                        location: {
+                        citation: {
                           type: 'string',
                         },
                         note: {

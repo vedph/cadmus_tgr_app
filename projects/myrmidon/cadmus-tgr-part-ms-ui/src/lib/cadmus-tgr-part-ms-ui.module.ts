@@ -1,16 +1,31 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 // general Cadmus modules
 import { CadmusCoreModule } from '@myrmidon/cadmus-core';
-import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
-
-// project-specific modules
+import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
+import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
-import { CadmusTgrUiModule } from '@myrmidon/cadmus-tgr-ui';
+
+// locals
 import { MsUnitsPartComponent } from './ms-units-part/ms-units-part.component';
 import { MsPalimpsestComponent } from './ms-palimpsest/ms-palimpsest.component';
 import { MsGuardSheetComponent } from './ms-guard-sheet/ms-guard-sheet.component';
@@ -29,7 +44,8 @@ import { MarkdownModule } from 'ngx-markdown';
 import { MsPlacesPartComponent } from './ms-places-part/ms-places-part.component';
 import { MsPlaceComponent } from './ms-place/ms-place.component';
 import { MsSignaturesPartComponent } from './ms-signatures-part/ms-signatures-part.component';
-import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
+import { NgToolsModule } from '@myrmidon/ng-tools';
+import { MatTreeModule } from '@angular/material/tree';
 
 @NgModule({
   declarations: [
@@ -57,13 +73,28 @@ import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-referen
     ReactiveFormsModule,
     MonacoEditorModule,
     MarkdownModule,
+    // material
+    MatAutocompleteModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatTreeModule,
+    FlexLayoutModule,
     // Cadmus
+    NgToolsModule,
     CadmusCoreModule,
-    CadmusMaterialModule,
     CadmusUiModule,
     CadmusRefsDocReferencesModule,
+    CadmusRefsHistoricalDateModule,
     CadmusTgrCoreModule,
-    CadmusTgrUiModule,
   ],
   exports: [
     MsContentComponent,
@@ -82,7 +113,7 @@ import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-referen
     MsScriptsPartComponent,
     MsSignaturesPartComponent,
     MsUnitComponent,
-    MsUnitsPartComponent
+    MsUnitsPartComponent,
   ],
 })
 export class CadmusTgrPartMsUiModule {}

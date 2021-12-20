@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { AuthService } from '@myrmidon/cadmus-api';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 
 import {
@@ -13,6 +12,7 @@ import {
 import { take } from 'rxjs/operators';
 import { DialogService } from '@myrmidon/ng-mat-tools';
 import { deepCopy } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * MsScripts editor component.
@@ -40,7 +40,7 @@ export class MsScriptsPartComponent
   public scrRoleEntries: ThesaurusEntry[] | undefined;
 
   constructor(
-    authService: AuthService,
+    authService: AuthJwtService,
     formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {

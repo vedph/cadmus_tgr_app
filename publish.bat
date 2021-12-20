@@ -24,8 +24,4 @@ cd .\dist\myrmidon\cadmus-tgr-part-ms-ui
 call npm publish --access=public
 cd ..\..\..
 pause
-cd .\dist\myrmidon\cadmus-tgr-ui
-call npm publish --access=public
-cd ..\..\..
-pause
 echo ALL DONE

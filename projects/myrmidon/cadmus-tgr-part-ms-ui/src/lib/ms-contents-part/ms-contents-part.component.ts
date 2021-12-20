@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { AuthService } from '@myrmidon/cadmus-api';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
@@ -40,7 +40,7 @@ export class MsContentsPartComponent
   public docTypeEntries: ThesaurusEntry[] | undefined;
 
   constructor(
-    authService: AuthService,
+    authService: AuthJwtService,
     formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { AuthService } from '@myrmidon/cadmus-api';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   MsOrnament,
@@ -13,6 +12,7 @@ import { take } from 'rxjs/operators';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { DialogService } from '@myrmidon/ng-mat-tools';
 import { deepCopy } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * Manuscript's ornamentations part editor component.
@@ -41,7 +41,7 @@ export class MsOrnamentsPartComponent
   public ornaments: FormControl;
 
   constructor(
-    authService: AuthService,
+    authService: AuthJwtService,
     formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService

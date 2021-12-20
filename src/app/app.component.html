@@ -31,41 +31,41 @@
       mat-button
       routerLink="/thesauri"
       *ngIf="
-        user &&
-        (user?.roles?.includes('admin') || user?.roles?.includes('editor'))
+        user && (user.roles.includes('admin') || user.roles.includes('editor'))
       "
       >Thesauri</a
     >
 
     <span class="tb-fill-remaining-space"></span>
 
-    <div *ngIf="logged" fxLayout="row" fxLayoutAlign="start center">
-      <img [src]="getGravatarUrl(user?.email, 32)" [alt]="user?.userName" />
+    <div *ngIf="user" fxLayout="row" fxLayoutAlign="start center">
+      <img [src]="getGravatarUrl(user.email, 32)" [alt]="user.userName" />
       <mat-icon
         class="small-icon"
-        *ngIf="user && user?.roles?.includes('admin')"
+        *ngIf="user && user.roles.includes('admin')"
         title="admin"
         >build</mat-icon
       >
       <mat-icon
         class="small-icon"
-        *ngIf="user && !user?.emailConfirmed"
+        *ngIf="user && !user.emailConfirmed"
         title="You must verify your email address! Please check your mailbox {{
-          user?.email
+          user.email
         }}"
         >feedback</mat-icon
       >
-      <button mat-icon-button [mat-menu-trigger-for]="menu">
+
+      <!-- admin menu -->
+      <button
+        *ngIf="user && user.roles.includes('admin')"
+        mat-button
+        [matMenuTriggerFor]="adminMenu"
+      >
         <mat-icon>more_vert</mat-icon>
       </button>
-      <mat-menu x-position="before" #menu="matMenu">
-        <a
-          mat-menu-item
-          *ngIf="user && user?.roles?.includes('admin')"
-          routerLink="/admin"
-          >Admin</a
-        >
-        <a mat-menu-item (click)="logout()">Logout</a>
+      <mat-menu #adminMenu>
+        <a mat-menu-item routerLink="/manage-users">Manage users</a>
+        <a mat-menu-item routerLink="/register-user">Register user</a>
       </mat-menu>
     </div>
 
