@@ -75,7 +75,7 @@ export class QuotationVariantComponent implements OnInit {
     this.type = _formBuilder.control(0, Validators.required);
     this.lemma = _formBuilder.control(null, [
       Validators.required,
-      Validators.maxLength(100),
+      Validators.maxLength(300),
     ]);
     this.value = _formBuilder.control(null, [
       Validators.required,
