@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MonacoEditorModule } from 'ngx-monaco-editor';
@@ -23,6 +24,7 @@ import { CadmusCoreModule } from '@myrmidon/cadmus-core';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
 import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
+import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size';
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
 
 // locals
@@ -45,7 +47,6 @@ import { MsPlacesPartComponent } from './ms-places-part/ms-places-part.component
 import { MsPlaceComponent } from './ms-place/ms-place.component';
 import { MsSignaturesPartComponent } from './ms-signatures-part/ms-signatures-part.component';
 import { NgToolsModule } from '@myrmidon/ng-tools';
-import { MatTreeModule } from '@angular/material/tree';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { MatTreeModule } from '@angular/material/tree';
     CadmusRefsDocReferencesModule,
     CadmusRefsHistoricalDateModule,
     CadmusTgrCoreModule,
+    CadmusMatPhysicalSizeModule,
   ],
   exports: [
     MsContentComponent,

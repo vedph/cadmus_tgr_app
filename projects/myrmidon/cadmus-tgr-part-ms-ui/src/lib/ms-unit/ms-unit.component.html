@@ -508,13 +508,13 @@
         [disabled]="!editingLeafSize"
       >
         <mat-expansion-panel-header>size</mat-expansion-panel-header>
-        <cadmus-physical-size
+        <cadmus-mat-physical-size
           [unitEntries]="$any(szUnitEntries)"
           [tagEntries]="$any(szTagEntries)"
           [dimTagEntries]="$any(szDimTagEntries)"
           [size]="$any(editedLeafSize)"
           (sizeChange)="onEditedLeafSizeChange($event)"
-        ></cadmus-physical-size>
+        ></cadmus-mat-physical-size>
         <button
           type="button"
           mat-icon-button
@@ -639,13 +639,13 @@
         [disabled]="!editingAreaSize"
       >
         <mat-expansion-panel-header>size</mat-expansion-panel-header>
-        <cadmus-physical-size
+        <cadmus-mat-physical-size
           [unitEntries]="$any(szUnitEntries)"
           [tagEntries]="$any(szTagEntries)"
           [dimTagEntries]="$any(szDimTagEntries)"
           [size]="$any(editedAreaSize)"
           (sizeChange)="onEditedAreaSizeChange($event)"
-        ></cadmus-physical-size>
+        ></cadmus-mat-physical-size>
         <button
           type="button"
           mat-icon-button

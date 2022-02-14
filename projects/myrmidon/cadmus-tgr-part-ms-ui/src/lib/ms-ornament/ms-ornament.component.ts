@@ -13,7 +13,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { PhysicalSize, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { PhysicalSize } from '@myrmidon/cadmus-mat-physical-size';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { MsOrnament } from '../ms-ornaments-part';
 

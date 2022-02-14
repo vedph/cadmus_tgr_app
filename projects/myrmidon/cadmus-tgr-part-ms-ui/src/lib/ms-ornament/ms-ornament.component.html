@@ -54,7 +54,7 @@
     <mat-checkbox [formControl]="hasSize">has size</mat-checkbox>
 
     <!-- size-->
-    <cadmus-physical-size
+    <cadmus-mat-physical-size
       *ngIf="hasSize.value"
       [size]="$any(size)"
       [unitEntries]="$any(szUnitEntries)"
@@ -62,7 +62,7 @@
       [dimTagEntries]="$any(szDimTagEntries)"
       (sizeChange)="onSizeChange($event)"
     >
-    </cadmus-physical-size>
+    </cadmus-mat-physical-size>
   </div>
 
   <div>

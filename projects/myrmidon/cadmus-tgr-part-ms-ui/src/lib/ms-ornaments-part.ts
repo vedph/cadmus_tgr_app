@@ -1,4 +1,5 @@
-import { Part, PhysicalSize } from '@myrmidon/cadmus-core';
+import { Part } from '@myrmidon/cadmus-core';
+import { PhysicalSize } from '@myrmidon/cadmus-mat-physical-size';
 import { MsLocation } from '@myrmidon/cadmus-tgr-core';
 
 /**

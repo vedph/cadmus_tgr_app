@@ -9,10 +9,9 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  PhysicalDimension,
-  PhysicalSize,
   ThesaurusEntry,
 } from '@myrmidon/cadmus-core';
+import { PhysicalDimension, PhysicalSize } from '@myrmidon/cadmus-mat-physical-size';
 import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
