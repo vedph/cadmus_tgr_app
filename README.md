@@ -47,5 +47,9 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
-- 2011-11-29: detached from Itinera. Models and services from itinera core were copied into tgr core. Segnatures were copied into parts. All library versions bumbed by their minor number.
-- 2011-11-11: upgraded Angular and thesaurus related libraries.
+- 2022-03-06: upgraded Angular and added version number.
+
+### 1.1.1
+
+- 2022-11-29: detached from Itinera. Models and services from itinera core were copied into tgr core. Segnatures were copied into parts. All library versions bumbed by their minor number.
+- 2022-11-11: upgraded Angular and thesaurus related libraries.
