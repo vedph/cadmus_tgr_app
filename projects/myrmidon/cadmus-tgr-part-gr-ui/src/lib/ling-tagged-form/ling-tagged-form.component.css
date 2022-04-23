@@ -10,3 +10,12 @@ th {
 .hilite {
   background-color: #ddf3f5;
 }
+.toolbar {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.toolbar * {
+  flex: 0 0 auto;
+}

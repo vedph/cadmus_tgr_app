@@ -1,6 +1,29 @@
 <form [formGroup]="form" (submit)="save()">
   <mat-tab-group>
     <mat-tab label="tags">
+      <!-- copy and paste -->
+      <div class="toolbar">
+        <button
+          mat-icon-button
+          type="button"
+          color="primary"
+          matTooltip="Copy tags"
+          [disabled]="!tags.length"
+          (click)="copyTags()"
+        >
+          <mat-icon>content_copy</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          type="button"
+          color="warn"
+          matTooltip="Paste tags"
+          [disabled]="!bucketAvailable"
+          (click)="pasteTags()"
+        >
+          <mat-icon>content_paste</mat-icon>
+        </button>
+      </div>
       <!-- tags -->
       <cadmus-thesaurus-tree
         [entries]="tagEntries || []"

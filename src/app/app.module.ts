@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // material
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -100,6 +101,7 @@ import { ITEM_BROWSER_KEYS } from './item-browser-keys';
     ReactiveFormsModule,
     AppRoutingModule,
     // material
+    ClipboardModule,
     DragDropModule,
     MatAutocompleteModule,
     MatBadgeModule,

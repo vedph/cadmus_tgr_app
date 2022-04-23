@@ -15,15 +15,22 @@ import {
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { AnnotatedTag, TaggedNote } from '@myrmidon/cadmus-tgr-core';
+import {
+  AnnotatedTag,
+  BucketStoreService,
+  TaggedNote,
+} from '@myrmidon/cadmus-tgr-core';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import { LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 interface EditedTaggedNote extends TaggedNote {
   label: string;
 }
+
+const BUCKET_TAGS_KEY = 'ling-tags';
 
 /**
  * LingTaggedForm editor.
@@ -82,16 +89,22 @@ export class LingTaggedFormComponent implements OnInit {
   public notes: FormArray;
   public noteForm: FormGroup;
 
-  public tags: AnnotatedTag[] | undefined;
+  public tags: AnnotatedTag[];
   public editedTagIndex: number;
   public editingNotes: boolean;
+  public bucketAvailable: boolean;
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _store: BucketStoreService
+  ) {
     this.modelChange = new EventEmitter<LingTaggedForm>();
     this.editorClose = new EventEmitter<any>();
     this._updates$ = new BehaviorSubject<string>('');
     this.editedTagIndex = -1;
     this.editingNotes = false;
+    this.bucketAvailable = _store.has(BUCKET_TAGS_KEY);
+    this.tags = [];
     // form
     this.dubious = _formBuilder.control(false);
     this.lemmata = _formBuilder.control(null, Validators.maxLength(500));
@@ -119,6 +132,10 @@ export class LingTaggedFormComponent implements OnInit {
       .subscribe((_) => {
         this.updateForm(this._model);
       });
+
+    this._store.changes$.subscribe((_) => {
+      this.bucketAvailable = this._store.has(BUCKET_TAGS_KEY);
+    });
   }
 
   private updateForm(model: LingTaggedForm | undefined): void {
@@ -126,7 +143,7 @@ export class LingTaggedFormComponent implements OnInit {
     this.noteForm.reset();
 
     if (!model) {
-      this.tags = undefined;
+      this.tags = [];
       this.form.reset();
       return;
     }
@@ -207,6 +224,28 @@ export class LingTaggedFormComponent implements OnInit {
   public getAuxLabel(tag: string): string {
     const entry = this._auxEntries?.find((e) => e.id === tag);
     return entry ? entry.value : tag;
+  }
+
+  public copyTags(): void {
+    if (this.tags.length) {
+      this._store.set(BUCKET_TAGS_KEY, deepCopy(this.tags));
+    }
+  }
+
+  public pasteTags(): void {
+    if (!this.bucketAvailable) {
+      return;
+    }
+    const tags = this._store.get(BUCKET_TAGS_KEY) as AnnotatedTag[];
+    if (!tags) {
+      return;
+    }
+    for (let i = 0; i < tags.length; i++) {
+      if (this.tags.some((t) => t.value === tags[i].value)) {
+        continue;
+      }
+      this.tags.push(tags[i]);
+    }
   }
 
   //#region Tag's notes
