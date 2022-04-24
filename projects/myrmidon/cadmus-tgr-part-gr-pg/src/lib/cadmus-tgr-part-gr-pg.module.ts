@@ -19,27 +19,35 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
 import { CadmusStateModule } from '@myrmidon/cadmus-state';
 import {
+  AVAILABLE_WITNESSES_FRAGMENT_TYPEID,
   AVAILABLE_WITNESSES_PART_TYPEID,
-  CadmusTgrPartGrUiModule,
   INTERPOLATIONS_FRAGMENT_TYPEID,
   LING_TAGS_FRAGMENT_TYPEID,
   VAR_QUOTATIONS_FRAGMENT_TYPEID,
+  CadmusTgrPartGrUiModule,
 } from '@myrmidon/cadmus-tgr-part-gr-ui';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
-
-import { LingTagsFragmentFeatureComponent } from './ling-tags-fragment-feature/ling-tags-fragment-feature.component';
-import { VarQuotationsFragmentFeatureComponent } from './var-quotations-fragment-feature/var-quotations-fragment-feature.component';
-import { InterpolationsFragmentFeatureComponent } from './interpolations-fragment-feature/interpolations-fragment-feature.component';
-import { AvailableWitnessesPartFeatureComponent } from './available-witnesses-part-feature/available-witnesses-part-feature.component';
 import { NgToolsModule } from '@myrmidon/ng-tools';
 import { AuthJwtLoginModule } from '@myrmidon/auth-jwt-login';
+
+import { AvailableWitnessesFragmentFeatureComponent } from './available-witnesses-fragment-feature/available-witnesses-fragment-feature.component';
+import { AvailableWitnessesPartFeatureComponent } from './available-witnesses-part-feature/available-witnesses-part-feature.component';
+import { InterpolationsFragmentFeatureComponent } from './interpolations-fragment-feature/interpolations-fragment-feature.component';
+import { LingTagsFragmentFeatureComponent } from './ling-tags-fragment-feature/ling-tags-fragment-feature.component';
+import { VarQuotationsFragmentFeatureComponent } from './var-quotations-fragment-feature/var-quotations-fragment-feature.component';
 
 export const RouterModuleForChild = RouterModule.forChild([
   {
     path: `${AVAILABLE_WITNESSES_PART_TYPEID}/:pid`,
     pathMatch: 'full',
     component: AvailableWitnessesPartFeatureComponent,
+    canDeactivate: [PendingChangesGuard],
+  },
+  {
+    path: `fragment/:pid/${AVAILABLE_WITNESSES_FRAGMENT_TYPEID}/:loc`,
+    pathMatch: 'full',
+    component: AvailableWitnessesFragmentFeatureComponent,
     canDeactivate: [PendingChangesGuard],
   },
   {
@@ -64,6 +72,7 @@ export const RouterModuleForChild = RouterModule.forChild([
 
 @NgModule({
   declarations: [
+    AvailableWitnessesFragmentFeatureComponent,
     AvailableWitnessesPartFeatureComponent,
     InterpolationsFragmentFeatureComponent,
     LingTagsFragmentFeatureComponent,
@@ -97,6 +106,7 @@ export const RouterModuleForChild = RouterModule.forChild([
     CadmusTgrPartGrUiModule,
   ],
   exports: [
+    AvailableWitnessesFragmentFeatureComponent,
     AvailableWitnessesPartFeatureComponent,
     InterpolationsFragmentFeatureComponent,
     LingTagsFragmentFeatureComponent,

@@ -32,9 +32,11 @@ import { VarQuotationsFragmentComponent } from './var-quotations-fragment/var-qu
 import { InterpolationComponent } from './interpolation/interpolation.component';
 import { InterpolationsFragmentComponent } from './interpolations-fragment/interpolations-fragment.component';
 import { AvailableWitnessesPartComponent } from './available-witnesses-part/available-witnesses-part.component';
+import { AvailableWitnessesFragmentComponent } from './available-witnesses-fragment/available-witnesses-fragment.component';
 
 @NgModule({
   declarations: [
+    AvailableWitnessesFragmentComponent,
     AvailableWitnessesPartComponent,
     InterpolationComponent,
     InterpolationsFragmentComponent,
@@ -71,6 +73,7 @@ import { AvailableWitnessesPartComponent } from './available-witnesses-part/avai
     CadmusTgrCoreModule,
   ],
   exports: [
+    AvailableWitnessesFragmentComponent,
     AvailableWitnessesPartComponent,
     InterpolationComponent,
     InterpolationsFragmentComponent,

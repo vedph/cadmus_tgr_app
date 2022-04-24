@@ -4,7 +4,7 @@ Quick Docker image build:
 
 1. `npm run build-all`
 2. `ng build --configuration production`
-3. `docker build . -t vedph2020/cadmus-tgr-app:1.1.2 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.1.3 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
 
 Web application frontend for Cadmus _TGR_. This application is built by packing together a number of components:
 
@@ -37,7 +37,7 @@ Swagger at <http://151.100.184.12:59590/swagger/index.html>.
 
 (note the API port number; the standard port 80/443 is reserved for this frontend).
 
-3. `docker build . -t vedph2020/cadmus-tgr-app:1.0.28-prod` and then push the image.
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.1.3-prod` and then push the image.
 
 CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the `AllowedOrigins` of the API layer, e.g.:
 
@@ -47,9 +47,12 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+### 1.1.3
+
+- 2022-04-24: upgraded packages, removed moment, added witnesses layer.
 - 2022-03-06: upgraded Angular and added version number.
 
 ### 1.1.1
 
-- 2022-11-29: detached from Itinera. Models and services from itinera core were copied into tgr core. Segnatures were copied into parts. All library versions bumbed by their minor number.
+- 2022-11-29: detached from Itinera. Models and services from itinera core were copied into tgr core. Segnatures were copied into parts. All library versions bumped by their minor number.
 - 2022-11-11: upgraded Angular and thesaurus related libraries.
