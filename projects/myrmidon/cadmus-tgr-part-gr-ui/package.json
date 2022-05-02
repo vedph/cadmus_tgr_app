@@ -1,6 +1,6 @@
 {
   "name": "@myrmidon/cadmus-tgr-part-gr-ui",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Cadmus TGR - part editors components.",
   "keywords": [
     "Cadmus",
@@ -18,7 +18,7 @@
     "@angular/common": "^13.0.0",
     "@angular/cdk": "^13.0.0",
     "@angular/core": "^13.0.0",
-    "@myrmidon/cadmus-core": "^0.3.0",
+    "@myrmidon/cadmus-core": "^1.0.0",
     "@myrmidon/cadmus-material": "^0.1.0",
     "@myrmidon/cadmus-tgr-core": "^0.1.0",
     "@myrmidon/cadmus-tgr-ui": "^0.1.0"

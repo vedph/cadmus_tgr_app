@@ -37,7 +37,7 @@ Swagger at <http://151.100.184.12:59590/swagger/index.html>.
 
 (note the API port number; the standard port 80/443 is reserved for this frontend).
 
-3. `docker build . -t vedph2020/cadmus-tgr-app:1.1.3-prod` and then push the image.
+3. `docker build . -t vedph2020/cadmus-tgr-app:1.1.4-prod` and then push the image.
 
 CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the `AllowedOrigins` of the API layer, e.g.:
 
@@ -46,6 +46,12 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 ```
 
 ## History
+
+- 2022-05-02: removed legacy code and updated libraries.
+
+### 1.1.4
+
+- 2022-05-02: fixes to peer dependencies in libraries (these are used by Pura).
 
 ### 1.1.3
 

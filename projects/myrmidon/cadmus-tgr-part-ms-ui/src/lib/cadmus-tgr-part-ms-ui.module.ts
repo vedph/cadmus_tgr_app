@@ -20,12 +20,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 // general Cadmus modules
+import { NgToolsModule } from '@myrmidon/ng-tools';
 import { CadmusCoreModule } from '@myrmidon/cadmus-core';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
 import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
-import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size';
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
+import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size';
 
 // locals
 import { MsUnitsPartComponent } from './ms-units-part/ms-units-part.component';
@@ -46,7 +47,6 @@ import { MarkdownModule } from 'ngx-markdown';
 import { MsPlacesPartComponent } from './ms-places-part/ms-places-part.component';
 import { MsPlaceComponent } from './ms-place/ms-place.component';
 import { MsSignaturesPartComponent } from './ms-signatures-part/ms-signatures-part.component';
-import { NgToolsModule } from '@myrmidon/ng-tools';
 
 @NgModule({
   declarations: [
@@ -93,10 +93,10 @@ import { NgToolsModule } from '@myrmidon/ng-tools';
     NgToolsModule,
     CadmusCoreModule,
     CadmusUiModule,
+    CadmusMatPhysicalSizeModule,
     CadmusRefsDocReferencesModule,
     CadmusRefsHistoricalDateModule,
     CadmusTgrCoreModule,
-    CadmusMatPhysicalSizeModule,
   ],
   exports: [
     MsContentComponent,
