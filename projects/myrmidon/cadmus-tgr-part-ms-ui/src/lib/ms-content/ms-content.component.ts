@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -34,21 +34,21 @@ export class MsContentComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public start: FormControl;
-  public end: FormControl;
-  public work: FormControl;
-  public location: FormControl;
-  public title: FormControl;
-  public incipit: FormControl;
-  public explicit: FormControl;
-  public note: FormControl;
-  public editions: FormControl;
-  public form: FormGroup;
+  public start: UntypedFormControl;
+  public end: UntypedFormControl;
+  public work: UntypedFormControl;
+  public location: UntypedFormControl;
+  public title: UntypedFormControl;
+  public incipit: UntypedFormControl;
+  public explicit: UntypedFormControl;
+  public note: UntypedFormControl;
+  public editions: UntypedFormControl;
+  public form: UntypedFormGroup;
 
   public initialEditions: DocReference[];
 
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsContent>();

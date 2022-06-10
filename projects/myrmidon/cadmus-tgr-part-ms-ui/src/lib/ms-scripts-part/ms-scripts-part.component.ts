@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -33,7 +33,7 @@ export class MsScriptsPartComponent
   public tabIndex: number;
   public editedScript: MsScript | undefined;
 
-  public scripts: FormControl;
+  public scripts: UntypedFormControl;
 
   public langEntries: ThesaurusEntry[] | undefined;
   public scrTypeEntries: ThesaurusEntry[] | undefined;
@@ -41,7 +41,7 @@ export class MsScriptsPartComponent
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private _dialogService: DialogService
   ) {
     super(authService);

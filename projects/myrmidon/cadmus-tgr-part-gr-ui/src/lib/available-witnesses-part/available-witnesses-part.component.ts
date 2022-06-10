@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
+  UntypedFormBuilder,
   Validators,
-  FormArray,
-  FormGroup,
-  FormControl,
+  UntypedFormArray,
+  UntypedFormGroup,
+  UntypedFormControl,
 } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
@@ -35,10 +35,10 @@ export class AvailableWitnessesPartComponent
    */
   public witEntries: ThesaurusEntry[] | undefined;
 
-  public witnesses: FormArray;
-  public count: FormControl;
+  public witnesses: UntypedFormArray;
+  public count: UntypedFormControl;
 
-  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, private _formBuilder: UntypedFormBuilder) {
     super(authService);
     // form
     // HACK: for some reason, Validators.required does not work on FA
@@ -101,7 +101,7 @@ export class AvailableWitnessesPartComponent
     return part;
   }
 
-  private getWitnessGroup(witness?: AvailableWitness): FormGroup {
+  private getWitnessGroup(witness?: AvailableWitness): UntypedFormGroup {
     const g = this._formBuilder.group({
       id: this._formBuilder.control(witness?.id, [
         Validators.required,
@@ -166,7 +166,7 @@ export class AvailableWitnessesPartComponent
   private getWitnesses(): AvailableWitness[] {
     const witnesses: AvailableWitness[] = [];
     for (let i = 0; i < this.witnesses.length; i++) {
-      const g = this.witnesses.at(i) as FormGroup;
+      const g = this.witnesses.at(i) as UntypedFormGroup;
       witnesses.push({
         id: g.controls.id.value?.trim(),
         isPartial: g.controls.partial.value ? true : undefined,

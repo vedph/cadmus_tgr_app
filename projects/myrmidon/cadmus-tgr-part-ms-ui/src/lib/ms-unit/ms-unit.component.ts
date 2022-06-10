@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
@@ -60,44 +60,44 @@ export class MsUnitComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   // general
-  public start: FormControl;
-  public end: FormControl;
-  public material: FormControl;
-  public guardSheetMaterial: FormControl;
-  public sheetCount: FormControl;
-  public guardSheetCount: FormControl;
-  public backGuardSheetCount: FormControl;
-  public groupId: FormControl;
-  public groupOrdinal: FormControl;
-  public quires: FormControl;
-  public sheetNumbering: FormControl;
-  public quireNumbering: FormControl;
-  public state: FormControl;
-  public binding: FormControl;
+  public start: UntypedFormControl;
+  public end: UntypedFormControl;
+  public material: UntypedFormControl;
+  public guardSheetMaterial: UntypedFormControl;
+  public sheetCount: UntypedFormControl;
+  public guardSheetCount: UntypedFormControl;
+  public backGuardSheetCount: UntypedFormControl;
+  public groupId: UntypedFormControl;
+  public groupOrdinal: UntypedFormControl;
+  public quires: UntypedFormControl;
+  public sheetNumbering: UntypedFormControl;
+  public quireNumbering: UntypedFormControl;
+  public state: UntypedFormControl;
+  public binding: UntypedFormControl;
   // leaf sizes
   public leafSizes: PhysicalSize[];
   public editedLeafSize: PhysicalSize | undefined;
   public editedLeafSizeIndex: number;
   public editingLeafSize: boolean;
-  public leafSizeSamples: FormControl;
+  public leafSizeSamples: UntypedFormControl;
   // written area size
   public areaSizes: PhysicalSize[];
   public editedAreaSize: PhysicalSize | undefined;
   public editedAreaSizeIndex: number;
   public editingAreaSize: boolean;
-  public areaSizeSamples: FormControl;
+  public areaSizeSamples: UntypedFormControl;
   // date
-  public hasDate: FormControl;
+  public hasDate: UntypedFormControl;
   public date?: HistoricalDateModel;
   // rulings
-  public rulings: FormArray;
+  public rulings: UntypedFormArray;
   // watermarks
-  public watermarks: FormArray;
+  public watermarks: UntypedFormArray;
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsUnit>();
@@ -264,7 +264,7 @@ export class MsUnitComponent implements OnInit {
     }
     const rulings: MsRuling[] = [];
     for (let i = 0; i < this.rulings.length; i++) {
-      const g = this.rulings.at(i) as FormGroup;
+      const g = this.rulings.at(i) as UntypedFormGroup;
       rulings.push({
         manner: g.controls.manner.value?.trim(),
         system: g.controls.system.value?.trim(),
@@ -281,7 +281,7 @@ export class MsUnitComponent implements OnInit {
     }
     const watermarks: MsWatermark[] = [];
     for (let i = 0; i < this.watermarks.length; i++) {
-      const g = this.watermarks.at(i) as FormGroup;
+      const g = this.watermarks.at(i) as UntypedFormGroup;
       watermarks.push({
         value: g.controls.value.value?.trim(),
         description: g.controls.description.value?.trim(),
@@ -449,7 +449,7 @@ export class MsUnitComponent implements OnInit {
   //#endregion
 
   //#region Rulings
-  private getRulingGroup(ruling?: MsRuling): FormGroup {
+  private getRulingGroup(ruling?: MsRuling): UntypedFormGroup {
     return this._formBuilder.group({
       manner: this._formBuilder.control(ruling?.manner, [
         Validators.required,
@@ -495,7 +495,7 @@ export class MsUnitComponent implements OnInit {
   //#endregion
 
   //#region Watermarks
-  private getWatermarkGroup(item?: MsWatermark): FormGroup {
+  private getWatermarkGroup(item?: MsWatermark): UntypedFormGroup {
     return this._formBuilder.group({
       value: this._formBuilder.control(item?.value, [
         Validators.required,

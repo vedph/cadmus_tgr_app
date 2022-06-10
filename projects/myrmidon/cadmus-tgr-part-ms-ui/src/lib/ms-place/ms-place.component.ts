@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -31,13 +31,13 @@ export class MsPlaceComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public area: FormControl;
-  public address: FormControl;
-  public city: FormControl;
-  public site: FormControl;
-  public rank: FormControl;
-  public sources: FormControl;
+  public form: UntypedFormGroup;
+  public area: UntypedFormControl;
+  public address: UntypedFormControl;
+  public city: UntypedFormControl;
+  public site: UntypedFormControl;
+  public rank: UntypedFormControl;
+  public sources: UntypedFormControl;
 
   public initialSources: DocReference[];
 
@@ -52,7 +52,7 @@ export class MsPlaceComponent implements OnInit {
   @Input()
   public tagEntries: ThesaurusEntry[] | undefined;
 
-  constructor(formBuilder: FormBuilder) {
+  constructor(formBuilder: UntypedFormBuilder) {
     this.modelChange = new EventEmitter<MsPlace>();
     this.editorClose = new EventEmitter<any>();
     this.initialSources = [];

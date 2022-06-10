@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -43,17 +43,17 @@ export class MsScriptComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public langChecks: FormArray;
-  public langCount: FormControl;
-  public role: FormControl;
-  public type: FormControl;
-  public hands: FormControl;
+  public form: UntypedFormGroup;
+  public langChecks: UntypedFormArray;
+  public langCount: UntypedFormControl;
+  public role: UntypedFormControl;
+  public type: UntypedFormControl;
+  public hands: UntypedFormControl;
   public tabIndex: number;
   public editedHand: MsHand | undefined;
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {
@@ -225,7 +225,7 @@ export class MsScriptComponent implements OnInit {
     for (let i = 0; i < this._langEntries.length; i++) {
       const id = this._langEntries[i].id;
       const checked = ids.some((s) => s === id);
-      const g = this.langChecks.at(i) as FormGroup;
+      const g = this.langChecks.at(i) as UntypedFormGroup;
       g.controls.check.setValue(checked);
       if (checked) {
         n++;
@@ -244,7 +244,7 @@ export class MsScriptComponent implements OnInit {
     }
     const ids: string[] = [];
     for (let i = 0; i < this._langEntries.length; i++) {
-      const g = this.langChecks.at(i) as FormGroup;
+      const g = this.langChecks.at(i) as UntypedFormGroup;
       if (g?.controls?.check.value) {
         ids.push(this._langEntries[i].id);
       }
@@ -258,7 +258,7 @@ export class MsScriptComponent implements OnInit {
     }
     let n = 0;
     for (let i = 0; i < this._langEntries.length; i++) {
-      const g = this.langChecks.at(i) as FormGroup;
+      const g = this.langChecks.at(i) as UntypedFormGroup;
       if (g.controls.check.value) {
         n++;
       }

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -27,13 +27,13 @@ export class MsGuardSheetComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public back: FormControl;
-  public material: FormControl;
-  public note: FormControl;
-  public watermarks: FormArray;
+  public form: UntypedFormGroup;
+  public back: UntypedFormControl;
+  public material: UntypedFormControl;
+  public note: UntypedFormControl;
+  public watermarks: UntypedFormArray;
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(private _formBuilder: UntypedFormBuilder) {
     this.modelChange = new EventEmitter<MsGuardSheet>();
     this.editorClose = new EventEmitter<any>();
     // form
@@ -84,7 +84,7 @@ export class MsGuardSheetComponent implements OnInit {
     if (this.watermarks.length) {
       model.watermarks = [];
       for (let i = 0; i < this.watermarks.controls.length; i++) {
-        const g = this.watermarks.at(i) as FormGroup;
+        const g = this.watermarks.at(i) as UntypedFormGroup;
         model.watermarks.push({
           value: g.controls.value.value?.trim(),
           description: g.controls.description.value?.trim()
@@ -95,7 +95,7 @@ export class MsGuardSheetComponent implements OnInit {
   }
 
   //#region Watermarks
-  private getWatermarkGroup(item?: MsWatermark): FormGroup {
+  private getWatermarkGroup(item?: MsWatermark): UntypedFormGroup {
     return this._formBuilder.group({
       value: this._formBuilder.control(item?.value, [
         Validators.required,

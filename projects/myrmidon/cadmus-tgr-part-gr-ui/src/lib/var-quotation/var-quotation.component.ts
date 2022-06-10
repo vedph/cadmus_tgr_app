@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -74,16 +74,16 @@ export class VarQuotationComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public tag: FormControl;
-  public authority: FormControl;
-  public work: FormControl;
-  public location: FormControl;
-  public parallels: FormArray;
-  public variants: FormControl;
+  public form: UntypedFormGroup;
+  public tag: UntypedFormControl;
+  public authority: UntypedFormControl;
+  public work: UntypedFormControl;
+  public location: UntypedFormControl;
+  public parallels: UntypedFormArray;
+  public variants: UntypedFormControl;
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _clipboard: Clipboard,
     private _dialogService: DialogService
   ) {
@@ -154,7 +154,7 @@ export class VarQuotationComponent implements OnInit {
   }
 
   //#region Parallels
-  private getParallelGroup(parallel?: QuotationParallel): FormGroup {
+  private getParallelGroup(parallel?: QuotationParallel): UntypedFormGroup {
     const g = this._formBuilder.group({
       work: this._formBuilder.control(parallel?.work, [
         Validators.required,
@@ -205,7 +205,7 @@ export class VarQuotationComponent implements OnInit {
   private getParallels(): QuotationParallel[] | undefined {
     const entries: QuotationParallel[] = [];
     for (let i = 0; i < this.parallels.length; i++) {
-      const g = this.parallels.at(i) as FormGroup;
+      const g = this.parallels.at(i) as UntypedFormGroup;
       entries.push({
         work: g.controls.work.value?.trim(),
         location: g.controls.location.value?.trim(),

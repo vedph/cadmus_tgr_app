@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import {
   AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
@@ -24,13 +24,13 @@ export class MsPalimpsestComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public locations: FormControl;
+  public form: UntypedFormGroup;
+  public locations: UntypedFormControl;
   public date: HistoricalDateModel | undefined;
-  public note: FormControl;
+  public note: UntypedFormControl;
 
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsPalimpsest>();

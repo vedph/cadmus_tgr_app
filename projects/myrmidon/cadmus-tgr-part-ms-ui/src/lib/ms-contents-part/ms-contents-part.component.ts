@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
@@ -30,7 +30,7 @@ export class MsContentsPartComponent
 
   public tabIndex: number;
   public editedContent: MsContent | undefined;
-  public contents: FormControl;
+  public contents: UntypedFormControl;
 
   /**
    * Manuscript's materials.
@@ -41,7 +41,7 @@ export class MsContentsPartComponent
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  FormControl,
-  FormBuilder,
+  UntypedFormControl,
+  UntypedFormBuilder,
   Validators,
-  FormArray,
+  UntypedFormArray,
   AbstractControl,
   ValidationErrors,
-  FormGroup,
+  UntypedFormGroup,
 } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
@@ -36,15 +36,15 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 export class MsHistoryPartComponent
   extends ModelEditorComponentBase<MsHistoryPart>
   implements OnInit {
-  public provenances: FormArray;
-  public history: FormControl;
-  public owners: FormArray;
-  public subLocations: FormControl;
-  public subLanguage: FormControl;
-  public subHandId: FormControl;
-  public subText: FormControl;
-  public subNote: FormControl;
-  public annotations: FormArray;
+  public provenances: UntypedFormArray;
+  public history: UntypedFormControl;
+  public owners: UntypedFormArray;
+  public subLocations: UntypedFormControl;
+  public subLanguage: UntypedFormControl;
+  public subHandId: UntypedFormControl;
+  public subText: UntypedFormControl;
+  public subNote: UntypedFormControl;
+  public annotations: UntypedFormArray;
 
   public langEntries: ThesaurusEntry[] | undefined;
 
@@ -58,7 +58,7 @@ export class MsHistoryPartComponent
 
   constructor(
     authService: AuthJwtService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _locService: MsLocationService
   ) {
     super(authService);
@@ -207,7 +207,7 @@ export class MsHistoryPartComponent
   }
 
   //#region Provenances
-  private getProvenanceGroup(address?: GeoAddress): FormGroup {
+  private getProvenanceGroup(address?: GeoAddress): UntypedFormGroup {
     return this._formBuilder.group({
       area: this._formBuilder.control(address?.area, [
         Validators.required,
@@ -255,7 +255,7 @@ export class MsHistoryPartComponent
   private getProvenances(): GeoAddress[] | undefined {
     const provenances: GeoAddress[] = [];
     for (let i = 0; i < this.provenances.length; i++) {
-      const g = this.provenances.at(i) as FormGroup;
+      const g = this.provenances.at(i) as UntypedFormGroup;
       provenances.push({
         area: g.controls.area.value?.trim(),
         address: g.controls.address.value?.trim(),
@@ -266,7 +266,7 @@ export class MsHistoryPartComponent
   //#endregion
 
   //#region Owners
-  private getOwnerGroup(owner?: string): FormGroup {
+  private getOwnerGroup(owner?: string): UntypedFormGroup {
     return this._formBuilder.group({
       name: this._formBuilder.control(owner, [
         Validators.required,
@@ -304,7 +304,7 @@ export class MsHistoryPartComponent
   private getOwners(): string[] | undefined {
     const owners: string[] = [];
     for (let i = 0; i < this.owners.length; i++) {
-      const g = this.owners.at(i) as FormGroup;
+      const g = this.owners.at(i) as UntypedFormGroup;
       owners.push(g.controls.name.value?.trim());
     }
     return owners.length ? owners : undefined;
@@ -312,7 +312,7 @@ export class MsHistoryPartComponent
   //#endregion
 
   //#region Annotations
-  private getAnnotationGroup(annotation?: MsAnnotation): FormGroup {
+  private getAnnotationGroup(annotation?: MsAnnotation): UntypedFormGroup {
     return this._formBuilder.group({
       language: this._formBuilder.control(annotation?.language, [
         Validators.required,
@@ -358,7 +358,7 @@ export class MsHistoryPartComponent
   private getAnnotations(): MsAnnotation[] | undefined {
     const annotations: MsAnnotation[] = [];
     for (let i = 0; i < this.annotations.length; i++) {
-      const g = this.annotations.at(i) as FormGroup;
+      const g = this.annotations.at(i) as UntypedFormGroup;
       annotations.push({
         language: g.controls.language.value?.trim(),
         handId: g.controls.handId.value?.trim(),

@@ -7,9 +7,9 @@ import {
   Output,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MsFormalFeature } from '../ms-formal-features-part';
@@ -36,11 +36,11 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public handId: FormControl;
-  public description: FormControl;
+  public form: UntypedFormGroup;
+  public handId: UntypedFormControl;
+  public description: UntypedFormControl;
 
-  constructor(formBuilder: FormBuilder) {
+  constructor(formBuilder: UntypedFormBuilder) {
     this.modelChange = new EventEmitter<MsFormalFeature>();
     this.editorClose = new EventEmitter<any>();
     // form

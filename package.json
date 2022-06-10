@@ -11,21 +11,21 @@
     "build-core": "ng build @myrmidon/cadmus-tgr-core --configuration=production && ng build @myrmidon/cadmus-tgr-ui --configuration=production",
     "build-gr": "ng build @myrmidon/cadmus-tgr-part-gr-ui --configuration=production && ng build @myrmidon/cadmus-tgr-part-gr-pg --configuration=production",
     "build-ms": "ng build @myrmidon/cadmus-tgr-part-ms-ui --configuration=production && ng build @myrmidon/cadmus-tgr-part-ms-pg --configuration=production",
-    "build-all": "npm run-script build-core && npm run-script build-gr && npm run-script build-ms"
+    "build-lib": "npm run-script build-core && npm run-script build-gr && npm run-script build-ms"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~13.3.9",
-    "@angular/cdk": "^13.3.7",
-    "@angular/common": "~13.3.9",
-    "@angular/compiler": "~13.3.9",
-    "@angular/core": "~13.3.9",
+    "@angular/animations": "^14.0.1",
+    "@angular/cdk": "^14.0.1",
+    "@angular/common": "^14.0.1",
+    "@angular/compiler": "^14.0.1",
+    "@angular/core": "^14.0.1",
     "@angular/flex-layout": "13.0.0-beta.38",
-    "@angular/forms": "~13.3.9",
-    "@angular/material": "^13.3.7",
-    "@angular/platform-browser": "~13.3.9",
-    "@angular/platform-browser-dynamic": "~13.3.9",
-    "@angular/router": "~13.3.9",
+    "@angular/forms": "^14.0.1",
+    "@angular/material": "^14.0.1",
+    "@angular/platform-browser": "^14.0.1",
+    "@angular/platform-browser-dynamic": "^14.0.1",
+    "@angular/router": "^14.0.1",
     "@auth0/angular-jwt": "^5.0.2",
     "@datorama/akita": "^7.1.1",
     "@datorama/akita-ngdevtools": "^7.0.0",
@@ -40,7 +40,7 @@
     "@myrmidon/cadmus-login": "0.3.0",
     "@myrmidon/cadmus-mat-physical-size": "0.0.3",
     "@myrmidon/cadmus-part-general-pg": "1.0.4",
-    "@myrmidon/cadmus-part-general-ui": "1.0.7",
+    "@myrmidon/cadmus-part-general-ui": "1.0.8",
     "@myrmidon/cadmus-part-philology-pg": "1.0.0",
     "@myrmidon/cadmus-part-philology-ui": "1.0.1",
     "@myrmidon/cadmus-profile-core": "1.0.0",
@@ -71,9 +71,9 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.3.6",
-    "@angular/cli": "~13.3.6",
-    "@angular/compiler-cli": "~13.3.9",
+    "@angular-devkit/build-angular": "^14.0.1",
+    "@angular/cli": "^14.0.1",
+    "@angular/compiler-cli": "^14.0.1",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
@@ -84,10 +84,10 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "ng-packagr": "^13.0.3",
+    "ng-packagr": "^14.0.1",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.4.4"
+    "typescript": "~4.7.3"
   }
 }

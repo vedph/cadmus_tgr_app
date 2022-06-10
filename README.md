@@ -47,6 +47,8 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2022-06-10: upgraded to Angular 14.
+
 ### 1.1.6
 
 - 2022-05-05: fixed a hard to find issue about locale conflicts in some browsers.

@@ -8,9 +8,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -50,13 +50,13 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public type: FormControl;
-  public start: FormControl;
-  public end: FormControl;
-  public description: FormControl;
-  public note: FormControl;
-  public hasSize: FormControl;
+  public form: UntypedFormGroup;
+  public type: UntypedFormControl;
+  public start: UntypedFormControl;
+  public end: UntypedFormControl;
+  public description: UntypedFormControl;
+  public note: UntypedFormControl;
+  public hasSize: UntypedFormControl;
   public size: PhysicalSize | undefined;
 
   public editorOptions = {
@@ -68,7 +68,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
   };
 
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsOrnament>();

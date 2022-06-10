@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -31,13 +31,13 @@ export class LingTagsFragmentComponent
   public tagEntries$: BehaviorSubject<ThesaurusEntry[]>;
   public auxEntries$: BehaviorSubject<ThesaurusEntry[]>;
 
-  public forms: FormControl;
-  public formCount: FormControl;
-  public form: FormGroup;
+  public forms: UntypedFormControl;
+  public formCount: UntypedFormControl;
+  public form: UntypedFormGroup;
   public editedForm: LingTaggedForm | undefined;
   public tabIndex: number;
 
-  constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, formBuilder: UntypedFormBuilder) {
     super(authService);
     this.tagEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
     this.auxEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);

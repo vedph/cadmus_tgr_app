@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
@@ -68,11 +68,11 @@ export class InterpolationsFragmentComponent
    */
   public authTagEntries: ThesaurusEntry[] | undefined;
 
-  public interpolations: FormControl;
+  public interpolations: UntypedFormControl;
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private _dialogService: DialogService
   ) {
     super(authService);

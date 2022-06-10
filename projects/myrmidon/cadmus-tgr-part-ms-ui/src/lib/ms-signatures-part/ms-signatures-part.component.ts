@@ -6,7 +6,7 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import {
@@ -36,12 +36,12 @@ export class MsSignaturesPartComponent
 
   public tagEntries: ThesaurusEntry[] | undefined;
 
-  public form: FormGroup;
-  public signatures: FormArray;
+  public form: UntypedFormGroup;
+  public signatures: UntypedFormArray;
 
   @ViewChildren('city') cityQueryList?: QueryList<any>;
 
-  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, private _formBuilder: UntypedFormBuilder) {
     super(authService);
     // form
     this.signatures = _formBuilder.array(
@@ -116,7 +116,7 @@ export class MsSignaturesPartComponent
     }
     part.signatures = [];
     for (let i = 0; i < this.signatures.length; i++) {
-      const g = this.signatures.controls[i] as FormGroup;
+      const g = this.signatures.controls[i] as UntypedFormGroup;
       part.signatures.push({
         tag: g.controls.tag.value?.trim(),
         city: g.controls.city.value?.trim(),
@@ -128,7 +128,7 @@ export class MsSignaturesPartComponent
     return part;
   }
 
-  private getSignatureGroup(item?: MsSignature): FormGroup {
+  private getSignatureGroup(item?: MsSignature): UntypedFormGroup {
     return this._formBuilder.group({
       tag: this._formBuilder.control(item?.tag, Validators.maxLength(50)),
       city: this._formBuilder.control(item?.city, [

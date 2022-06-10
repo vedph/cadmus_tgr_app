@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -60,14 +60,14 @@ export class QuotationVariantComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public type: FormControl;
-  public lemma: FormControl;
-  public value: FormControl;
-  public witnesses: FormArray;
-  public authors: FormArray;
+  public form: UntypedFormGroup;
+  public type: UntypedFormControl;
+  public lemma: UntypedFormControl;
+  public value: UntypedFormControl;
+  public witnesses: UntypedFormArray;
+  public authors: UntypedFormArray;
 
-  constructor(private _formBuilder: FormBuilder,
+  constructor(private _formBuilder: UntypedFormBuilder,
     private _clipboard: Clipboard) {
     this.modelChange = new EventEmitter<QuotationVariant>();
     this.editorClose = new EventEmitter<any>();
@@ -135,7 +135,7 @@ export class QuotationVariantComponent implements OnInit {
   }
 
   //#region Witnesses
-  private getWitnessGroup(witness?: AnnotatedValue): FormGroup {
+  private getWitnessGroup(witness?: AnnotatedValue): UntypedFormGroup {
     return this._formBuilder.group({
       value: this._formBuilder.control(witness?.value, [
         Validators.required,
@@ -178,7 +178,7 @@ export class QuotationVariantComponent implements OnInit {
   private getWitnesses(): AnnotatedValue[] | undefined {
     const entries: AnnotatedValue[] = [];
     for (let i = 0; i < this.witnesses.length; i++) {
-      const g = this.witnesses.at(i) as FormGroup;
+      const g = this.witnesses.at(i) as UntypedFormGroup;
       entries.push({
         value: g.controls.value.value?.trim(),
         note: g.controls.note.value?.trim(),
@@ -189,7 +189,7 @@ export class QuotationVariantComponent implements OnInit {
   //#endregion
 
   //#region Authors
-  private getAuthorGroup(author?: LocAnnotatedValue): FormGroup {
+  private getAuthorGroup(author?: LocAnnotatedValue): UntypedFormGroup {
     return this._formBuilder.group({
       tag: this._formBuilder.control(author?.tag, Validators.maxLength(50)),
       value: this._formBuilder.control(author?.value, [
@@ -237,7 +237,7 @@ export class QuotationVariantComponent implements OnInit {
   private getAuthors(): LocAnnotatedValue[] | undefined {
     const entries: LocAnnotatedValue[] = [];
     for (let i = 0; i < this.authors.length; i++) {
-      const g = this.authors.at(i) as FormGroup;
+      const g = this.authors.at(i) as UntypedFormGroup;
       entries.push({
         tag: g.controls.tag.value?.trim(),
         value: g.controls.value.value?.trim(),

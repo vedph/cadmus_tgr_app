@@ -8,10 +8,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -81,13 +81,13 @@ export class LingTaggedFormComponent implements OnInit {
   @ViewChild('notebar', { static: false })
   noteDivRef?: ElementRef<HTMLElement>;
 
-  public dubious: FormControl;
-  public lemmata: FormControl;
-  public note: FormControl;
-  public tagCount: FormControl;
-  public form: FormGroup;
-  public notes: FormArray;
-  public noteForm: FormGroup;
+  public dubious: UntypedFormControl;
+  public lemmata: UntypedFormControl;
+  public note: UntypedFormControl;
+  public tagCount: UntypedFormControl;
+  public form: UntypedFormGroup;
+  public notes: UntypedFormArray;
+  public noteForm: UntypedFormGroup;
 
   public tags: AnnotatedTag[];
   public editedTagIndex: number;
@@ -95,7 +95,7 @@ export class LingTaggedFormComponent implements OnInit {
   public bucketAvailable: boolean;
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _store: BucketStoreService
   ) {
     this.modelChange = new EventEmitter<LingTaggedForm>();
@@ -304,7 +304,7 @@ export class LingTaggedFormComponent implements OnInit {
     return notes;
   }
 
-  private getAnnotatedTagGroup(item: EditedTaggedNote): FormGroup {
+  private getAnnotatedTagGroup(item: EditedTaggedNote): UntypedFormGroup {
     return this._formBuilder.group({
       tag: this._formBuilder.control(item.tag),
       label: this._formBuilder.control(item.label),

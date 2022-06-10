@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
@@ -23,18 +23,18 @@ export class MsHandComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public id: FormControl;
-  public start: FormControl;
-  public end: FormControl;
-  public description: FormControl;
-  public abbreviations: FormControl;
-  public letters: FormArray;
+  public form: UntypedFormGroup;
+  public id: UntypedFormControl;
+  public start: UntypedFormControl;
+  public end: UntypedFormControl;
+  public description: UntypedFormControl;
+  public abbreviations: UntypedFormControl;
+  public letters: UntypedFormArray;
 
   public date: HistoricalDateModel | undefined;
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsHand>();
@@ -96,7 +96,7 @@ export class MsHandComponent implements OnInit {
     }
     const letters: MsHandLetter[] = [];
     for (let i = 0; i < this.letters.controls.length; i++) {
-      const g = this.letters.at(i) as FormGroup;
+      const g = this.letters.at(i) as UntypedFormGroup;
       letters.push({
         letter: g.controls.letter.value?.trim(),
         description: g.controls.description.value?.trim(),
@@ -124,7 +124,7 @@ export class MsHandComponent implements OnInit {
   }
 
   //#region Letters
-  private getLetterGroup(letter?: MsHandLetter): FormGroup {
+  private getLetterGroup(letter?: MsHandLetter): UntypedFormGroup {
     return this._formBuilder.group({
       letter: this._formBuilder.control(letter?.letter, [
         Validators.required,

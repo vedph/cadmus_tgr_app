@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -84,19 +84,19 @@ export class InterpolationComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: FormGroup;
-  public type: FormControl;
-  public role: FormControl;
-  public tag: FormControl;
-  public value: FormControl;
-  public groupId: FormControl;
-  public languages: FormArray;
-  public note: FormControl;
-  public sources: FormArray;
-  public quotations: FormControl;
+  public form: UntypedFormGroup;
+  public type: UntypedFormControl;
+  public role: UntypedFormControl;
+  public tag: UntypedFormControl;
+  public value: UntypedFormControl;
+  public groupId: UntypedFormControl;
+  public languages: UntypedFormArray;
+  public note: UntypedFormControl;
+  public sources: UntypedFormArray;
+  public quotations: UntypedFormControl;
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _dialogService: DialogService
   ) {
     this.modelChange = new EventEmitter<Interpolation>();
@@ -184,7 +184,7 @@ export class InterpolationComponent implements OnInit {
   }
 
   //#region Languages
-  private getLanguageGroup(language?: string): FormGroup {
+  private getLanguageGroup(language?: string): UntypedFormGroup {
     return this._formBuilder.group({
       id: this._formBuilder.control(language, [
         Validators.required,
@@ -226,7 +226,7 @@ export class InterpolationComponent implements OnInit {
   private getLanguages(): string[] | undefined {
     const entries: string[] = [];
     for (let i = 0; i < this.languages.length; i++) {
-      const g = this.languages.at(i) as FormGroup;
+      const g = this.languages.at(i) as UntypedFormGroup;
       entries.push(g.controls.id.value?.trim());
     }
     return entries.length ? entries : undefined;
@@ -234,7 +234,7 @@ export class InterpolationComponent implements OnInit {
   //#endregion
 
   //#region Sources
-  private getSourceGroup(item?: ReadingSource): FormGroup {
+  private getSourceGroup(item?: ReadingSource): UntypedFormGroup {
     return this._formBuilder.group({
       witness: this._formBuilder.control(item?.witness, [
         Validators.required,
@@ -277,7 +277,7 @@ export class InterpolationComponent implements OnInit {
   private getSources(): ReadingSource[] | undefined {
     const entries: ReadingSource[] = [];
     for (let i = 0; i < this.sources.length; i++) {
-      const g = this.sources.at(i) as FormGroup;
+      const g = this.sources.at(i) as UntypedFormGroup;
       entries.push({
         witness: g.controls.witness.value?.trim(),
         handId: g.controls.handId.value?.trim(),
