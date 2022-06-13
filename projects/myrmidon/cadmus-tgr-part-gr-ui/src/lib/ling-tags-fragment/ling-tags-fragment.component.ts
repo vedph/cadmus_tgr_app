@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 
 import { LingTagsFragment } from '../ling-tags-fragment';
@@ -25,30 +25,32 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 })
 export class LingTagsFragmentComponent
   extends ModelEditorComponentBase<LingTagsFragment>
-  implements OnInit {
+  implements OnInit
+{
   private _editedFormIndex: number;
 
   public tagEntries$: BehaviorSubject<ThesaurusEntry[]>;
   public auxEntries$: BehaviorSubject<ThesaurusEntry[]>;
 
-  public forms: UntypedFormControl;
-  public formCount: UntypedFormControl;
-  public form: UntypedFormGroup;
+  public forms: FormControl<LingTaggedForm[]>;
+  public form: FormGroup;
+
   public editedForm: LingTaggedForm | undefined;
   public tabIndex: number;
 
-  constructor(authService: AuthJwtService, formBuilder: UntypedFormBuilder) {
+  constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
     super(authService);
     this.tagEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
     this.auxEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
     this.tabIndex = 0;
     this._editedFormIndex = -1;
     // form
-    this.forms = formBuilder.control([]);
-    this.formCount = formBuilder.control(0, Validators.min(1));
+    this.forms = formBuilder.control([], {
+      validators: CadmusValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
     this.form = formBuilder.group({
       forms: this.forms,
-      formCount: this.formCount
     });
   }
 
@@ -62,7 +64,6 @@ export class LingTagsFragmentComponent
       return;
     }
     this.forms.setValue(model.forms || []);
-    this.formCount.setValue(model.forms?.length || 0);
     this.form.markAsPristine();
   }
 
@@ -89,7 +90,7 @@ export class LingTagsFragmentComponent
   protected getModelFromForm(): LingTagsFragment {
     return {
       location: this.model?.location ?? '',
-      forms: this.forms.value?.length ? this.forms.value : undefined,
+      forms: this.forms.value
     };
   }
 
@@ -110,19 +111,16 @@ export class LingTagsFragmentComponent
 
   public addForm(item?: LingTaggedForm): void {
     this.forms.value.push(item || { tags: [] });
-    this.formCount.setValue(this.forms.value.length);
     this.form.markAsDirty();
   }
 
   public addFormBelow(index: number): void {
     this.forms.value.splice(index + 1, 0, { tags: [] });
-    this.formCount.setValue(this.forms.value.length);
     this.form.markAsDirty();
   }
 
   public removeForm(index: number): void {
     this.forms.value.splice(index, 1);
-    this.formCount.setValue(this.forms.value.length);
     this.form.markAsDirty();
   }
 

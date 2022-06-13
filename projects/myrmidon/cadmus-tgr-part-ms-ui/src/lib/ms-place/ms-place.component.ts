@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -31,13 +31,13 @@ export class MsPlaceComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public area: UntypedFormControl;
-  public address: UntypedFormControl;
-  public city: UntypedFormControl;
-  public site: UntypedFormControl;
-  public rank: UntypedFormControl;
-  public sources: UntypedFormControl;
+  public form: FormGroup;
+  public area: FormControl<string | null>;
+  public address: FormControl<string | null>;
+  public city: FormControl<string | null>;
+  public site: FormControl<string | null>;
+  public rank: FormControl<number>;
+  public sources: FormControl<DocReference[]>;
 
   public initialSources: DocReference[];
 
@@ -52,7 +52,7 @@ export class MsPlaceComponent implements OnInit {
   @Input()
   public tagEntries: ThesaurusEntry[] | undefined;
 
-  constructor(formBuilder: UntypedFormBuilder) {
+  constructor(formBuilder: FormBuilder) {
     this.modelChange = new EventEmitter<MsPlace>();
     this.editorClose = new EventEmitter<any>();
     this.initialSources = [];
@@ -64,8 +64,8 @@ export class MsPlaceComponent implements OnInit {
     this.address = formBuilder.control(null, Validators.maxLength(300));
     this.city = formBuilder.control(null, Validators.maxLength(50));
     this.site = formBuilder.control(null, Validators.maxLength(100));
-    this.rank = formBuilder.control(0);
-    this.sources = formBuilder.control([]);
+    this.rank = formBuilder.control(0, { nonNullable: true });
+    this.sources = formBuilder.control([], { nonNullable: true });
     this.form = formBuilder.group({
       area: this.area,
       address: this.address,
@@ -87,9 +87,9 @@ export class MsPlaceComponent implements OnInit {
     }
 
     this.area.setValue(model.area);
-    this.address.setValue(model.address);
-    this.city.setValue(model.city);
-    this.site.setValue(model.site);
+    this.address.setValue(model.address || null);
+    this.city.setValue(model.city || null);
+    this.site.setValue(model.site || null);
     this.rank.setValue(model.rank || 0);
     this.initialSources = model.sources || [];
 
@@ -98,7 +98,7 @@ export class MsPlaceComponent implements OnInit {
 
   private getModel(): MsPlace | null {
     return {
-      area: this.area.value?.trim(),
+      area: this.area.value?.trim() || '',
       address: this.address.value?.trim(),
       city: this.city.value?.trim(),
       site: this.site.value?.trim(),

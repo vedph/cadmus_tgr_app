@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -27,17 +27,17 @@ export class MsGuardSheetComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public back: UntypedFormControl;
-  public material: UntypedFormControl;
-  public note: UntypedFormControl;
-  public watermarks: UntypedFormArray;
+  public form: FormGroup;
+  public back: FormControl<boolean>;
+  public material: FormControl<string | null>;
+  public note: FormControl<string | null>;
+  public watermarks: FormArray;
 
-  constructor(private _formBuilder: UntypedFormBuilder) {
+  constructor(private _formBuilder: FormBuilder) {
     this.modelChange = new EventEmitter<MsGuardSheet>();
     this.editorClose = new EventEmitter<any>();
     // form
-    this.back = _formBuilder.control(false);
+    this.back = _formBuilder.control(false, { nonNullable: true });
     this.material = _formBuilder.control(null, Validators.maxLength(50));
     this.note = _formBuilder.control(null, Validators.maxLength(500));
     this.watermarks = _formBuilder.array([]);
@@ -59,9 +59,9 @@ export class MsGuardSheetComponent implements OnInit {
       return;
     }
 
-    this.back.setValue(model.isBack? true : false);
-    this.material.setValue(model.material);
-    this.note.setValue(model.note);
+    this.back.setValue(model.isBack ? true : false);
+    this.material.setValue(model.material || null);
+    this.note.setValue(model.note || null);
 
     // watermarks
     this.watermarks.clear();
@@ -84,10 +84,10 @@ export class MsGuardSheetComponent implements OnInit {
     if (this.watermarks.length) {
       model.watermarks = [];
       for (let i = 0; i < this.watermarks.controls.length; i++) {
-        const g = this.watermarks.at(i) as UntypedFormGroup;
+        const g = this.watermarks.at(i) as FormGroup;
         model.watermarks.push({
           value: g.controls.value.value?.trim(),
-          description: g.controls.description.value?.trim()
+          description: g.controls.description.value?.trim(),
         });
       }
     }
@@ -95,7 +95,7 @@ export class MsGuardSheetComponent implements OnInit {
   }
 
   //#region Watermarks
-  private getWatermarkGroup(item?: MsWatermark): UntypedFormGroup {
+  private getWatermarkGroup(item?: MsWatermark): FormGroup {
     return this._formBuilder.group({
       value: this._formBuilder.control(item?.value, [
         Validators.required,

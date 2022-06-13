@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -38,11 +38,11 @@ export class MsOrnamentsPartComponent
   public szTagEntries: ThesaurusEntry[] | undefined;
   public szDimTagEntries: ThesaurusEntry[] | undefined;
 
-  public ornaments: UntypedFormControl;
+  public ornaments: FormControl;
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {

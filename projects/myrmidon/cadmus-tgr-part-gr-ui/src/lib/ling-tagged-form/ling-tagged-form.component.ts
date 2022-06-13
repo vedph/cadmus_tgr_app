@@ -8,13 +8,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   AnnotatedTag,
   BucketStoreService,
@@ -81,21 +81,20 @@ export class LingTaggedFormComponent implements OnInit {
   @ViewChild('notebar', { static: false })
   noteDivRef?: ElementRef<HTMLElement>;
 
-  public dubious: UntypedFormControl;
-  public lemmata: UntypedFormControl;
-  public note: UntypedFormControl;
-  public tagCount: UntypedFormControl;
-  public form: UntypedFormGroup;
-  public notes: UntypedFormArray;
-  public noteForm: UntypedFormGroup;
+  public dubious: FormControl<boolean>;
+  public lemmata: FormControl<string | null>;
+  public note: FormControl<string | null>;
+  public tags: FormControl<AnnotatedTag[]>;
+  public form: FormGroup;
+  public notes: FormArray;
+  public noteForm: FormGroup;
 
-  public tags: AnnotatedTag[];
   public editedTagIndex: number;
   public editingNotes: boolean;
   public bucketAvailable: boolean;
 
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _store: BucketStoreService
   ) {
     this.modelChange = new EventEmitter<LingTaggedForm>();
@@ -104,17 +103,19 @@ export class LingTaggedFormComponent implements OnInit {
     this.editedTagIndex = -1;
     this.editingNotes = false;
     this.bucketAvailable = _store.has(BUCKET_TAGS_KEY);
-    this.tags = [];
     // form
-    this.dubious = _formBuilder.control(false);
+    this.dubious = _formBuilder.control(false, { nonNullable: true });
     this.lemmata = _formBuilder.control(null, Validators.maxLength(500));
     this.note = _formBuilder.control(null, Validators.maxLength(500));
-    this.tagCount = _formBuilder.control(0, Validators.min(1));
+    this.tags = _formBuilder.control([], {
+      validators: CadmusValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
     this.form = _formBuilder.group({
       dubious: this.dubious,
       lemmata: this.lemmata,
       note: this.note,
-      tagCount: this.tagCount,
+      tags: this.tags,
     });
     // note form
     this.notes = _formBuilder.array([]);
@@ -143,15 +144,13 @@ export class LingTaggedFormComponent implements OnInit {
     this.noteForm.reset();
 
     if (!model) {
-      this.tags = [];
       this.form.reset();
       return;
     }
-    this.dubious.setValue(model.isDubious);
+    this.dubious.setValue(model.isDubious || false);
     this.lemmata.setValue(model.lemmata?.join('\n') ?? '');
-    this.note.setValue(model.note);
-    this.tagCount.setValue(model.tags?.length || 0);
-    this.tags = model.tags || [];
+    this.note.setValue(model.note || null);
+    this.tags.setValue(model.tags || []);
     this.form.markAsPristine();
   }
 
@@ -176,7 +175,7 @@ export class LingTaggedFormComponent implements OnInit {
       lemmata: lemmata.length > 0 ? lemmata : undefined,
       isDubious: this.dubious.value ? true : undefined,
       note: note ? note : undefined,
-      tags: this.tags || [],
+      tags: this.tags.value,
     };
   }
 
@@ -186,33 +185,32 @@ export class LingTaggedFormComponent implements OnInit {
 
   public onEntryChange(entry: ThesaurusEntry): void {
     // user picked a tag from the tree, add it unless exists
-    if (this.tags?.some((t) => t.value === entry.id)) {
+    if (this.tags.value.some((t) => t.value === entry.id)) {
       return;
     }
-    if (!this.tags) {
-      this.tags = [];
-    }
     // insert at sort place (sort by ID)
+    const tags = [...this.tags.value];
     let i = 0;
-    while (
-      i < this.tags.length &&
-      entry.id.localeCompare(this.tags[i].value) > 0
-    ) {
+    while (i < tags.length && entry.id.localeCompare(tags[i].value) > 0) {
       i++;
     }
-    this.tags.splice(i, 0, {
+    tags.splice(i, 0, {
       value: entry.id,
     });
-    this.tagCount.setValue(this.tags.length);
-    this.form.markAsDirty();
+    this.tags.setValue(tags);
+    this.tags.updateValueAndValidity();
+    this.tags.markAsDirty();
   }
 
   public deleteTag(index: number): void {
     if (!this.tags) {
       return;
     }
-    this.tags.splice(index, 1);
-    this.form.markAsDirty();
+    const tags = [...this.tags.value];
+    tags.splice(index, 1);
+    this.tags.setValue(tags);
+    this.tags.updateValueAndValidity();
+    this.tags.markAsDirty();
   }
 
   public getTagLabel(tag: string): string {
@@ -227,8 +225,8 @@ export class LingTaggedFormComponent implements OnInit {
   }
 
   public copyTags(): void {
-    if (this.tags.length) {
-      this._store.set(BUCKET_TAGS_KEY, deepCopy(this.tags));
+    if (this.tags.value.length) {
+      this._store.set(BUCKET_TAGS_KEY, deepCopy(this.tags.value));
     }
   }
 
@@ -236,16 +234,20 @@ export class LingTaggedFormComponent implements OnInit {
     if (!this.bucketAvailable) {
       return;
     }
-    const tags = this._store.get(BUCKET_TAGS_KEY) as AnnotatedTag[];
-    if (!tags) {
+    const pastedTags = this._store.get(BUCKET_TAGS_KEY) as AnnotatedTag[];
+    if (!pastedTags) {
       return;
     }
-    for (let i = 0; i < tags.length; i++) {
-      if (this.tags.some((t) => t.value === tags[i].value)) {
+    const tags = [...this.tags.value];
+    for (let i = 0; i < pastedTags.length; i++) {
+      if (tags.some((t) => t.value === pastedTags[i].value)) {
         continue;
       }
-      this.tags.push(tags[i]);
+      tags.push(pastedTags[i]);
     }
+    this.tags.setValue(tags);
+    this.tags.updateValueAndValidity();
+    this.tags.markAsDirty();
   }
 
   //#region Tag's notes
@@ -304,7 +306,7 @@ export class LingTaggedFormComponent implements OnInit {
     return notes;
   }
 
-  private getAnnotatedTagGroup(item: EditedTaggedNote): UntypedFormGroup {
+  private getAnnotatedTagGroup(item: EditedTaggedNote): FormGroup {
     return this._formBuilder.group({
       tag: this._formBuilder.control(item.tag),
       label: this._formBuilder.control(item.label),
@@ -318,7 +320,7 @@ export class LingTaggedFormComponent implements OnInit {
     }
     this.editedTagIndex = index;
     this.editingNotes = true;
-    const tag = this.tags[this.editedTagIndex];
+    const tag = this.tags.value[this.editedTagIndex];
     const tagNotes = this.getEditTagNotes(tag);
     this.notes.clear();
     for (const note of tagNotes) {
@@ -347,7 +349,7 @@ export class LingTaggedFormComponent implements OnInit {
     if (!this.tags || !this.editingNotes) {
       return;
     }
-    const tag = this.tags[this.editedTagIndex];
+    const tag = this.tags.value[this.editedTagIndex];
     tag.notes = this.notes.value
       .filter((n: EditedTaggedNote) => {
         return n.note?.trim()?.length > 0;

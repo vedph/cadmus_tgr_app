@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormBuilder,
+} from '@angular/forms';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { DialogService } from '@myrmidon/ng-mat-tools';
@@ -30,7 +33,7 @@ export class MsContentsPartComponent
 
   public tabIndex: number;
   public editedContent: MsContent | undefined;
-  public contents: UntypedFormControl;
+  public contents: FormControl<MsContent[]>;
 
   /**
    * Manuscript's materials.
@@ -41,7 +44,7 @@ export class MsContentsPartComponent
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {
@@ -49,7 +52,10 @@ export class MsContentsPartComponent
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
-    this.contents = formBuilder.control([], Validators.required);
+    this.contents = formBuilder.control([], {
+      validators: CadmusValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
     this.form = formBuilder.group({
       contents: this.contents,
     });

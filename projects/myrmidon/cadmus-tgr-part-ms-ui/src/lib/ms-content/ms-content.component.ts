@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -34,21 +34,21 @@ export class MsContentComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public start: UntypedFormControl;
-  public end: UntypedFormControl;
-  public work: UntypedFormControl;
-  public location: UntypedFormControl;
-  public title: UntypedFormControl;
-  public incipit: UntypedFormControl;
-  public explicit: UntypedFormControl;
-  public note: UntypedFormControl;
-  public editions: UntypedFormControl;
-  public form: UntypedFormGroup;
+  public start: FormControl<string | null>;
+  public end: FormControl<string | null>;
+  public work: FormControl<string | null>;
+  public location: FormControl<string | null>;
+  public title: FormControl<string | null>;
+  public incipit: FormControl<string | null>;
+  public explicit: FormControl<string | null>;
+  public note: FormControl<string | null>;
+  public editions: FormControl<DocReference[]>;
+  public form: FormGroup;
 
   public initialEditions: DocReference[];
 
   constructor(
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsContent>();
@@ -69,7 +69,7 @@ export class MsContentComponent implements OnInit {
     this.incipit = formBuilder.control(null, Validators.maxLength(500));
     this.explicit = formBuilder.control(null, Validators.maxLength(500));
     this.note = formBuilder.control(null, Validators.maxLength(500));
-    this.editions = formBuilder.control([]);
+    this.editions = formBuilder.control([], { nonNullable: true });
     this.form = formBuilder.group({
       start: this.start,
       end: this.end,
@@ -95,12 +95,12 @@ export class MsContentComponent implements OnInit {
 
     this.start.setValue(this._locService.locationToString(model.start));
     this.end.setValue(this._locService.locationToString(model.end));
-    this.work.setValue(model.work);
-    this.location.setValue(model.location);
-    this.title.setValue(model.title);
+    this.work.setValue(model.work || null);
+    this.location.setValue(model.location || null);
+    this.title.setValue(model.title || null);
     this.incipit.setValue(model.incipit);
     this.explicit.setValue(model.explicit);
-    this.note.setValue(model.note);
+    this.note.setValue(model.note || null);
     this.initialEditions = model.editions || [];
 
     this.form.markAsPristine();
@@ -113,8 +113,8 @@ export class MsContentComponent implements OnInit {
       work: this.work.value?.trim(),
       location: this.location.value?.trim(),
       title: this.title.value?.trim(),
-      incipit: this.incipit.value?.trim(),
-      explicit: this.explicit.value?.trim(),
+      incipit: this.incipit.value?.trim() || '',
+      explicit: this.explicit.value?.trim() || '',
       note: this.note.value?.trim(),
       editions: this.editions.value?.length ? this.editions.value : undefined,
     };

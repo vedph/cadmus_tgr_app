@@ -28,7 +28,7 @@ export class MsLocationService {
    * @param text The text to be parsed.
    * @returns The location, or null if invalid text.
    */
-  public parseLocation(text: string): MsLocation | null {
+  public parseLocation(text?: string | null): MsLocation | null {
     if (!text) {
       return null;
     }

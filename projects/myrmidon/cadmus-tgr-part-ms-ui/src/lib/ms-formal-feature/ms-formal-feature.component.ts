@@ -7,9 +7,9 @@ import {
   Output,
 } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { MsFormalFeature } from '../ms-formal-features-part';
@@ -36,11 +36,11 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public handId: UntypedFormControl;
-  public description: UntypedFormControl;
+  public form: FormGroup;
+  public handId: FormControl<string | null>;
+  public description: FormControl<string | null>;
 
-  constructor(formBuilder: UntypedFormBuilder) {
+  constructor(formBuilder: FormBuilder) {
     this.modelChange = new EventEmitter<MsFormalFeature>();
     this.editorClose = new EventEmitter<any>();
     // form
@@ -75,8 +75,8 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
 
   private getModel(): MsFormalFeature | null {
     return {
-      handId: this.handId.value?.trim(),
-      description: this.description.value?.trim(),
+      handId: this.handId.value?.trim() || '',
+      description: this.description.value?.trim() || '',
     };
   }
 

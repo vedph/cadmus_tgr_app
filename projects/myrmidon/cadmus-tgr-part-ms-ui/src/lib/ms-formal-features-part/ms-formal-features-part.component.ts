@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import {
@@ -30,11 +30,11 @@ export class MsFormalFeaturesPartComponent
   public tabIndex: number;
   public editedFeature: MsFormalFeature | undefined;
 
-  public features: UntypedFormControl;
+  public features: FormControl;
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
     super(authService);

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { DialogService } from '@myrmidon/ng-mat-tools';
 import { deepCopy } from '@myrmidon/ng-tools';
@@ -23,7 +23,8 @@ import {
 })
 export class VarQuotationsFragmentComponent
   extends ModelEditorComponentBase<VarQuotationsFragment>
-  implements OnInit {
+  implements OnInit
+{
   private _editedIndex: number;
 
   public tabIndex: number;
@@ -54,18 +55,21 @@ export class VarQuotationsFragmentComponent
    */
   public authTagEntries: ThesaurusEntry[] | undefined;
 
-  public entries: UntypedFormControl;
+  public entries: FormControl<VarQuotation[]>;
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
     super(authService);
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
-    this.entries = formBuilder.control([], Validators.required);
+    this.entries = formBuilder.control([], {
+      validators: CadmusValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
     this.form = formBuilder.group({
       entries: this.entries,
     });
@@ -135,7 +139,7 @@ export class VarQuotationsFragmentComponent
   protected getModelFromForm(): VarQuotationsFragment {
     return {
       location: this.model?.location ?? '',
-      quotations: this.entries.value?.length ? this.entries.value : undefined,
+      quotations: this.entries.value,
     };
   }
 
@@ -211,7 +215,7 @@ export class VarQuotationsFragmentComponent
     this.entries.setValue(entries);
   }
 
-  public resolveId(id: string, thesaurus: string): string {
+  public resolveId(id: string | null | undefined, thesaurus: string): string {
     let entries: ThesaurusEntry[] | undefined;
     switch (thesaurus) {
       case 't':
@@ -225,11 +229,11 @@ export class VarQuotationsFragmentComponent
         break;
     }
     if (!entries) {
-      return id;
+      return id || '';
     }
     const entry = entries.find((e) => {
       return e.id === id;
     });
-    return entry ? entry.value : id;
+    return entry ? entry.value : id || '';
   }
 }

@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  UntypedFormBuilder,
+  FormBuilder,
   Validators,
-  UntypedFormArray,
-  UntypedFormGroup,
-  UntypedFormControl,
+  FormArray,
+  FormGroup,
 } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   AvailableWitness,
   AvailableWitnessesPart,
@@ -35,18 +34,14 @@ export class AvailableWitnessesPartComponent
    */
   public witEntries: ThesaurusEntry[] | undefined;
 
-  public witnesses: UntypedFormArray;
-  public count: UntypedFormControl;
+  public witnesses: FormArray;
 
-  constructor(authService: AuthJwtService, private _formBuilder: UntypedFormBuilder) {
+  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
     super(authService);
     // form
-    // HACK: for some reason, Validators.required does not work on FA
-    this.witnesses = _formBuilder.array([] /*, Validators.required*/);
-    this.count = _formBuilder.control(0, Validators.min(1));
+    this.witnesses = _formBuilder.array([], CadmusValidators.strictMinLengthValidator(1));
     this.form = _formBuilder.group({
       witnesses: this.witnesses,
-      count: this.count,
     });
   }
 
@@ -65,7 +60,6 @@ export class AvailableWitnessesPartComponent
         this.witnesses.controls.push(this.getWitnessGroup(w));
       }
     }
-    this.count.setValue(this.witnesses.length);
     this.form?.markAsPristine();
   }
 
@@ -101,7 +95,7 @@ export class AvailableWitnessesPartComponent
     return part;
   }
 
-  private getWitnessGroup(witness?: AvailableWitness): UntypedFormGroup {
+  private getWitnessGroup(witness?: AvailableWitness): FormGroup {
     const g = this._formBuilder.group({
       id: this._formBuilder.control(witness?.id, [
         Validators.required,
@@ -118,13 +112,11 @@ export class AvailableWitnessesPartComponent
 
   public addWitness(item?: AvailableWitness): void {
     this.witnesses.push(this.getWitnessGroup(item));
-    this.count.setValue(this.witnesses.length);
     this.form?.markAsDirty();
   }
 
   public removeWitness(index: number): void {
     this.witnesses.removeAt(index);
-    this.count.setValue(this.witnesses.length);
     this.form?.markAsDirty();
   }
 
@@ -166,7 +158,7 @@ export class AvailableWitnessesPartComponent
   private getWitnesses(): AvailableWitness[] {
     const witnesses: AvailableWitness[] = [];
     for (let i = 0; i < this.witnesses.length; i++) {
-      const g = this.witnesses.at(i) as UntypedFormGroup;
+      const g = this.witnesses.at(i) as FormGroup;
       witnesses.push({
         id: g.controls.id.value?.trim(),
         isPartial: g.controls.partial.value ? true : undefined,

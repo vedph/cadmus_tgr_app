@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import {
   AbstractControl,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
@@ -24,13 +24,13 @@ export class MsPalimpsestComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public locations: UntypedFormControl;
+  public form: FormGroup;
+  public locations: FormControl<string | null>;
   public date: HistoricalDateModel | undefined;
-  public note: UntypedFormControl;
+  public note: FormControl<string | null>;
 
   constructor(
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsPalimpsest>();
@@ -59,19 +59,21 @@ export class MsPalimpsestComponent implements OnInit {
 
     this.locations.setValue(
       model.locations
-        ? model.locations.map((l) => {
-            return this._locService.locationToString(l);
-          }).join(',')
+        ? model.locations
+            .map((l) => {
+              return this._locService.locationToString(l);
+            })
+            .join(',')
         : ''
     );
-    this.note.setValue(model.note);
+    this.note.setValue(model.note || null);
     this.form.markAsPristine();
   }
 
   private getModel(): MsPalimpsest | null {
     const model: MsPalimpsest = {
-      locations: this.locations.value.split(',').map((t: string) => {
-        return this._locService.parseLocation(t.trim());
+      locations: this.locations.value?.split(',').map((t: string) => {
+        return this._locService.parseLocation(t.trim())!;
       }),
       date: this.date,
       note: this.note.value?.trim(),

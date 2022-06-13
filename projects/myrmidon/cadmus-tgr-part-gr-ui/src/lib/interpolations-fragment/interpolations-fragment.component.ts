@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormBuilder,
+} from '@angular/forms';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { DialogService } from '@myrmidon/ng-mat-tools';
 import { deepCopy } from '@myrmidon/ng-tools';
@@ -68,18 +71,21 @@ export class InterpolationsFragmentComponent
    */
   public authTagEntries: ThesaurusEntry[] | undefined;
 
-  public interpolations: UntypedFormControl;
+  public interpolations: FormControl<Interpolation[]>;
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
     super(authService);
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
-    this.interpolations = formBuilder.control([], Validators.required);
+    this.interpolations = formBuilder.control([], {
+      validators: CadmusValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
     this.form = formBuilder.group({
       entries: this.interpolations,
     });
@@ -170,9 +176,7 @@ export class InterpolationsFragmentComponent
   protected getModelFromForm(): InterpolationsFragment {
     return {
       location: this.model?.location ?? '',
-      interpolations: this.interpolations.value?.length
-        ? this.interpolations.value
-        : undefined,
+      interpolations: this.interpolations.value
     };
   }
 

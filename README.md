@@ -47,6 +47,7 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2022-06-13: refactored forms to use typed counterparts.
 - 2022-06-10: upgraded to Angular 14.
 
 ### 1.1.6

@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
-  ThesaurusEntry,
-} from '@myrmidon/cadmus-core';
-import { PhysicalDimension, PhysicalSize } from '@myrmidon/cadmus-mat-physical-size';
+  PhysicalDimension,
+  PhysicalSize,
+} from '@myrmidon/cadmus-mat-physical-size';
 import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
@@ -60,44 +61,44 @@ export class MsUnitComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
+  public form: FormGroup;
   // general
-  public start: UntypedFormControl;
-  public end: UntypedFormControl;
-  public material: UntypedFormControl;
-  public guardSheetMaterial: UntypedFormControl;
-  public sheetCount: UntypedFormControl;
-  public guardSheetCount: UntypedFormControl;
-  public backGuardSheetCount: UntypedFormControl;
-  public groupId: UntypedFormControl;
-  public groupOrdinal: UntypedFormControl;
-  public quires: UntypedFormControl;
-  public sheetNumbering: UntypedFormControl;
-  public quireNumbering: UntypedFormControl;
-  public state: UntypedFormControl;
-  public binding: UntypedFormControl;
+  public start: FormControl<string | null>;
+  public end: FormControl<string | null>;
+  public material: FormControl<string | null>;
+  public guardSheetMaterial: FormControl<string | null>;
+  public sheetCount: FormControl<number>;
+  public guardSheetCount: FormControl<number>;
+  public backGuardSheetCount: FormControl<number>;
+  public groupId: FormControl<string | null>;
+  public groupOrdinal: FormControl<number>;
+  public quires: FormControl<string | null>;
+  public sheetNumbering: FormControl<string | null>;
+  public quireNumbering: FormControl<string | null>;
+  public state: FormControl<string | null>;
+  public binding: FormControl<string | null>;
   // leaf sizes
   public leafSizes: PhysicalSize[];
   public editedLeafSize: PhysicalSize | undefined;
   public editedLeafSizeIndex: number;
   public editingLeafSize: boolean;
-  public leafSizeSamples: UntypedFormControl;
+  public leafSizeSamples: FormControl<string | null>;
   // written area size
   public areaSizes: PhysicalSize[];
   public editedAreaSize: PhysicalSize | undefined;
   public editedAreaSizeIndex: number;
   public editingAreaSize: boolean;
-  public areaSizeSamples: UntypedFormControl;
+  public areaSizeSamples: FormControl<string | null>;
   // date
-  public hasDate: UntypedFormControl;
+  public hasDate: FormControl<boolean>;
   public date?: HistoricalDateModel;
   // rulings
-  public rulings: UntypedFormArray;
+  public rulings: FormArray;
   // watermarks
-  public watermarks: UntypedFormArray;
+  public watermarks: FormArray;
 
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsUnit>();
@@ -119,12 +120,12 @@ export class MsUnitComponent implements OnInit {
       null,
       Validators.maxLength(50)
     );
-    this.sheetCount = _formBuilder.control(0);
-    this.guardSheetCount = _formBuilder.control(0);
-    this.backGuardSheetCount = _formBuilder.control(0);
+    this.sheetCount = _formBuilder.control(0, { nonNullable: true });
+    this.guardSheetCount = _formBuilder.control(0, { nonNullable: true });
+    this.backGuardSheetCount = _formBuilder.control(0, { nonNullable: true });
     this.groupId = _formBuilder.control(null, Validators.maxLength(50));
-    this.groupOrdinal = _formBuilder.control(0);
-    this.hasDate = _formBuilder.control(false);
+    this.groupOrdinal = _formBuilder.control(0, { nonNullable: true });
+    this.hasDate = _formBuilder.control(false, { nonNullable: true });
     this.quires = _formBuilder.control(null, Validators.maxLength(500));
     this.sheetNumbering = _formBuilder.control(null, Validators.maxLength(500));
     this.quireNumbering = _formBuilder.control(null, Validators.maxLength(500));
@@ -204,20 +205,20 @@ export class MsUnitComponent implements OnInit {
     // general
     this.start.setValue(this._locService.locationToString(model.start));
     this.end.setValue(this._locService.locationToString(model.end));
-    this.material.setValue(model.material);
-    this.guardSheetMaterial.setValue(model.guardSheetMaterial);
+    this.material.setValue(model.material || null);
+    this.guardSheetMaterial.setValue(model.guardSheetMaterial || null);
     this.sheetCount.setValue(model.sheetCount);
     this.guardSheetCount.setValue(model.guardSheetCount);
     this.backGuardSheetCount.setValue(model.backGuardSheetCount);
-    this.groupId.setValue(model.groupId);
-    this.groupOrdinal.setValue(model.groupOrdinal);
-    this.hasDate.setValue(model.date? true : false);
+    this.groupId.setValue(model.groupId || null);
+    this.groupOrdinal.setValue(model.groupOrdinal || 0);
+    this.hasDate.setValue(model.date ? true : false);
     this.date = model.date;
-    this.quires.setValue(model.quires);
-    this.sheetNumbering.setValue(model.sheetNumbering);
-    this.quireNumbering.setValue(model.quireNumbering);
-    this.state.setValue(model.state);
-    this.binding.setValue(model.binding);
+    this.quires.setValue(model.quires || null);
+    this.sheetNumbering.setValue(model.sheetNumbering || null);
+    this.quireNumbering.setValue(model.quireNumbering || null);
+    this.state.setValue(model.state || null);
+    this.binding.setValue(model.binding || null);
     // leaf sizes
     this.editedLeafSize = undefined;
     this.editedLeafSizeIndex = -1;
@@ -227,7 +228,7 @@ export class MsUnitComponent implements OnInit {
         ? model.leafSizeSamples
             .map((l) => this._locService.locationToString(l))
             .join(', ')
-        : undefined
+        : null
     );
     // written area sizes
     this.editedAreaSize = undefined;
@@ -238,7 +239,7 @@ export class MsUnitComponent implements OnInit {
         ? model.writtenAreaSizeSamples
             .map((l) => this._locService.locationToString(l))
             .join(', ')
-        : undefined
+        : null
     );
     // rulings
     this.rulings.clear();
@@ -264,7 +265,7 @@ export class MsUnitComponent implements OnInit {
     }
     const rulings: MsRuling[] = [];
     for (let i = 0; i < this.rulings.length; i++) {
-      const g = this.rulings.at(i) as UntypedFormGroup;
+      const g = this.rulings.at(i) as FormGroup;
       rulings.push({
         manner: g.controls.manner.value?.trim(),
         system: g.controls.system.value?.trim(),
@@ -281,7 +282,7 @@ export class MsUnitComponent implements OnInit {
     }
     const watermarks: MsWatermark[] = [];
     for (let i = 0; i < this.watermarks.length; i++) {
-      const g = this.watermarks.at(i) as UntypedFormGroup;
+      const g = this.watermarks.at(i) as FormGroup;
       watermarks.push({
         value: g.controls.value.value?.trim(),
         description: g.controls.description.value?.trim(),
@@ -290,7 +291,7 @@ export class MsUnitComponent implements OnInit {
     return watermarks.length ? watermarks : undefined;
   }
 
-  private parseLocations(text?: string): MsLocation[] | undefined {
+  private parseLocations(text?: string | null): MsLocation[] | undefined {
     if (!text) {
       return undefined;
     }
@@ -313,7 +314,7 @@ export class MsUnitComponent implements OnInit {
       backGuardSheetCount: this.backGuardSheetCount.value,
       groupId: this.groupId.value?.trim(),
       groupOrdinal: this.groupOrdinal.value,
-      date: this.hasDate.value? this.date : undefined,
+      date: this.hasDate.value ? this.date : undefined,
       quires: this.quires.value?.trim(),
       sheetNumbering: this.sheetNumbering.value?.trim(),
       quireNumbering: this.quireNumbering.value?.trim(),
@@ -449,7 +450,7 @@ export class MsUnitComponent implements OnInit {
   //#endregion
 
   //#region Rulings
-  private getRulingGroup(ruling?: MsRuling): UntypedFormGroup {
+  private getRulingGroup(ruling?: MsRuling): FormGroup {
     return this._formBuilder.group({
       manner: this._formBuilder.control(ruling?.manner, [
         Validators.required,
@@ -495,7 +496,7 @@ export class MsUnitComponent implements OnInit {
   //#endregion
 
   //#region Watermarks
-  private getWatermarkGroup(item?: MsWatermark): UntypedFormGroup {
+  private getWatermarkGroup(item?: MsWatermark): FormGroup {
     return this._formBuilder.group({
       value: this._formBuilder.control(item?.value, [
         Validators.required,

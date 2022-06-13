@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+
 import { MsHand, MsHandLetter } from '../ms-scripts-part';
 
 @Component({
@@ -23,18 +24,18 @@ export class MsHandComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public id: UntypedFormControl;
-  public start: UntypedFormControl;
-  public end: UntypedFormControl;
-  public description: UntypedFormControl;
-  public abbreviations: UntypedFormControl;
-  public letters: UntypedFormArray;
+  public form: FormGroup;
+  public id: FormControl<string | null>;
+  public start: FormControl<string | null>;
+  public end: FormControl<string | null>;
+  public description: FormControl<string | null>;
+  public abbreviations: FormControl<string | null>;
+  public letters: FormArray;
 
   public date: HistoricalDateModel | undefined;
 
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsHand>();
@@ -76,8 +77,8 @@ export class MsHandComponent implements OnInit {
     this.id.setValue(model.id);
     this.start.setValue(this._locService.locationToString(model.start));
     this.end.setValue(this._locService.locationToString(model.end));
-    this.description.setValue(model.description);
-    this.abbreviations.setValue(model.abbreviations);
+    this.description.setValue(model.description || null);
+    this.abbreviations.setValue(model.abbreviations || null);
     // date
     this.date = model.date;
     // letters
@@ -96,7 +97,7 @@ export class MsHandComponent implements OnInit {
     }
     const letters: MsHandLetter[] = [];
     for (let i = 0; i < this.letters.controls.length; i++) {
-      const g = this.letters.at(i) as UntypedFormGroup;
+      const g = this.letters.at(i) as FormGroup;
       letters.push({
         letter: g.controls.letter.value?.trim(),
         description: g.controls.description.value?.trim(),
@@ -108,7 +109,7 @@ export class MsHandComponent implements OnInit {
 
   private getModel(): MsHand | null {
     return {
-      id: this.id.value?.trim(),
+      id: this.id.value?.trim() || '',
       start: this._locService.parseLocation(this.start.value) as MsLocation,
       end: this._locService.parseLocation(this.end.value) as MsLocation,
       date: this.date,
@@ -124,7 +125,7 @@ export class MsHandComponent implements OnInit {
   }
 
   //#region Letters
-  private getLetterGroup(letter?: MsHandLetter): UntypedFormGroup {
+  private getLetterGroup(letter?: MsHandLetter): FormGroup {
     return this._formBuilder.group({
       letter: this._formBuilder.control(letter?.letter, [
         Validators.required,

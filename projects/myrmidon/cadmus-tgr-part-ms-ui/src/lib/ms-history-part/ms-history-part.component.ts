@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  UntypedFormControl,
-  UntypedFormBuilder,
+  FormControl,
+  FormBuilder,
   Validators,
-  UntypedFormArray,
+  FormArray,
   AbstractControl,
   ValidationErrors,
-  UntypedFormGroup,
+  FormGroup,
 } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
@@ -35,16 +35,17 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 })
 export class MsHistoryPartComponent
   extends ModelEditorComponentBase<MsHistoryPart>
-  implements OnInit {
-  public provenances: UntypedFormArray;
-  public history: UntypedFormControl;
-  public owners: UntypedFormArray;
-  public subLocations: UntypedFormControl;
-  public subLanguage: UntypedFormControl;
-  public subHandId: UntypedFormControl;
-  public subText: UntypedFormControl;
-  public subNote: UntypedFormControl;
-  public annotations: UntypedFormArray;
+  implements OnInit
+{
+  public provenances: FormArray;
+  public history: FormControl<string | null>;
+  public owners: FormArray;
+  public subLocations: FormControl<string | null>;
+  public subLanguage: FormControl<string | null>;
+  public subHandId: FormControl<string | null>;
+  public subText: FormControl<string | null>;
+  public subNote: FormControl<string | null>;
+  public annotations: FormArray;
 
   public langEntries: ThesaurusEntry[] | undefined;
 
@@ -58,7 +59,7 @@ export class MsHistoryPartComponent
 
   constructor(
     authService: AuthJwtService,
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
     super(authService);
@@ -73,9 +74,7 @@ export class MsHistoryPartComponent
       Validators.maxLength(100),
       this.locationsVal,
     ]);
-    this.subLanguage = _formBuilder.control(null, [
-      Validators.maxLength(50),
-    ]);
+    this.subLanguage = _formBuilder.control(null, [Validators.maxLength(50)]);
     this.subHandId = _formBuilder.control(null, Validators.maxLength(50));
     this.subText = _formBuilder.control(null, Validators.maxLength(1000));
     this.subNote = _formBuilder.control(null, Validators.maxLength(500));
@@ -143,10 +142,10 @@ export class MsHistoryPartComponent
             .join(',')
         : ''
     );
-    this.subLanguage.setValue(model.subscription?.language);
-    this.subHandId.setValue(model.subscription?.handId);
-    this.subText.setValue(model.subscription?.text);
-    this.subNote.setValue(model.subscription?.note);
+    this.subLanguage.setValue(model.subscription?.language || null);
+    this.subHandId.setValue(model.subscription?.handId || null);
+    this.subText.setValue(model.subscription?.text || null);
+    this.subNote.setValue(model.subscription?.note || null);
     // annotations
     this.annotations.clear();
     if (model.annotations?.length) {
@@ -187,18 +186,18 @@ export class MsHistoryPartComponent
     }
 
     part.provenances = this.getProvenances();
-    part.history = this.history.value?.trim();
+    part.history = this.history.value?.trim() || '';
     part.owners = this.getOwners();
     part.annotations = this.getAnnotations();
 
     if (this.subLocations.value) {
       part.subscription = {
         locations: this.subLocations.value.split(',').map((t: string) => {
-          return this._locService.parseLocation(t.trim());
+          return this._locService.parseLocation(t.trim())!;
         }),
-        language: this.subLanguage.value?.trim(),
+        language: this.subLanguage.value?.trim() || '',
         handId: this.subHandId.value?.trim(),
-        text: this.subText.value?.trim(),
+        text: this.subText.value?.trim() || '',
         note: this.subNote.value?.trim(),
       };
     }
@@ -207,7 +206,7 @@ export class MsHistoryPartComponent
   }
 
   //#region Provenances
-  private getProvenanceGroup(address?: GeoAddress): UntypedFormGroup {
+  private getProvenanceGroup(address?: GeoAddress): FormGroup {
     return this._formBuilder.group({
       area: this._formBuilder.control(address?.area, [
         Validators.required,
@@ -255,7 +254,7 @@ export class MsHistoryPartComponent
   private getProvenances(): GeoAddress[] | undefined {
     const provenances: GeoAddress[] = [];
     for (let i = 0; i < this.provenances.length; i++) {
-      const g = this.provenances.at(i) as UntypedFormGroup;
+      const g = this.provenances.at(i) as FormGroup;
       provenances.push({
         area: g.controls.area.value?.trim(),
         address: g.controls.address.value?.trim(),
@@ -266,7 +265,7 @@ export class MsHistoryPartComponent
   //#endregion
 
   //#region Owners
-  private getOwnerGroup(owner?: string): UntypedFormGroup {
+  private getOwnerGroup(owner?: string): FormGroup {
     return this._formBuilder.group({
       name: this._formBuilder.control(owner, [
         Validators.required,
@@ -304,7 +303,7 @@ export class MsHistoryPartComponent
   private getOwners(): string[] | undefined {
     const owners: string[] = [];
     for (let i = 0; i < this.owners.length; i++) {
-      const g = this.owners.at(i) as UntypedFormGroup;
+      const g = this.owners.at(i) as FormGroup;
       owners.push(g.controls.name.value?.trim());
     }
     return owners.length ? owners : undefined;
@@ -312,7 +311,7 @@ export class MsHistoryPartComponent
   //#endregion
 
   //#region Annotations
-  private getAnnotationGroup(annotation?: MsAnnotation): UntypedFormGroup {
+  private getAnnotationGroup(annotation?: MsAnnotation): FormGroup {
     return this._formBuilder.group({
       language: this._formBuilder.control(annotation?.language, [
         Validators.required,
@@ -358,7 +357,7 @@ export class MsHistoryPartComponent
   private getAnnotations(): MsAnnotation[] | undefined {
     const annotations: MsAnnotation[] = [];
     for (let i = 0; i < this.annotations.length; i++) {
-      const g = this.annotations.at(i) as UntypedFormGroup;
+      const g = this.annotations.at(i) as FormGroup;
       annotations.push({
         language: g.controls.language.value?.trim(),
         handId: g.controls.handId.value?.trim(),

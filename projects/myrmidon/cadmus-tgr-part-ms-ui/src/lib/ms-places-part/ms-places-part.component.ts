@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -30,11 +30,11 @@ export class MsPlacesPartComponent
   public areaEntries: ThesaurusEntry[] | undefined;
   public tagEntries: ThesaurusEntry[] | undefined;
 
-  public places: UntypedFormControl;
+  public places: FormControl;
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
     super(authService);

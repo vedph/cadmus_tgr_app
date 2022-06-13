@@ -1,19 +1,21 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
+import { Clipboard } from '@angular/cdk/clipboard';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   AnnotatedValue,
   LocAnnotatedValue,
 } from '@myrmidon/cadmus-part-philology-ui';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
+
 import { QuotationVariant } from '../var-quotations-fragment';
-import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'tgr-quotation-variant',
@@ -60,19 +62,24 @@ export class QuotationVariantComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public type: UntypedFormControl;
-  public lemma: UntypedFormControl;
-  public value: UntypedFormControl;
-  public witnesses: UntypedFormArray;
-  public authors: UntypedFormArray;
+  public form: FormGroup;
+  public type: FormControl<number>;
+  public lemma: FormControl<string | null>;
+  public value: FormControl<string | null>;
+  public witnesses: FormArray;
+  public authors: FormArray;
 
-  constructor(private _formBuilder: UntypedFormBuilder,
-    private _clipboard: Clipboard) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _clipboard: Clipboard
+  ) {
     this.modelChange = new EventEmitter<QuotationVariant>();
     this.editorClose = new EventEmitter<any>();
     // form
-    this.type = _formBuilder.control(0, Validators.required);
+    this.type = _formBuilder.control(0, {
+      validators: Validators.required,
+      nonNullable: true,
+    });
     this.lemma = _formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(300),
@@ -127,15 +134,15 @@ export class QuotationVariantComponent implements OnInit {
   private getModel(): QuotationVariant | null {
     return {
       type: this.type.value,
-      lemma: this.lemma.value?.trim(),
-      value: this.value.value?.trim(),
+      lemma: this.lemma.value?.trim() || '',
+      value: this.value.value?.trim() || '',
       witnesses: this.getWitnesses(),
       authors: this.getAuthors(),
     };
   }
 
   //#region Witnesses
-  private getWitnessGroup(witness?: AnnotatedValue): UntypedFormGroup {
+  private getWitnessGroup(witness?: AnnotatedValue): FormGroup {
     return this._formBuilder.group({
       value: this._formBuilder.control(witness?.value, [
         Validators.required,
@@ -178,7 +185,7 @@ export class QuotationVariantComponent implements OnInit {
   private getWitnesses(): AnnotatedValue[] | undefined {
     const entries: AnnotatedValue[] = [];
     for (let i = 0; i < this.witnesses.length; i++) {
-      const g = this.witnesses.at(i) as UntypedFormGroup;
+      const g = this.witnesses.at(i) as FormGroup;
       entries.push({
         value: g.controls.value.value?.trim(),
         note: g.controls.note.value?.trim(),
@@ -189,7 +196,7 @@ export class QuotationVariantComponent implements OnInit {
   //#endregion
 
   //#region Authors
-  private getAuthorGroup(author?: LocAnnotatedValue): UntypedFormGroup {
+  private getAuthorGroup(author?: LocAnnotatedValue): FormGroup {
     return this._formBuilder.group({
       tag: this._formBuilder.control(author?.tag, Validators.maxLength(50)),
       value: this._formBuilder.control(author?.value, [
@@ -237,7 +244,7 @@ export class QuotationVariantComponent implements OnInit {
   private getAuthors(): LocAnnotatedValue[] | undefined {
     const entries: LocAnnotatedValue[] = [];
     for (let i = 0; i < this.authors.length; i++) {
-      const g = this.authors.at(i) as UntypedFormGroup;
+      const g = this.authors.at(i) as FormGroup;
       entries.push({
         tag: g.controls.tag.value?.trim(),
         value: g.controls.value.value?.trim(),

@@ -8,7 +8,7 @@
           type="button"
           color="primary"
           matTooltip="Copy tags"
-          [disabled]="!tags.length"
+          [disabled]="!tags.value.length"
           (click)="copyTags()"
         >
           <mat-icon>content_copy</mat-icon>
@@ -31,7 +31,7 @@
         [renderLabel]="renderLabel"
         (entryChange)="onEntryChange($event)"
       ></cadmus-thesaurus-tree>
-      <table *ngIf="tags?.length">
+      <table *ngIf="tags.value.length">
         <thead>
           <tr>
             <th></th>
@@ -41,7 +41,7 @@
         </thead>
         <tbody>
           <tr
-            *ngFor="let t of tags; let i = index"
+            *ngFor="let t of tags.value; let i = index"
             [class.hilite]="i === editedTagIndex"
           >
             <td>

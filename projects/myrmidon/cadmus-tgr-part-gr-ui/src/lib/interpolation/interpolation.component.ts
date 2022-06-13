@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -84,19 +84,19 @@ export class InterpolationComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public type: UntypedFormControl;
-  public role: UntypedFormControl;
-  public tag: UntypedFormControl;
-  public value: UntypedFormControl;
-  public groupId: UntypedFormControl;
-  public languages: UntypedFormArray;
-  public note: UntypedFormControl;
-  public sources: UntypedFormArray;
-  public quotations: UntypedFormControl;
+  public form: FormGroup;
+  public type: FormControl<number>;
+  public role: FormControl<string | null>;
+  public tag: FormControl<string | null>;
+  public value: FormControl<string | null>;
+  public groupId: FormControl<string | null>;
+  public languages: FormArray;
+  public note: FormControl<string | null>;
+  public sources: FormArray;
+  public quotations: FormControl<VarQuotation[]>;
 
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
     this.modelChange = new EventEmitter<Interpolation>();
@@ -104,7 +104,10 @@ export class InterpolationComponent implements OnInit {
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
-    this.type = _formBuilder.control(0, Validators.required);
+    this.type = _formBuilder.control(0, {
+      validators: Validators.required,
+      nonNullable: true,
+    });
     this.role = _formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(50),
@@ -118,7 +121,7 @@ export class InterpolationComponent implements OnInit {
     this.languages = _formBuilder.array([], Validators.required);
     this.note = _formBuilder.control(null, Validators.maxLength(500));
     this.sources = _formBuilder.array([]);
-    this.quotations = _formBuilder.control([]);
+    this.quotations = _formBuilder.control([], { nonNullable: true });
     this.form = _formBuilder.group({
       type: this.type,
       role: this.role,
@@ -144,9 +147,9 @@ export class InterpolationComponent implements OnInit {
 
     this.type.setValue(model.type);
     this.role.setValue(model.role);
-    this.tag.setValue(model.tag);
+    this.tag.setValue(model.tag || null);
     this.value.setValue(model.value);
-    this.groupId.setValue(model.groupId);
+    this.groupId.setValue(model.groupId || null);
     // languages
     this.languages.clear();
     if (model.languages?.length) {
@@ -154,7 +157,7 @@ export class InterpolationComponent implements OnInit {
         this.languages.controls.push(this.getLanguageGroup(language));
       }
     }
-    this.note.setValue(model.note);
+    this.note.setValue(model.note || null);
     // sources
     this.sources.clear();
     if (model.sources?.length) {
@@ -170,9 +173,9 @@ export class InterpolationComponent implements OnInit {
   private getModel(): Interpolation | null {
     return {
       type: this.type.value,
-      role: this.role.value?.trim(),
+      role: this.role.value?.trim() || '',
       tag: this.tag.value?.trim(),
-      value: this.value.value?.trim(),
+      value: this.value.value?.trim() || '',
       groupId: this.groupId.value?.trim(),
       languages: this.getLanguages() || [],
       note: this.note.value?.trim(),
@@ -184,7 +187,7 @@ export class InterpolationComponent implements OnInit {
   }
 
   //#region Languages
-  private getLanguageGroup(language?: string): UntypedFormGroup {
+  private getLanguageGroup(language?: string): FormGroup {
     return this._formBuilder.group({
       id: this._formBuilder.control(language, [
         Validators.required,
@@ -226,7 +229,7 @@ export class InterpolationComponent implements OnInit {
   private getLanguages(): string[] | undefined {
     const entries: string[] = [];
     for (let i = 0; i < this.languages.length; i++) {
-      const g = this.languages.at(i) as UntypedFormGroup;
+      const g = this.languages.at(i) as FormGroup;
       entries.push(g.controls.id.value?.trim());
     }
     return entries.length ? entries : undefined;
@@ -234,7 +237,7 @@ export class InterpolationComponent implements OnInit {
   //#endregion
 
   //#region Sources
-  private getSourceGroup(item?: ReadingSource): UntypedFormGroup {
+  private getSourceGroup(item?: ReadingSource): FormGroup {
     return this._formBuilder.group({
       witness: this._formBuilder.control(item?.witness, [
         Validators.required,
@@ -277,7 +280,7 @@ export class InterpolationComponent implements OnInit {
   private getSources(): ReadingSource[] | undefined {
     const entries: ReadingSource[] = [];
     for (let i = 0; i < this.sources.length; i++) {
-      const g = this.sources.at(i) as UntypedFormGroup;
+      const g = this.sources.at(i) as FormGroup;
       entries.push({
         witness: g.controls.witness.value?.trim(),
         handId: g.controls.handId.value?.trim(),
@@ -360,7 +363,7 @@ export class InterpolationComponent implements OnInit {
     this.quotations.setValue(quotations);
   }
 
-  public resolveId(id: string, thesaurus: string): string {
+  public resolveId(id: string | null | undefined, thesaurus: string): string {
     let entries: ThesaurusEntry[] | undefined;
     switch (thesaurus) {
       case 't':
@@ -374,12 +377,12 @@ export class InterpolationComponent implements OnInit {
         break;
     }
     if (!entries) {
-      return id;
+      return id || '';
     }
     const entry = entries.find((e) => {
       return e.id === id;
     });
-    return entry ? entry.value : id;
+    return entry ? entry.value : id || '';
   }
   //#endregion
 

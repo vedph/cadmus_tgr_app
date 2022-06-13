@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -74,16 +74,16 @@ export class VarQuotationComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public tag: UntypedFormControl;
-  public authority: UntypedFormControl;
-  public work: UntypedFormControl;
-  public location: UntypedFormControl;
-  public parallels: UntypedFormArray;
-  public variants: UntypedFormControl;
+  public form: FormGroup;
+  public tag: FormControl<string | null>;
+  public authority: FormControl<string | null>;
+  public work: FormControl<string | null>;
+  public location: FormControl<string | null>;
+  public parallels: FormArray;
+  public variants: FormControl<QuotationVariant[]>;
 
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _clipboard: Clipboard,
     private _dialogService: DialogService
   ) {
@@ -106,7 +106,7 @@ export class VarQuotationComponent implements OnInit {
       Validators.maxLength(50),
     ]);
     this.parallels = _formBuilder.array([]);
-    this.variants = _formBuilder.control([]);
+    this.variants = _formBuilder.control([], { nonNullable: true });
     this.form = _formBuilder.group({
       tag: this.tag,
       authority: this.authority,
@@ -127,7 +127,7 @@ export class VarQuotationComponent implements OnInit {
       return;
     }
 
-    this.tag.setValue(model.tag);
+    this.tag.setValue(model.tag || null);
     this.authority.setValue(model.authority);
     this.work.setValue(model.work);
     this.location.setValue(model.location);
@@ -145,16 +145,16 @@ export class VarQuotationComponent implements OnInit {
   private getModel(): VarQuotation | null {
     return {
       tag: this.tag.value?.trim(),
-      authority: this.authority.value?.trim(),
-      work: this.work.value?.trim(),
-      location: this.location.value?.trim(),
+      authority: this.authority.value?.trim() || '',
+      work: this.work.value?.trim() || '',
+      location: this.location.value?.trim() || '',
       parallels: this.getParallels(),
       variants: this.variants.value.length ? this.variants.value : undefined,
     };
   }
 
   //#region Parallels
-  private getParallelGroup(parallel?: QuotationParallel): UntypedFormGroup {
+  private getParallelGroup(parallel?: QuotationParallel): FormGroup {
     const g = this._formBuilder.group({
       work: this._formBuilder.control(parallel?.work, [
         Validators.required,
@@ -205,7 +205,7 @@ export class VarQuotationComponent implements OnInit {
   private getParallels(): QuotationParallel[] | undefined {
     const entries: QuotationParallel[] = [];
     for (let i = 0; i < this.parallels.length; i++) {
-      const g = this.parallels.at(i) as UntypedFormGroup;
+      const g = this.parallels.at(i) as FormGroup;
       entries.push({
         work: g.controls.work.value?.trim(),
         location: g.controls.location.value?.trim(),

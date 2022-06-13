@@ -8,9 +8,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -50,13 +50,13 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public type: UntypedFormControl;
-  public start: UntypedFormControl;
-  public end: UntypedFormControl;
-  public description: UntypedFormControl;
-  public note: UntypedFormControl;
-  public hasSize: UntypedFormControl;
+  public form: FormGroup;
+  public type: FormControl<string | null>;
+  public start: FormControl<string | null>;
+  public end: FormControl<string | null>;
+  public description: FormControl<string | null>;
+  public note: FormControl<string | null>;
+  public hasSize: FormControl<boolean>;
   public size: PhysicalSize | undefined;
 
   public editorOptions = {
@@ -68,7 +68,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
   };
 
   constructor(
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
     this.modelChange = new EventEmitter<MsOrnament>();
@@ -88,7 +88,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
     ]);
     this.description = formBuilder.control(null, Validators.maxLength(1000));
     this.note = formBuilder.control(null, Validators.maxLength(500));
-    this.hasSize = formBuilder.control(false);
+    this.hasSize = formBuilder.control(false, { nonNullable: true });
     this.form = formBuilder.group({
       type: this.type,
       start: this.start,
@@ -122,8 +122,8 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
     this.type.setValue(model.type);
     this.start.setValue(this._locService.locationToString(model.start));
     this.end.setValue(this._locService.locationToString(model.end));
-    this.description.setValue(model.description);
-    this.note.setValue(model.note);
+    this.description.setValue(model.description || null);
+    this.note.setValue(model.note || null);
 
     if (model.size) {
       this.size = model.size;
@@ -138,12 +138,12 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
 
   private getModel(): MsOrnament | null {
     return {
-      type: this.type.value?.trim(),
+      type: this.type.value?.trim() || '',
       start: this._locService.parseLocation(this.start.value) as MsLocation,
       end: this._locService.parseLocation(this.end.value) as MsLocation,
       size: this.hasSize.value ? this.size : undefined,
       description: this.description.value?.trim(),
-      note: this.note.value?.trim()
+      note: this.note.value?.trim(),
     };
   }
 

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -43,17 +43,17 @@ export class MsScriptComponent implements OnInit {
   @Output()
   public editorClose: EventEmitter<any>;
 
-  public form: UntypedFormGroup;
-  public langChecks: UntypedFormArray;
-  public langCount: UntypedFormControl;
-  public role: UntypedFormControl;
-  public type: UntypedFormControl;
-  public hands: UntypedFormControl;
+  public form: FormGroup;
+  public langChecks: FormArray;
+  public langCount: FormControl<number>;
+  public role: FormControl<string | null>;
+  public type: FormControl<string | null>;
+  public hands: FormControl<MsHand[]>;
   public tabIndex: number;
   public editedHand: MsHand | undefined;
 
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {
@@ -63,13 +63,16 @@ export class MsScriptComponent implements OnInit {
     this.tabIndex = 0;
     // form
     this.langChecks = _formBuilder.array([]);
-    this.langCount = _formBuilder.control(0, Validators.min(1));
+    this.langCount = _formBuilder.control(0, {
+      validators: Validators.min(1),
+      nonNullable: true,
+    });
     this.role = _formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(50),
     ]);
     this.type = _formBuilder.control(null, Validators.maxLength(50));
-    this.hands = _formBuilder.control([]);
+    this.hands = _formBuilder.control([], { nonNullable: true });
 
     this.form = _formBuilder.group({
       langChecks: this.langChecks,
@@ -96,7 +99,7 @@ export class MsScriptComponent implements OnInit {
     this.updateLangArray(model.languages || []);
     this.updateCheckedCount();
     this.role.setValue(model.role);
-    this.type.setValue(model.type);
+    this.type.setValue(model.type || null);
     this.hands.setValue(model.hands || []);
 
     this.form.markAsPristine();
@@ -105,7 +108,7 @@ export class MsScriptComponent implements OnInit {
   private getModel(): MsScript | null {
     return {
       languages: this.getCheckedLanguages(),
-      role: this.role.value?.trim(),
+      role: this.role.value?.trim() || '',
       type: this.type.value?.trim(),
       hands: this.hands.value?.length ? this.hands.value : undefined,
     };
@@ -119,6 +122,8 @@ export class MsScriptComponent implements OnInit {
       end: { n: 0 },
     };
     this.hands.setValue([...this.hands.value, hand]);
+    this.hands.updateValueAndValidity();
+    this.hands.markAsDirty();
     this.editHand(this.hands.value.length - 1);
   }
 
@@ -142,6 +147,8 @@ export class MsScriptComponent implements OnInit {
         i === this._editedIndex ? item : x
       )
     );
+    this.hands.updateValueAndValidity();
+    this.hands.markAsDirty();
     this.editHand(-1);
   }
 
@@ -158,6 +165,8 @@ export class MsScriptComponent implements OnInit {
           const items = [...this.hands.value];
           items.splice(index, 1);
           this.hands.setValue(items);
+          this.hands.updateValueAndValidity();
+          this.hands.markAsDirty();
         }
       });
   }
@@ -171,6 +180,8 @@ export class MsScriptComponent implements OnInit {
     items.splice(index, 1);
     items.splice(index - 1, 0, item);
     this.hands.setValue(items);
+    this.hands.updateValueAndValidity();
+    this.hands.markAsDirty();
   }
 
   public moveHandDown(index: number): void {
@@ -182,6 +193,8 @@ export class MsScriptComponent implements OnInit {
     items.splice(index, 1);
     items.splice(index + 1, 0, item);
     this.hands.setValue(items);
+    this.hands.updateValueAndValidity();
+    this.hands.markAsDirty();
   }
 
   public locationToString(location: MsLocation | null): string {
@@ -225,7 +238,7 @@ export class MsScriptComponent implements OnInit {
     for (let i = 0; i < this._langEntries.length; i++) {
       const id = this._langEntries[i].id;
       const checked = ids.some((s) => s === id);
-      const g = this.langChecks.at(i) as UntypedFormGroup;
+      const g = this.langChecks.at(i) as FormGroup;
       g.controls.check.setValue(checked);
       if (checked) {
         n++;
@@ -244,7 +257,7 @@ export class MsScriptComponent implements OnInit {
     }
     const ids: string[] = [];
     for (let i = 0; i < this._langEntries.length; i++) {
-      const g = this.langChecks.at(i) as UntypedFormGroup;
+      const g = this.langChecks.at(i) as FormGroup;
       if (g?.controls?.check.value) {
         ids.push(this._langEntries[i].id);
       }
@@ -258,7 +271,7 @@ export class MsScriptComponent implements OnInit {
     }
     let n = 0;
     for (let i = 0; i < this._langEntries.length; i++) {
-      const g = this.langChecks.at(i) as UntypedFormGroup;
+      const g = this.langChecks.at(i) as FormGroup;
       if (g.controls.check.value) {
         n++;
       }

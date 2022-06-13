@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsUnit, MsUnitsPart, MSUNITS_PART_TYPEID } from '../ms-units-part';
 import { take } from 'rxjs/operators';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
@@ -55,11 +55,11 @@ export class MsUnitsPartComponent
    */
   public szDimTagEntries: ThesaurusEntry[] | undefined;
 
-  public units: UntypedFormControl;
+  public units: FormControl<MsUnit[]>;
 
   constructor(
     authService: AuthJwtService,
-    formBuilder: UntypedFormBuilder,
+    formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {
@@ -67,7 +67,10 @@ export class MsUnitsPartComponent
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
-    this.units = formBuilder.control([], Validators.required);
+    this.units = formBuilder.control([], {
+      validators: CadmusValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
     this.form = formBuilder.group({
       units: this.units,
     });
@@ -228,7 +231,10 @@ export class MsUnitsPartComponent
     this.units.setValue(units);
   }
 
-  public locationToString(location: MsLocation): string {
+  public locationToString(location?: MsLocation | null): string {
+    if (!location) {
+      return '';
+    }
     return this._locService.locationToString(location) || '';
   }
 }
