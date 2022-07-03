@@ -201,7 +201,7 @@
               &nbsp;
               <!-- tag (bound) -->
               <mat-form-field *ngIf="quotTagEntries?.length" style="width: 8em">
-                <mat-select formControlName="tag" placeholder="tag">
+                <mat-select formControlName="qtag" placeholder="tag">
                   <mat-option *ngFor="let e of quotTagEntries" [value]="e.id">{{
                     e.value
                   }}</mat-option>
@@ -213,12 +213,12 @@
                 *ngIf="!quotTagEntries?.length"
                 style="width: 8em"
               >
-                <input matInput formControlName="tag" placeholder="tag" />
+                <input matInput formControlName="qtag" placeholder="tag" />
                 <mat-error
                   *ngIf="
                     $any(item).controls.tag.errors?.maxLength &&
-                    ($any(item)['controls'].tag.dirty ||
-                      $any(item)['controls'].tag.touched)
+                    ($any(item)['controls'].qtag.dirty ||
+                      $any(item)['controls'].qtag.touched)
                   "
                   >too long</mat-error
                 >

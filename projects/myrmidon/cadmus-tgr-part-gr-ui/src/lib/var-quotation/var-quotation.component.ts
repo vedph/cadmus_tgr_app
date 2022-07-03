@@ -164,7 +164,7 @@ export class VarQuotationComponent implements OnInit {
         Validators.required,
         Validators.maxLength(50),
       ]),
-      tag: this._formBuilder.control(parallel?.work, Validators.maxLength(50)),
+      qtag: this._formBuilder.control(parallel?.tag, Validators.maxLength(50)),
     });
     g.valueChanges.subscribe((_) => {
       this.form.updateValueAndValidity();
@@ -209,7 +209,7 @@ export class VarQuotationComponent implements OnInit {
       entries.push({
         work: g.controls.work.value?.trim(),
         location: g.controls.location.value?.trim(),
-        tag: g.controls.tag.value?.trim(),
+        tag: g.controls.qtag.value?.trim(),
       });
     }
     return entries.length ? entries : undefined;
