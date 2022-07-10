@@ -8,6 +8,26 @@
     </mat-card-header>
     <mat-card-content>
       <div>
+        <!-- copy and paste -->
+        <button
+          mat-icon-button
+          type="button"
+          color="primary"
+          matTooltip="Copy witnesses"
+         (click)="copyWitnesses()"
+        >
+          <mat-icon>content_copy</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          type="button"
+          color="warn"
+          matTooltip="Paste witnesses"
+          [disabled]="!bucketAvailable"
+          (click)="pasteWitnesses()"
+        >
+          <mat-icon>content_paste</mat-icon>
+        </button>
         <button
           type="button"
           mat-icon-button

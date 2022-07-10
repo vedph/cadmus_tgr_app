@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { BucketStoreService } from '@myrmidon/cadmus-tgr-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { deepCopy } from '@myrmidon/ng-tools';
 import { AvailableWitnessesFragment } from '../available-witnesses-fragment';
 import { AvailableWitness } from '../available-witnesses-part';
+
+const BUCKET_AVAIL_WITNESSES_KEY = 'available-witnesses';
 
 /**
  * AvailableWitnesses fragment editor component.
@@ -31,9 +29,15 @@ export class AvailableWitnessesFragmentComponent
   public witEntries: ThesaurusEntry[] | undefined;
 
   public witnesses: FormArray;
+  public bucketAvailable: boolean;
 
-  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
+  constructor(
+    authService: AuthJwtService,
+    private _formBuilder: FormBuilder,
+    private _store: BucketStoreService
+  ) {
     super(authService);
+    this.bucketAvailable = false;
     // form
     this.witnesses = _formBuilder.array(
       [],
@@ -46,6 +50,9 @@ export class AvailableWitnessesFragmentComponent
 
   public ngOnInit(): void {
     this.initEditor();
+    this._store.changes$.subscribe((_) => {
+      this.bucketAvailable = this._store.has(BUCKET_AVAIL_WITNESSES_KEY);
+    });
   }
 
   private updateForm(model: AvailableWitnessesFragment): void {
@@ -59,6 +66,7 @@ export class AvailableWitnessesFragmentComponent
         this.witnesses.controls.push(this.getWitnessGroup(w));
       }
     }
+    this._store.set(BUCKET_AVAIL_WITNESSES_KEY, [...model.witnesses]);
     this.form?.markAsPristine();
   }
 
@@ -153,5 +161,39 @@ export class AvailableWitnessesFragmentComponent
       });
     }
     return witnesses;
+  }
+
+  public copyWitnesses(): void {
+    if (this.witnesses.value.length) {
+      this._store.set(
+        BUCKET_AVAIL_WITNESSES_KEY,
+        deepCopy(this.getWitnesses())
+      );
+    }
+  }
+
+  public pasteWitnesses(): void {
+    if (!this.bucketAvailable) {
+      return;
+    }
+    const pastedWits = this._store.get(
+      BUCKET_AVAIL_WITNESSES_KEY
+    ) as AvailableWitness[];
+    if (!pastedWits) {
+      return;
+    }
+    const wits = [...this.getWitnesses()];
+    for (let i = 0; i < pastedWits.length; i++) {
+      if (wits.some((t) => t.id === pastedWits[i].id)) {
+        continue;
+      }
+      wits.push(pastedWits[i]);
+    }
+    this.witnesses.clear();
+    for (let i = 0; i < wits.length; i++) {
+      this.addWitness(wits[i]);
+    }
+    this.witnesses.updateValueAndValidity();
+    this.witnesses.markAsDirty();
   }
 }
