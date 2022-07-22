@@ -87,7 +87,7 @@
             [formControl]="sheetCount"
             type="number"
             min="0"
-            max="100"
+            max="1000"
             placeholder="sheets count"
           />
         </mat-form-field>
@@ -511,6 +511,7 @@
         <cadmus-mat-physical-size
           [unitEntries]="$any(szUnitEntries)"
           [tagEntries]="$any(szTagEntries)"
+          [hBeforeW]="true"
           [dimTagEntries]="$any(szDimTagEntries)"
           [size]="$any(editedLeafSize)"
           (sizeChange)="onEditedLeafSizeChange($event)"
@@ -642,6 +643,7 @@
         <cadmus-mat-physical-size
           [unitEntries]="$any(szUnitEntries)"
           [tagEntries]="$any(szTagEntries)"
+          [hBeforeW]="true"
           [dimTagEntries]="$any(szDimTagEntries)"
           [size]="$any(editedAreaSize)"
           (sizeChange)="onEditedAreaSizeChange($event)"
