@@ -85,10 +85,7 @@ export class QuotationVariantComponent implements OnInit {
       Validators.required,
       Validators.maxLength(300),
     ]);
-    this.value = _formBuilder.control(null, [
-      Validators.required,
-      Validators.maxLength(300),
-    ]);
+    this.value = _formBuilder.control(null, Validators.maxLength(300));
     this.note = _formBuilder.control(null, Validators.maxLength(1000));
     this.witnesses = _formBuilder.array([]);
     this.authors = _formBuilder.array([]);
@@ -149,10 +146,10 @@ export class QuotationVariantComponent implements OnInit {
   //#region Witnesses
   private getWitnessGroup(witness?: AnnotatedValue): FormGroup {
     return this._formBuilder.group({
-      value: this._formBuilder.control(witness?.value, [
-        Validators.required,
-        Validators.maxLength(50),
-      ]),
+      value: this._formBuilder.control(
+        witness?.value,
+        Validators.maxLength(50)
+      ),
       note: this._formBuilder.control(witness?.note, Validators.maxLength(500)),
     });
   }
