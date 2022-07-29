@@ -1,5 +1,5 @@
 <form [formGroup]="form" (submit)="save()">
-  <div>
+  <div class="form-row">
     <!-- type -->
     <mat-form-field>
       <mat-select placeholder="type" formControlName="type">
@@ -14,7 +14,6 @@
     </mat-form-field>
 
     <!-- lemma -->
-    &nbsp;
     <mat-form-field style="width: 12em">
       <input matInput [formControl]="lemma" placeholder="lemma" />
       <mat-error
@@ -28,12 +27,20 @@
     </mat-form-field>
 
     <!-- value -->
-    &nbsp;
     <mat-form-field style="width: 10em">
       <input matInput type="text" formControlName="value" placeholder="value" />
       <mat-error
         *ngIf="value.errors?.maxLength && (value.dirty || value.touched)"
         >too long</mat-error
+      >
+    </mat-form-field>
+
+    <!-- note -->
+    <mat-form-field style="flex: 1 0 auto">
+      <input matInput formControlName="note" placeholder="note" />
+      <mat-error
+        *ngIf="$any(note).errors?.maxLength && (note.dirty || note.touched)"
+        >note too long</mat-error
       >
     </mat-form-field>
   </div>

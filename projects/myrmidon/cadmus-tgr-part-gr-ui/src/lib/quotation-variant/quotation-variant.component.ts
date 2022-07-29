@@ -66,6 +66,7 @@ export class QuotationVariantComponent implements OnInit {
   public type: FormControl<number>;
   public lemma: FormControl<string | null>;
   public value: FormControl<string | null>;
+  public note: FormControl<string | null>;
   public witnesses: FormArray;
   public authors: FormArray;
 
@@ -88,12 +89,14 @@ export class QuotationVariantComponent implements OnInit {
       Validators.required,
       Validators.maxLength(300),
     ]);
+    this.note = _formBuilder.control(null, Validators.maxLength(1000));
     this.witnesses = _formBuilder.array([]);
     this.authors = _formBuilder.array([]);
     this.form = _formBuilder.group({
       type: this.type,
       lemma: this.lemma,
       value: this.value,
+      note: this.note,
       witnesses: this.witnesses,
       authors: this.authors,
     });
@@ -112,6 +115,7 @@ export class QuotationVariantComponent implements OnInit {
     this.type.setValue(model.type);
     this.lemma.setValue(model.lemma);
     this.value.setValue(model.value);
+    this.note.setValue(model.note || null);
     // witnesses
     this.witnesses.clear();
     if (model.witnesses) {
@@ -136,6 +140,7 @@ export class QuotationVariantComponent implements OnInit {
       type: this.type.value,
       lemma: this.lemma.value?.trim() || '',
       value: this.value.value?.trim() || '',
+      note: this.note.value?.trim(),
       witnesses: this.getWitnesses(),
       authors: this.getAuthors(),
     };

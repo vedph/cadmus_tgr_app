@@ -6,6 +6,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { take } from 'rxjs/operators';
+
+import { DialogService } from '@myrmidon/ng-mat-tools';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import {
@@ -13,9 +17,6 @@ import {
   QuotationVariant,
   VarQuotation,
 } from '../var-quotations-fragment';
-import { Clipboard } from '@angular/cdk/clipboard';
-import { take } from 'rxjs/operators';
-import { DialogService } from '@myrmidon/ng-mat-tools';
 
 @Component({
   selector: 'tgr-var-quotation',
@@ -79,6 +80,7 @@ export class VarQuotationComponent implements OnInit {
   public authority: FormControl<string | null>;
   public work: FormControl<string | null>;
   public location: FormControl<string | null>;
+  public note: FormControl<string | null>;
   public parallels: FormArray;
   public variants: FormControl<QuotationVariant[]>;
 
@@ -105,6 +107,7 @@ export class VarQuotationComponent implements OnInit {
       Validators.required,
       Validators.maxLength(50),
     ]);
+    this.note = _formBuilder.control(null, Validators.maxLength(1000));
     this.parallels = _formBuilder.array([]);
     this.variants = _formBuilder.control([], { nonNullable: true });
     this.form = _formBuilder.group({
@@ -112,6 +115,7 @@ export class VarQuotationComponent implements OnInit {
       authority: this.authority,
       work: this.work,
       location: this.location,
+      note: this.note,
       parallels: this.parallels,
       variants: this.variants,
     });
@@ -131,6 +135,7 @@ export class VarQuotationComponent implements OnInit {
     this.authority.setValue(model.authority);
     this.work.setValue(model.work);
     this.location.setValue(model.location);
+    this.note.setValue(model.note || null);
     this.parallels.clear();
     if (model.parallels) {
       for (let parallel of model.parallels) {
@@ -148,6 +153,7 @@ export class VarQuotationComponent implements OnInit {
       authority: this.authority.value?.trim() || '',
       work: this.work.value?.trim() || '',
       location: this.location.value?.trim() || '',
+      note: this.note.value?.trim(),
       parallels: this.getParallels(),
       variants: this.variants.value.length ? this.variants.value : undefined,
     };

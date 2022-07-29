@@ -65,7 +65,7 @@
         ></cadmus-thesaurus-tree>
       </div>
 
-      <div>
+      <div class="form-row">
         <!-- work -->
         <mat-form-field>
           <input matInput [formControl]="work" placeholder="work" />
@@ -79,7 +79,6 @@
           >
         </mat-form-field>
 
-        &nbsp;
         <!-- location -->
         <mat-form-field>
           <input matInput [formControl]="location" placeholder="location" />
@@ -94,6 +93,15 @@
               location.errors?.maxLength && (location.dirty || location.touched)
             "
             >too long</mat-error
+          >
+        </mat-form-field>
+
+        <!-- note -->
+        <mat-form-field style="flex: 1 0 auto">
+          <textarea matInput [formControl]="note" placeholder="note"></textarea>
+          <mat-error
+            *ngIf="$any(note).errors?.maxLength && (note.dirty || note.touched)"
+            >note too long</mat-error
           >
         </mat-form-field>
       </div>

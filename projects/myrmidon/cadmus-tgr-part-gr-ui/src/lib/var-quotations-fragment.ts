@@ -21,6 +21,7 @@ export interface QuotationVariant {
   lemma: string;
   type: ApparatusEntryType;
   value: string;
+  note?: string;
   witnesses?: AnnotatedValue[];
   authors?: LocAnnotatedValue[];
 }
@@ -33,6 +34,7 @@ export interface VarQuotation {
   authority: string;
   work: string;
   location: string;
+  note?: string;
   parallels?: QuotationParallel[];
   variants?: QuotationVariant[];
 }
@@ -85,6 +87,9 @@ export const VAR_QUOTATIONS_FRAGMENT_SCHEMA = {
               location: {
                 type: 'string',
               },
+              note: {
+                type: 'string',
+              },
               parallels: {
                 type: 'array',
                 items: {
@@ -122,6 +127,9 @@ export const VAR_QUOTATIONS_FRAGMENT_SCHEMA = {
                           type: 'integer',
                         },
                         value: {
+                          type: 'string',
+                        },
+                        note: {
                           type: 'string',
                         },
                         witnesses: {
