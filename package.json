@@ -42,7 +42,7 @@
     "@myrmidon/cadmus-part-general-pg": "1.1.0",
     "@myrmidon/cadmus-part-general-ui": "1.1.1",
     "@myrmidon/cadmus-part-philology-pg": "1.1.0",
-    "@myrmidon/cadmus-part-philology-ui": "1.1.0",
+    "@myrmidon/cadmus-part-philology-ui": "1.1.1",
     "@myrmidon/cadmus-profile-core": "1.1.0",
     "@myrmidon/cadmus-refs-asserted-chronotope": "0.0.7",
     "@myrmidon/cadmus-refs-assertion": "0.0.4",

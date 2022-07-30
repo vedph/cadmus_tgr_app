@@ -12,6 +12,7 @@ export interface QuotationParallel {
   tag?: string;
   work: string;
   location: string;
+  note?: string;
 }
 
 /**
@@ -107,6 +108,9 @@ export const VAR_QUOTATIONS_FRAGMENT_SCHEMA = {
                         location: {
                           type: 'string',
                         },
+                        note: {
+                          type: 'string'
+                        }
                       },
                     },
                   ],

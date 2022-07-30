@@ -23,8 +23,17 @@ import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
   styleUrls: ['./ms-unit.component.css'],
 })
 export class MsUnitComponent implements OnInit {
+  private _unit?: MsUnit;
+
   @Input()
-  public model: MsUnit | undefined;
+  public get unit(): MsUnit | undefined {
+    return this._unit;
+  }
+  public set unit(value: MsUnit | undefined) {
+    this._unit = value;
+    this.updateForm(value);
+  }
+
   /**
    * Manuscript's materials.
    */
@@ -57,7 +66,7 @@ export class MsUnitComponent implements OnInit {
   public szDimTagEntries: ThesaurusEntry[] | undefined;
 
   @Output()
-  public modelChange: EventEmitter<MsUnit>;
+  public unitChange: EventEmitter<MsUnit>;
   @Output()
   public editorClose: EventEmitter<any>;
 
@@ -101,7 +110,7 @@ export class MsUnitComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
-    this.modelChange = new EventEmitter<MsUnit>();
+    this.unitChange = new EventEmitter<MsUnit>();
     this.editorClose = new EventEmitter<any>();
     // form - general
     this.start = _formBuilder.control(null, [
@@ -176,9 +185,7 @@ export class MsUnitComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.updateForm(this.model);
-  }
+  ngOnInit(): void {}
 
   private locationsVal(control: AbstractControl): ValidationErrors | null {
     const locService = new MsLocationService();
@@ -553,6 +560,6 @@ export class MsUnitComponent implements OnInit {
     if (!model) {
       return;
     }
-    this.modelChange.emit(model);
+    this.unitChange.emit(model);
   }
 }

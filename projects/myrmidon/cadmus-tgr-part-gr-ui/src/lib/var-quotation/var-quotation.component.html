@@ -234,6 +234,20 @@
                   >too long</mat-error
                 >
               </mat-form-field>
+
+              <!-- note -->
+              &nbsp;
+              <mat-form-field>
+                <input matInput formControlName="note" placeholder="note" />
+                <mat-error
+                  *ngIf="
+                    $any(item).controls.note.errors?.maxLength &&
+                    ($any(item)['controls'].note.dirty ||
+                      $any(item)['controls'].note.touched)
+                  "
+                  >too long</mat-error
+                >
+              </mat-form-field>
             </div>
           </div>
         </div>
