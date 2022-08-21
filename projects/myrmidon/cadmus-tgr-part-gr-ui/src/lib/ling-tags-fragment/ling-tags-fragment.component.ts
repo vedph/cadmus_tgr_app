@@ -1,18 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 
 import { LingTagsFragment } from '../ling-tags-fragment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, fromEventPattern } from 'rxjs';
 import { AnnotatedTag, LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
 import { deepCopy } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import { __values } from 'tslib';
 
 /**
  * Linguistic tags fragment editor component.
@@ -90,7 +86,7 @@ export class LingTagsFragmentComponent
   protected getModelFromForm(): LingTagsFragment {
     return {
       location: this.model?.location ?? '',
-      forms: this.forms.value
+      forms: this.forms.value,
     };
   }
 
@@ -110,18 +106,27 @@ export class LingTagsFragmentComponent
   }
 
   public addForm(item?: LingTaggedForm): void {
-    this.forms.value.push(item || { tags: [] });
-    this.form.markAsDirty();
+    this.forms.setValue([...this.forms.value, item || { tags: [] }]);
+    this.forms.updateValueAndValidity();
+    this.forms.markAsDirty();
+    this.editForm(this.forms.value.length - 1);
   }
 
   public addFormBelow(index: number): void {
-    this.forms.value.splice(index + 1, 0, { tags: [] });
-    this.form.markAsDirty();
+    const forms = [...this.forms.value];
+    forms.splice(index + 1, 0, { tags: [] });
+    this.forms.setValue(forms);
+    this.forms.updateValueAndValidity();
+    this.forms.markAsDirty();
+    this.editForm(index + 1);
   }
 
   public removeForm(index: number): void {
-    this.forms.value.splice(index, 1);
-    this.form.markAsDirty();
+    const forms = [...this.forms.value];
+    forms.splice(index, 1);
+    this.forms.setValue(forms);
+    this.forms.updateValueAndValidity();
+    this.forms.markAsDirty();
   }
 
   public moveFormUp(index: number): void {
@@ -129,9 +134,12 @@ export class LingTagsFragmentComponent
       return;
     }
     const item = this.forms.value[index];
-    this.forms.value.splice(index, 1);
-    this.forms.value.splice(index - 1, 0, item);
-    this.form.markAsDirty();
+    const forms = [...this.forms.value];
+    forms.splice(index, 1);
+    forms.splice(index - 1, 0, item);
+    this.forms.setValue(forms);
+    this.forms.updateValueAndValidity();
+    this.forms.markAsDirty();
   }
 
   public moveFormDown(index: number): void {
@@ -139,9 +147,12 @@ export class LingTagsFragmentComponent
       return;
     }
     const item = this.forms.value[index];
-    this.forms.value.splice(index, 1);
-    this.forms.value.splice(index + 1, 0, item);
-    this.form.markAsDirty();
+    const forms = [...this.forms.value];
+    forms.splice(index, 1);
+    forms.splice(index + 1, 0, item);
+    this.forms.setValue(forms);
+    this.forms.updateValueAndValidity();
+    this.forms.markAsDirty();
   }
 
   public editForm(index: number): void {
@@ -160,8 +171,11 @@ export class LingTagsFragmentComponent
   }
 
   public onFormChange(form: LingTaggedForm): void {
-    this.forms.value.splice(this._editedFormIndex, 1, form);
+    const forms = [...this.forms.value];
+    forms.splice(this._editedFormIndex, 1, form);
+    this.forms.setValue(forms);
     this.closeEditedForm();
-    this.form.markAsDirty();
+    this.forms.updateValueAndValidity();
+    this.forms.markAsDirty();
   }
 }
