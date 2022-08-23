@@ -14,6 +14,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { debounceTime, filter } from 'rxjs/operators';
+
 import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   AnnotatedTag,
@@ -22,8 +25,6 @@ import {
 } from '@myrmidon/cadmus-tgr-core';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import { LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
-import { BehaviorSubject } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
 import { deepCopy } from '@myrmidon/ng-tools';
 
 interface EditedTaggedNote extends TaggedNote {

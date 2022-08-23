@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { BucketStoreService } from '@myrmidon/cadmus-tgr-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { deepCopy } from '@myrmidon/ng-tools';
+
 import { AvailableWitnessesFragment } from '../available-witnesses-fragment';
 import { AvailableWitness } from '../available-witnesses-part';
 
@@ -66,7 +68,7 @@ export class AvailableWitnessesFragmentComponent
         this.witnesses.controls.push(this.getWitnessGroup(w));
       }
     }
-    this._store.set(BUCKET_AVAIL_WITNESSES_KEY, [...model.witnesses]);
+    this.bucketAvailable = this._store.has(BUCKET_AVAIL_WITNESSES_KEY);
     this.form?.markAsPristine();
   }
 
@@ -164,7 +166,7 @@ export class AvailableWitnessesFragmentComponent
   }
 
   public copyWitnesses(): void {
-    if (this.witnesses.value.length) {
+    if (this.witnesses.length) {
       this._store.set(
         BUCKET_AVAIL_WITNESSES_KEY,
         deepCopy(this.getWitnesses())

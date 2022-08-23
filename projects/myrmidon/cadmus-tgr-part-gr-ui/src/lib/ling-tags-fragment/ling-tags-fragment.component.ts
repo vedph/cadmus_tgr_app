@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+
 import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-
-import { LingTagsFragment } from '../ling-tags-fragment';
-import { BehaviorSubject, fromEventPattern } from 'rxjs';
 import { AnnotatedTag, LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
 import { deepCopy } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { __values } from 'tslib';
+
+import { LingTagsFragment } from '../ling-tags-fragment';
 
 /**
  * Linguistic tags fragment editor component.
