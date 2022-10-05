@@ -1,0 +1,82 @@
+/*
+Preview styles. By convention they all start with prefix "pv-".
+*/
+
+.pv-muted {
+  color: silver;
+}
+.cadmus-text-block-view-col {
+  border: 1px solid transparent;
+  padding: 1px;
+}
+.cadmus-text-block-view-col:hover {
+  border: 1px solid #ffdd26;
+  padding: 1px;
+}
+
+/* layer ID-based styles */
+
+div[class^="it.vedph.token-text-layer|fr.it.vedph.apparatus"],
+div[class*=" it.vedph.token-text-layer|fr.it.vedph.apparatus"] {
+  background-color: lightsalmon;
+}
+
+div[class^="it.vedph.token-text-layer|fr.it.vedph.comment"],
+div[class*=" it.vedph.token-text-layer|fr.it.vedph.comment"] {
+  background-color: palegreen;
+}
+
+div[class^="it.vedph.token-text-layer|fr.it.vedph.orthography"],
+div[class*=" it.vedph.token-text-layer|fr.it.vedph.orthography"] {
+  background-color: palevioletred;
+}
+
+/* apparatus layer */
+
+.apparatus-lemma {
+  padding: 2px 4px;
+  border: 1px solid silver;
+  border-radius: 4px;
+  margin-right: 4px;
+  color: #065e1d;
+}
+
+.apparatus-w-value {
+  font-weight: bold;
+}
+
+.apparatus-w-note {
+  font-style: italic;
+}
+
+.apparatus-a-value {
+  font-style: italic;
+}
+
+.apparatus-a-note {
+  font-style: italic;
+}
+
+.apparatus-sep {
+  margin-left: 0.75em;
+}
+
+.apparatus-tag {
+  font-style: italic;
+}
+
+.apparatus-subrange {
+  color: silver;
+}
+
+.apparatus-value {
+  color: #b8690f;
+}
+
+.apparatus-type {
+  font-style: italic;
+}
+
+.apparatus-note {
+  font-style: italic;
+}
