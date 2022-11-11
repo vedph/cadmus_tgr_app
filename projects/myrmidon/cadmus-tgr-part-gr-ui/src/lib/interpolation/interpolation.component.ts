@@ -118,7 +118,7 @@ export class InterpolationComponent implements OnInit {
       Validators.maxLength(500),
     ]);
     this.groupId = _formBuilder.control(null, Validators.maxLength(50));
-    this.languages = _formBuilder.array([], Validators.required);
+    this.languages = _formBuilder.array([]);
     this.note = _formBuilder.control(null, Validators.maxLength(500));
     this.sources = _formBuilder.array([]);
     this.quotations = _formBuilder.control([], { nonNullable: true });

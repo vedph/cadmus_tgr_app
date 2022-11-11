@@ -17,7 +17,7 @@ export interface Interpolation {
   type: ApparatusEntryType;
   role: string;
   tag?: string;
-  languages: string[];
+  languages?: string[];
   value: string;
   groupId?: string;
   note?: string;
@@ -57,7 +57,7 @@ export const INTERPOLATIONS_FRAGMENT_SCHEMA = {
         anyOf: [
           {
             type: 'object',
-            required: ['type', 'role', 'languages', 'value'],
+            required: ['type', 'role', 'value'],
             properties: {
               type: {
                 type: 'string',
