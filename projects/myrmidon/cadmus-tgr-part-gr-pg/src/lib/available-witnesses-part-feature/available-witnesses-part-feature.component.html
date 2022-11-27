@@ -1,10 +1,8 @@
 <cadmus-current-item-bar></cadmus-current-item-bar>
 <tgr-available-witnesses-part
-  [itemId]="itemId"
-  [roleId]="roleId"
-  [model]="$any(part$ | async)"
-  (modelChange)="save($event)"
-  [thesauri]="$any(thesauri$ | async)"
+  [identity]="identity"
+  [data]="$any(data)"
+  (dataChange)="save($event)"
   (editorClose)="close()"
   (dirtyChange)="onDirtyChange($event)"
 ></tgr-available-witnesses-part>

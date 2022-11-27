@@ -1,13 +1,14 @@
-<form [formGroup]="form!" (submit)="save()">
+<form [formGroup]="form" (submit)="save()">
   <!-- locations -->
   <div>
     <mat-form-field>
+      <mat-label>locations</mat-label>
       <textarea
         matInput
         class="long-text"
         [formControl]="locations"
-        placeholder="locations (comma separated)"
       ></textarea>
+      <mat-hint>comma-separated</mat-hint>
       <mat-error
         *ngIf="
           locations.errors?.invalid && (locations.dirty || locations.touched)

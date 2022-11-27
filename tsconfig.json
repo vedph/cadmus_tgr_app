@@ -13,7 +13,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
     "lib": [
       "es2018",
@@ -45,7 +45,8 @@
         "dist/myrmidon/cadmus-tgr-part-ms-pg/myrmidon-cadmus-tgr-part-ms-pg",
         "dist/myrmidon/cadmus-tgr-part-ms-pg"
       ]
-    }
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

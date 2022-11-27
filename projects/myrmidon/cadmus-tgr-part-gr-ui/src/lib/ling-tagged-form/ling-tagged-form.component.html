@@ -84,11 +84,11 @@
                 <h4>{{ i + 1 }}. {{ $any(item)["controls"].label.value }}</h4>
                 <div>
                   <mat-form-field class="long-text">
+                    <mat-label>note</mat-label>
                     <textarea
                       matInput
                       rows="2"
                       formControlName="note"
-                      placeholder="note"
                       maxlength="500"
                     ></textarea>
                     <mat-error
@@ -136,12 +136,9 @@
       <!-- lemmata -->
       <div>
         <mat-form-field class="long-text">
-          <textarea
-            rows="3"
-            matInput
-            [formControl]="lemmata"
-            placeholder="lemmata (one per line)"
-          ></textarea>
+          <mat-label>lemmata</mat-label>
+          <textarea rows="3" matInput [formControl]="lemmata"></textarea>
+          <mat-hint>1 per line</mat-hint>
           <mat-error
             *ngIf="
               lemmata.errors?.maxLength && (lemmata.dirty || lemmata.touched)
@@ -154,12 +151,8 @@
       <!-- note -->
       <div>
         <mat-form-field class="long-text">
-          <textarea
-            rows="3"
-            matInput
-            [formControl]="note"
-            placeholder="note"
-          ></textarea>
+          <mat-label>note</mat-label>
+          <textarea rows="3" matInput [formControl]="note"></textarea>
           <mat-error
             *ngIf="note.errors?.maxLength && (note.dirty || note.touched)"
             >note too long</mat-error

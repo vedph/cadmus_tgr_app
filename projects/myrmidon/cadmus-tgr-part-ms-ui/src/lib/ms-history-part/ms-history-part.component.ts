@@ -7,10 +7,11 @@ import {
   AbstractControl,
   ValidationErrors,
   FormGroup,
+  UntypedFormGroup,
 } from '@angular/forms';
 
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   MsAnnotation,
   MsHistoryPart,
@@ -21,7 +22,6 @@ import {
   MsLocation,
   MsLocationService,
 } from '@myrmidon/cadmus-tgr-core';
-import { deepCopy } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
@@ -62,7 +62,7 @@ export class MsHistoryPartComponent
     private _formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
-    super(authService);
+    super(authService, _formBuilder);
     // form
     this.provenances = _formBuilder.array([]);
     this.history = _formBuilder.control(null, [
@@ -79,17 +79,6 @@ export class MsHistoryPartComponent
     this.subText = _formBuilder.control(null, Validators.maxLength(1000));
     this.subNote = _formBuilder.control(null, Validators.maxLength(500));
     this.annotations = _formBuilder.array([]);
-    this.form = _formBuilder.group({
-      provenances: this.provenances,
-      history: this.history,
-      owners: this.owners,
-      subLocations: this.subLocations,
-      subLanguage: this.subLanguage,
-      subHandId: this.subHandId,
-      subText: this.subText,
-      subNote: this.subNote,
-      annotations: this.annotations,
-    });
   }
 
   private locationsVal(control: AbstractControl): ValidationErrors | null {
@@ -108,83 +97,89 @@ export class MsHistoryPartComponent
     return null;
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
+  public override ngOnInit(): void {
+    super.ngOnInit();
   }
 
-  private updateForm(model: MsHistoryPart): void {
-    if (!model) {
-      this.form?.reset();
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
+      provenances: this.provenances,
+      history: this.history,
+      owners: this.owners,
+      subLocations: this.subLocations,
+      subLanguage: this.subLanguage,
+      subHandId: this.subHandId,
+      subText: this.subText,
+      subNote: this.subNote,
+      annotations: this.annotations,
+    });
+  }
+
+  private updateThesauri(thesauri: ThesauriSet): void {
+    const key = 'ms-languages';
+    if (this.hasThesaurus(key)) {
+      this.langEntries = thesauri[key].entries;
+    } else {
+      this.langEntries = undefined;
+    }
+  }
+
+  private updateForm(part?: MsHistoryPart): void {
+    if (!part) {
+      this.form.reset();
       return;
     }
     // provenances
     this.provenances.clear();
-    if (model.provenances?.length) {
-      for (let provenance of model.provenances) {
+    if (part.provenances?.length) {
+      for (let provenance of part.provenances) {
         this.provenances.controls.push(this.getProvenanceGroup(provenance));
       }
     }
     this.provenances.updateValueAndValidity();
-    this.history.setValue(model.history);
+    this.history.setValue(part.history);
     // owners
     this.owners.clear();
-    if (model.owners?.length) {
-      for (let owner of model.owners) {
+    if (part.owners?.length) {
+      for (let owner of part.owners) {
         this.owners.controls.push(this.getOwnerGroup(owner));
       }
     }
     this.subLocations.setValue(
-      model.subscription?.locations
-        ? model.subscription.locations
+      part.subscription?.locations
+        ? part.subscription.locations
             .map((l) => {
               return this._locService.locationToString(l);
             })
             .join(',')
         : ''
     );
-    this.subLanguage.setValue(model.subscription?.language || null);
-    this.subHandId.setValue(model.subscription?.handId || null);
-    this.subText.setValue(model.subscription?.text || null);
-    this.subNote.setValue(model.subscription?.note || null);
+    this.subLanguage.setValue(part.subscription?.language || null);
+    this.subHandId.setValue(part.subscription?.handId || null);
+    this.subText.setValue(part.subscription?.text || null);
+    this.subNote.setValue(part.subscription?.note || null);
     // annotations
     this.annotations.clear();
-    if (model.annotations?.length) {
-      for (let annotation of model.annotations) {
+    if (part.annotations?.length) {
+      for (let annotation of part.annotations) {
         this.annotations.controls.push(this.getAnnotationGroup(annotation));
       }
     }
-    this.form?.markAsPristine();
+    this.form.markAsPristine();
   }
 
-  protected onModelSet(model: MsHistoryPart): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
-    const key = 'ms-languages';
-    if (this.thesauri && this.thesauri[key]) {
-      this.langEntries = this.thesauri[key].entries;
-    } else {
-      this.langEntries = undefined;
-    }
-  }
-
-  protected getModelFromForm(): MsHistoryPart {
-    let part = this.model;
-    if (!part) {
-      part = {
-        itemId: this.itemId || '',
-        id: '',
-        typeId: MSHISTORY_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: '',
-        timeModified: new Date(),
-        userId: '',
-        history: '',
-      };
+  protected override onDataSet(data?: EditedObject<MsHistoryPart>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
     }
 
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): MsHistoryPart {
+    let part = this.getEditedPart(MSHISTORY_PART_TYPEID) as MsHistoryPart;
     part.provenances = this.getProvenances();
     part.history = this.history.value?.trim() || '';
     part.owners = this.getOwners();

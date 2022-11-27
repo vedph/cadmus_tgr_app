@@ -1,16 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  EditItemQuery,
-  EditItemService,
-  EditLayerPartQuery,
-  EditLayerPartService,
-  EditFragmentFeatureBase,
-} from '@myrmidon/cadmus-state';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LibraryRouteService } from '@myrmidon/cadmus-core';
-import { EditAvailableWitnessesFragmentQuery } from './edit-available-witnesses-fragment.query';
-import { EditAvailableWitnessesFragmentService } from './edit-available-witnesses-fragment.service';
+
+import {
+  EditFragmentFeatureBase,
+  FragmentEditorService,
+} from '@myrmidon/cadmus-state';
 
 @Component({
   selector: 'cadmus-available-witnesses-fragment-feature',
@@ -25,29 +21,13 @@ export class AvailableWitnessesFragmentFeatureComponent
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editFrQuery: EditAvailableWitnessesFragmentQuery,
-    editFrService: EditAvailableWitnessesFragmentService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService,
-    editLayersQuery: EditLayerPartQuery,
-    editLayersService: EditLayerPartService,
+    editorService: FragmentEditorService,
     libraryRouteService: LibraryRouteService
   ) {
-    super(
-      router,
-      route,
-      snackbar,
-      editFrQuery,
-      editFrService,
-      editItemQuery,
-      editItemService,
-      editLayersQuery,
-      editLayersService,
-      libraryRouteService
-    );
+    super(router, route, snackbar, editorService, libraryRouteService);
   }
 
-  ngOnInit() {
-    this.initEditor(['apparatus-witnesses']);
+  protected override getReqThesauriIds(): string[] {
+    return ['apparatus-witnesses'];
   }
 }

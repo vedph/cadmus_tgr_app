@@ -17,7 +17,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
-import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   AnnotatedTag,
   BucketStoreService,
@@ -25,7 +25,7 @@ import {
 } from '@myrmidon/cadmus-tgr-core';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import { LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
-import { deepCopy } from '@myrmidon/ng-tools';
+import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
 
 interface EditedTaggedNote extends TaggedNote {
   label: string;
@@ -109,7 +109,7 @@ export class LingTaggedFormComponent implements OnInit {
     this.lemmata = _formBuilder.control(null, Validators.maxLength(500));
     this.note = _formBuilder.control(null, Validators.maxLength(500));
     this.tags = _formBuilder.control([], {
-      validators: CadmusValidators.strictMinLengthValidator(1),
+      validators: NgToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
     this.form = _formBuilder.group({

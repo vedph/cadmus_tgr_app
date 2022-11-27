@@ -1,8 +1,9 @@
-<form [formGroup]="form!" (submit)="save()">
+<form [formGroup]="form" (submit)="save()">
   <!-- handId -->
   <div>
     <mat-form-field>
-      <input matInput [formControl]="handId" placeholder="hand ID" />
+      <mat-label>hand ID</mat-label>
+      <input matInput [formControl]="handId" />
       <mat-error
         *ngIf="handId.errors?.maxLength && (handId.dirty || handId.touched)"
         >too long</mat-error
@@ -12,12 +13,8 @@
   <!-- description -->
   <div>
     <mat-form-field class="long-text">
-      <textarea
-        matInput
-        rows="3"
-        [formControl]="description"
-        placeholder="description"
-      ></textarea>
+      <mat-label>description</mat-label>
+      <textarea matInput rows="3" [formControl]="description"></textarea>
       <mat-error
         *ngIf="
           description.errors?.required &&

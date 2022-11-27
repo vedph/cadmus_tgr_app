@@ -4,7 +4,8 @@
       <div>
         <!-- type -->
         <mat-form-field>
-          <mat-select placeholder="type" formControlName="type">
+          <mat-label>type</mat-label>
+          <mat-select>
             <mat-option [value]="0">replacement</mat-option>
             <mat-option [value]="1">addition before</mat-option>
             <mat-option [value]="2">addition after</mat-option>
@@ -18,7 +19,8 @@
         &nbsp;
         <!-- role (bound) -->
         <mat-form-field *ngIf="intRoleEntries?.length" style="width: 8em">
-          <mat-select [formControl]="role" placeholder="role">
+          <mat-label>role</mat-label>
+          <mat-select [formControl]="role">
             <mat-option *ngFor="let e of intRoleEntries" [value]="e.id">{{
               e.value
             }}</mat-option>
@@ -31,7 +33,8 @@
 
         <!-- role (free) -->
         <mat-form-field *ngIf="!intRoleEntries?.length" style="width: 8em">
-          <input matInput [formControl]="role" placeholder="role" />
+          <mat-label>role</mat-label>
+          <input matInput [formControl]="role" />
           <mat-error
             *ngIf="role.errors?.required && (role.dirty || role.touched)"
             >role required</mat-error
@@ -45,7 +48,8 @@
         &nbsp;
         <!-- tag (bound) -->
         <mat-form-field *ngIf="intTagEntries?.length" style="width: 8em">
-          <mat-select [formControl]="tag" placeholder="tag">
+          <mat-label>tag</mat-label>
+          <mat-select [formControl]="tag">
             <mat-option *ngFor="let e of intTagEntries" [value]="e.id">{{
               e.value
             }}</mat-option>
@@ -54,7 +58,8 @@
 
         <!-- tag (free) -->
         <mat-form-field *ngIf="!intTagEntries?.length" style="width: 8em">
-          <input matInput [formControl]="tag" placeholder="tag" />
+          <mat-label>tag</mat-label>
+          <input matInput [formControl]="tag" />
           <mat-error *ngIf="tag.errors?.maxLength && (tag.dirty || tag.touched)"
             >tag too long</mat-error
           >
@@ -63,7 +68,8 @@
         &nbsp;
         <!-- groupId -->
         <mat-form-field>
-          <input matInput [formControl]="groupId" placeholder="group ID" />
+          <mat-label>group ID</mat-label>
+          <input matInput [formControl]="groupId" />
           <mat-error
             *ngIf="
               groupId.errors?.required && (groupId.dirty || groupId.touched)
@@ -82,7 +88,8 @@
       <div>
         <!-- value -->
         <mat-form-field>
-          <input matInput [formControl]="value" placeholder="value" />
+          <mat-label>value</mat-label>
+          <input matInput [formControl]="value" />
           <mat-error
             *ngIf="value.errors?.required && (value.dirty || value.touched)"
             >value required</mat-error
@@ -150,7 +157,8 @@
             <!-- child controls -->
             <!-- id (bound) -->
             <mat-form-field *ngIf="intLangEntries?.length" style="width: 8em">
-              <mat-select formControlName="id" placeholder="id">
+              <mat-label>ID</mat-label>
+              <mat-select formControlName="id">
                 <mat-option *ngFor="let e of intLangEntries" [value]="e.id">{{
                   e.value
                 }}</mat-option>
@@ -167,7 +175,8 @@
 
             <!-- id (free) -->
             <mat-form-field *ngIf="!intLangEntries?.length" style="width: 8em">
-              <input matInput formControlName="id" placeholder="id" />
+              <mat-label>ID</mat-label>
+              <input matInput formControlName="id" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].id.errors?.required &&
@@ -192,7 +201,8 @@
       <div>
         <!-- note -->
         <mat-form-field class="long-text">
-          <textarea matInput [formControl]="note" placeholder="note"></textarea>
+          <mat-label>note</mat-label>
+          <textarea matInput [formControl]="note"></textarea>
           <mat-error
             *ngIf="note.errors?.required && (note.dirty || note.touched)"
             >note required</mat-error
@@ -209,7 +219,7 @@
         <div>
           <button
             type="button"
-            mat-icon-button
+            mat-flat-button
             color="primary"
             (click)="addSource()"
           >
@@ -260,7 +270,8 @@
             <!-- child controls -->
             <!-- witness (bound) -->
             <mat-form-field *ngIf="witEntries?.length" style="width: 8em">
-              <mat-select formControlName="witness" placeholder="witness">
+              <mat-label>witness</mat-label>
+              <mat-select formControlName="witness">
                 <mat-option *ngFor="let e of witEntries" [value]="e.id">{{
                   e.value
                 }}</mat-option>
@@ -276,7 +287,8 @@
             </mat-form-field>
 
             <mat-form-field *ngIf="!witEntries?.length" style="width: 8em">
-              <input matInput formControlName="witness" placeholder="witness" />
+              <mat-label>witness</mat-label>
+              <input matInput formControlName="witness" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].witness.errors?.required &&
@@ -297,7 +309,8 @@
             &nbsp;
             <!-- handId -->
             <mat-form-field>
-              <input matInput formControlName="handId" placeholder="hand ID" />
+              <mat-label>hand ID</mat-label>
+              <input matInput formControlName="handId" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].handId.errors?.maxLength &&
@@ -316,7 +329,7 @@
         <div>
           <button
             type="button"
-            mat-icon-button
+            mat-flat-button
             color="primary"
             (click)="addQuotation()"
           >

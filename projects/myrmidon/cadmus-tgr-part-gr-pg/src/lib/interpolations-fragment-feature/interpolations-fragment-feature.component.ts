@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EditInterpolationsFragmentQuery } from './edit-interpolations-fragment.query';
-import { EditInterpolationsFragmentService } from './edit-interpolations-fragment.service';
-import {
-  EditItemQuery,
-  EditItemService,
-  EditLayerPartQuery,
-  EditLayerPartService,
-  EditFragmentFeatureBase,
-} from '@myrmidon/cadmus-state';
 import { LibraryRouteService } from '@myrmidon/cadmus-core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  EditFragmentFeatureBase,
+  FragmentEditorService,
+} from '@myrmidon/cadmus-state';
 
 @Component({
   selector: 'tgr-interpolations-fragment-feature',
@@ -19,35 +14,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class InterpolationsFragmentFeatureComponent
   extends EditFragmentFeatureBase
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editFrQuery: EditInterpolationsFragmentQuery,
-    editFrService: EditInterpolationsFragmentService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService,
-    editLayersQuery: EditLayerPartQuery,
-    editLayersService: EditLayerPartService,
+    editorService: FragmentEditorService,
     libraryRouteService: LibraryRouteService
   ) {
-    super(
-      router,
-      route,
-      snackbar,
-      editFrQuery,
-      editFrService,
-      editItemQuery,
-      editItemService,
-      editLayersQuery,
-      editLayersService,
-      libraryRouteService
-    );
+    super(router, route, snackbar, editorService, libraryRouteService);
   }
 
-  ngOnInit() {
-    this.initEditor([
+  protected override getReqThesauriIds(): string[] {
+    return [
       '!interpolation-roles',
       '!interpolation-tags',
       '!interpolation-languages',
@@ -57,6 +37,6 @@ export class InterpolationsFragmentFeatureComponent
       '!apparatus-author-tags',
       'apparatus-witnesses',
       'apparatus-authors',
-    ]);
+    ];
   }
 }

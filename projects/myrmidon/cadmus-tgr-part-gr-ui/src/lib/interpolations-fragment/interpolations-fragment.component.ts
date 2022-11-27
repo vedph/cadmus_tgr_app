@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormBuilder,
+  FormGroup,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { DialogService } from '@myrmidon/ng-mat-tools';
-import { deepCopy } from '@myrmidon/ng-tools';
+import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
 import { take } from 'rxjs/operators';
 import {
   Interpolation,
@@ -78,106 +80,116 @@ export class InterpolationsFragmentComponent
     formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
-    super(authService);
+    super(authService, formBuilder);
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
     this.interpolations = formBuilder.control([], {
-      validators: CadmusValidators.strictMinLengthValidator(1),
+      validators: NgToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
-    this.form = formBuilder.group({
+  }
+
+  public override ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       entries: this.interpolations,
     });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
-  }
-
-  private updateForm(model: InterpolationsFragment): void {
-    if (!model) {
-      this.form?.reset();
-      return;
-    }
-    this.interpolations.setValue(model.interpolations || []);
-    this.form?.markAsPristine();
-  }
-
-  protected onModelSet(model: InterpolationsFragment): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     let key = 'interpolation-roles';
-    if (this.thesauri && this.thesauri[key]) {
-      this.intRoleEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.intRoleEntries = thesauri[key].entries;
     } else {
       this.intRoleEntries = undefined;
     }
 
     key = 'interpolation-tags';
-    if (this.thesauri && this.thesauri[key]) {
-      this.intTagEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.intTagEntries = thesauri[key].entries;
     } else {
       this.intTagEntries = undefined;
     }
 
     key = 'interpolation-languages';
-    if (this.thesauri && this.thesauri[key]) {
-      this.intLangEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.intLangEntries = thesauri[key].entries;
     } else {
       this.intLangEntries = undefined;
     }
 
     key = 'apparatus-witnesses';
-    if (this.thesauri && this.thesauri[key]) {
-      this.witEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.witEntries = thesauri[key].entries;
     } else {
       this.witEntries = undefined;
     }
 
     key = 'quotation-tags';
-    if (this.thesauri && this.thesauri[key]) {
-      this.quotTagEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.quotTagEntries = thesauri[key].entries;
     } else {
       this.quotTagEntries = undefined;
     }
 
     key = 'quotation-authorities';
-    if (this.thesauri && this.thesauri[key]) {
-      this.quotAuthEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.quotAuthEntries = thesauri[key].entries;
     } else {
       this.quotAuthEntries = undefined;
     }
 
     key = 'author-works';
-    if (this.thesauri && this.thesauri[key]) {
-      this.workEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.workEntries = thesauri[key].entries;
     } else {
       this.workEntries = undefined;
     }
 
     key = 'apparatus-authors';
-    if (this.thesauri && this.thesauri[key]) {
-      this.authEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.authEntries = thesauri[key].entries;
     } else {
       this.authEntries = undefined;
     }
 
     key = 'apparatus-author-tags';
-    if (this.thesauri && this.thesauri[key]) {
-      this.authTagEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.authTagEntries = thesauri[key].entries;
     } else {
       this.authTagEntries = undefined;
     }
   }
 
-  protected getModelFromForm(): InterpolationsFragment {
-    return {
-      location: this.model?.location ?? '',
-      interpolations: this.interpolations.value
-    };
+  private updateForm(fr?: InterpolationsFragment): void {
+    if (!fr) {
+      this.form.reset();
+      return;
+    }
+    this.interpolations.setValue(fr.interpolations || []);
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(
+    data?: EditedObject<InterpolationsFragment>
+  ): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): InterpolationsFragment {
+    const fr = this.getEditedFragment() as InterpolationsFragment;
+    fr.interpolations = this.interpolations.value;
+    return fr;
   }
 
   public addInterpolation(): void {

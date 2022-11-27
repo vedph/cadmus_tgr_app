@@ -5,7 +5,8 @@
       <div>
         <!-- start -->
         <mat-form-field style="width: 8em">
-          <input matInput [formControl]="start" placeholder="start" />
+          <mat-label>start</mat-label>
+          <input matInput [formControl]="start" />
           <mat-error
             *ngIf="start.errors?.required && (start.dirty || start.touched)"
             >start required</mat-error
@@ -18,7 +19,8 @@
         &nbsp;
         <!-- end -->
         <mat-form-field style="width: 8em">
-          <input matInput [formControl]="end" placeholder="end" />
+          <mat-label>end</mat-label>
+          <input matInput [formControl]="end" />
           <mat-error *ngIf="end.errors?.required && (end.dirty || end.touched)"
             >end required</mat-error
           >
@@ -39,7 +41,8 @@
       <div>
         <!-- work -->
         <mat-form-field class="long-text">
-          <input matInput [formControl]="work" placeholder="work" />
+          <mat-label>work</mat-label>
+          <input matInput [formControl]="work" />
           <mat-error
             *ngIf="work.errors?.maxLength && (work.dirty || work.touched)"
             >too long</mat-error
@@ -48,7 +51,8 @@
         &nbsp;
         <!-- location -->
         <mat-form-field>
-          <input matInput [formControl]="location" placeholder="location" />
+          <mat-label>location</mat-label>
+          <input matInput [formControl]="location" />
           <mat-error
             *ngIf="
               location.errors?.maxLength && (location.dirty || location.touched)
@@ -60,7 +64,8 @@
       <div>
         <!-- title -->
         <mat-form-field class="long-text">
-          <input matInput [formControl]="title" placeholder="title" />
+          <mat-label>title</mat-label>
+          <input matInput [formControl]="title" />
           <mat-error
             *ngIf="title.errors?.maxLength && (title.dirty || title.touched)"
             >too long</mat-error
@@ -74,12 +79,8 @@
       <div>
         <!-- incipit -->
         <mat-form-field class="long-text">
-          <textarea
-            matInput
-            [formControl]="incipit"
-            rows="3"
-            placeholder="incipit"
-          ></textarea>
+          <mat-label>incipit</mat-label>
+          <textarea matInput [formControl]="incipit" rows="3"></textarea>
           <mat-error
             *ngIf="
               incipit.errors?.maxLength && (incipit.dirty || incipit.touched)
@@ -91,12 +92,8 @@
       <div>
         <!-- explicit -->
         <mat-form-field class="long-text">
-          <textarea
-            matInput
-            [formControl]="explicit"
-            rows="3"
-            placeholder="explicit"
-          ></textarea>
+          <mat-label>explicit</mat-label>
+          <textarea matInput [formControl]="explicit" rows="3"></textarea>
           <mat-error
             *ngIf="
               explicit.errors?.maxLength && (explicit.dirty || explicit.touched)
@@ -108,12 +105,8 @@
       <div>
         <!-- note -->
         <mat-form-field class="long-text">
-          <textarea
-            rows="3"
-            matInput
-            [formControl]="note"
-            placeholder="note"
-          ></textarea>
+          <mat-label>note</mat-label>
+          <textarea rows="3" matInput [formControl]="note"></textarea>
           <mat-error
             *ngIf="note.errors?.maxLength && (note.dirty || note.touched)"
             >note too long</mat-error

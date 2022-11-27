@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormBuilder,
+  Validators,
+  FormGroup,
+  UntypedFormGroup,
+} from '@angular/forms';
 
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 
 import {
   MsScript,
@@ -11,7 +17,6 @@ import {
 } from '../ms-scripts-part';
 import { take } from 'rxjs/operators';
 import { DialogService } from '@myrmidon/ng-mat-tools';
-import { deepCopy } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
@@ -44,54 +49,63 @@ export class MsScriptsPartComponent
     formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
-    super(authService);
+    super(authService, formBuilder);
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
     this.scripts = formBuilder.control([], Validators.required);
-    this.form = formBuilder.group({
+  }
+
+  public override ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       scripts: this.scripts,
     });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
-  }
-
-  private updateForm(model: MsScriptsPart): void {
-    if (!model) {
-      this.form?.reset();
-      return;
-    }
-    this.scripts.setValue(model.scripts || []);
-    this.form?.markAsPristine();
-  }
-
-  protected onModelSet(model: MsScriptsPart): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     let key = 'ms-languages';
-    if (this.thesauri && this.thesauri[key]) {
-      this.langEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.langEntries = thesauri[key].entries;
     } else {
       this.langEntries = undefined;
     }
 
     key = 'ms-script-types';
-    if (this.thesauri && this.thesauri[key]) {
-      this.scrTypeEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.scrTypeEntries = thesauri[key].entries;
     } else {
       this.scrTypeEntries = undefined;
     }
 
     key = 'ms-script-roles';
-    if (this.thesauri && this.thesauri[key]) {
-      this.scrRoleEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.scrRoleEntries = thesauri[key].entries;
     } else {
       this.scrRoleEntries = undefined;
     }
+  }
+
+  private updateForm(part?: MsScriptsPart): void {
+    if (!part) {
+      this.form.reset();
+      return;
+    }
+    this.scripts.setValue(part.scripts || []);
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(data?: EditedObject<MsScriptsPart>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
   }
 
   public entryToString(id: string | undefined, type: string): string {
@@ -117,21 +131,8 @@ export class MsScriptsPartComponent
       : id;
   }
 
-  protected getModelFromForm(): MsScriptsPart {
-    let part = this.model;
-    if (!part) {
-      part = {
-        itemId: this.itemId || '',
-        id: '',
-        typeId: MSSCRIPTS_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: '',
-        timeModified: new Date(),
-        userId: '',
-        scripts: [],
-      };
-    }
+  protected getValue(): MsScriptsPart {
+    let part = this.getEditedPart(MSSCRIPTS_PART_TYPEID) as MsScriptsPart;
     part.scripts = this.scripts.value || [];
     return part;
   }

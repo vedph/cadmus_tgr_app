@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EditItemQuery, EditItemService, EditPartFeatureBase } from '@myrmidon/cadmus-state';
-import { EditMsSignaturesPartQuery } from './edit-ms-signatures-part.query';
-import { EditMsSignaturesPartService } from './edit-ms-signatures-part.service';
+import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
+import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'tgr-ms-signatures-part-feature',
@@ -12,28 +11,27 @@ import { EditMsSignaturesPartService } from './edit-ms-signatures-part.service';
 })
 export class MsSignaturesPartFeatureComponent
   extends EditPartFeatureBase
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editPartQuery: EditMsSignaturesPartQuery,
-    editPartService: EditMsSignaturesPartService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService
+    itemService: ItemService,
+    thesaurusService: ThesaurusService,
+    editorService: PartEditorService
   ) {
     super(
       router,
       route,
       snackbar,
-      editPartQuery,
-      editPartService,
-      editItemQuery,
-      editItemService
+      itemService,
+      thesaurusService,
+      editorService
     );
   }
 
-  ngOnInit(): void {
-    this.initEditor(['ms-signature-tags']);
+  protected override getReqThesauriIds(): string[] {
+    return ['ms-signature-tags'];
   }
 }

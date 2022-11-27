@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 
-import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AnnotatedTag, LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
-import { deepCopy } from '@myrmidon/ng-tools';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 import { LingTagsFragment } from '../ling-tags-fragment';
@@ -29,65 +34,72 @@ export class LingTagsFragmentComponent
   public auxEntries$: BehaviorSubject<ThesaurusEntry[]>;
 
   public forms: FormControl<LingTaggedForm[]>;
-  public form: FormGroup;
 
   public editedForm: LingTaggedForm | undefined;
   public tabIndex: number;
 
   constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
-    super(authService);
+    super(authService, formBuilder);
     this.tagEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
     this.auxEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
     this.tabIndex = 0;
     this._editedFormIndex = -1;
     // form
     this.forms = formBuilder.control([], {
-      validators: CadmusValidators.strictMinLengthValidator(1),
+      validators: NgToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
-    this.form = formBuilder.group({
+  }
+
+  public override ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       forms: this.forms,
     });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
-  }
-
-  private updateForm(model: LingTagsFragment): void {
-    if (!model) {
-      this.form.reset();
-      return;
-    }
-    this.forms.setValue(model.forms || []);
-    this.form.markAsPristine();
-  }
-
-  protected onModelSet(model: LingTagsFragment): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     let key = 'ling-tags';
-    if (this.thesauri && this.thesauri[key]) {
-      this.tagEntries$.next(this.thesauri[key].entries || []);
+    if (this.hasThesaurus(key)) {
+      this.tagEntries$.next(thesauri[key].entries || []);
     } else {
       this.tagEntries$.next([]);
     }
 
     key = 'ling-tags-aux';
-    if (this.thesauri && this.thesauri[key]) {
-      this.auxEntries$.next(this.thesauri[key].entries || []);
+    if (this.hasThesaurus(key)) {
+      this.auxEntries$.next(thesauri[key].entries || []);
     } else {
       this.auxEntries$.next([]);
     }
   }
 
-  protected getModelFromForm(): LingTagsFragment {
-    return {
-      location: this.model?.location ?? '',
-      forms: this.forms.value,
-    };
+  private updateForm(fr?: LingTagsFragment): void {
+    if (!fr) {
+      this.form.reset();
+      return;
+    }
+    this.forms.setValue(fr.forms || []);
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(data?: EditedObject<LingTagsFragment>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): LingTagsFragment {
+    const fr = this.getEditedFragment() as LingTagsFragment;
+    fr.forms = this.forms.value;
+    return fr;
   }
 
   public getTagLabel(id: string): string {

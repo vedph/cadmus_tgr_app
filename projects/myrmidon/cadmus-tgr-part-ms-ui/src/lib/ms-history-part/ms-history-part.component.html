@@ -1,5 +1,5 @@
-<form [formGroup]="form!" (submit)="save()">
-  <mat-card>
+<form [formGroup]="form" (submit)="save()">
+  <mat-card appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar>
         <mat-icon>picture_in_picture</mat-icon>
@@ -65,7 +65,8 @@
 
                 <!-- child controls -->
                 <mat-form-field style="width: 12em">
-                  <input matInput formControlName="area" placeholder="area" />
+                  <mat-label>area</mat-label>
+                  <input matInput formControlName="area" />
                   <mat-error
                     *ngIf="
                       $any(item)['controls'].area.errors?.required &&
@@ -85,11 +86,8 @@
                 </mat-form-field>
                 &nbsp;
                 <mat-form-field>
-                  <input
-                    matInput
-                    formControlName="address"
-                    placeholder="address"
-                  />
+                  <mat-label>address</mat-label>
+                  <input matInput formControlName="address" />
                   <mat-error
                     *ngIf="
                       $any(item)['controls'].address.errors?.maxLength &&
@@ -172,7 +170,8 @@
 
                 <!-- child controls -->
                 <mat-form-field>
-                  <input matInput formControlName="name" placeholder="name" />
+                  <mat-label>name</mat-label>
+                  <input matInput formControlName="name" />
                   <mat-error
                     *ngIf="
                       $any(item)['controls'].name.errors?.required &&
@@ -200,11 +199,9 @@
           <!-- locations -->
           <div>
             <mat-form-field class="long-text">
-              <textarea
-                matInput
-                [formControl]="subLocations"
-                placeholder="locations (comma separated)"
-              ></textarea>
+              <mat-label>locations</mat-label>
+              <textarea matInput [formControl]="subLocations"></textarea>
+              <mat-hint>comma-separated</mat-hint>
               <mat-error
                 *ngIf="
                   subLocations.errors?.invalid &&
@@ -224,7 +221,8 @@
           <div>
             <!-- language (bound) -->
             <mat-form-field *ngIf="langEntries?.length" style="width: 8em">
-              <mat-select [formControl]="subLanguage" placeholder="language">
+              <mat-label>language</mat-label>
+              <mat-select [formControl]="subLanguage">
                 <mat-option *ngFor="let e of langEntries" [value]="e.id">{{
                   e.value
                 }}</mat-option>
@@ -240,11 +238,8 @@
 
             <!-- language (free) -->
             <mat-form-field *ngIf="!langEntries?.length" style="width: 8em">
-              <input
-                matInput
-                [formControl]="subLanguage"
-                placeholder="language"
-              />
+              <mat-label>language</mat-label>
+              <input matInput [formControl]="subLanguage" />
               <mat-error
                 *ngIf="
                   subLanguage.errors?.required &&
@@ -263,7 +258,8 @@
             &nbsp;
             <!-- handId -->
             <mat-form-field>
-              <input matInput [formControl]="subHandId" placeholder="hand ID" />
+              <mat-label>hand ID</mat-label>
+              <input matInput [formControl]="subHandId" />
               <mat-error
                 *ngIf="
                   subHandId.errors?.required &&
@@ -283,12 +279,8 @@
           <!-- text -->
           <div>
             <mat-form-field class="long-text">
-              <textarea
-                rows="3"
-                matInput
-                [formControl]="subText"
-                placeholder="text"
-              ></textarea>
+              <mat-label>text</mat-label>
+              <textarea rows="3" matInput [formControl]="subText"></textarea>
               <mat-error
                 *ngIf="
                   subText.errors?.required && (subText.dirty || subText.touched)
@@ -307,12 +299,8 @@
           <!-- note -->
           <div>
             <mat-form-field class="long-text">
-              <textarea
-                rows="3"
-                matInput
-                [formControl]="subNote"
-                placeholder="note"
-              ></textarea>
+              <mat-label>note</mat-label>
+              <textarea rows="3" matInput [formControl]="subNote"></textarea>
               <mat-error
                 *ngIf="
                   subNote.errors?.required && (subNote.dirty || subNote.touched)
@@ -387,7 +375,8 @@
                 <!-- child controls -->
                 <!-- language (bound) -->
                 <mat-form-field *ngIf="langEntries?.length" style="width: 8em">
-                  <mat-select formControlName="language" placeholder="language">
+                  <mat-label>language</mat-label>
+                  <mat-select formControlName="language">
                     <mat-option *ngFor="let e of langEntries" [value]="e.id">{{
                       e.value
                     }}</mat-option>
@@ -404,11 +393,8 @@
 
                 <!-- language (free) -->
                 <mat-form-field *ngIf="!langEntries?.length" style="width: 8em">
-                  <input
-                    matInput
-                    formControlName="language"
-                    placeholder="language"
-                  />
+                  <mat-label>language</mat-label>
+                  <input matInput formControlName="language" />
                   <mat-error
                     *ngIf="
                       $any(item)['controls'].language.errors?.required &&
@@ -430,11 +416,8 @@
                 &nbsp;
                 <!-- handId -->
                 <mat-form-field>
-                  <input
-                    matInput
-                    formControlName="handId"
-                    placeholder="hand ID"
-                  />
+                  <mat-label>hand ID</mat-label>
+                  <input matInput formControlName="handId" />
                   <mat-error
                     *ngIf="
                       $any(item)['controls'].handId.errors?.maxLength &&
@@ -448,7 +431,8 @@
                 <!-- note -->
                 <div>
                   <mat-form-field class="long-text-indented">
-                    <input matInput formControlName="note" placeholder="note" />
+                    <mat-label>note</mat-label>
+                    <input matInput formControlName="note" />
                     <mat-error
                       *ngIf="
                         $any(item)['controls'].note.errors?.maxLength &&

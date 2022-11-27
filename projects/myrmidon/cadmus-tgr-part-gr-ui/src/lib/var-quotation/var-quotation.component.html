@@ -5,7 +5,8 @@
       <div>
         <!-- tag (bound) -->
         <mat-form-field *ngIf="quotTagEntries?.length" style="width: 8em">
-          <mat-select [formControl]="tag" placeholder="tag">
+          <mat-label>tag</mat-label>
+          <mat-select [formControl]="tag">
             <mat-option *ngFor="let e of quotTagEntries" [value]="e.id">{{
               e.value
             }}</mat-option>
@@ -13,7 +14,8 @@
         </mat-form-field>
         <!-- tag (free) -->
         <mat-form-field *ngIf="!quotTagEntries?.length" style="width: 8em">
-          <input matInput [formControl]="tag" placeholder="tag" />
+          <mat-label>tag</mat-label>
+          <input matInput [formControl]="tag" />
           <mat-error *ngIf="tag.errors?.maxLength && (tag.dirty || tag.touched)"
             >tag too long</mat-error
           >
@@ -22,7 +24,8 @@
         &nbsp;
         <!-- authority (bound) -->
         <mat-form-field *ngIf="quotAuthEntries?.length" style="width: 8em">
-          <mat-select [formControl]="authority" placeholder="authority">
+          <mat-label>authority</mat-label>
+          <mat-select [formControl]="authority">
             <mat-option *ngFor="let e of quotAuthEntries" [value]="e.id">{{
               e.value
             }}</mat-option>
@@ -38,7 +41,8 @@
 
         <!-- authority (free) -->
         <mat-form-field *ngIf="!quotAuthEntries?.length" style="width: 8em">
-          <input matInput [formControl]="authority" placeholder="authority" />
+          <mat-label>authority</mat-label>
+          <input matInput [formControl]="authority" />
           <mat-error
             *ngIf="
               authority.errors?.required &&
@@ -68,7 +72,8 @@
       <div>
         <!-- work -->
         <mat-form-field>
-          <input matInput [formControl]="work" placeholder="work" />
+          <mat-label>work</mat-label>
+          <input matInput [formControl]="work" />
           <mat-error
             *ngIf="work.errors?.required && (work.dirty || work.touched)"
             >required</mat-error
@@ -82,7 +87,8 @@
         <!-- location -->
         &nbsp;
         <mat-form-field>
-          <input matInput [formControl]="location" placeholder="location" />
+          <mat-label>location</mat-label>
+          <input matInput [formControl]="location" />
           <mat-error
             *ngIf="
               location.errors?.required && (location.dirty || location.touched)
@@ -101,7 +107,8 @@
       <!-- note -->
       <div>
         <mat-form-field class="long-text">
-          <textarea matInput [formControl]="note" placeholder="note"></textarea>
+          <mat-label>note</mat-label>
+          <textarea matInput [formControl]="note"></textarea>
           <mat-error
             *ngIf="$any(note).errors?.maxLength && (note.dirty || note.touched)"
             >note too long</mat-error
@@ -166,7 +173,8 @@
               <!-- child controls -->
               <!-- work -->
               <mat-form-field>
-                <input matInput formControlName="work" placeholder="work" />
+                <mat-label>work</mat-label>
+                <input matInput formControlName="work" />
                 <mat-error
                   *ngIf="
                     $any(item)['controls'].work.errors?.required &&
@@ -187,11 +195,8 @@
               &nbsp;
               <!-- location -->
               <mat-form-field>
-                <input
-                  matInput
-                  formControlName="location"
-                  placeholder="location"
-                />
+                <mat-label>location</mat-label>
+                <input matInput formControlName="location" />
                 <mat-error
                   *ngIf="
                     $any(item)['controls'].location.errors?.required &&
@@ -212,7 +217,8 @@
               &nbsp;
               <!-- tag (bound) -->
               <mat-form-field *ngIf="quotTagEntries?.length" style="width: 8em">
-                <mat-select formControlName="qtag" placeholder="tag">
+                <mat-label>tag</mat-label>
+                <mat-select formControlName="qtag">
                   <mat-option *ngFor="let e of quotTagEntries" [value]="e.id">{{
                     e.value
                   }}</mat-option>
@@ -224,7 +230,8 @@
                 *ngIf="!quotTagEntries?.length"
                 style="width: 8em"
               >
-                <input matInput formControlName="qtag" placeholder="tag" />
+                <mat-label>tag</mat-label>
+                <input matInput formControlName="qtag" />
                 <mat-error
                   *ngIf="
                     $any(item).controls.tag.errors?.maxLength &&
@@ -238,7 +245,8 @@
               <!-- note -->
               &nbsp;
               <mat-form-field>
-                <input matInput formControlName="note" placeholder="note" />
+                <mat-label>note</mat-label>
+                <input matInput formControlName="note" />
                 <mat-error
                   *ngIf="
                     $any(item).controls.note.errors?.maxLength &&
@@ -259,7 +267,7 @@
       <div>
         <button
           type="button"
-          mat-icon-button
+          mat-flat-button
           color="primary"
           (click)="addVariant()"
         >

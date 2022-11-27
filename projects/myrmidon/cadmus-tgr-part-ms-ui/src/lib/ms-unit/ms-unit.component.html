@@ -1,11 +1,12 @@
-<form [formGroup]="form!" (submit)="save()">
+<form [formGroup]="form" (submit)="save()">
   <mat-tab-group>
     <!-- GENERAL -->
     <mat-tab label="general">
       <div>
         <!-- start -->
         <mat-form-field>
-          <input matInput [formControl]="start" placeholder="start" />
+          <mat-label>start</mat-label>
+          <input matInput [formControl]="start" />
           <mat-error
             *ngIf="start.errors?.required && (start.dirty || start.touched)"
             >start required</mat-error
@@ -19,7 +20,8 @@
         &nbsp;
         <!-- end -->
         <mat-form-field>
-          <input matInput [formControl]="end" placeholder="end" />
+          <mat-label>end</mat-label>
+          <input matInput [formControl]="end" />
           <mat-error *ngIf="end.errors?.required && (end.dirty || end.touched)"
             >end required</mat-error
           >
@@ -32,7 +34,8 @@
       <div>
         <!-- material (bound) -->
         <mat-form-field *ngIf="matEntries?.length" style="width: 8em">
-          <mat-select [formControl]="material" placeholder="material">
+          <mat-label>material</mat-label>
+          <mat-select [formControl]="material">
             <mat-option *ngFor="let e of matEntries" [value]="e.id">{{
               e.value
             }}</mat-option>
@@ -41,7 +44,8 @@
 
         <!-- material (free) -->
         <mat-form-field *ngIf="!matEntries?.length" style="width: 8em">
-          <input matInput [formControl]="material" placeholder="material" />
+          <mat-label>material</mat-label>
+          <input matInput [formControl]="material" />
           <mat-error
             *ngIf="
               material.errors?.maxLength && (material.dirty || material.touched)
@@ -53,10 +57,8 @@
 
         <!-- guard sheets material (bound) -->
         <mat-form-field *ngIf="matEntries?.length" style="width: 8em">
-          <mat-select
-            [formControl]="guardSheetMaterial"
-            placeholder="guards material"
-          >
+          <mat-label>guards material</mat-label>
+          <mat-select [formControl]="guardSheetMaterial">
             <mat-option *ngFor="let e of matEntries" [value]="e.id">{{
               e.value
             }}</mat-option>
@@ -65,11 +67,8 @@
 
         <!-- guard sheets material (free) -->
         <mat-form-field *ngIf="!matEntries?.length" style="width: 8em">
-          <input
-            matInput
-            [formControl]="guardSheetMaterial"
-            placeholder="guards material"
-          />
+          <mat-label>guards material</mat-label>
+          <input matInput [formControl]="guardSheetMaterial" />
           <mat-error
             *ngIf="
               guardSheetMaterial.errors?.maxLength &&
@@ -82,39 +81,39 @@
 
         <!-- sheetCount -->
         <mat-form-field style="width: 5em">
+          <mat-label>sheets count</mat-label>
           <input
             matInput
             [formControl]="sheetCount"
             type="number"
             min="0"
             max="1000"
-            placeholder="sheets count"
           />
         </mat-form-field>
 
         &nbsp;
         <!-- guardSheetCount -->
         <mat-form-field style="width: 5em">
+          <mat-label>guard sheets count</mat-label>
           <input
             matInput
             [formControl]="guardSheetCount"
             type="number"
             min="0"
             max="100"
-            placeholder="guard sheets count"
           />
         </mat-form-field>
 
         &nbsp;
         <!-- backGuardSheetCount -->
         <mat-form-field style="width: 5em">
+          <mat-label>back guard sheets count</mat-label>
           <input
             matInput
             [formControl]="backGuardSheetCount"
             type="number"
             min="0"
             max="100"
-            placeholder="back guard sheets count"
           />
         </mat-form-field>
       </div>
@@ -122,7 +121,8 @@
       <div>
         <!-- group ID -->
         <mat-form-field>
-          <input matInput [formControl]="groupId" placeholder="group ID" />
+          <mat-label>group ID</mat-label>
+          <input matInput [formControl]="groupId" />
           <mat-error
             *ngIf="
               groupId.errors?.maxLength && (groupId.dirty || groupId.touched)
@@ -134,13 +134,8 @@
         &nbsp;
         <!-- groupOrdinal -->
         <mat-form-field style="width: 5em">
-          <input
-            matInput
-            [formControl]="groupOrdinal"
-            type="number"
-            min="0"
-            placeholder="group ordinal"
-          />
+          <mat-label>group ordinal</mat-label>
+          <input matInput [formControl]="groupOrdinal" type="number" min="0" />
         </mat-form-field>
       </div>
 
@@ -157,12 +152,8 @@
       <!-- quires -->
       <div>
         <mat-form-field class="long-text">
-          <textarea
-            rows="3"
-            matInput
-            [formControl]="quires"
-            placeholder="quires"
-          ></textarea>
+          <mat-label>quires</mat-label>
+          <textarea rows="3" matInput [formControl]="quires"></textarea>
           <mat-error
             *ngIf="quires.errors?.maxLength && (quires.dirty || quires.touched)"
             >too long</mat-error
@@ -172,12 +163,8 @@
       <!-- sheetNumbering -->
       <div>
         <mat-form-field class="long-text">
-          <textarea
-            rows="3"
-            matInput
-            [formControl]="sheetNumbering"
-            placeholder="sheet numbering"
-          ></textarea>
+          <mat-label>sheet numbering</mat-label>
+          <textarea rows="3" matInput [formControl]="sheetNumbering"></textarea>
           <mat-error
             *ngIf="
               sheetNumbering.errors?.maxLength &&
@@ -190,12 +177,8 @@
       <!-- quireNumbering -->
       <div>
         <mat-form-field class="long-text">
-          <textarea
-            rows="3"
-            matInput
-            [formControl]="quireNumbering"
-            placeholder="quire numbering"
-          ></textarea>
+          <mat-label>quire numbering</mat-label>
+          <textarea rows="3" matInput [formControl]="quireNumbering"></textarea>
           <mat-error
             *ngIf="
               quireNumbering.errors?.maxLength &&
@@ -208,12 +191,8 @@
       <!-- state -->
       <div>
         <mat-form-field class="long-text">
-          <textarea
-            rows="3"
-            matInput
-            [formControl]="state"
-            placeholder="state"
-          ></textarea>
+          <mat-label>state</mat-label>
+          <textarea rows="3" matInput [formControl]="state"></textarea>
           <mat-error
             *ngIf="state.errors?.maxLength && (state.dirty || state.touched)"
             >too long</mat-error
@@ -223,12 +202,8 @@
       <!-- binding -->
       <div>
         <mat-form-field class="long-text">
-          <textarea
-            rows="3"
-            matInput
-            [formControl]="binding"
-            placeholder="binding"
-          ></textarea>
+          <mat-label>binding</mat-label>
+          <textarea rows="3" matInput [formControl]="binding"></textarea>
           <mat-error
             *ngIf="
               binding.errors?.maxLength && (binding.dirty || binding.touched)
@@ -293,7 +268,8 @@
             <!-- child controls -->
             <!-- manner (bound) -->
             <mat-form-field *ngIf="rulManEntries?.length" style="width: 8em">
-              <mat-select formControlName="manner" placeholder="manner">
+              <mat-label>manner</mat-label>
+              <mat-select formControlName="manner">
                 <mat-option *ngFor="let e of rulManEntries" [value]="e.id">{{
                   e.value
                 }}</mat-option>
@@ -309,7 +285,8 @@
             </mat-form-field>
             <!-- manner (free) -->
             <mat-form-field *ngIf="!rulManEntries?.length" style="width: 8em">
-              <input matInput formControlName="manner" placeholder="manner" />
+              <mat-label>manner</mat-label>
+              <input matInput formControlName="manner" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].manner.errors?.required &&
@@ -331,7 +308,8 @@
             &nbsp;
             <!-- system (bound) -->
             <mat-form-field *ngIf="rulSysEntries?.length" style="width: 8em">
-              <mat-select formControlName="system" placeholder="system">
+              <mat-label>system</mat-label>
+              <mat-select formControlName="system">
                 <mat-option *ngFor="let e of rulSysEntries" [value]="e.id">{{
                   e.value
                 }}</mat-option>
@@ -347,7 +325,8 @@
             </mat-form-field>
             <!-- system (free) -->
             <mat-form-field *ngIf="!rulSysEntries?.length" style="width: 8em">
-              <input matInput formControlName="system" placeholder="system" />
+              <mat-label>system</mat-label>
+              <input matInput formControlName="system" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].system.errors?.required &&
@@ -369,7 +348,8 @@
             <!-- type -->
             &nbsp;
             <mat-form-field>
-              <input matInput formControlName="type" placeholder="type" />
+              <mat-label>type</mat-label>
+              <input matInput formControlName="type" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].type.errors?.maxLength &&
@@ -383,11 +363,8 @@
             <div>
               <!-- description -->
               <mat-form-field class="long-text-indented">
-                <textarea
-                  matInput
-                  formControlName="description"
-                  placeholder="description"
-                ></textarea>
+                <mat-label>description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
                 <mat-error
                   *ngIf="
                     $any(item)['controls'].description.errors?.maxLength &&
@@ -406,11 +383,9 @@
     <mat-tab label="leaf sizes">
       <div>
         <mat-form-field class="long-text">
-          <input
-            matInput
-            [formControl]="leafSizeSamples"
-            placeholder="samples (comma delimited)"
-          />
+          <mat-label>samples</mat-label>
+          <input matInput [formControl]="leafSizeSamples" />
+          <mat-hint>comma delimited</mat-hint>
           <mat-error
             *ngIf="
               leafSizeSamples.errors?.pattern &&
@@ -429,7 +404,7 @@
       </div>
       <button
         type="button"
-        mat-icon-button
+        mat-flat-button
         color="primary"
         (click)="addLeafSize()"
       >
@@ -538,11 +513,9 @@
     <mat-tab label="area sizes">
       <div>
         <mat-form-field class="long-text">
-          <input
-            matInput
-            [formControl]="areaSizeSamples"
-            placeholder="samples (comma delimited)"
-          />
+          <mat-label>samples</mat-label>
+          <input matInput [formControl]="areaSizeSamples" />
+          <mat-hint>comma delimited</mat-hint>
           <mat-error
             *ngIf="
               areaSizeSamples.errors?.pattern &&
@@ -561,7 +534,7 @@
       </div>
       <button
         type="button"
-        mat-icon-button
+        mat-flat-button
         color="primary"
         (click)="addAreaSize()"
       >
@@ -723,7 +696,8 @@
             <!-- child controls -->
             <!-- value -->
             <mat-form-field>
-              <input matInput formControlName="value" placeholder="value" />
+              <mat-label>value</mat-label>
+              <input matInput formControlName="value" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].value.errors?.required &&
@@ -744,11 +718,8 @@
 
             <!-- description -->
             <mat-form-field>
-              <input
-                matInput
-                formControlName="description"
-                placeholder="description"
-              />
+              <mat-label>description</mat-label>
+              <input matInput formControlName="description" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].description.errors?.required &&

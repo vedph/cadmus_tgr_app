@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  EditItemQuery,
-  EditItemService,
-  EditPartFeatureBase,
-} from '@myrmidon/cadmus-state';
-
-import { EditMsScriptsPartService } from './edit-ms-scripts-part.service';
-import { EditMsScriptsPartQuery } from './edit-ms-scripts-part.query';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
+import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'tgr-ms-scripts-part-feature',
@@ -17,28 +11,27 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class MsScriptsPartFeatureComponent
   extends EditPartFeatureBase
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editPartQuery: EditMsScriptsPartQuery,
-    editPartService: EditMsScriptsPartService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService
+    itemService: ItemService,
+    thesaurusService: ThesaurusService,
+    editorService: PartEditorService
   ) {
     super(
       router,
       route,
       snackbar,
-      editPartQuery,
-      editPartService,
-      editItemQuery,
-      editItemService
+      itemService,
+      thesaurusService,
+      editorService
     );
   }
 
-  public ngOnInit(): void {
-    this.initEditor(['ms-languages', 'ms-script-types', 'ms-script-roles']);
+  protected override getReqThesauriIds(): string[] {
+    return ['ms-languages', 'ms-script-types', 'ms-script-roles'];
   }
 }

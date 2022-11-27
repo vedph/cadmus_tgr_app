@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  EditItemQuery,
-  EditItemService,
-  EditPartFeatureBase,
-} from '@myrmidon/cadmus-state';
-
-import { EditMsFormalFeaturesPartService } from './edit-ms-formal-features-part.service';
-import { EditMsFormalFeaturesPartQuery } from './edit-ms-formal-features-part.query';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
+import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'tgr-ms-formal-features-part-feature',
@@ -17,28 +11,23 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class MsFormalFeaturesPartFeatureComponent
   extends EditPartFeatureBase
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editPartQuery: EditMsFormalFeaturesPartQuery,
-    editPartService: EditMsFormalFeaturesPartService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService
+    itemService: ItemService,
+    thesaurusService: ThesaurusService,
+    editorService: PartEditorService
   ) {
     super(
       router,
       route,
       snackbar,
-      editPartQuery,
-      editPartService,
-      editItemQuery,
-      editItemService
+      itemService,
+      thesaurusService,
+      editorService
     );
-  }
-
-  public ngOnInit(): void {
-    this.initEditor();
   }
 }

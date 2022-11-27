@@ -2,7 +2,8 @@
   <div class="form-row">
     <!-- type -->
     <mat-form-field>
-      <mat-select placeholder="type" formControlName="type">
+      <mat-label>type</mat-label>
+      <mat-select formControlName="type">
         <mat-option [value]="0">replacement</mat-option>
         <mat-option [value]="1">addition before</mat-option>
         <mat-option [value]="2">addition after</mat-option>
@@ -15,7 +16,8 @@
 
     <!-- lemma -->
     <mat-form-field style="width: 12em">
-      <input matInput [formControl]="lemma" placeholder="lemma" />
+      <mat-label>lemma</mat-label>
+      <input matInput [formControl]="lemma" />
       <mat-error
         *ngIf="lemma.errors?.required && (lemma.dirty || lemma.touched)"
         >lemma required</mat-error
@@ -28,7 +30,8 @@
 
     <!-- value -->
     <mat-form-field style="width: 10em">
-      <input matInput type="text" formControlName="value" placeholder="value" />
+      <mat-label>value</mat-label>
+      <input matInput type="text" formControlName="value" />
       <mat-error
         *ngIf="value.errors?.maxLength && (value.dirty || value.touched)"
         >too long</mat-error
@@ -37,7 +40,8 @@
 
     <!-- note -->
     <mat-form-field style="flex: 1 0 auto">
-      <input matInput formControlName="note" placeholder="note" />
+      <mat-label>note</mat-label>
+      <input matInput formControlName="note" />
       <mat-error
         *ngIf="$any(note).errors?.maxLength && (note.dirty || note.touched)"
         >note too long</mat-error
@@ -94,7 +98,8 @@
           </button>
           <!-- witness: value (thesaurus) -->
           <mat-form-field *ngIf="witEntries?.length">
-            <mat-select formControlName="value" placeholder="value">
+            <mat-label>value</mat-label>
+            <mat-select formControlName="value">
               <mat-option *ngFor="let e of witEntries" [value]="e.id">{{
                 e.value
               }}</mat-option>
@@ -110,7 +115,8 @@
           </mat-form-field>
           <!-- witness: value (free) -->
           <mat-form-field *ngIf="!witEntries?.length">
-            <input matInput formControlName="value" placeholder="value" />
+            <mat-label>value</mat-label>
+            <input matInput formControlName="value" />
             <mat-error
               *ngIf="
                 $any(item)['controls'].value.errors?.required &&
@@ -131,7 +137,8 @@
           &nbsp;
           <!-- witness: note -->
           <mat-form-field>
-            <input matInput formControlName="note" placeholder="note" />
+            <mat-label>note</mat-label>
+            <input matInput formControlName="note" />
             <mat-error
               *ngIf="
                 $any(item)['controls'].note.errors?.maxLength &&
@@ -146,7 +153,7 @@
     </div>
     <button
       type="button"
-      mat-icon-button
+      mat-flat-button
       color="primary"
       (click)="addWitness()"
     >
@@ -203,7 +210,8 @@
           </button>
           <!-- author: value (thesaurus) -->
           <mat-form-field *ngIf="authEntries?.length">
-            <mat-select formControlName="value" placeholder="value">
+            <mat-label>value</mat-label>
+            <mat-select formControlName="value">
               <mat-option *ngFor="let e of authEntries" [value]="e.id">{{
                 e.value
               }}</mat-option>
@@ -219,7 +227,8 @@
           </mat-form-field>
           <!-- author: value (free) -->
           <mat-form-field *ngIf="!authEntries?.length">
-            <input matInput formControlName="value" placeholder="value" />
+            <mat-label>value</mat-label>
+            <input matInput formControlName="value" />
             <mat-error
               *ngIf="
                 $any(item)['controls'].value.errors?.required &&
@@ -240,7 +249,8 @@
           &nbsp;
           <!-- author: location -->
           <mat-form-field style="width: 8em">
-            <input matInput formControlName="location" placeholder="location" />
+            <mat-label>location</mat-label>
+            <input matInput formControlName="location" />
             <mat-error
               *ngIf="
                 $any(item)['controls'].location.errors?.maxLength &&
@@ -253,7 +263,8 @@
           &nbsp;
           <!-- author: tag (thesaurus) -->
           <mat-form-field *ngIf="authTagEntries?.length" style="width: 10em">
-            <mat-select formControlName="tag" placeholder="tag">
+            <mat-label>tag</mat-label>
+            <mat-select formControlName="tag">
               <mat-option *ngFor="let e of authTagEntries" [value]="e.id">{{
                 e.value
               }}</mat-option>
@@ -261,7 +272,8 @@
           </mat-form-field>
           <!-- author: tag (free) -->
           <mat-form-field *ngIf="!authTagEntries?.length" style="width: 8em">
-            <input matInput formControlName="tag" placeholder="tag" />
+            <mat-label>tag</mat-label>
+            <input matInput formControlName="tag" />
             <mat-error
               *ngIf="
                 $any(item)['controls'].tag.errors?.maxLength &&
@@ -274,7 +286,8 @@
           &nbsp;
           <!-- author: note -->
           <mat-form-field>
-            <input matInput formControlName="note" placeholder="note" />
+            <mat-label>note</mat-label>
+            <input matInput formControlName="note" />
             <mat-error
               *ngIf="
                 $any(item)['controls'].note.errors?.maxLength &&
@@ -287,7 +300,7 @@
         </div>
       </div>
     </div>
-    <button type="button" mat-icon-button color="primary" (click)="addAuthor()">
+    <button type="button" mat-flat-button color="primary" (click)="addAuthor()">
       <mat-icon>add_circle</mat-icon> add author
     </button>
     <div *ngIf="workEntries?.length">

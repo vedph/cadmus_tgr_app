@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormBuilder,
+  Validators,
+  FormGroup,
+  UntypedFormGroup,
+} from '@angular/forms';
 
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   MsOrnament,
   MsOrnamentsPart,
@@ -11,7 +17,6 @@ import {
 import { take } from 'rxjs/operators';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { DialogService } from '@myrmidon/ng-mat-tools';
-import { deepCopy } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
@@ -46,78 +51,74 @@ export class MsOrnamentsPartComponent
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {
-    super(authService);
+    super(authService, formBuilder);
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
     this.ornaments = formBuilder.control([], Validators.required);
-    this.form = formBuilder.group({
+  }
+
+  public override ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       entries: this.ornaments,
     });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
-  }
-
-  private updateForm(model: MsOrnamentsPart): void {
-    if (!model) {
-      this.form?.reset();
-      return;
-    }
-    this.ornaments.setValue(model.ornaments || []);
-    this.form?.markAsPristine();
-  }
-
-  protected onModelSet(model: MsOrnamentsPart): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     let key = 'ms-ornament-types';
-    if (this.thesauri && this.thesauri[key]) {
-      this.ornTypeEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.ornTypeEntries = thesauri[key].entries;
     } else {
       this.ornTypeEntries = undefined;
     }
 
     key = 'physical-size-units';
-    if (this.thesauri && this.thesauri[key]) {
-      this.szUnitEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.szUnitEntries = thesauri[key].entries;
     } else {
       this.szUnitEntries = undefined;
     }
 
     key = 'physical-size-tags';
-    if (this.thesauri && this.thesauri[key]) {
-      this.szTagEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.szTagEntries = thesauri[key].entries;
     } else {
       this.szTagEntries = undefined;
     }
 
     key = 'physical-dim-tags';
-    if (this.thesauri && this.thesauri[key]) {
-      this.szDimTagEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.szDimTagEntries = thesauri[key].entries;
     } else {
       this.szDimTagEntries = undefined;
     }
   }
 
-  protected getModelFromForm(): MsOrnamentsPart {
-    let part = this.model;
+  private updateForm(part?: MsOrnamentsPart): void {
     if (!part) {
-      part = {
-        itemId: this.itemId || '',
-        id: '',
-        typeId: MSORNAMENTS_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: '',
-        timeModified: new Date(),
-        userId: '',
-        ornaments: [],
-      };
+      this.form.reset();
+      return;
     }
+    this.ornaments.setValue(part.ornaments || []);
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(data?: EditedObject<MsOrnamentsPart>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): MsOrnamentsPart {
+    let part = this.getEditedPart(MSORNAMENTS_PART_TYPEID) as MsOrnamentsPart;
     part.ornaments = this.ornaments.value || [];
     return part;
   }

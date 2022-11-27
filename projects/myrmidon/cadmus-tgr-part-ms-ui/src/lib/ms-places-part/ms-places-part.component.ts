@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormBuilder,
+  Validators,
+  FormGroup,
+  UntypedFormGroup,
+} from '@angular/forms';
 
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsPlace, MsPlacesPart, MSPLACES_PART_TYPEID } from '../ms-places-part';
 import { take } from 'rxjs/operators';
 import { DialogService } from '@myrmidon/ng-mat-tools';
-import { deepCopy } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
@@ -37,63 +42,59 @@ export class MsPlacesPartComponent
     formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
-    super(authService);
+    super(authService, formBuilder);
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
     this.places = formBuilder.control([], Validators.required);
-    this.form = formBuilder.group({
+  }
+
+  public override ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       entries: this.places,
     });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
-  }
-
-  private updateForm(model: MsPlacesPart): void {
-    if (!model) {
-      this.form?.reset();
-      return;
-    }
-    this.places.setValue(model.places || []);
-    this.form?.markAsPristine();
-  }
-
-  protected onModelSet(model: MsPlacesPart): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     let key = 'ms-place-areas';
-    if (this.thesauri && this.thesauri[key]) {
-      this.areaEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.areaEntries = thesauri[key].entries;
     } else {
       this.areaEntries = undefined;
     }
     key = 'doc-reference-tags';
-    if (this.thesauri && this.thesauri[key]) {
-      this.tagEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.tagEntries = thesauri[key].entries;
     } else {
       this.tagEntries = undefined;
     }
   }
 
-  protected getModelFromForm(): MsPlacesPart {
-    let part = this.model;
+  private updateForm(part?: MsPlacesPart): void {
     if (!part) {
-      part = {
-        itemId: this.itemId || '',
-        id: '',
-        typeId: MSPLACES_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: '',
-        timeModified: new Date(),
-        userId: '',
-        places: [],
-      };
+      this.form.reset();
+      return;
     }
+    this.places.setValue(part.places || []);
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(data?: EditedObject<MsPlacesPart>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): MsPlacesPart {
+    let part = this.getEditedPart(MSPLACES_PART_TYPEID) as MsPlacesPart;
     part.places = this.places.value || [];
     return part;
   }

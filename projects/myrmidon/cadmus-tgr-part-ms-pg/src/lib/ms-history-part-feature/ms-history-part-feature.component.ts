@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  EditItemQuery,
-  EditItemService,
-  EditPartFeatureBase,
-} from '@myrmidon/cadmus-state';
-
-import { EditMsHistoryPartService } from './edit-ms-history-part.service';
-import { EditMsHistoryPartQuery } from './edit-ms-history-part.query';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
+import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'tgr-ms-history-part-feature',
@@ -17,28 +11,27 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class MsHistoryPartFeatureComponent
   extends EditPartFeatureBase
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editPartQuery: EditMsHistoryPartQuery,
-    editPartService: EditMsHistoryPartService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService
+    itemService: ItemService,
+    thesaurusService: ThesaurusService,
+    editorService: PartEditorService
   ) {
     super(
       router,
       route,
       snackbar,
-      editPartQuery,
-      editPartService,
-      editItemQuery,
-      editItemService
+      itemService,
+      thesaurusService,
+      editorService
     );
   }
 
-  public ngOnInit(): void {
-    this.initEditor(['ms-languages']);
+  protected override getReqThesauriIds(): string[] {
+    return ['ms-languages'];
   }
 }

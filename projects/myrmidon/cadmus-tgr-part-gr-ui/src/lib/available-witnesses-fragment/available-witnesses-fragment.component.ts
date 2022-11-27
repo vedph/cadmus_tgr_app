@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { BucketStoreService } from '@myrmidon/cadmus-tgr-core';
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { deepCopy } from '@myrmidon/ng-tools';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
 
 import { AvailableWitnessesFragment } from '../available-witnesses-fragment';
 import { AvailableWitness } from '../available-witnesses-part';
@@ -38,58 +44,68 @@ export class AvailableWitnessesFragmentComponent
     private _formBuilder: FormBuilder,
     private _store: BucketStoreService
   ) {
-    super(authService);
+    super(authService, _formBuilder);
     this.bucketAvailable = false;
     // form
     this.witnesses = _formBuilder.array(
       [],
-      CadmusValidators.strictMinLengthValidator(1)
+      NgToolsValidators.strictMinLengthValidator(1)
     );
-    this.form = _formBuilder.group({
-      witnesses: this.witnesses,
-    });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
+  public override ngOnInit(): void {
+    super.ngOnInit();
     this._store.changes$.subscribe((_) => {
       this.bucketAvailable = this._store.has(BUCKET_AVAIL_WITNESSES_KEY);
     });
   }
 
-  private updateForm(model: AvailableWitnessesFragment): void {
-    if (!model) {
-      this.form?.reset();
-      return;
-    }
-    this.witnesses.clear();
-    if (model.witnesses?.length) {
-      for (let w of model.witnesses) {
-        this.witnesses.controls.push(this.getWitnessGroup(w));
-      }
-    }
-    this.bucketAvailable = this._store.has(BUCKET_AVAIL_WITNESSES_KEY);
-    this.form?.markAsPristine();
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
+      witnesses: this.witnesses,
+    });
   }
 
-  protected onModelSet(model: AvailableWitnessesFragment): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     const key = 'apparatus-witnesses';
-    if (this.thesauri && this.thesauri[key]) {
-      this.witEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.witEntries = thesauri[key].entries;
     } else {
       this.witEntries = undefined;
     }
   }
 
-  protected getModelFromForm(): AvailableWitnessesFragment {
-    return {
-      location: this.model?.location ?? '',
-      witnesses: this.getWitnesses(),
-    };
+  private updateForm(fr?: AvailableWitnessesFragment): void {
+    if (!fr) {
+      this.form.reset();
+      return;
+    }
+    this.witnesses.clear();
+    if (fr.witnesses?.length) {
+      for (let w of fr.witnesses) {
+        this.witnesses.controls.push(this.getWitnessGroup(w));
+      }
+    }
+    this.bucketAvailable = this._store.has(BUCKET_AVAIL_WITNESSES_KEY);
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(
+    data?: EditedObject<AvailableWitnessesFragment>
+  ): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): AvailableWitnessesFragment {
+    const fr = this.getEditedFragment() as AvailableWitnessesFragment;
+    fr.witnesses = this.getWitnesses();
+    return fr;
   }
 
   private getWitnessGroup(witness?: AvailableWitness): FormGroup {

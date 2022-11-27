@@ -1,14 +1,14 @@
 <form [formGroup]="form" (submit)="save()">
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar>
         <mat-icon>textsms</mat-icon>
       </div>
       <mat-card-title
-        >Linguistic Tags Fragment {{ model?.location }}</mat-card-title
+        >Linguistic Tags Fragment {{ data?.value?.location }}</mat-card-title
       >
       <mat-card-subtitle>
-        {{ model?.baseText }}
+        {{ data?.baseText }}
       </mat-card-subtitle>
     </mat-card-header>
 

@@ -62,6 +62,10 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2022-11-27:
+  - upgraded to Angular 15.
+  - replaced Akita with ELF.
+
 ### 1.1.12
 
 - 2022-11-11:

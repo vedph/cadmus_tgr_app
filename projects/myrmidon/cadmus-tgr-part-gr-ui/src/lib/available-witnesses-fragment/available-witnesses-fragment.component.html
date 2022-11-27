@@ -1,5 +1,5 @@
-<form [formGroup]="form!" (submit)="save()">
-  <mat-card>
+<form [formGroup]="form" (submit)="save()">
+  <mat-card appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar>
         <mat-icon>picture_in_picture</mat-icon>
@@ -14,7 +14,7 @@
           type="button"
           color="primary"
           matTooltip="Copy witnesses"
-         (click)="copyWitnesses()"
+          (click)="copyWitnesses()"
         >
           <mat-icon>content_copy</mat-icon>
         </button>
@@ -93,7 +93,8 @@
             <!-- child controls -->
             <!-- id (bound) -->
             <mat-form-field *ngIf="witEntries?.length">
-              <mat-select formControlName="id" placeholder="ID">
+              <mat-label>ID</mat-label>
+              <mat-select formControlName="id">
                 <mat-option *ngFor="let e of witEntries" [value]="e.id">{{
                   e.value
                 }}</mat-option>
@@ -110,7 +111,8 @@
 
             <!-- id (free) -->
             <mat-form-field *ngIf="!witEntries?.length">
-              <input matInput formControlName="id" placeholder="id" />
+              <mat-label>ID</mat-label>
+              <input matInput formControlName="id" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].id.errors?.required &&
@@ -134,7 +136,8 @@
             <!-- note -->
             <div style="flex: 1 0 auto">
               <mat-form-field class="long-text">
-                <input matInput formControlName="note" placeholder="note" />
+                <mat-label>note</mat-label>
+                <input matInput formControlName="note" />
                 <mat-error
                   *ngIf="
                     $any(item)['controls'].note.errors?.maxLength &&

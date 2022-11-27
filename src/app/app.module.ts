@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -38,31 +38,31 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-// akita
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+// ELF
+import { devTools } from '@ngneat/elf-devtools';
+import { Actions } from '@ngneat/effects-ng';
+
 // ngx-monaco
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 // ngx-markdown
 import { MarkdownModule } from 'ngx-markdown';
 
 // myrmidon
-import {
-  EnvServiceProvider,
-  languageFactory,
-  NgToolsModule,
-  WindowRefService,
-} from '@myrmidon/ng-tools';
+import { EnvServiceProvider, NgToolsModule } from '@myrmidon/ng-tools';
 import { NgMatToolsModule } from '@myrmidon/ng-mat-tools';
 import {
   AuthJwtInterceptor,
   AuthJwtLoginModule,
 } from '@myrmidon/auth-jwt-login';
 import { AuthJwtAdminModule } from '@myrmidon/auth-jwt-admin';
+import { NgxDirtyCheckModule } from '@myrmidon/ngx-dirty-check';
 
 // cadmus bricks
+import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size';
 import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
 import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
 import { CadmusRefsExternalIdsModule } from '@myrmidon/cadmus-refs-external-ids';
+import { CadmusRefsLookupModule } from '@myrmidon/cadmus-refs-lookup';
 
 // cadmus libs
 import { CadmusApiModule } from '@myrmidon/cadmus-api';
@@ -86,7 +86,16 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { PART_EDITOR_KEYS } from './part-editor-keys';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
-import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size';
+
+// https://ngneat.github.io/elf/docs/dev-tools/
+export function initElfDevTools(actions: Actions) {
+  return () => {
+    devTools({
+      name: 'Cadmus TGR',
+      actionsDispatcher: actions,
+    });
+  };
+}
 
 @NgModule({
   declarations: [
@@ -137,8 +146,6 @@ import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size'
     MatToolbarModule,
     MatTreeModule,
     FlexLayoutModule,
-    // akita
-    AkitaNgDevtools.forRoot(),
     // monaco
     MonacoEditorModule.forRoot(),
     // markdown
@@ -148,10 +155,12 @@ import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size'
     NgMatToolsModule,
     AuthJwtLoginModule,
     AuthJwtAdminModule,
+    NgxDirtyCheckModule,
     // cadmus bricks
     CadmusRefsDocReferencesModule,
     CadmusRefsHistoricalDateModule,
     CadmusRefsExternalIdsModule,
+    CadmusRefsLookupModule,
     CadmusMatPhysicalSizeModule,
     // cadmus
     CadmusApiModule,
@@ -162,7 +171,7 @@ import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size'
     CadmusUiPgModule,
     CadmusTextBlockViewModule,
     CadmusPreviewUiModule,
-    CadmusPreviewPgModule
+    CadmusPreviewPgModule,
   ],
   providers: [
     EnvServiceProvider,
@@ -191,11 +200,13 @@ import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size'
       useClass: AuthJwtInterceptor,
       multi: true,
     },
-    // {
-    //   provide: LOCALE_ID,
-    //   deps: [WindowRefService],
-    //   useFactory: languageFactory,
-    // },
+    // ELF dev tools
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: initElfDevTools,
+      deps: [Actions],
+    },
   ],
   bootstrap: [AppComponent],
 })

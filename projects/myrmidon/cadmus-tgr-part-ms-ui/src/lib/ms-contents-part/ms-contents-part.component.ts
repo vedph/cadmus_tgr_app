@@ -2,14 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormBuilder,
+  FormGroup,
+  UntypedFormGroup,
 } from '@angular/forms';
-import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { DialogService } from '@myrmidon/ng-mat-tools';
-import { deepCopy } from '@myrmidon/ng-tools';
 import { take } from 'rxjs/operators';
+
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
+
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+
 import {
   MsContent,
   MsContentsPart,
@@ -48,74 +53,70 @@ export class MsContentsPartComponent
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {
-    super(authService);
+    super(authService, formBuilder);
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
     this.contents = formBuilder.control([], {
-      validators: CadmusValidators.strictMinLengthValidator(1),
+      validators: NgToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
-    this.form = formBuilder.group({
+  }
+
+  public override ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       contents: this.contents,
     });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
-  }
-
-  private updateForm(model: MsContentsPart): void {
-    if (!model) {
-      this.form?.reset();
-      return;
-    }
-    this.contents.setValue(model.contents || []);
-    this.form?.markAsPristine();
-  }
-
-  protected onModelSet(model: MsContentsPart): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     let key = 'author-works';
-    if (this.thesauri && this.thesauri[key]) {
-      this.workEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.workEntries = thesauri[key].entries;
     } else {
       this.workEntries = undefined;
     }
 
     key = 'doc-reference-tags';
-    if (this.thesauri && this.thesauri[key]) {
-      this.docTagEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.docTagEntries = thesauri[key].entries;
     } else {
       this.docTagEntries = undefined;
     }
 
     key = 'doc-reference-types';
-    if (this.thesauri && this.thesauri[key]) {
-      this.docTypeEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.docTypeEntries = thesauri[key].entries;
     } else {
       this.docTypeEntries = undefined;
     }
   }
 
-  protected getModelFromForm(): MsContentsPart {
-    let part = this.model;
+  private updateForm(part?: MsContentsPart): void {
     if (!part) {
-      part = {
-        itemId: this.itemId || '',
-        id: '',
-        typeId: MSCONTENTS_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: '',
-        timeModified: new Date(),
-        userId: '',
-        contents: [],
-      };
+      this.form.reset();
+      return;
     }
+    this.contents.setValue(part.contents || []);
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(data?: EditedObject<MsContentsPart>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): MsContentsPart {
+    let part = this.getEditedPart(MSCONTENTS_PART_TYPEID) as MsContentsPart;
     part.contents = this.contents.value || [];
     return part;
   }

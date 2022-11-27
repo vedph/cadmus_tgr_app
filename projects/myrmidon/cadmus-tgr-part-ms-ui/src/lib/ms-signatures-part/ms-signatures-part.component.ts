@@ -6,17 +6,25 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+
 import {
   MsSignature,
   MsSignaturesPart,
   MSSIGNATURES_PART_TYPEID,
 } from '../ms-signatures-part';
-import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { deepCopy } from '@myrmidon/ng-tools';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
@@ -35,29 +43,27 @@ export class MsSignaturesPartComponent
   private _citySubscription?: Subscription;
 
   public tagEntries: ThesaurusEntry[] | undefined;
-
-  public form: FormGroup;
   public signatures: FormArray;
 
   @ViewChildren('city') cityQueryList?: QueryList<any>;
 
-  constructor(
-    authService: AuthJwtService,
-    private _formBuilder: FormBuilder
-  ) {
-    super(authService);
+  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
+    super(authService, _formBuilder);
     // form
     this.signatures = _formBuilder.array(
       [],
-      CadmusValidators.strictMinLengthValidator(1)
+      NgToolsValidators.strictMinLengthValidator(1)
     );
-    this.form = _formBuilder.group({
-      signatures: this.signatures,
-    });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
+  public override ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
+      signatures: this.signatures,
+    });
   }
 
   public ngAfterViewInit(): void {
@@ -76,47 +82,40 @@ export class MsSignaturesPartComponent
     this._citySubscription?.unsubscribe();
   }
 
-  private updateForm(model: MsSignaturesPart): void {
-    if (!model) {
-      this.form.reset();
-      return;
-    }
-    this.signatures.clear();
-    for (const signature of model.signatures || []) {
-      this.addSignature(signature);
-    }
-    this.form.markAsPristine();
-  }
-
-  protected onModelSet(model: MsSignaturesPart): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     // ms-signature-tags
     const key = 'ms-signature-tags';
-    if (this.thesauri && this.thesauri[key]) {
-      this.tagEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.tagEntries = thesauri[key].entries;
     } else {
       this.tagEntries = undefined;
     }
   }
 
-  protected getModelFromForm(): MsSignaturesPart {
-    let part = deepCopy(this.model);
+  private updateForm(part?: MsSignaturesPart): void {
     if (!part) {
-      part = {
-        itemId: this.itemId,
-        id: null,
-        typeId: MSSIGNATURES_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: null,
-        timeModified: new Date(),
-        userId: null,
-        signatures: [],
-      };
+      this.form.reset();
+      return;
     }
+    this.signatures.clear();
+    for (const signature of part.signatures || []) {
+      this.addSignature(signature);
+    }
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(data?: EditedObject<MsSignaturesPart>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): MsSignaturesPart {
+    let part = this.getEditedPart(MSSIGNATURES_PART_TYPEID) as MsSignaturesPart;
     part.signatures = [];
     for (let i = 0; i < this.signatures.length; i++) {
       const g = this.signatures.controls[i] as FormGroup;

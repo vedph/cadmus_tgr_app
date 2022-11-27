@@ -1,13 +1,13 @@
-<form [formGroup]="form!" (submit)="save()">
-  <mat-card>
+<form [formGroup]="form" (submit)="save()">
+  <mat-card appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar>
         <mat-icon>textsms</mat-icon>
       </div>
       <mat-card-title
-        >Quotations with Variants Fragment {{ model?.location }}</mat-card-title
+        >Quotations with Variants Fragment {{ data?.value?.location }}</mat-card-title
       >
-      <mat-card-subtitle> {{ model?.baseText }} </mat-card-subtitle>
+      <mat-card-subtitle> {{ data?.baseText }} </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -16,7 +16,7 @@
           <div>
             <button
               type="button"
-              mat-icon-button
+              mat-flat-button
               color="primary"
               (click)="addEntry()"
             >

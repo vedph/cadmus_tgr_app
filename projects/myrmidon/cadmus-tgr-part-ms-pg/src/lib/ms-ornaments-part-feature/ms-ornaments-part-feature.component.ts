@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  EditItemQuery,
-  EditItemService,
-  EditPartFeatureBase,
-} from '@myrmidon/cadmus-state';
-
-import { EditMsOrnamentsPartService } from './edit-ms-ornaments-part.service';
-import { EditMsOrnamentsPartQuery } from './edit-ms-ornaments-part.query';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
+import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'tgr-ms-ornaments-part-feature',
@@ -17,33 +11,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class MsOrnamentsPartFeatureComponent
   extends EditPartFeatureBase
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editPartQuery: EditMsOrnamentsPartQuery,
-    editPartService: EditMsOrnamentsPartService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService
+    itemService: ItemService,
+    thesaurusService: ThesaurusService,
+    editorService: PartEditorService
   ) {
     super(
       router,
       route,
       snackbar,
-      editPartQuery,
-      editPartService,
-      editItemQuery,
-      editItemService
+      itemService,
+      thesaurusService,
+      editorService
     );
   }
 
-  public ngOnInit(): void {
-    this.initEditor([
+  protected override getReqThesauriIds(): string[] {
+    return [
       'ms-ornament-types',
       'physical-size-units',
       'physical-size-tags',
       'physical-dim-tags',
-    ]);
+    ];
   }
 }
