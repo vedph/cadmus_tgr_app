@@ -62,6 +62,8 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2022-11-30: updated packages.
+
 ### 2.0.0
 
 - 2022-11-27:

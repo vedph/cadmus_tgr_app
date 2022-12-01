@@ -15,7 +15,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
@@ -88,7 +87,6 @@ import { MsSignaturesPartComponent } from './ms-signatures-part/ms-signatures-pa
     MatTabsModule,
     MatTooltipModule,
     MatTreeModule,
-    FlexLayoutModule,
     // Cadmus
     NgToolsModule,
     CadmusCoreModule,

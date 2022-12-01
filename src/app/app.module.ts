@@ -36,7 +36,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 // ELF
 import { devTools } from '@ngneat/elf-devtools';
@@ -145,7 +144,6 @@ export function initElfDevTools(actions: Actions) {
     MatTooltipModule,
     MatToolbarModule,
     MatTreeModule,
-    FlexLayoutModule,
     // monaco
     MonacoEditorModule.forRoot(),
     // markdown

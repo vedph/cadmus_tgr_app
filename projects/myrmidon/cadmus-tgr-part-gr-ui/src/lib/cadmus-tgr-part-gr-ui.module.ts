@@ -15,7 +15,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
@@ -65,7 +64,6 @@ import { AvailableWitnessesFragmentComponent } from './available-witnesses-fragm
     MatSlideToggleModule,
     MatTabsModule,
     MatTooltipModule,
-    FlexLayoutModule,
     // Cadmus
     NgToolsModule,
     AuthJwtLoginModule,
