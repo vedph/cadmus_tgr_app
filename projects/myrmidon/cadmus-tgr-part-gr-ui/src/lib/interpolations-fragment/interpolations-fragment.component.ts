@@ -165,7 +165,7 @@ export class InterpolationsFragmentComponent
     }
   }
 
-  private updateForm(fr?: InterpolationsFragment): void {
+  private updateForm(fr?: InterpolationsFragment | null): void {
     if (!fr) {
       this.form.reset();
       return;

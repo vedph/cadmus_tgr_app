@@ -89,7 +89,7 @@ export class MsScriptsPartComponent
     }
   }
 
-  private updateForm(part?: MsScriptsPart): void {
+  private updateForm(part?: MsScriptsPart | null): void {
     if (!part) {
       this.form.reset();
       return;

@@ -92,7 +92,7 @@ export class MsSignaturesPartComponent
     }
   }
 
-  private updateForm(part?: MsSignaturesPart): void {
+  private updateForm(part?: MsSignaturesPart | null): void {
     if (!part) {
       this.form.reset();
       return;

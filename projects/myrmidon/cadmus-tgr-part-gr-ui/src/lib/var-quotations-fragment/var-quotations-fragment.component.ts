@@ -133,7 +133,7 @@ export class VarQuotationsFragmentComponent
     }
   }
 
-  private updateForm(fr?: VarQuotationsFragment): void {
+  private updateForm(fr?: VarQuotationsFragment | null): void {
     if (!fr) {
       this.form.reset();
       return;

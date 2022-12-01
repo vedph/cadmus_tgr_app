@@ -98,7 +98,7 @@ export class MsOrnamentsPartComponent
     }
   }
 
-  private updateForm(part?: MsOrnamentsPart): void {
+  private updateForm(part?: MsOrnamentsPart | null): void {
     if (!part) {
       this.form.reset();
       return;

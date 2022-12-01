@@ -77,7 +77,7 @@ export class LingTagsFragmentComponent
     }
   }
 
-  private updateForm(fr?: LingTagsFragment): void {
+  private updateForm(fr?: LingTagsFragment | null): void {
     if (!fr) {
       this.form.reset();
       return;

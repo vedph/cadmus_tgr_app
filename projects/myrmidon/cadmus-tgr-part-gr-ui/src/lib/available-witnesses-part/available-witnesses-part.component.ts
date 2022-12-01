@@ -65,7 +65,7 @@ export class AvailableWitnessesPartComponent
     }
   }
 
-  private updateForm(part?: AvailableWitnessesPart): void {
+  private updateForm(part?: AvailableWitnessesPart | null): void {
     if (!part) {
       this.form.reset();
       return;

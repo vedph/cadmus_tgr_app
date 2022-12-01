@@ -96,7 +96,7 @@ export class MsContentsPartComponent
     }
   }
 
-  private updateForm(part?: MsContentsPart): void {
+  private updateForm(part?: MsContentsPart | null): void {
     if (!part) {
       this.form.reset();
       return;

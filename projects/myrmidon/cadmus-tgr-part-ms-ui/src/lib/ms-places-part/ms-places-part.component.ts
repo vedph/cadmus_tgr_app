@@ -74,7 +74,7 @@ export class MsPlacesPartComponent
     }
   }
 
-  private updateForm(part?: MsPlacesPart): void {
+  private updateForm(part?: MsPlacesPart | null): void {
     if (!part) {
       this.form.reset();
       return;

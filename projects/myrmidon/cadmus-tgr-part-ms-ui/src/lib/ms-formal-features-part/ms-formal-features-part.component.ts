@@ -61,7 +61,7 @@ export class MsFormalFeaturesPartComponent
     });
   }
 
-  private updateForm(part?: MsFormalFeaturesPart): void {
+  private updateForm(part?: MsFormalFeaturesPart | null): void {
     if (!part) {
       this.form.reset();
       return;

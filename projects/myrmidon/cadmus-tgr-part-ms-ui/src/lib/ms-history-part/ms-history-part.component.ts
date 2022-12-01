@@ -124,7 +124,7 @@ export class MsHistoryPartComponent
     }
   }
 
-  private updateForm(part?: MsHistoryPart): void {
+  private updateForm(part?: MsHistoryPart | null): void {
     if (!part) {
       this.form.reset();
       return;

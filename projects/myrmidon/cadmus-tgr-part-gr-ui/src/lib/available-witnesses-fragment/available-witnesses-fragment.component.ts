@@ -75,7 +75,7 @@ export class AvailableWitnessesFragmentComponent
     }
   }
 
-  private updateForm(fr?: AvailableWitnessesFragment): void {
+  private updateForm(fr?: AvailableWitnessesFragment | null): void {
     if (!fr) {
       this.form.reset();
       return;

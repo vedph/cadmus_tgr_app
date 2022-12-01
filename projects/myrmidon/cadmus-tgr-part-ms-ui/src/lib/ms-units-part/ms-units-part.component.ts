@@ -132,7 +132,7 @@ export class MsUnitsPartComponent
     }
   }
 
-  private updateForm(part?: MsUnitsPart): void {
+  private updateForm(part?: MsUnitsPart | null): void {
     if (!part) {
       this.form.reset();
       return;
