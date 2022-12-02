@@ -5,6 +5,7 @@
     /></span>
     <a mat-button routerLink="/home">Cadmus PAGES/TAL/ThDS</a>
 
+    <!-- items menu -->
     <button
       mat-button
       [matMenuTriggerFor]="itemMenu"
@@ -25,20 +26,23 @@
       <a mat-button routerLink="/items">Items</a>
     </ng-container>
 
-    <a mat-button routerLink="/search" *ngIf="logged">Search</a>
-
-    <a
+    <!-- search menu -->
+    <button mat-button routerLink="/search" *ngIf="logged">Search</button>
+    <!-- thesauri menu -->
+    <button
       mat-button
       routerLink="/thesauri"
       *ngIf="
         user && (user.roles.includes('admin') || user.roles.includes('editor'))
       "
-      >Thesauri</a
     >
+      Thesauri
+    </button>
 
     <span class="tb-fill-remaining-space"></span>
 
     <div *ngIf="user" fxLayout="row" fxLayoutAlign="start center">
+      <!-- indicators -->
       <img [src]="getGravatarUrl(user.email, 32)" [alt]="user.userName" />
       <mat-icon
         class="small-icon"
@@ -69,12 +73,14 @@
       </mat-menu>
     </div>
 
-    <div *ngIf="!logged">
-      <a mat-button routerLink="/login">Login</a>
-    </div>
-    <div *ngIf="logged">
-      <a mat-button (click)="logout()">Logout</a>
-    </div>
+    <!-- login -->
+    <button *ngIf="!logged" mat-icon-button routerLink="/login">
+      <mat-icon>login</mat-icon>
+    </button>
+    <!-- logout -->
+    <button *ngIf="logged" mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
   </mat-toolbar>
 </header>
 
@@ -94,7 +100,8 @@
       <a href="https://www.unipi.it/" target="_blank">Università di Pisa</a>
       - Cadmus by
       <a href="https://www.fusisoft.net" target="_blank">Daniele Fusi</a> at
-      <a href="https://www.unive.it/pag/39287" target="_blank">VeDPH</a> - version {{version}}
+      <a href="https://www.unive.it/pag/39287" target="_blank">VeDPH</a> -
+      version {{ version }}
     </p>
   </div>
 </footer>
