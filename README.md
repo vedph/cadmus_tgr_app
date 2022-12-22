@@ -59,7 +59,7 @@ Swagger at <http://151.100.184.12:59590/swagger/index.html>.
 
 (note the API port number; the standard port 80/443 is reserved for this frontend).
 
-(3) `docker build . -t vedph2020/cadmus-tgr-app:2.0.5-prod` and then push the image.
+(3) `docker build . -t vedph2020/cadmus-tgr-app:2.0.6-prod` and then push the image.
 
 CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the `AllowedOrigins` of the API layer, e.g.:
 
