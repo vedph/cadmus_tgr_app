@@ -68,6 +68,8 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2022-12-22: updated Cadmus packages.
+
 ### 2.0.5
 
 - 2022-12-16: updated Cadmus packages.
