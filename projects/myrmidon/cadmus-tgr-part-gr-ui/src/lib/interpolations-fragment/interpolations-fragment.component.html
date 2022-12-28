@@ -21,7 +21,7 @@
               color="primary"
               (click)="addInterpolation()"
             >
-              <mat-icon>add_circle</mat-icon> add interpolation
+              <mat-icon>add_circle</mat-icon> interpolation
             </button>
           </div>
           <table *ngIf="interpolations?.value?.length">
@@ -49,7 +49,7 @@
                     mat-icon-button
                     color="primary"
                     matTooltip="Edit this interpolation"
-                    (click)="editInterpolation(i)"
+                    (click)="editInterpolation(entry, i)"
                   >
                     <mat-icon>edit</mat-icon>
                   </button>
@@ -104,8 +104,8 @@
             [quotTagEntries]="quotTagEntries"
             [witEntries]="witEntries"
             [workEntries]="workEntries"
-            (modelChange)="onInterpolationSave($event)"
-            (editorClose)="onInterpolationClose()"
+            (modelChange)="saveInterpolation($event)"
+            (editorClose)="closeInterpolation()"
           >
           </tgr-interpolation>
         </mat-tab>

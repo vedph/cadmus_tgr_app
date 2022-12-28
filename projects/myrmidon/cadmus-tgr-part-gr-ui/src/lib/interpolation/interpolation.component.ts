@@ -6,9 +6,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { take } from 'rxjs/operators';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { DialogService } from '@myrmidon/ng-mat-tools';
-import { take } from 'rxjs/operators';
+
 import { Interpolation, ReadingSource } from '../interpolations-fragment';
 import { VarQuotation } from '../var-quotations-fragment';
 
@@ -198,11 +200,13 @@ export class InterpolationComponent implements OnInit {
 
   public addLanguage(language?: string): void {
     this.languages.push(this.getLanguageGroup(language));
+    this.languages.updateValueAndValidity();
     this.languages.markAsDirty();
   }
 
   public removeLanguage(index: number): void {
     this.languages.removeAt(index);
+    this.languages.updateValueAndValidity();
     this.languages.markAsDirty();
   }
 
@@ -213,6 +217,7 @@ export class InterpolationComponent implements OnInit {
     const language = this.languages.controls[index];
     this.languages.removeAt(index);
     this.languages.insert(index - 1, language);
+    this.languages.updateValueAndValidity();
     this.languages.markAsDirty();
   }
 
@@ -223,6 +228,7 @@ export class InterpolationComponent implements OnInit {
     const language = this.languages.controls[index];
     this.languages.removeAt(index);
     this.languages.insert(index + 1, language);
+    this.languages.updateValueAndValidity();
     this.languages.markAsDirty();
   }
 
@@ -249,11 +255,13 @@ export class InterpolationComponent implements OnInit {
 
   public addSource(item?: ReadingSource): void {
     this.sources.push(this.getSourceGroup(item));
+    this.sources.updateValueAndValidity();
     this.sources.markAsDirty();
   }
 
   public removeSource(index: number): void {
     this.sources.removeAt(index);
+    this.sources.updateValueAndValidity();
     this.sources.markAsDirty();
   }
 
@@ -264,6 +272,7 @@ export class InterpolationComponent implements OnInit {
     const source = this.sources.controls[index];
     this.sources.removeAt(index);
     this.sources.insert(index - 1, source);
+    this.sources.updateValueAndValidity();
     this.sources.markAsDirty();
   }
 
@@ -274,6 +283,7 @@ export class InterpolationComponent implements OnInit {
     const source = this.sources.controls[index];
     this.sources.removeAt(index);
     this.sources.insert(index + 1, source);
+    this.sources.updateValueAndValidity();
     this.sources.markAsDirty();
   }
 
@@ -292,40 +302,40 @@ export class InterpolationComponent implements OnInit {
 
   //#region Quotations
   public addQuotation(): void {
-    const quotation: VarQuotation = {
-      authority: 'gram',
-      work: '',
-      location: '',
-    };
-    this.quotations.setValue([...this.quotations.value, quotation]);
-    this.editQuotation(this.quotations.value.length - 1);
-  }
-
-  public editQuotation(index: number): void {
-    if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
-      this.editedQuotation = undefined;
-    } else {
-      this._editedIndex = index;
-      this.editedQuotation = this.quotations.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
-    }
-  }
-
-  public onQuotationSave(quotation: VarQuotation): void {
-    this.quotations.setValue(
-      this.quotations.value.map((e: VarQuotation, i: number) =>
-        i === this._editedIndex ? quotation : e
-      )
+    this.editQuotation(
+      {
+        authority: 'gram',
+        work: '',
+        location: '',
+      },
+      -1
     );
-    this.editQuotation(-1);
   }
 
-  public onQuotationClose(): void {
-    this.editQuotation(-1);
+  public editQuotation(quotation: VarQuotation, index: number): void {
+    this.editedQuotation = quotation;
+    this._editedIndex = index;
+    setTimeout(() => {
+      this.tabIndex = 1;
+    }, 0);
+  }
+
+  public saveQuotation(quotation: VarQuotation): void {
+    const quotations = [...this.quotations.value];
+    if (this._editedIndex === -1) {
+      quotations.push(quotation);
+    } else {
+      quotations.splice(this._editedIndex, 1, quotation);
+    }
+    this.quotations.setValue(quotations);
+    this.quotations.updateValueAndValidity();
+    this.quotations.markAsDirty();
+  }
+
+  public closeQuotation(): void {
+    this._editedIndex = -1;
+    this.editedQuotation = undefined;
+    this.tabIndex = 0;
   }
 
   public deleteQuotation(index: number): void {
@@ -337,6 +347,8 @@ export class InterpolationComponent implements OnInit {
           const quotations = [...this.quotations.value];
           quotations.splice(index, 1);
           this.quotations.setValue(quotations);
+          this.quotations.updateValueAndValidity();
+          this.quotations.markAsDirty();
         }
       });
   }
@@ -350,6 +362,8 @@ export class InterpolationComponent implements OnInit {
     quotations.splice(index, 1);
     quotations.splice(index - 1, 0, quotation);
     this.quotations.setValue(quotations);
+    this.quotations.updateValueAndValidity();
+    this.quotations.markAsDirty();
   }
 
   public moveQuotationDown(index: number): void {
@@ -361,6 +375,8 @@ export class InterpolationComponent implements OnInit {
     quotations.splice(index, 1);
     quotations.splice(index + 1, 0, quotation);
     this.quotations.setValue(quotations);
+    this.quotations.updateValueAndValidity();
+    this.quotations.markAsDirty();
   }
 
   public resolveId(id: string | null | undefined, thesaurus: string): string {

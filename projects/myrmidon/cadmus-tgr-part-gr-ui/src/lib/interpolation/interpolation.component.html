@@ -5,7 +5,7 @@
         <!-- type -->
         <mat-form-field>
           <mat-label>type</mat-label>
-          <mat-select>
+          <mat-select [formControl]="type">
             <mat-option [value]="0">replacement</mat-option>
             <mat-option [value]="1">addition before</mat-option>
             <mat-option [value]="2">addition after</mat-option>
@@ -106,12 +106,12 @@
         <div>
           <button
             type="button"
-            mat-icon-button
+            mat-flat-button
             color="primary"
             (click)="addLanguage()"
           >
             <mat-icon>add_circle</mat-icon>
-            add language
+            language
           </button>
         </div>
         <div
@@ -352,7 +352,7 @@
                   mat-icon-button
                   color="primary"
                   matTooltip="Edit this quotation"
-                  (click)="editQuotation(i)"
+                  (click)="editQuotation(entry, i)"
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
@@ -403,8 +403,8 @@
         [witEntries]="witEntries"
         [authEntries]="authEntries"
         [authTagEntries]="authTagEntries"
-        (modelChange)="onQuotationSave($event)"
-        (editorClose)="onQuotationClose()"
+        (modelChange)="saveQuotation($event)"
+        (editorClose)="closeQuotation()"
       >
       </tgr-var-quotation>
     </mat-tab>

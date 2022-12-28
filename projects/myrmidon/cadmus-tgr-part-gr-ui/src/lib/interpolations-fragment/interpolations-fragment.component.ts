@@ -9,7 +9,7 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { DialogService } from '@myrmidon/ng-mat-tools';
-import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 import { take } from 'rxjs/operators';
 import {
   Interpolation,
@@ -193,41 +193,42 @@ export class InterpolationsFragmentComponent
   }
 
   public addInterpolation(): void {
-    const entry: Interpolation = {
-      type: 0,
-      role: '',
-      languages: [],
-      value: '',
-    };
-    this.interpolations.setValue([...this.interpolations.value, entry]);
-    this.editInterpolation(this.interpolations.value.length - 1);
-  }
-
-  public editInterpolation(index: number): void {
-    if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
-      this.editedInterpolation = undefined;
-    } else {
-      this._editedIndex = index;
-      this.editedInterpolation = this.interpolations.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
-    }
-  }
-
-  public onInterpolationSave(entry: Interpolation): void {
-    this.interpolations.setValue(
-      this.interpolations.value.map((e: Interpolation, i: number) =>
-        i === this._editedIndex ? entry : e
-      )
+    this.editInterpolation(
+      {
+        type: 0,
+        role: '',
+        languages: [],
+        value: '',
+      },
+      -1
     );
-    this.editInterpolation(-1);
   }
 
-  public onInterpolationClose(): void {
-    this.editInterpolation(-1);
+  public editInterpolation(interpolation: Interpolation, index: number): void {
+    this._editedIndex = index;
+    this.editedInterpolation = interpolation;
+    setTimeout(() => {
+      this.tabIndex = 1;
+    }, 0);
+  }
+
+  public saveInterpolation(interpolation: Interpolation): void {
+    const interpolations = [...this.interpolations.value];
+    if (this._editedIndex === -1) {
+      interpolations.push(interpolation);
+    } else {
+      interpolations.splice(this._editedIndex, 1, interpolation);
+    }
+    this.interpolations.setValue(interpolations);
+    this.interpolations.updateValueAndValidity();
+    this.interpolations.markAsDirty();
+    this.closeInterpolation();
+  }
+
+  public closeInterpolation(): void {
+    this._editedIndex = -1;
+    this.editedInterpolation = undefined;
+    this.tabIndex = 0;
   }
 
   public deleteInterpolation(index: number): void {
@@ -239,6 +240,8 @@ export class InterpolationsFragmentComponent
           const entries = [...this.interpolations.value];
           entries.splice(index, 1);
           this.interpolations.setValue(entries);
+          this.interpolations.updateValueAndValidity();
+          this.interpolations.markAsDirty();
         }
       });
   }
@@ -252,6 +255,8 @@ export class InterpolationsFragmentComponent
     entries.splice(index, 1);
     entries.splice(index - 1, 0, entry);
     this.interpolations.setValue(entries);
+    this.interpolations.updateValueAndValidity();
+    this.interpolations.markAsDirty();
   }
 
   public moveInterpolationDown(index: number): void {
@@ -263,6 +268,8 @@ export class InterpolationsFragmentComponent
     entries.splice(index, 1);
     entries.splice(index + 1, 0, entry);
     this.interpolations.setValue(entries);
+    this.interpolations.updateValueAndValidity();
+    this.interpolations.markAsDirty();
   }
 
   public getEntryTypeDsc(type: number): string {
