@@ -15,8 +15,20 @@ import { MsGuardSheet, MsWatermark } from '../ms-units-part';
   styleUrls: ['./ms-guard-sheet.component.css'],
 })
 export class MsGuardSheetComponent implements OnInit {
+  private _model: MsGuardSheet | undefined;
+
   @Input()
-  public model: MsGuardSheet | undefined;
+  public get model(): MsGuardSheet | undefined {
+    return this._model;
+  }
+  public set model(value: MsGuardSheet | undefined) {
+    if (this._model === value) {
+      return;
+    }
+    this._model = value;
+    this.updateForm(this._model);
+  }
+
   /**
    * Manuscript materials entries.
    */
@@ -50,7 +62,7 @@ export class MsGuardSheetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateForm(this.model);
+    // this.updateForm(this.model);
   }
 
   private updateForm(model: MsGuardSheet | undefined): void {
@@ -74,7 +86,7 @@ export class MsGuardSheetComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsGuardSheet | null {
+  private getModel(): MsGuardSheet {
     const model: MsGuardSheet = {
       isBack: this.back.value,
       material: this.material.value?.trim(),
@@ -143,10 +155,7 @@ export class MsGuardSheetComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }

@@ -31,6 +31,9 @@ export class InterpolationComponent implements OnInit {
     return this._model;
   }
   public set model(value: Interpolation | undefined) {
+    if (this._model === value) {
+      return;
+    }
     this._model = value;
     this.updateForm(value);
   }
@@ -172,7 +175,7 @@ export class InterpolationComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): Interpolation | null {
+  private getModel(): Interpolation {
     return {
       type: this.type.value,
       role: this.role.value?.trim() || '',
@@ -410,10 +413,7 @@ export class InterpolationComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }

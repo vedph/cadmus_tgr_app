@@ -70,6 +70,10 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-02-21:
+  - updated Angular and packages.
+  - improved sub-model editors bindings.
+
 ### 2.0.7
 
 - 2022-12-28: fixes to interpolations fragment editor (`@myrmex/cadmus-tgr-part-gr-ui`).

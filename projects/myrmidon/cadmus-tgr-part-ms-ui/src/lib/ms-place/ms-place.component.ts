@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
+
 import { MsPlace } from '../ms-places-part';
 
 @Component({
@@ -22,8 +23,11 @@ export class MsPlaceComponent implements OnInit {
     return this._model;
   }
   public set model(value: MsPlace | undefined) {
+    if (this._model === value) {
+      return;
+    }
     this._model = value;
-    this.updateForm(value);
+    this.updateForm(this._model);
   }
 
   @Output()
@@ -77,7 +81,7 @@ export class MsPlaceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateForm(this.model);
+    // this.updateForm(this.model);
   }
 
   private updateForm(model: MsPlace | undefined): void {
@@ -96,7 +100,7 @@ export class MsPlaceComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsPlace | null {
+  private getModel(): MsPlace {
     return {
       area: this.area.value?.trim() || '',
       address: this.address.value?.trim(),
@@ -120,10 +124,7 @@ export class MsPlaceComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }

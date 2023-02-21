@@ -22,9 +22,20 @@ import { MsHand, MsScript } from '../ms-scripts-part';
 export class MsScriptComponent implements OnInit {
   private _editedIndex: number;
   private _langEntries: ThesaurusEntry[] | undefined;
+  private _model: MsScript | undefined;
 
   @Input()
-  public model: MsScript | undefined;
+  public get model(): MsScript | undefined {
+    return this._model;
+  }
+  public set model(value: MsScript | undefined) {
+    if (this._model === value) {
+      return;
+    }
+    this._model = value;
+    this.updateForm(this._model);
+  }
+
   @Input()
   public get langEntries(): ThesaurusEntry[] | undefined {
     return this._langEntries;
@@ -33,8 +44,10 @@ export class MsScriptComponent implements OnInit {
     this._langEntries = value;
     this.buildLangArray(this.getCheckedLanguages());
   }
+
   @Input()
   public scrRoleEntries: ThesaurusEntry[] | undefined;
+
   @Input()
   public scrTypeEntries: ThesaurusEntry[] | undefined;
 
@@ -84,7 +97,7 @@ export class MsScriptComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateForm(this.model);
+    // this.updateForm(this.model);
     this.langChecks.valueChanges.subscribe((_) => {
       this.updateCheckedCount();
     });
@@ -105,7 +118,7 @@ export class MsScriptComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsScript | null {
+  private getModel(): MsScript {
     return {
       languages: this.getCheckedLanguages(),
       role: this.role.value?.trim() || '',
@@ -296,10 +309,7 @@ export class MsScriptComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }

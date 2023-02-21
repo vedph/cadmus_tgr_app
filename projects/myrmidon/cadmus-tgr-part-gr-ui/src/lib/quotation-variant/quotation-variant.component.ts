@@ -30,6 +30,9 @@ export class QuotationVariantComponent implements OnInit {
     return this._model;
   }
   public set model(value: QuotationVariant | undefined) {
+    if (this._model === value) {
+      return;
+    }
     this._model = value;
     this.updateForm(value);
   }
@@ -132,7 +135,7 @@ export class QuotationVariantComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): QuotationVariant | null {
+  private getModel(): QuotationVariant {
     return {
       type: this.type.value,
       lemma: this.lemma.value?.trim() || '',
@@ -276,10 +279,7 @@ export class QuotationVariantComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }

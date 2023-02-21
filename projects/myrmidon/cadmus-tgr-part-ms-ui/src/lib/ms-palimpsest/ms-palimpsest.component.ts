@@ -17,8 +17,20 @@ import { MsPalimpsest } from '../ms-units-part';
   styleUrls: ['./ms-palimpsest.component.css'],
 })
 export class MsPalimpsestComponent implements OnInit {
+  private _model: MsPalimpsest | undefined;
+
   @Input()
-  public model: MsPalimpsest | undefined;
+  public get model(): MsPalimpsest | undefined {
+    return this._model;
+  }
+  public set model(value: MsPalimpsest | undefined) {
+    if (this._model === value) {
+      return;
+    }
+    this._model = value;
+    this.updateForm(this._model);
+  }
+
   @Output()
   public modelChange: EventEmitter<MsPalimpsest>;
   @Output()
@@ -48,7 +60,7 @@ export class MsPalimpsestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateForm(this.model);
+    // this.updateForm(this.model);
   }
 
   private updateForm(model: MsPalimpsest | undefined): void {
@@ -70,7 +82,7 @@ export class MsPalimpsestComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsPalimpsest | null {
+  private getModel(): MsPalimpsest {
     const model: MsPalimpsest = {
       locations: this.locations.value?.split(',').map((t: string) => {
         return this._locService.parseLocation(t.trim())!;
@@ -80,7 +92,6 @@ export class MsPalimpsestComponent implements OnInit {
     };
     if (model.locations?.some((l) => !l)) {
       this.locations.setErrors({ invalid: true });
-      return null;
     }
     return model;
   }
@@ -114,10 +125,7 @@ export class MsPalimpsestComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }

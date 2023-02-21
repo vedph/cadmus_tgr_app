@@ -17,8 +17,19 @@ import { MsContent } from '../ms-contents-part';
   styleUrls: ['./ms-content.component.css'],
 })
 export class MsContentComponent implements OnInit {
+  private _model: MsContent | undefined;
+
   @Input()
-  public model: MsContent | undefined;
+  public get model(): MsContent | undefined {
+    return this._model;
+  }
+  public set model(value: MsContent | undefined) {
+    if (this._model === value) {
+      return;
+    }
+    this._model = value;
+    this.updateForm(this._model);
+  }
 
   /**
    * Author and works.
@@ -84,7 +95,7 @@ export class MsContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateForm(this.model);
+    // this.updateForm(this.model);
   }
 
   private updateForm(model: MsContent | undefined): void {
@@ -106,7 +117,7 @@ export class MsContentComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsContent | null {
+  private getModel(): MsContent {
     return {
       start: this._locService.parseLocation(this.start.value) as MsLocation,
       end: this._locService.parseLocation(this.end.value) as MsLocation,
@@ -141,10 +152,7 @@ export class MsContentComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }

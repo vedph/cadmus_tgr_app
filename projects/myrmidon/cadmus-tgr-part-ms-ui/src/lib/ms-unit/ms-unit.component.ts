@@ -30,8 +30,11 @@ export class MsUnitComponent implements OnInit {
     return this._unit;
   }
   public set unit(value: MsUnit | undefined) {
+    if (this._unit === value) {
+      return;
+    }
     this._unit = value;
-    this.updateForm(value);
+    this.updateForm(this._unit);
   }
 
   /**
@@ -309,7 +312,7 @@ export class MsUnitComponent implements OnInit {
     return locs.length ? (locs as MsLocation[]) : undefined;
   }
 
-  private getModel(): MsUnit | null {
+  private getModel(): MsUnit {
     return {
       // general
       start: this._locService.parseLocation(this.start.value),
@@ -556,10 +559,7 @@ export class MsUnitComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.unitChange.emit(model);
+    this._unit = this.getModel();
+    this.unitChange.emit(this._unit);
   }
 }

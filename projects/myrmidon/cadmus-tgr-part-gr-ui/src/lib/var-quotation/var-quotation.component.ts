@@ -35,6 +35,9 @@ export class VarQuotationComponent implements OnInit {
     return this._model;
   }
   public set model(value: VarQuotation | undefined) {
+    if (this._model === value) {
+      return;
+    }
     this._model = value;
     this.updateForm(value);
   }
@@ -147,7 +150,7 @@ export class VarQuotationComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): VarQuotation | null {
+  private getModel(): VarQuotation {
     return {
       tag: this.tag.value?.trim(),
       authority: this.authority.value?.trim() || '',
@@ -351,10 +354,7 @@ export class VarQuotationComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }

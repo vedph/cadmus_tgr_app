@@ -17,8 +17,20 @@ import { MsHand, MsHandLetter } from '../ms-scripts-part';
   styleUrls: ['./ms-hand.component.css'],
 })
 export class MsHandComponent implements OnInit {
+  private _model: MsHand | undefined;
+
   @Input()
-  public model: MsHand | undefined;
+  public get model(): MsHand | undefined {
+    return this._model;
+  }
+  public set model(value: MsHand | undefined) {
+    if (this._model === value) {
+      return;
+    }
+    this._model = value;
+    this.updateForm(this._model);
+  }
+
   @Output()
   public modelChange: EventEmitter<MsHand>;
   @Output()
@@ -65,7 +77,7 @@ export class MsHandComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateForm(this.model);
+    // this.updateForm(this.model);
   }
 
   private updateForm(model: MsHand | undefined): void {
@@ -107,7 +119,7 @@ export class MsHandComponent implements OnInit {
     return letters;
   }
 
-  private getModel(): MsHand | null {
+  private getModel(): MsHand {
     return {
       id: this.id.value?.trim() || '',
       start: this._locService.parseLocation(this.start.value) as MsLocation,
@@ -176,10 +188,7 @@ export class MsHandComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }

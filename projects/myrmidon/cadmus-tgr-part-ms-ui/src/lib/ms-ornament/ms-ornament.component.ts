@@ -33,15 +33,22 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
     return this._model;
   }
   public set model(value: MsOrnament | undefined) {
+    if (this._model === value) {
+      return;
+    }
     this._model = value;
     this.updateForm(value);
   }
+
   @Input()
   public ornTypeEntries: ThesaurusEntry[] | undefined;
+
   @Input()
   public szUnitEntries: ThesaurusEntry[] | undefined;
+
   @Input()
   public szTagEntries: ThesaurusEntry[] | undefined;
+
   @Input()
   public szDimTagEntries: ThesaurusEntry[] | undefined;
 
@@ -136,7 +143,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsOrnament | null {
+  private getModel(): MsOrnament {
     return {
       type: this.type.value?.trim() || '',
       start: this._locService.parseLocation(this.start.value) as MsLocation,
@@ -160,10 +167,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }
