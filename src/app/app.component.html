@@ -43,7 +43,11 @@
 
     <div *ngIf="user" fxLayout="row" fxLayoutAlign="start center">
       <!-- indicators -->
-      <img [src]="getGravatarUrl(user.email, 32)" [alt]="user.userName" />
+      <img
+        alt="avatar"
+        [src]="getGravatarUrl(user.email, 32)"
+        [alt]="user.userName"
+      />
       <mat-icon
         class="small-icon"
         *ngIf="user && user.roles.includes('admin')"
@@ -91,17 +95,26 @@
 <footer>
   <div layout="row" layout-align="center center">
     <p>
-      <a href="https://www.uniroma1.it" target="_blank"
+      <a rel="noopener" href="https://www.uniroma1.it" target="_blank"
         >Sapienza Università di Roma</a
       >
       -
-      <a href="https://www.uniroma3.it" target="_blank">Università Roma Tre</a>
+      <a rel="noopener" href="https://www.uniroma3.it" target="_blank"
+        >Università Roma Tre</a
+      >
       -
-      <a href="https://www.unipi.it/" target="_blank">Università di Pisa</a>
+      <a rel="noopener" href="https://www.unipi.it/" target="_blank"
+        >Università di Pisa</a
+      >
       - Cadmus by
-      <a href="https://www.fusisoft.net" target="_blank">Daniele Fusi</a> at
-      <a href="https://www.unive.it/pag/39287" target="_blank">VeDPH</a> -
-      version {{ version }}
+      <a rel="noopener" href="https://www.fusisoft.net" target="_blank"
+        >Daniele Fusi</a
+      >
+      at
+      <a rel="noopener" href="https://www.unive.it/pag/39287" target="_blank"
+        >VeDPH</a
+      >
+      - version {{ version }}
     </p>
   </div>
 </footer>
