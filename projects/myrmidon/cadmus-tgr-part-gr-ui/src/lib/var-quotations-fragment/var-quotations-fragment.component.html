@@ -5,105 +5,108 @@
         <mat-icon>textsms</mat-icon>
       </div>
       <mat-card-title
-        >Quotations with Variants Fragment {{ data?.value?.location }}</mat-card-title
+        >Quotations with Variants Fragment
+        {{ data?.value?.location }}</mat-card-title
       >
       <mat-card-subtitle> {{ data?.baseText }} </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
-      <mat-tab-group [(selectedIndex)]="tabIndex">
-        <mat-tab label="quotations">
-          <div>
-            <button
-              type="button"
-              mat-flat-button
-              color="primary"
-              (click)="addEntry()"
-            >
-              <mat-icon>add_circle</mat-icon> add quotation
-            </button>
-          </div>
-          <table *ngIf="entries?.value?.length">
-            <thead>
-              <tr>
-                <th></th>
-                <th>tag</th>
-                <th>authority</th>
-                <th>work</th>
-                <th>location</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let entry of entries?.value;
-                  let i = index;
-                  let first = first;
-                  let last = last
-                "
-              >
-                <td>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    matTooltip="Edit this quotation"
-                    (click)="editEntry(i)"
-                  >
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this quotation up"
-                    [disabled]="first"
-                    (click)="moveEntryUp(i)"
-                  >
-                    <mat-icon>arrow_upward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this quotation down"
-                    [disabled]="last"
-                    (click)="moveEntryDown(i)"
-                  >
-                    <mat-icon>arrow_downward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="warn"
-                    matTooltip="Delete this quotation"
-                    (click)="deleteEntry(i)"
-                  >
-                    <mat-icon>remove_circle</mat-icon>
-                  </button>
-                </td>
-                <td>{{resolveId(entry.tag, 't')}}</td>
-                <td>{{resolveId(entry.authority, 'a')}}</td>
-                <td>{{resolveId(entry.work, 'w')}}</td>
-                <td>{{entry.location}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </mat-tab>
-
-        <mat-tab label="quotation" *ngIf="editedEntry">
-          <tgr-var-quotation
-            [model]="editedEntry"
-            [quotTagEntries]="quotTagEntries"
-            [quotAuthEntries]="quotAuthEntries"
-            [workEntries]="workEntries"
-            [witEntries]="witEntries"
-            [authEntries]="authEntries"
-            [authTagEntries]="authTagEntries"
-            (modelChange)="onEntrySave($event)"
-            (editorClose)="onEntryClose()"
+      <div>
+        <button
+          type="button"
+          mat-flat-button
+          color="primary"
+          (click)="addQuotation()"
+        >
+          <mat-icon>add_circle</mat-icon> add quotation
+        </button>
+      </div>
+      <table *ngIf="quotations.value.length">
+        <thead>
+          <tr>
+            <th></th>
+            <th>tag</th>
+            <th>authority</th>
+            <th>work</th>
+            <th>location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let entry of quotations.value;
+              let i = index;
+              let first = first;
+              let last = last
+            "
           >
-          </tgr-var-quotation>
-        </mat-tab>
-      </mat-tab-group>
+            <td>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit this quotation"
+                (click)="editQuotation(entry, i)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this quotation up"
+                [disabled]="first"
+                (click)="moveEntryUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this quotation down"
+                [disabled]="last"
+                (click)="moveEntryDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                color="warn"
+                matTooltip="Delete this quotation"
+                (click)="deleteQuotation(i)"
+              >
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </td>
+            <td>{{ resolveId(entry.tag, "t") }}</td>
+            <td>{{ resolveId(entry.authority, "a") }}</td>
+            <td>{{ resolveId(entry.work, "w") }}</td>
+            <td>{{ entry.location }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <mat-expansion-panel
+        [expanded]="editedQuotation"
+        [disabled]="!editedQuotation"
+      >
+        <mat-expansion-panel-header
+          >#{{ editedQuotationIndex + 1 }}</mat-expansion-panel-header
+        >
+        <tgr-var-quotation
+          [model]="editedQuotation"
+          [quotTagEntries]="quotTagEntries"
+          [quotAuthEntries]="quotAuthEntries"
+          [workEntries]="workEntries"
+          [witEntries]="witEntries"
+          [authEntries]="authEntries"
+          [authTagEntries]="authTagEntries"
+          (modelChange)="saveQuotation($event)"
+          (editorClose)="closeQuotation()"
+        >
+        </tgr-var-quotation>
+      </mat-expansion-panel>
     </mat-card-content>
 
     <mat-card-actions>

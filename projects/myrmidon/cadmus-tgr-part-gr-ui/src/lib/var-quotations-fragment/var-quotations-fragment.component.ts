@@ -32,10 +32,8 @@ export class VarQuotationsFragmentComponent
   extends ModelEditorComponentBase<VarQuotationsFragment>
   implements OnInit
 {
-  private _editedIndex: number;
-
-  public tabIndex: number;
-  public editedEntry: VarQuotation | undefined;
+  public editedQuotationIndex: number;
+  public editedQuotation: VarQuotation | undefined;
 
   /**
    * Quotation tags.
@@ -62,7 +60,7 @@ export class VarQuotationsFragmentComponent
    */
   public authTagEntries: ThesaurusEntry[] | undefined;
 
-  public entries: FormControl<VarQuotation[]>;
+  public quotations: FormControl<VarQuotation[]>;
 
   constructor(
     authService: AuthJwtService,
@@ -70,10 +68,9 @@ export class VarQuotationsFragmentComponent
     private _dialogService: DialogService
   ) {
     super(authService, formBuilder);
-    this._editedIndex = -1;
-    this.tabIndex = 0;
+    this.editedQuotationIndex = -1;
     // form
-    this.entries = formBuilder.control([], {
+    this.quotations = formBuilder.control([], {
       validators: NgToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
@@ -85,7 +82,7 @@ export class VarQuotationsFragmentComponent
 
   protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
     return formBuilder.group({
-      entries: this.entries,
+      quotations: this.quotations,
     });
   }
 
@@ -138,7 +135,7 @@ export class VarQuotationsFragmentComponent
       this.form.reset();
       return;
     }
-    this.entries.setValue(fr.quotations || []);
+    this.quotations.setValue(fr.quotations || []);
     this.form.markAsPristine();
   }
 
@@ -156,56 +153,51 @@ export class VarQuotationsFragmentComponent
 
   protected getValue(): VarQuotationsFragment {
     const fr = this.getEditedFragment() as VarQuotationsFragment;
-    fr.quotations = this.entries.value;
+    fr.quotations = this.quotations.value;
     return fr;
   }
 
-  public addEntry(): void {
-    const entry: VarQuotation = {
+  public addQuotation(): void {
+    this.editQuotation({
       authority: 'gram',
       work: '',
       location: '',
-    };
-    this.entries.setValue([...this.entries.value, entry]);
-    this.editEntry(this.entries.value.length - 1);
+    });
   }
 
-  public editEntry(index: number): void {
-    if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
-      this.editedEntry = undefined;
+  public editQuotation(quotation: VarQuotation, index = -1): void {
+    this.editedQuotationIndex = index;
+    this.editedQuotation = quotation;
+  }
+
+  public saveQuotation(quotation: VarQuotation): void {
+    const quotations = [...this.quotations.value];
+    if (this.editedQuotationIndex === -1) {
+      quotations.push(quotation);
     } else {
-      this._editedIndex = index;
-      this.editedEntry = this.entries.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
+      quotations.splice(this.editedQuotationIndex, 1, quotation);
     }
+    this.quotations.setValue(quotations);
+    this.closeQuotation();
   }
 
-  public onEntrySave(entry: VarQuotation): void {
-    this.entries.setValue(
-      this.entries.value.map((e: VarQuotation, i: number) =>
-        i === this._editedIndex ? entry : e
-      )
-    );
-    this.editEntry(-1);
+  public closeQuotation(): void {
+    this.editedQuotationIndex = -1;
+    this.editedQuotation = undefined;
   }
 
-  public onEntryClose(): void {
-    this.editEntry(-1);
-  }
-
-  public deleteEntry(index: number): void {
+  public deleteQuotation(index: number): void {
     this._dialogService
       .confirm('Confirmation', 'Delete entry?')
       .pipe(take(1))
       .subscribe((yes) => {
         if (yes) {
-          const entries = [...this.entries.value];
-          entries.splice(index, 1);
-          this.entries.setValue(entries);
+          if (this.editedQuotationIndex === -1) {
+            this.closeQuotation();
+          }
+          const quotations = [...this.quotations.value];
+          quotations.splice(index, 1);
+          this.quotations.setValue(quotations);
         }
       });
   }
@@ -214,22 +206,26 @@ export class VarQuotationsFragmentComponent
     if (index < 1) {
       return;
     }
-    const entry = this.entries.value[index];
-    const entries = [...this.entries.value];
-    entries.splice(index, 1);
-    entries.splice(index - 1, 0, entry);
-    this.entries.setValue(entries);
+    const quotation = this.quotations.value[index];
+    const quotations = [...this.quotations.value];
+    quotations.splice(index, 1);
+    quotations.splice(index - 1, 0, quotation);
+    this.quotations.setValue(quotations);
+    this.quotations.updateValueAndValidity();
+    this.quotations.markAsDirty();
   }
 
   public moveEntryDown(index: number): void {
-    if (index + 1 >= this.entries.value.length) {
+    if (index + 1 >= this.quotations.value.length) {
       return;
     }
-    const entry = this.entries.value[index];
-    const entries = [...this.entries.value];
-    entries.splice(index, 1);
-    entries.splice(index + 1, 0, entry);
-    this.entries.setValue(entries);
+    const quotation = this.quotations.value[index];
+    const quotations = [...this.quotations.value];
+    quotations.splice(index, 1);
+    quotations.splice(index + 1, 0, quotation);
+    this.quotations.setValue(quotations);
+    this.quotations.updateValueAndValidity();
+    this.quotations.markAsDirty();
   }
 
   public resolveId(id: string | null | undefined, thesaurus: string): string {
