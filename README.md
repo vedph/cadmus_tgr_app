@@ -70,6 +70,9 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-03-27:
+  - updated Angular and packages.
+  - minor refactoring in multiple-entities editors.
 - 2023-03-07: updated packages.
 - 2023-02-21:
   - updated Angular and packages.

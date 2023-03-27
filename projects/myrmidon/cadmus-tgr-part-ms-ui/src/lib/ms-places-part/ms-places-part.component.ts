@@ -2,17 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormBuilder,
-  Validators,
   FormGroup,
   UntypedFormGroup,
 } from '@angular/forms';
+import { take } from 'rxjs/operators';
 
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { MsPlace, MsPlacesPart, MSPLACES_PART_TYPEID } from '../ms-places-part';
-import { take } from 'rxjs/operators';
 import { DialogService } from '@myrmidon/ng-mat-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
+
+import { MsPlace, MsPlacesPart, MSPLACES_PART_TYPEID } from '../ms-places-part';
 
 /**
  * Manuscript's place(s) of origin part editor.
@@ -27,15 +28,13 @@ export class MsPlacesPartComponent
   extends ModelEditorComponentBase<MsPlacesPart>
   implements OnInit
 {
-  private _editedIndex: number;
-
-  public tabIndex: number;
+  public editedPlaceIndex: number;
   public editedPlace: MsPlace | undefined;
 
   public areaEntries: ThesaurusEntry[] | undefined;
   public tagEntries: ThesaurusEntry[] | undefined;
 
-  public places: FormControl;
+  public places: FormControl<MsPlace[]>;
 
   constructor(
     authService: AuthJwtService,
@@ -43,10 +42,12 @@ export class MsPlacesPartComponent
     private _dialogService: DialogService
   ) {
     super(authService, formBuilder);
-    this._editedIndex = -1;
-    this.tabIndex = 0;
+    this.editedPlaceIndex = -1;
     // form
-    this.places = formBuilder.control([], Validators.required);
+    this.places = formBuilder.control([], {
+      validators: NgToolsValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
   }
 
   public override ngOnInit(): void {
@@ -95,44 +96,37 @@ export class MsPlacesPartComponent
 
   protected getValue(): MsPlacesPart {
     let part = this.getEditedPart(MSPLACES_PART_TYPEID) as MsPlacesPart;
-    part.places = this.places.value || [];
+    part.places = this.places.value;
     return part;
   }
 
   public addPlace(): void {
-    const place: MsPlace = {
+    this.editPlace({
       area: '',
-    };
-    this.places.setValue([...this.places.value, place]);
-    this.editPlace(this.places.value.length - 1);
+    });
   }
 
-  public editPlace(index: number): void {
-    if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
-      this.editedPlace = undefined;
+  public editPlace(place: MsPlace, index = -1): void {
+    this.editedPlaceIndex = index;
+    this.editedPlace = place;
+  }
+
+  public savePlace(place: MsPlace): void {
+    const places = [...this.places.value];
+    if (this.editedPlaceIndex === -1) {
+      places.push(place);
     } else {
-      this._editedIndex = index;
-      this.editedPlace = this.places.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
+      places.splice(this.editedPlaceIndex, 1, place);
     }
+    this.places.setValue(places);
+    this.places.updateValueAndValidity();
+    this.places.markAsDirty();
+    this.closePlace();
   }
 
-  public onPlaceSave(entry: MsPlace): void {
-    this.places.setValue(
-      this.places.value.map((e: MsPlace, i: number) =>
-        i === this._editedIndex ? entry : e
-      )
-    );
-    this.editPlace(-1);
-    this.form?.markAsDirty();
-  }
-
-  public onPlaceClose(): void {
-    this.editPlace(-1);
+  public closePlace(): void {
+    this.editedPlaceIndex = -1;
+    this.editedPlace = undefined;
   }
 
   public deletePlace(index: number): void {
@@ -141,10 +135,14 @@ export class MsPlacesPartComponent
       .pipe(take(1))
       .subscribe((yes) => {
         if (yes) {
+          if (this.editedPlaceIndex === -1) {
+            this.closePlace();
+          }
           const places = [...this.places.value];
           places.splice(index, 1);
           this.places.setValue(places);
-          this.form?.markAsDirty();
+          this.places.updateValueAndValidity();
+          this.places.markAsDirty();
         }
       });
   }
@@ -158,7 +156,8 @@ export class MsPlacesPartComponent
     places.splice(index, 1);
     places.splice(index - 1, 0, place);
     this.places.setValue(places);
-    this.form?.markAsDirty();
+    this.places.updateValueAndValidity();
+    this.places.markAsDirty();
   }
 
   public movePlaceDown(index: number): void {
@@ -170,6 +169,7 @@ export class MsPlacesPartComponent
     places.splice(index, 1);
     places.splice(index + 1, 0, place);
     this.places.setValue(places);
-    this.form?.markAsDirty();
+    this.places.updateValueAndValidity();
+    this.places.markAsDirty();
   }
 }

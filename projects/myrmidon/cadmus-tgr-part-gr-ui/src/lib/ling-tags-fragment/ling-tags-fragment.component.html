@@ -13,98 +13,88 @@
     </mat-card-header>
 
     <mat-card-content>
-      <mat-tab-group [(selectedIndex)]="tabIndex">
-        <mat-tab label="forms">
-          <div *ngIf="!forms.value?.length">
-            <button type="button" mat-stroked-button (click)="addForm()">
-              <mat-icon>add_circle</mat-icon>
-              add form
-            </button>
-          </div>
-          <table *ngIf="forms.value?.length">
-            <thead>
-              <tr>
-                <th></th>
-                <th>lemmata</th>
-                <th>tags</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let f of forms.value;
-                  let i = index;
-                  let first = first;
-                  let last = last
-                "
+      <div *ngIf="!forms.value?.length">
+        <button type="button" mat-stroked-button (click)="addForm()">
+          <mat-icon>add_circle</mat-icon> form
+        </button>
+      </div>
+      <table *ngIf="forms.value?.length">
+        <thead>
+          <tr>
+            <th></th>
+            <th>lemmata</th>
+            <th>tags</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let f of forms.value;
+              let i = index;
+              let first = first;
+              let last = last
+            "
+          >
+            <td>
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Edit this form"
+                color="primary"
+                (click)="editForm(f, i)"
               >
-                <td>
-                  <button
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Edit this form"
-                    color="primary"
-                    (click)="editForm(i)"
-                  >
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Remove this form"
-                    color="warn"
-                    (click)="removeForm(i)"
-                  >
-                    <mat-icon>remove_circle</mat-icon>
-                  </button>
-                  <button
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Add form below"
-                    (click)="addFormBelow(i)"
-                  >
-                    <mat-icon>add_circle</mat-icon>
-                  </button>
-                  <button
-                    [disabled]="first"
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Move form up"
-                    (click)="moveFormUp(i)"
-                  >
-                    <mat-icon>arrow_upward</mat-icon>
-                  </button>
-                  <button
-                    [disabled]="last"
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Move form down"
-                    (click)="moveFormDown(i)"
-                  >
-                    <mat-icon>arrow_downward</mat-icon>
-                  </button>
-                </td>
-                <td>
-                  {{ f.lemmata?.join(", ") || "" }}
-                </td>
-                <td>
-                  {{ getTagsLabel(f.tags) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </mat-tab>
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Remove this form"
+                color="warn"
+                (click)="removeForm(i)"
+              >
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move form up"
+                (click)="moveFormUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move form down"
+                (click)="moveFormDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </td>
+            <td>
+              {{ f.lemmata?.join(", ") || "" }}
+            </td>
+            <td>
+              {{ getTagsLabel(f.tags) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-expansion-panel [expanded]="editedForm" [disabled]="!editedForm">
+        <mat-expansion-panel-header
+          >content #{{ editedFormIndex + 1 }}</mat-expansion-panel-header
+        >
 
-        <mat-tab label="form" *ngIf="editedForm">
-          <tgr-ling-tagged-form
-            [tagEntries]="(tagEntries$ | async) || []"
-            [auxEntries]="(auxEntries$ | async) || []"
-            [model]="editedForm"
-            (modelChange)="onFormChange($event)"
-            (editorClose)="closeEditedForm()"
-          ></tgr-ling-tagged-form>
-        </mat-tab>
-      </mat-tab-group>
+        <tgr-ling-tagged-form
+          [tagEntries]="(tagEntries$ | async) || []"
+          [auxEntries]="(auxEntries$ | async) || []"
+          [model]="editedForm"
+          (modelChange)="saveForm($event)"
+          (editorClose)="closeForm()"
+        ></tgr-ling-tagged-form>
+      </mat-expansion-panel>
     </mat-card-content>
 
     <mat-card-actions>

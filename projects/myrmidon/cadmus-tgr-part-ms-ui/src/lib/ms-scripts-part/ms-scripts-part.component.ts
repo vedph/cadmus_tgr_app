@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormBuilder,
-  Validators,
   FormGroup,
   UntypedFormGroup,
 } from '@angular/forms';
@@ -18,6 +17,7 @@ import {
 import { take } from 'rxjs/operators';
 import { DialogService } from '@myrmidon/ng-mat-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 
 /**
  * MsScripts editor component.
@@ -33,12 +33,10 @@ export class MsScriptsPartComponent
   extends ModelEditorComponentBase<MsScriptsPart>
   implements OnInit
 {
-  private _editedIndex: number;
-
-  public tabIndex: number;
+  public editedScriptIndex: number;
   public editedScript: MsScript | undefined;
 
-  public scripts: FormControl;
+  public scripts: FormControl<MsScript[]>;
 
   public langEntries: ThesaurusEntry[] | undefined;
   public scrTypeEntries: ThesaurusEntry[] | undefined;
@@ -50,10 +48,12 @@ export class MsScriptsPartComponent
     private _dialogService: DialogService
   ) {
     super(authService, formBuilder);
-    this._editedIndex = -1;
-    this.tabIndex = 0;
+    this.editedScriptIndex = -1;
     // form
-    this.scripts = formBuilder.control([], Validators.required);
+    this.scripts = formBuilder.control([], {
+      validators: NgToolsValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
   }
 
   public override ngOnInit(): void {
@@ -133,44 +133,38 @@ export class MsScriptsPartComponent
 
   protected getValue(): MsScriptsPart {
     let part = this.getEditedPart(MSSCRIPTS_PART_TYPEID) as MsScriptsPart;
-    part.scripts = this.scripts.value || [];
+    part.scripts = this.scripts.value;
     return part;
   }
 
   public addScript(): void {
-    const unit: MsScript = {
+    this.editScript({
       role: '',
       languages: ['lat'],
-    };
-    this.scripts.setValue([...this.scripts.value, unit]);
-    this.editScript(this.scripts.value.length - 1);
+    });
   }
 
-  public editScript(index: number): void {
-    if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
-      this.editedScript = undefined;
+  public editScript(script: MsScript, index = -1): void {
+    this.editedScriptIndex = index;
+    this.editedScript = script;
+  }
+
+  public saveScript(script: MsScript): void {
+    const scripts = [...this.scripts.value];
+    if (this.editedScriptIndex === -1) {
+      scripts.push(script);
     } else {
-      this._editedIndex = index;
-      this.editedScript = this.scripts.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
+      scripts.splice(this.editedScriptIndex, 1, script);
     }
+    this.scripts.setValue(scripts);
+    this.scripts.updateValueAndValidity();
+    this.scripts.markAsDirty();
+    this.closeScript();
   }
 
-  public onScriptSave(unit: MsScript): void {
-    this.scripts.setValue(
-      this.scripts.value.map((u: MsScript, i: number) =>
-        i === this._editedIndex ? unit : u
-      )
-    );
-    this.editScript(-1);
-  }
-
-  public onScriptClose(): void {
-    this.editScript(-1);
+  public closeScript(): void {
+    this.editedScriptIndex = -1;
+    this.editedScript = undefined;
   }
 
   public deleteScript(index: number): void {
@@ -179,9 +173,14 @@ export class MsScriptsPartComponent
       .pipe(take(1))
       .subscribe((yes) => {
         if (yes) {
+          if (this.editedScriptIndex === index) {
+            this.closeScript();
+          }
           const scripts = [...this.scripts.value];
           scripts.splice(index, 1);
           this.scripts.setValue(scripts);
+          this.scripts.updateValueAndValidity();
+          this.scripts.markAsDirty();
         }
       });
   }
@@ -195,6 +194,8 @@ export class MsScriptsPartComponent
     scripts.splice(index, 1);
     scripts.splice(index - 1, 0, script);
     this.scripts.setValue(scripts);
+    this.scripts.updateValueAndValidity();
+    this.scripts.markAsDirty();
   }
 
   public moveScriptDown(index: number): void {
@@ -206,5 +207,7 @@ export class MsScriptsPartComponent
     scripts.splice(index, 1);
     scripts.splice(index + 1, 0, script);
     this.scripts.setValue(scripts);
+    this.scripts.updateValueAndValidity();
+    this.scripts.markAsDirty();
   }
 }

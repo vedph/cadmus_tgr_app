@@ -5,12 +5,14 @@ import {
   FormGroup,
   UntypedFormGroup,
 } from '@angular/forms';
+import { take } from 'rxjs/operators';
+
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { DialogService } from '@myrmidon/ng-mat-tools';
 import { NgToolsValidators } from '@myrmidon/ng-tools';
-import { take } from 'rxjs/operators';
+
 import {
   Interpolation,
   InterpolationsFragment,
@@ -31,9 +33,7 @@ export class InterpolationsFragmentComponent
   extends ModelEditorComponentBase<InterpolationsFragment>
   implements OnInit
 {
-  private _editedIndex: number;
-
-  public tabIndex: number;
+  public editedInterpolationIndex: number;
   public editedInterpolation: Interpolation | undefined;
 
   /**
@@ -81,8 +81,7 @@ export class InterpolationsFragmentComponent
     private _dialogService: DialogService
   ) {
     super(authService, formBuilder);
-    this._editedIndex = -1;
-    this.tabIndex = 0;
+    this.editedInterpolationIndex = -1;
     // form
     this.interpolations = formBuilder.control([], {
       validators: NgToolsValidators.strictMinLengthValidator(1),
@@ -205,19 +204,16 @@ export class InterpolationsFragmentComponent
   }
 
   public editInterpolation(interpolation: Interpolation, index: number): void {
-    this._editedIndex = index;
+    this.editedInterpolationIndex = index;
     this.editedInterpolation = interpolation;
-    setTimeout(() => {
-      this.tabIndex = 1;
-    }, 0);
   }
 
   public saveInterpolation(interpolation: Interpolation): void {
     const interpolations = [...this.interpolations.value];
-    if (this._editedIndex === -1) {
+    if (this.editedInterpolationIndex === -1) {
       interpolations.push(interpolation);
     } else {
-      interpolations.splice(this._editedIndex, 1, interpolation);
+      interpolations.splice(this.editedInterpolationIndex, 1, interpolation);
     }
     this.interpolations.setValue(interpolations);
     this.interpolations.updateValueAndValidity();
@@ -226,9 +222,8 @@ export class InterpolationsFragmentComponent
   }
 
   public closeInterpolation(): void {
-    this._editedIndex = -1;
+    this.editedInterpolationIndex = -1;
     this.editedInterpolation = undefined;
-    this.tabIndex = 0;
   }
 
   public deleteInterpolation(index: number): void {
@@ -237,6 +232,9 @@ export class InterpolationsFragmentComponent
       .pipe(take(1))
       .subscribe((yes) => {
         if (yes) {
+          if (this.editedInterpolationIndex === index) {
+            this.closeInterpolation();
+          }
           const entries = [...this.interpolations.value];
           entries.splice(index, 1);
           this.interpolations.setValue(entries);

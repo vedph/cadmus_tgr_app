@@ -18,14 +18,14 @@ import { debounceTime } from 'rxjs/operators';
 
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 import {
   MsSignature,
   MsSignaturesPart,
   MSSIGNATURES_PART_TYPEID,
 } from '../ms-signatures-part';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
-import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * Manuscript's signatures part.
@@ -155,7 +155,8 @@ export class MsSignaturesPartComponent
 
   public removeSignature(index: number): void {
     this.signatures.removeAt(index);
-    this.form.markAsDirty();
+    this.signatures.updateValueAndValidity();
+    this.signatures.markAsDirty();
   }
 
   public moveSignatureUp(index: number): void {
@@ -165,7 +166,8 @@ export class MsSignaturesPartComponent
     const item = this.signatures.controls[index];
     this.signatures.removeAt(index);
     this.signatures.insert(index - 1, item);
-    this.form.markAsDirty();
+    this.signatures.updateValueAndValidity();
+    this.signatures.markAsDirty();
   }
 
   public moveSignatureDown(index: number): void {
@@ -175,6 +177,7 @@ export class MsSignaturesPartComponent
     const item = this.signatures.controls[index];
     this.signatures.removeAt(index);
     this.signatures.insert(index + 1, item);
-    this.form.markAsDirty();
+    this.signatures.updateValueAndValidity();
+    this.signatures.markAsDirty();
   }
 }

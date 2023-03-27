@@ -30,9 +30,7 @@ export class MsUnitsPartComponent
   extends ModelEditorComponentBase<MsUnitsPart>
   implements OnInit
 {
-  private _editedIndex: number;
-
-  public tabIndex: number;
+  public editedUnitIndex: number;
   public editedUnit: MsUnit | undefined;
 
   /**
@@ -69,8 +67,7 @@ export class MsUnitsPartComponent
     private _locService: MsLocationService
   ) {
     super(authService, formBuilder);
-    this._editedIndex = -1;
-    this.tabIndex = 0;
+    this.editedUnitIndex = -1;
     // form
     this.units = formBuilder.control([], {
       validators: NgToolsValidators.strictMinLengthValidator(1),
@@ -158,43 +155,37 @@ export class MsUnitsPartComponent
   }
 
   public addUnit(): void {
-    const unit: MsUnit = {
+    this.editUnit({
       start: { n: 0 },
       end: { n: 0 },
       material: undefined,
       sheetCount: 0,
       guardSheetCount: 0,
       backGuardSheetCount: 0,
-    };
-    this.units.setValue([...this.units.value, unit]);
-    this.editUnit(this.units.value.length - 1);
+    });
   }
 
-  public editUnit(index: number): void {
-    if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
-      this.editedUnit = undefined;
+  public editUnit(unit: MsUnit, index = -1): void {
+    this.editedUnitIndex = index;
+    this.editedUnit = unit;
+  }
+
+  public saveUnit(unit: MsUnit): void {
+    const units = [...this.units.value];
+    if (this.editedUnitIndex === -1) {
+      units.push(unit);
     } else {
-      this._editedIndex = index;
-      this.editedUnit = this.units.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
+      units.splice(this.editedUnitIndex, 1, unit);
     }
+    this.units.setValue(units);
+    this.units.updateValueAndValidity();
+    this.units.markAsDirty();
+    this.closeUnit();
   }
 
-  public onUnitSave(unit: MsUnit): void {
-    this.units.setValue(
-      this.units.value.map((u: MsUnit, i: number) =>
-        i === this._editedIndex ? unit : u
-      )
-    );
-    this.editUnit(-1);
-  }
-
-  public onUnitClose(): void {
-    this.editUnit(-1);
+  public closeUnit(): void {
+    this.editedUnitIndex = -1;
+    this.editedUnit = undefined;
   }
 
   public deleteUnit(index: number): void {
@@ -203,9 +194,14 @@ export class MsUnitsPartComponent
       .pipe(take(1))
       .subscribe((yes) => {
         if (yes) {
+          if (this.editedUnitIndex === index) {
+            this.closeUnit();
+          }
           const units = [...this.units.value];
           units.splice(index, 1);
           this.units.setValue(units);
+          this.units.updateValueAndValidity();
+          this.units.markAsDirty();
         }
       });
   }
@@ -219,7 +215,9 @@ export class MsUnitsPartComponent
     units.splice(index, 1);
     units.splice(index - 1, 0, unit);
     this.units.setValue(units);
-  }
+    this.units.updateValueAndValidity();
+    this.units.markAsDirty();
+}
 
   public moveUnitDown(index: number): void {
     if (index + 1 >= this.units.value.length) {
@@ -230,7 +228,9 @@ export class MsUnitsPartComponent
     units.splice(index, 1);
     units.splice(index + 1, 0, unit);
     this.units.setValue(units);
-  }
+    this.units.updateValueAndValidity();
+    this.units.markAsDirty();
+}
 
   public locationToString(location?: MsLocation | null): string {
     if (!location) {

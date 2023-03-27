@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormBuilder,
-  Validators,
   FormGroup,
   UntypedFormGroup,
 } from '@angular/forms';
@@ -10,7 +9,7 @@ import { take } from 'rxjs/operators';
 
 import { DialogService } from '@myrmidon/ng-mat-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 
 import {
@@ -32,12 +31,10 @@ export class MsFormalFeaturesPartComponent
   extends ModelEditorComponentBase<MsFormalFeaturesPart>
   implements OnInit
 {
-  private _editedIndex: number;
-
-  public tabIndex: number;
+  public editedFeatureIndex: number;
   public editedFeature: MsFormalFeature | undefined;
 
-  public features: FormControl;
+  public features: FormControl<MsFormalFeature[]>;
 
   constructor(
     authService: AuthJwtService,
@@ -45,10 +42,12 @@ export class MsFormalFeaturesPartComponent
     private _dialogService: DialogService
   ) {
     super(authService, formBuilder);
-    this._editedIndex = -1;
-    this.tabIndex = 0;
+    this.editedFeatureIndex = -1;
     // form
-    this.features = formBuilder.control([], Validators.required);
+    this.features = formBuilder.control([], {
+      validators: NgToolsValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
   }
 
   public override ngOnInit(): void {
@@ -85,39 +84,33 @@ export class MsFormalFeaturesPartComponent
   }
 
   public addFeature(): void {
-    const feature: MsFormalFeature = {
+    this.editFeature({
       handId: '',
       description: '',
-    };
-    this.features.setValue([...this.features.value, feature]);
-    this.editFeature(this.features.value.length - 1);
+    });
   }
 
-  public editFeature(index: number): void {
-    if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
-      this.editedFeature = undefined;
+  public editFeature(feature: MsFormalFeature, index = -1): void {
+    this.editedFeatureIndex = index;
+    this.editedFeature = feature;
+  }
+
+  public saveFeature(feature: MsFormalFeature): void {
+    const features = [...this.features.value];
+    if (this.editedFeatureIndex === -1) {
+      features.push(feature);
     } else {
-      this._editedIndex = index;
-      this.editedFeature = this.features.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
+      features.splice(this.editedFeatureIndex, 1, feature);
     }
+    this.features.setValue(features);
+    this.features.updateValueAndValidity();
+    this.features.markAsDirty();
+    this.closeFeature();
   }
 
-  public onFeatureSave(feature: MsFormalFeature): void {
-    this.features.setValue(
-      this.features.value.map((f: MsFormalFeature, i: number) =>
-        i === this._editedIndex ? feature : f
-      )
-    );
-    this.editFeature(-1);
-  }
-
-  public onFeatureClose(): void {
-    this.editFeature(-1);
+  public closeFeature(): void {
+    this.editedFeatureIndex = -1;
+    this.editedFeature = undefined;
   }
 
   public deleteFeature(index: number): void {
@@ -126,9 +119,14 @@ export class MsFormalFeaturesPartComponent
       .pipe(take(1))
       .subscribe((yes) => {
         if (yes) {
+          if (this.editedFeatureIndex === index) {
+            this.closeFeature();
+          }
           const features = [...this.features.value];
           features.splice(index, 1);
           this.features.setValue(features);
+          this.features.updateValueAndValidity();
+          this.features.markAsDirty();
         }
       });
   }
@@ -142,6 +140,8 @@ export class MsFormalFeaturesPartComponent
     features.splice(index, 1);
     features.splice(index - 1, 0, feature);
     this.features.setValue(features);
+    this.features.updateValueAndValidity();
+    this.features.markAsDirty();
   }
 
   public moveFeatureDown(index: number): void {
@@ -153,5 +153,7 @@ export class MsFormalFeaturesPartComponent
     features.splice(index, 1);
     features.splice(index + 1, 0, feature);
     this.features.setValue(features);
+    this.features.updateValueAndValidity();
+    this.features.markAsDirty();
   }
 }

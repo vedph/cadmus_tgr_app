@@ -6,18 +6,20 @@ import {
   FormGroup,
   UntypedFormGroup,
 } from '@angular/forms';
+import { take } from 'rxjs/operators';
 
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+
 import {
   MsOrnament,
   MsOrnamentsPart,
   MSORNAMENTS_PART_TYPEID,
 } from '../ms-ornaments-part';
-import { take } from 'rxjs/operators';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
-import { DialogService } from '@myrmidon/ng-mat-tools';
-import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 
 /**
  * Manuscript's ornamentations part editor component.
@@ -33,9 +35,7 @@ export class MsOrnamentsPartComponent
   extends ModelEditorComponentBase<MsOrnamentsPart>
   implements OnInit
 {
-  private _editedIndex: number;
-
-  public tabIndex: number;
+  public editedOrnamentIndex: number;
   public editedOrnament: MsOrnament | undefined;
 
   public ornTypeEntries: ThesaurusEntry[] | undefined;
@@ -43,7 +43,7 @@ export class MsOrnamentsPartComponent
   public szTagEntries: ThesaurusEntry[] | undefined;
   public szDimTagEntries: ThesaurusEntry[] | undefined;
 
-  public ornaments: FormControl;
+  public ornaments: FormControl<MsOrnament[]>;
 
   constructor(
     authService: AuthJwtService,
@@ -52,10 +52,12 @@ export class MsOrnamentsPartComponent
     private _locService: MsLocationService
   ) {
     super(authService, formBuilder);
-    this._editedIndex = -1;
-    this.tabIndex = 0;
+    this.editedOrnamentIndex = -1;
     // form
-    this.ornaments = formBuilder.control([], Validators.required);
+    this.ornaments = formBuilder.control([], {
+      validators: NgToolsValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
   }
 
   public override ngOnInit(): void {
@@ -119,56 +121,56 @@ export class MsOrnamentsPartComponent
 
   protected getValue(): MsOrnamentsPart {
     let part = this.getEditedPart(MSORNAMENTS_PART_TYPEID) as MsOrnamentsPart;
-    part.ornaments = this.ornaments.value || [];
+    part.ornaments = this.ornaments.value;
     return part;
   }
 
+  public editOrnament(ornament: MsOrnament, index = -1): void {
+    this.editedOrnamentIndex = index;
+    this.editedOrnament = ornament;
+  }
+
   public addOrnament(): void {
-    const ornament: MsOrnament = {
+    this.editOrnament({
       type: '',
       start: { n: 0 },
       end: { n: 0 },
-    };
-    this.ornaments.setValue([...this.ornaments.value, ornament]);
-    this.editOrnament(this.ornaments.value.length - 1);
+    });
   }
 
-  public editOrnament(index: number): void {
-    if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
-      this.editedOrnament = undefined;
+  public saveOrnament(ornament: MsOrnament): void {
+    const ornaments = [...this.ornaments.value];
+
+    if (this.editedOrnamentIndex === -1) {
+      ornaments.push(ornament);
     } else {
-      this._editedIndex = index;
-      this.editedOrnament = this.ornaments.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
+      ornaments.splice(this.editedOrnamentIndex, 1, ornament);
     }
+    this.ornaments.setValue(ornaments);
+    this.ornaments.updateValueAndValidity();
+    this.ornaments.markAsDirty();
+    this.closeOrnament();
   }
 
-  public onOrnamentSave(unit: MsOrnament): void {
-    this.ornaments.setValue(
-      this.ornaments.value.map((u: MsOrnament, i: number) =>
-        i === this._editedIndex ? unit : u
-      )
-    );
-    this.editOrnament(-1);
-  }
-
-  public onOrnamentClose(): void {
-    this.editOrnament(-1);
+  public closeOrnament(): void {
+    this.editedOrnamentIndex = -1;
+    this.editedOrnament = undefined;
   }
 
   public deleteOrnament(index: number): void {
     this._dialogService
       .confirm('Confirmation', 'Delete ornament?')
       .pipe(take(1))
-      .subscribe((yes) => {
+      .subscribe((yes: boolean) => {
         if (yes) {
+          if (index === this.editedOrnamentIndex) {
+            this.closeOrnament();
+          }
           const ornaments = [...this.ornaments.value];
           ornaments.splice(index, 1);
           this.ornaments.setValue(ornaments);
+          this.ornaments.updateValueAndValidity();
+          this.ornaments.markAsDirty();
         }
       });
   }
@@ -182,6 +184,8 @@ export class MsOrnamentsPartComponent
     ornaments.splice(index, 1);
     ornaments.splice(index - 1, 0, ornament);
     this.ornaments.setValue(ornaments);
+    this.ornaments.updateValueAndValidity();
+    this.ornaments.markAsDirty();
   }
 
   public moveOrnamentDown(index: number): void {
@@ -193,6 +197,8 @@ export class MsOrnamentsPartComponent
     ornaments.splice(index, 1);
     ornaments.splice(index + 1, 0, ornament);
     this.ornaments.setValue(ornaments);
+    this.ornaments.updateValueAndValidity();
+    this.ornaments.markAsDirty();
   }
 
   public locationToString(location?: MsLocation): string {

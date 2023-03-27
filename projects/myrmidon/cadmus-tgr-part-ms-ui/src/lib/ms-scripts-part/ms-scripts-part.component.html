@@ -8,99 +8,97 @@
     </mat-card-header>
 
     <mat-card-content>
-      <mat-tab-group [(selectedIndex)]="tabIndex">
-
-        <!-- SCRIPTS -->
-        <mat-tab label="scripts">
-          <div>
-            <button
-              type="button"
-              mat-flat-button
-              color="primary"
-              (click)="addScript()"
-            >
-              <mat-icon>add_circle</mat-icon> add script
-            </button>
-          </div>
-          <table *ngIf="scripts?.value?.length">
-            <thead>
-              <tr>
-                <th></th>
-                <th>language</th>
-                <th>role</th>
-                <th>type</th>
-                <th>hands</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let script of scripts?.value;
-                  let i = index;
-                  let first = first;
-                  let last = last
-                "
-              >
-                <td>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    matTooltip="Edit this script"
-                    (click)="editScript(i)"
-                  >
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this script up"
-                    [disabled]="first"
-                    (click)="moveScriptUp(i)"
-                  >
-                    <mat-icon>arrow_upward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this script down"
-                    [disabled]="last"
-                    (click)="moveScriptDown(i)"
-                  >
-                    <mat-icon>arrow_downward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="warn"
-                    matTooltip="Delete this script"
-                    (click)="deleteScript(i)"
-                  >
-                    <mat-icon>remove_circle</mat-icon>
-                  </button>
-                </td>
-                <td>{{ entryToString(script.language, 'L') }}</td>
-                <td>{{ entryToString(script.role, 'R') }}</td>
-                <td>{{ entryToString(script.type, 'T') }}</td>
-                <td style="text-align:center">{{ script.hands?.length || 0 }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </mat-tab>
-
-        <!-- SCRIPT -->
-        <mat-tab label="script" *ngIf="editedScript">
-          <tgr-ms-script
-            [model]="editedScript"
-            [langEntries]="langEntries"
-            [scrRoleEntries]="scrRoleEntries"
-            [scrTypeEntries]="scrTypeEntries"
-            (modelChange)="onScriptSave($event)"
-            (editorClose)="onScriptClose()"
+      <!-- SCRIPTS -->
+      <div>
+        <button
+          type="button"
+          mat-flat-button
+          color="primary"
+          (click)="addScript()"
+        >
+          <mat-icon>add_circle</mat-icon> add script
+        </button>
+      </div>
+      <table *ngIf="scripts?.value?.length">
+        <thead>
+          <tr>
+            <th></th>
+            <th>language</th>
+            <th>role</th>
+            <th>type</th>
+            <th>hands</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let script of scripts?.value;
+              let i = index;
+              let first = first;
+              let last = last
+            "
           >
-          </tgr-ms-script>
-        </mat-tab>
-      </mat-tab-group>
+            <td>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit this script"
+                (click)="editScript(script, i)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this script up"
+                [disabled]="first"
+                (click)="moveScriptUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this script down"
+                [disabled]="last"
+                (click)="moveScriptDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                color="warn"
+                matTooltip="Delete this script"
+                (click)="deleteScript(i)"
+              >
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </td>
+            <td>{{ entryToString(script.languages[0], "L") }}</td>
+            <td>{{ entryToString(script.role, "R") }}</td>
+            <td>{{ entryToString(script.type, "T") }}</td>
+            <td style="text-align: center">{{ script.hands?.length || 0 }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- SCRIPT -->
+      <mat-expansion-panel [expanded]="editedScript" [disabled]="!editedScript">
+        <mat-expansion-panel-header
+          >content #{{ editedScriptIndex + 1 }}</mat-expansion-panel-header
+        >
+        <tgr-ms-script
+          [model]="editedScript"
+          [langEntries]="langEntries"
+          [scrRoleEntries]="scrRoleEntries"
+          [scrTypeEntries]="scrTypeEntries"
+          (modelChange)="saveScript($event)"
+          (editorClose)="closeScript()"
+        >
+        </tgr-ms-script>
+      </mat-expansion-panel>
     </mat-card-content>
     <mat-card-actions>
       <cadmus-close-save-buttons

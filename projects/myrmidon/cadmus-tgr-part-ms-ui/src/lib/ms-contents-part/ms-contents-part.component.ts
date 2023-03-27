@@ -34,9 +34,7 @@ export class MsContentsPartComponent
   extends ModelEditorComponentBase<MsContentsPart>
   implements OnInit
 {
-  private _editedIndex: number;
-
-  public tabIndex: number;
+  public editedContentIndex: number;
   public editedContent: MsContent | undefined;
   public contents: FormControl<MsContent[]>;
 
@@ -54,8 +52,7 @@ export class MsContentsPartComponent
     private _locService: MsLocationService
   ) {
     super(authService, formBuilder);
-    this._editedIndex = -1;
-    this.tabIndex = 0;
+    this.editedContentIndex = -1;
     // form
     this.contents = formBuilder.control([], {
       validators: NgToolsValidators.strictMinLengthValidator(1),
@@ -121,42 +118,36 @@ export class MsContentsPartComponent
     return part;
   }
 
+  public editContent(content: MsContent, index = -1): void {
+    this.editedContentIndex = index;
+    this.editedContent = content;
+  }
+
   public addContent(): void {
-    const content: MsContent = {
+    this.editContent({
       start: { n: 0 },
       end: { n: 0 },
       incipit: '',
       explicit: '',
-    };
-    this.contents.setValue([...this.contents.value, content]);
-    this.editContent(this.contents.value.length - 1);
+    });
   }
 
-  public editContent(index: number): void {
-    if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
-      this.editedContent = undefined;
+  public saveContent(content: MsContent): void {
+    const contents = [...this.contents.value];
+    if (this.editedContentIndex === -1) {
+      contents.push(content);
     } else {
-      this._editedIndex = index;
-      this.editedContent = this.contents.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
+      contents.splice(this.editedContentIndex, 1, content);
     }
+    this.contents.setValue(contents);
+    this.contents.updateValueAndValidity();
+    this.contents.markAsDirty();
+    this.closeContent();
   }
 
-  public onContentSave(Content: MsContent): void {
-    this.contents.setValue(
-      this.contents.value.map((u: MsContent, i: number) =>
-        i === this._editedIndex ? Content : u
-      )
-    );
-    this.editContent(-1);
-  }
-
-  public onContentClose(): void {
-    this.editContent(-1);
+  public closeContent(): void {
+    this.editedContentIndex = -1;
+    this.editedContent = undefined;
   }
 
   public deleteContent(index: number): void {
@@ -165,9 +156,14 @@ export class MsContentsPartComponent
       .pipe(take(1))
       .subscribe((yes) => {
         if (yes) {
+          if (this.editedContentIndex === index) {
+            this.closeContent();
+          }
           const contents = [...this.contents.value];
           contents.splice(index, 1);
           this.contents.setValue(contents);
+          this.contents.updateValueAndValidity();
+          this.contents.markAsDirty();
         }
       });
   }
@@ -181,6 +177,8 @@ export class MsContentsPartComponent
     contents.splice(index, 1);
     contents.splice(index - 1, 0, content);
     this.contents.setValue(contents);
+    this.contents.updateValueAndValidity();
+    this.contents.markAsDirty();
   }
 
   public moveContentDown(index: number): void {
@@ -192,6 +190,8 @@ export class MsContentsPartComponent
     contents.splice(index, 1);
     contents.splice(index + 1, 0, content);
     this.contents.setValue(contents);
+    this.contents.updateValueAndValidity();
+    this.contents.markAsDirty();
   }
 
   public locationToString(location: MsLocation): string {

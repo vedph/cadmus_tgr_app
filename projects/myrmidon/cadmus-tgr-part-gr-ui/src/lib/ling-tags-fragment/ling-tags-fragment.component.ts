@@ -28,22 +28,19 @@ export class LingTagsFragmentComponent
   extends ModelEditorComponentBase<LingTagsFragment>
   implements OnInit
 {
-  private _editedFormIndex: number;
-
   public tagEntries$: BehaviorSubject<ThesaurusEntry[]>;
   public auxEntries$: BehaviorSubject<ThesaurusEntry[]>;
 
   public forms: FormControl<LingTaggedForm[]>;
 
+  public editedFormIndex: number;
   public editedForm: LingTaggedForm | undefined;
-  public tabIndex: number;
 
   constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
     super(authService, formBuilder);
     this.tagEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
     this.auxEntries$ = new BehaviorSubject<ThesaurusEntry[]>([]);
-    this.tabIndex = 0;
-    this._editedFormIndex = -1;
+    this.editedFormIndex = -1;
     // form
     this.forms = formBuilder.control([], {
       validators: NgToolsValidators.strictMinLengthValidator(1),
@@ -117,20 +114,8 @@ export class LingTagsFragmentComponent
       .join('\n');
   }
 
-  public addForm(item?: LingTaggedForm): void {
-    this.forms.setValue([...this.forms.value, item || { tags: [] }]);
-    this.forms.updateValueAndValidity();
-    this.forms.markAsDirty();
-    this.editForm(this.forms.value.length - 1);
-  }
-
-  public addFormBelow(index: number): void {
-    const forms = [...this.forms.value];
-    forms.splice(index + 1, 0, { tags: [] });
-    this.forms.setValue(forms);
-    this.forms.updateValueAndValidity();
-    this.forms.markAsDirty();
-    this.editForm(index + 1);
+  public addForm(): void {
+    this.editForm({ tags: [] });
   }
 
   public removeForm(index: number): void {
@@ -167,27 +152,22 @@ export class LingTagsFragmentComponent
     this.forms.markAsDirty();
   }
 
-  public editForm(index: number): void {
-    this.editedForm = this.forms.value[index];
-    this._editedFormIndex = index;
-
-    setTimeout(() => {
-      this.tabIndex = 1;
-    }, 200);
+  public editForm(form: LingTaggedForm, index = -1): void {
+    this.editedForm = form;
+    this.editedFormIndex = index;
   }
 
-  public closeEditedForm(): void {
+  public closeForm(): void {
     this.editedForm = undefined;
-    this._editedFormIndex = -1;
-    this.tabIndex = 0;
+    this.editedFormIndex = -1;
   }
 
-  public onFormChange(form: LingTaggedForm): void {
+  public saveForm(form: LingTaggedForm): void {
     const forms = [...this.forms.value];
-    forms.splice(this._editedFormIndex, 1, form);
+    forms.splice(this.editedFormIndex, 1, form);
     this.forms.setValue(forms);
-    this.closeEditedForm();
     this.forms.updateValueAndValidity();
     this.forms.markAsDirty();
+    this.closeForm();
   }
 }

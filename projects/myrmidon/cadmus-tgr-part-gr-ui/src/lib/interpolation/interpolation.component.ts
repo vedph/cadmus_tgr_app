@@ -141,7 +141,7 @@ export class InterpolationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateForm(this.model);
+    // this.updateForm(this.model);
   }
 
   private updateForm(model: Interpolation | undefined): void {
@@ -291,15 +291,15 @@ export class InterpolationComponent implements OnInit {
   }
 
   private getSources(): ReadingSource[] | undefined {
-    const entries: ReadingSource[] = [];
+    const sources: ReadingSource[] = [];
     for (let i = 0; i < this.sources.length; i++) {
       const g = this.sources.at(i) as FormGroup;
-      entries.push({
+      sources.push({
         witness: g.controls.witness.value?.trim(),
         handId: g.controls.handId.value?.trim(),
       });
     }
-    return entries.length ? entries : undefined;
+    return sources.length ? sources : undefined;
   }
   //#endregion
 
@@ -347,6 +347,9 @@ export class InterpolationComponent implements OnInit {
       .pipe(take(1))
       .subscribe((yes) => {
         if (yes) {
+          if (this._editedIndex === index) {
+            this.closeQuotation();
+          }
           const quotations = [...this.quotations.value];
           quotations.splice(index, 1);
           this.quotations.setValue(quotations);

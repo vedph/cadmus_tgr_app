@@ -109,19 +109,21 @@ export class AvailableWitnessesPartComponent
       note: this._formBuilder.control(witness?.note, Validators.maxLength(300)),
     });
     g.valueChanges.subscribe((_) => {
-      this.form?.updateValueAndValidity();
+      this.form.updateValueAndValidity();
     });
     return g;
   }
 
   public addWitness(item?: AvailableWitness): void {
     this.witnesses.push(this.getWitnessGroup(item));
-    this.form?.markAsDirty();
+    this.witnesses.updateValueAndValidity();
+    this.witnesses.markAsDirty();
   }
 
   public removeWitness(index: number): void {
     this.witnesses.removeAt(index);
-    this.form?.markAsDirty();
+    this.witnesses.updateValueAndValidity();
+    this.witnesses.markAsDirty();
   }
 
   public moveWitnessUp(index: number): void {
@@ -131,7 +133,8 @@ export class AvailableWitnessesPartComponent
     const item = this.witnesses.controls[index];
     this.witnesses.removeAt(index);
     this.witnesses.insert(index - 1, item);
-    this.form?.markAsDirty();
+    this.witnesses.updateValueAndValidity();
+    this.witnesses.markAsDirty();
   }
 
   public moveWitnessDown(index: number): void {
@@ -141,7 +144,8 @@ export class AvailableWitnessesPartComponent
     const item = this.witnesses.controls[index];
     this.witnesses.removeAt(index);
     this.witnesses.insert(index + 1, item);
-    this.form?.markAsDirty();
+    this.witnesses.updateValueAndValidity();
+    this.witnesses.markAsDirty();
   }
 
   public addAllWitnesses(): void {
@@ -156,7 +160,8 @@ export class AvailableWitnessesPartComponent
         });
       }
     });
-    this.form?.markAsDirty();
+    this.witnesses.updateValueAndValidity();
+    this.witnesses.markAsDirty();
   }
 
   private getWitnesses(): AvailableWitness[] {

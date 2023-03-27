@@ -27,6 +27,9 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
     return this._model;
   }
   public set model(value: MsFormalFeature | undefined) {
+    if (this._model === value) {
+      return;
+    }
     this._model = value;
     this.updateForm(value);
   }
@@ -73,7 +76,7 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsFormalFeature | null {
+  private getModel(): MsFormalFeature {
     return {
       handId: this.handId.value?.trim() || '',
       description: this.description.value?.trim() || '',
@@ -88,10 +91,7 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getModel();
-    if (!model) {
-      return;
-    }
-    this.modelChange.emit(model);
+    this._model = this.getModel();
+    this.modelChange.emit(this._model);
   }
 }
