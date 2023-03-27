@@ -178,6 +178,8 @@ export class VarQuotationsFragmentComponent
       quotations.splice(this.editedQuotationIndex, 1, quotation);
     }
     this.quotations.setValue(quotations);
+    this.quotations.updateValueAndValidity();
+    this.quotations.markAsDirty();
     this.closeQuotation();
   }
 
@@ -198,6 +200,8 @@ export class VarQuotationsFragmentComponent
           const quotations = [...this.quotations.value];
           quotations.splice(index, 1);
           this.quotations.setValue(quotations);
+          this.quotations.updateValueAndValidity();
+          this.quotations.markAsDirty();
         }
       });
   }
