@@ -23,11 +23,11 @@
     - [1.1.3](#113)
     - [1.1.1](#111)
 
-Quick Docker image build:
+🐋 Quick Docker image build:
 
-1. `npm run build-lib`
-2. update `env.js` version, and `ng build --configuration production`
-3. `docker build . -t vedph2020/cadmus-tgr-app:2.0.7 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
+1. `npm run build-lib`;
+2. update `env.js` version, and `ng build --configuration production`;
+3. `docker build . -t vedph2020/cadmus-tgr-app:2.0.8 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
 
 Web application frontend for Cadmus _TGR_. This application is built by packing together a number of components:
 
@@ -70,9 +70,10 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
-- 2023-03-27:
+- 2023-03-28:
   - updated Angular and packages.
   - minor refactoring in multiple-entities editors.
+  - style improvements.
 - 2023-03-07: updated packages.
 - 2023-02-21:
   - updated Angular and packages.

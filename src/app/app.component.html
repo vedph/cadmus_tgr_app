@@ -27,9 +27,12 @@
     </ng-container>
 
     <!-- search menu -->
-    <button mat-button routerLink="/search" *ngIf="logged">Search</button>
+    <button type="button" mat-button routerLink="/search" *ngIf="logged">
+      Search
+    </button>
     <!-- thesauri menu -->
     <button
+      type="button"
       mat-button
       routerLink="/thesauri"
       *ngIf="
@@ -78,11 +81,11 @@
     </div>
 
     <!-- login -->
-    <button *ngIf="!logged" mat-icon-button routerLink="/login">
+    <button type="button" *ngIf="!logged" mat-icon-button routerLink="/login">
       <mat-icon>login</mat-icon>
     </button>
     <!-- logout -->
-    <button *ngIf="logged" mat-icon-button (click)="logout()">
+    <button type="button" *ngIf="logged" mat-icon-button (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   </mat-toolbar>
