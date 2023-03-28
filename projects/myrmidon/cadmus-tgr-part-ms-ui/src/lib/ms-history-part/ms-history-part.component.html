@@ -15,12 +15,11 @@
             <div>
               <button
                 type="button"
-                mat-icon-button
+                mat-flat-button
                 color="primary"
                 (click)="addProvenance()"
               >
-                <mat-icon>add_circle</mat-icon>
-                add provenance
+                <mat-icon>add_circle</mat-icon> provenance
               </button>
             </div>
             <div
@@ -120,12 +119,12 @@
             <div>
               <button
                 type="button"
-                mat-icon-button
+                mat-flat-button
                 color="primary"
                 (click)="addOwner()"
               >
                 <mat-icon>add_circle</mat-icon>
-                add owner
+                owner
               </button>
             </div>
             <div
@@ -324,12 +323,12 @@
             <div>
               <button
                 type="button"
-                mat-icon-button
+                mat-flat-button
                 color="primary"
                 (click)="addAnnotation()"
               >
                 <mat-icon>add_circle</mat-icon>
-                add annotation
+                annotation
               </button>
             </div>
             <div
@@ -374,7 +373,7 @@
 
                 <!-- child controls -->
                 <!-- language (bound) -->
-                <mat-form-field *ngIf="langEntries?.length" style="width: 8em">
+                <mat-form-field *ngIf="langEntries?.length">
                   <mat-label>language</mat-label>
                   <mat-select formControlName="language">
                     <mat-option *ngFor="let e of langEntries" [value]="e.id">{{
@@ -392,7 +391,7 @@
                 </mat-form-field>
 
                 <!-- language (free) -->
-                <mat-form-field *ngIf="!langEntries?.length" style="width: 8em">
+                <mat-form-field *ngIf="!langEntries?.length">
                   <mat-label>language</mat-label>
                   <input matInput formControlName="language" />
                   <mat-error

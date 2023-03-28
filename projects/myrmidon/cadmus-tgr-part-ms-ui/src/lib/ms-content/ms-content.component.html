@@ -2,7 +2,7 @@
   <mat-tab-group>
     <!-- GENERAL -->
     <mat-tab label="general">
-      <div>
+      <div class="form-row">
         <!-- start -->
         <mat-form-field style="width: 8em">
           <mat-label>start</mat-label>
@@ -16,7 +16,7 @@
             >invalid start</mat-error
           >
         </mat-form-field>
-        &nbsp;
+
         <!-- end -->
         <mat-form-field style="width: 8em">
           <mat-label>end</mat-label>
@@ -38,7 +38,7 @@
           (entryChange)="onWorkEntryChange($event)"
         ></cadmus-thesaurus-tree>
       </div>
-      <div>
+      <div class="form-row">
         <!-- work -->
         <mat-form-field class="long-text">
           <mat-label>work</mat-label>
@@ -48,7 +48,6 @@
             >too long</mat-error
           >
         </mat-form-field>
-        &nbsp;
         <!-- location -->
         <mat-form-field>
           <mat-label>location</mat-label>
