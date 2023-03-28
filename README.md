@@ -3,6 +3,7 @@
 - [Cadmus TGR App](#cadmus-tgr-app)
   - [Production](#production)
   - [History](#history)
+    - [2.0.8](#208)
     - [2.0.7](#207)
     - [2.0.6](#206)
     - [2.0.5](#205)
@@ -69,6 +70,8 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 ```
 
 ## History
+
+### 2.0.8
 
 - 2023-03-28:
   - updated Angular and packages.
