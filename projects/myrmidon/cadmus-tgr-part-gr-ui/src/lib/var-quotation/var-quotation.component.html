@@ -4,7 +4,7 @@
     <mat-tab label="general">
       <div>
         <!-- tag (bound) -->
-        <mat-form-field *ngIf="quotTagEntries?.length" style="width: 8em">
+        <mat-form-field *ngIf="quotTagEntries?.length">
           <mat-label>tag</mat-label>
           <mat-select [formControl]="tag">
             <mat-option *ngFor="let e of quotTagEntries" [value]="e.id">{{
@@ -13,7 +13,7 @@
           </mat-select>
         </mat-form-field>
         <!-- tag (free) -->
-        <mat-form-field *ngIf="!quotTagEntries?.length" style="width: 8em">
+        <mat-form-field *ngIf="!quotTagEntries?.length">
           <mat-label>tag</mat-label>
           <input matInput [formControl]="tag" />
           <mat-error *ngIf="tag.errors?.maxLength && (tag.dirty || tag.touched)"
@@ -23,7 +23,7 @@
 
         &nbsp;
         <!-- authority (bound) -->
-        <mat-form-field *ngIf="quotAuthEntries?.length" style="width: 8em">
+        <mat-form-field *ngIf="quotAuthEntries?.length">
           <mat-label>authority</mat-label>
           <mat-select [formControl]="authority">
             <mat-option *ngFor="let e of quotAuthEntries" [value]="e.id">{{
@@ -40,7 +40,7 @@
         </mat-form-field>
 
         <!-- authority (free) -->
-        <mat-form-field *ngIf="!quotAuthEntries?.length" style="width: 8em">
+        <mat-form-field *ngIf="!quotAuthEntries?.length">
           <mat-label>authority</mat-label>
           <input matInput [formControl]="authority" />
           <mat-error
@@ -216,7 +216,7 @@
               </mat-form-field>
               &nbsp;
               <!-- tag (bound) -->
-              <mat-form-field *ngIf="quotTagEntries?.length" style="width: 8em">
+              <mat-form-field *ngIf="quotTagEntries?.length">
                 <mat-label>tag</mat-label>
                 <mat-select formControlName="qtag">
                   <mat-option *ngFor="let e of quotTagEntries" [value]="e.id">{{
@@ -226,10 +226,7 @@
               </mat-form-field>
 
               <!-- tag (free) -->
-              <mat-form-field
-                *ngIf="!quotTagEntries?.length"
-                style="width: 8em"
-              >
+              <mat-form-field *ngIf="!quotTagEntries?.length">
                 <mat-label>tag</mat-label>
                 <input matInput formControlName="qtag" />
                 <mat-error

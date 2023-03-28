@@ -248,7 +248,7 @@
           </mat-form-field>
           &nbsp;
           <!-- author: location -->
-          <mat-form-field style="width: 8em">
+          <mat-form-field>
             <mat-label>location</mat-label>
             <input matInput formControlName="location" />
             <mat-error
@@ -262,7 +262,7 @@
           </mat-form-field>
           &nbsp;
           <!-- author: tag (thesaurus) -->
-          <mat-form-field *ngIf="authTagEntries?.length" style="width: 10em">
+          <mat-form-field *ngIf="authTagEntries?.length">
             <mat-label>tag</mat-label>
             <mat-select formControlName="tag">
               <mat-option *ngFor="let e of authTagEntries" [value]="e.id">{{
@@ -271,7 +271,7 @@
             </mat-select>
           </mat-form-field>
           <!-- author: tag (free) -->
-          <mat-form-field *ngIf="!authTagEntries?.length" style="width: 8em">
+          <mat-form-field *ngIf="!authTagEntries?.length">
             <mat-label>tag</mat-label>
             <input matInput formControlName="tag" />
             <mat-error

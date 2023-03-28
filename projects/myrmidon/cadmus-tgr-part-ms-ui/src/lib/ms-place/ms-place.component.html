@@ -1,5 +1,5 @@
 <form [formGroup]="form" (submit)="save()">
-  <div>
+  <div class="form-row">
     <!-- area (bound) -->
     <mat-form-field *ngIf="areaEntries?.length">
       <mat-label>area</mat-label>
@@ -25,7 +25,6 @@
       >
     </mat-form-field>
 
-    &nbsp;
     <!-- address -->
     <mat-form-field style="width: 30em">
       <mat-label>address</mat-label>
@@ -38,7 +37,7 @@
   </div>
 
   <!-- city -->
-  <div>
+  <div class="form-row">
     <mat-form-field>
       <mat-label>city</mat-label>
       <input matInput [formControl]="city" />
@@ -47,7 +46,6 @@
       >
     </mat-form-field>
 
-    &nbsp;
     <!-- site -->
     <mat-form-field>
       <mat-label>site</mat-label>
@@ -57,7 +55,6 @@
       >
     </mat-form-field>
 
-    &nbsp;
     <!-- rank -->
     <mat-form-field style="width: 4em">
       <mat-label>rank</mat-label>

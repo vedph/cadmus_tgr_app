@@ -1,7 +1,7 @@
 <form [formGroup]="form" (submit)="save()">
   <div>
     <!-- id -->
-    <mat-form-field style="width: 8em">
+    <mat-form-field>
       <mat-label>ID</mat-label>
       <input matInput [formControl]="id" />
       <mat-error *ngIf="id.errors?.maxLength && (id.dirty || id.touched)"
@@ -11,7 +11,7 @@
 
     &nbsp;
     <!-- start -->
-    <mat-form-field style="width: 8em">
+    <mat-form-field>
       <mat-label>start</mat-label>
       <input matInput [formControl]="start" />
       <mat-error
@@ -25,7 +25,7 @@
 
     &nbsp;
     <!-- end -->
-    <mat-form-field style="width: 8em">
+    <mat-form-field>
       <mat-label>end</mat-label>
       <input matInput [formControl]="end" />
       <mat-error *ngIf="end.errors?.required && (end.dirty || end.touched)"

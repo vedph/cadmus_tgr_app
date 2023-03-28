@@ -101,7 +101,8 @@
           </div>
 
           <!-- history -->
-          <div>
+          <fieldset>
+            <legend>history</legend>
             <ngx-monaco-editor
               [options]="editorOptions"
               [formControl]="history"
@@ -112,7 +113,7 @@
               "
               >history too long</mat-error
             >
-          </div>
+          </fieldset>
 
           <!-- owners -->
           <div formArrayName="owners">
@@ -219,7 +220,7 @@
           </div>
           <div>
             <!-- language (bound) -->
-            <mat-form-field *ngIf="langEntries?.length" style="width: 8em">
+            <mat-form-field *ngIf="langEntries?.length">
               <mat-label>language</mat-label>
               <mat-select [formControl]="subLanguage">
                 <mat-option *ngFor="let e of langEntries" [value]="e.id">{{
@@ -236,7 +237,7 @@
             </mat-form-field>
 
             <!-- language (free) -->
-            <mat-form-field *ngIf="!langEntries?.length" style="width: 8em">
+            <mat-form-field *ngIf="!langEntries?.length">
               <mat-label>language</mat-label>
               <input matInput [formControl]="subLanguage" />
               <mat-error
@@ -340,36 +341,38 @@
               "
             >
               <!-- child form -->
-              <div [formGroupName]="i">
+              <div [formGroupName]="i" class="form-row">
                 <!-- child actions -->
-                {{ i + 1 }}.
-                <button
-                  mat-icon-button
-                  type="button"
-                  matTooltip="Remove this annotation"
-                  color="warn"
-                  (click)="removeAnnotation(i)"
-                >
-                  <mat-icon>remove_circle</mat-icon>
-                </button>
-                <button
-                  [disabled]="first"
-                  mat-icon-button
-                  type="button"
-                  matTooltip="Move annotation up"
-                  (click)="moveAnnotationUp(i)"
-                >
-                  <mat-icon>arrow_upward</mat-icon>
-                </button>
-                <button
-                  [disabled]="last"
-                  mat-icon-button
-                  type="button"
-                  matTooltip="Move annotation down"
-                  (click)="moveAnnotationDown(i)"
-                >
-                  <mat-icon>arrow_downward</mat-icon>
-                </button>
+                <div>
+                  {{ i + 1 }}.
+                  <button
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Remove this annotation"
+                    color="warn"
+                    (click)="removeAnnotation(i)"
+                  >
+                    <mat-icon>remove_circle</mat-icon>
+                  </button>
+                  <button
+                    [disabled]="first"
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Move annotation up"
+                    (click)="moveAnnotationUp(i)"
+                  >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    [disabled]="last"
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Move annotation down"
+                    (click)="moveAnnotationDown(i)"
+                  >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                </div>
 
                 <!-- child controls -->
                 <!-- language (bound) -->
@@ -412,7 +415,6 @@
                   >
                 </mat-form-field>
 
-                &nbsp;
                 <!-- handId -->
                 <mat-form-field>
                   <mat-label>hand ID</mat-label>
@@ -428,20 +430,18 @@
                 </mat-form-field>
 
                 <!-- note -->
-                <div>
-                  <mat-form-field class="long-text-indented">
-                    <mat-label>note</mat-label>
-                    <input matInput formControlName="note" />
-                    <mat-error
-                      *ngIf="
-                        $any(item)['controls'].note.errors?.maxLength &&
-                        ($any(item)['controls'].note.dirty ||
-                          $any(item)['controls'].note.touched)
-                      "
-                      >too long</mat-error
-                    >
-                  </mat-form-field>
-                </div>
+                <mat-form-field class="long-text-indented">
+                  <mat-label>note</mat-label>
+                  <input matInput formControlName="note" />
+                  <mat-error
+                    *ngIf="
+                      $any(item)['controls'].note.errors?.maxLength &&
+                      ($any(item)['controls'].note.dirty ||
+                        $any(item)['controls'].note.touched)
+                    "
+                    >too long</mat-error
+                  >
+                </mat-form-field>
               </div>
             </div>
           </div>
