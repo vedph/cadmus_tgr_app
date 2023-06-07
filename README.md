@@ -71,6 +71,7 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-06-07: updated packages.
 - 2023-05-12: updated to Angular 16.
 
 ### 2.0.8
