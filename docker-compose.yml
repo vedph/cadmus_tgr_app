@@ -1,9 +1,10 @@
 version: '3.7'
+
 services:
   # MongoDB
-  cadmus-mongo:
+  cadmus-tgr-mongo:
     image: mongo
-    container_name: cadmus-mongo
+    container_name: cadmus-tgr-mongo
     environment:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null
@@ -11,63 +12,60 @@ services:
     ports:
       - 27017:27017
     networks:
-      - cadmus-network
+      - cadmus-tgr-network
 
-  # MySql
-  # https://github.com/docker-library/docs/tree/master/mysql#mysql_database
-  # https://docs.docker.com/samples/library/mysql/#environment-variables
-  # https://github.com/docker-library/mysql/issues/275 (troubleshooting connection)
-  cadmus-index:
-    image: mysql
-    container_name: cadmus-index
-    # https://github.com/docker-library/mysql/issues/454
-    command: --default-authentication-plugin=mysql_native_password
-    # https://stackoverflow.com/questions/55559386/how-to-fix-mbind-operation-not-permitted-in-mysql-error-log
-    cap_add:
-      - SYS_NICE  # CAP_SYS_NICE
+ # PostgreSQL
+  cadmus-tgr-pgsql:
+    image: postgres
+    container_name: cadmus-tgr-pgsql
     environment:
-      # the password that will be set for the MySQL root superuser account
-      # Note: use dictionary like here rather than array (- name = value)
-      # or you might get MySql connection errors!
-      # https://stackoverflow.com/questions/37459031/connecting-to-a-docker-compose-mysql-container-denies-access-but-docker-running/37460872#37460872
-      MYSQL_ROOT_PASSWORD: mysql
-      MYSQL_ROOT_HOST: '%'
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
     ports:
-      - 3306:3306
+      - 5432:5432
     networks:
-      - cadmus-network
+      - cadmus-tgr-network
+    # volumes:
+      # ensure you have created the var/db/pgsql folder in the host
+      # https://hub.docker.com/r/postgis/postgis
+      # - /var/db/pgsql:/var/lib/postgresql/data
 
-  cadmus-api:
-    image: vedph2020/cadmus_tgr_api:3.0.1
+  # Cadmus TGR API
+  cadmus-tgr-api:
+    image: vedph2020/cadmus-tgr-api:4.0.0
+    container_name: cadmus-tgr-api
     ports:
       # https://stackoverflow.com/questions/48669548/why-does-aspnet-core-start-on-port-80-from-within-docker
       - 59590:80
     depends_on:
-      - cadmus-mongo
-      - cadmus-index
+      - cadmus-tgr-mongo
+      - cadmus-tgr-pgsql
     environment:
       # for Windows use : as separator, for non Windows use __
       # (see https://github.com/aspnet/Configuration/issues/469)
-      - CONNECTIONSTRINGS__DEFAULT=mongodb://cadmus-mongo:27017/{0}
-      - CONNECTIONSTRINGS__INDEX=Server=cadmus-index;port=3306;Database={0};Uid=root;Pwd=mysql
-      - SEED__INDEXDELAY=50
+      - CONNECTIONSTRINGS__DEFAULT=mongodb://cadmus-tgr-mongo:27017/{0}
+      - CONNECTIONSTRINGS__INDEX=Server=cadmus-tgr-pgsql;port=5432;Database={0};User Id=postgres;Password=postgres;Include Error Detail=True
+      - SEED__INDEXDELAY=25
       - MESSAGING__APIROOTURL=http://cadmusapi.azurewebsites.net
       - MESSAGING__APPROOTURL=http://cadmusapi.com/
       - MESSAGING__SUPPORTEMAIL=support@cadmus.com
-      - SERILOG__CONNECTIONSTRING=mongodb://cadmus-mongo:27017/{0}-log
+      - SERILOG__CONNECTIONSTRING=mongodb://cadmus-tgr-mongo:27017/{0}-log
       - STOCKUSERS__0__PASSWORD=P4ss-W0rd!
     networks:
-      - cadmus-network
+      - cadmus-tgr-network
 
-  cadmus-web:
-    image: vedph2020/cadmus-tgr-app:2.0.8
+  # Cadmus app
+  cadmus-tgr-app:
+    image: vedph2020/cadmus-tgr-app:3.0.0
+    container_name: cadmus-tgr-app
     ports:
       - 4200:80
     depends_on:
-      - cadmus-api
+      - cadmus-tgr-api
     networks:
-      - cadmus-network
+      - cadmus-tgr-network
 
 networks:
-  cadmus-network:
+  cadmus-tgr-network:
     driver: bridge
