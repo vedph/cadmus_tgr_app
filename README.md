@@ -72,6 +72,8 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-07-06: increased ms formal description size limit from 500 to 50000.
+
 ### 3.0.0
 
 - 2023-06-22: updated Angular and moved to PostgreSQL.

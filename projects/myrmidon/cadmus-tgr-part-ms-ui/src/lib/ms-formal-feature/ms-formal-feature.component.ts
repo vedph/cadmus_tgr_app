@@ -50,7 +50,7 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
     this.handId = formBuilder.control(null, Validators.maxLength(50));
     this.description = formBuilder.control(null, [
       Validators.required,
-      Validators.maxLength(500),
+      Validators.maxLength(50000),
     ]);
     this.form = formBuilder.group({
       handId: this.handId,
