@@ -122,12 +122,12 @@
           <div>
             <button
               type="button"
-              mat-icon-button
+              mat-flat-button
               color="primary"
               (click)="addParallel()"
             >
               <mat-icon>add_circle</mat-icon>
-              add parallel
+              parallel
             </button>
           </div>
           <div
@@ -268,7 +268,7 @@
           color="primary"
           (click)="addVariant()"
         >
-          <mat-icon>add_circle</mat-icon> add variant
+          <mat-icon>add_circle</mat-icon> variant
         </button>
       </div>
       <table *ngIf="variants?.value?.length">
