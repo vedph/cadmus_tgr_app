@@ -73,6 +73,12 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-08-09:
+  - added `p` to `MsLocation` to represent pagination instead of foliation. This is represented as a final `%` in the location string.
+  - added support for metadata part.
+  - reordered routes.
+  - updated Angular and packages.
+
 ### 3.0.1
 
 - 2023-07-17: added missing bound thesaurus in ms component editor.

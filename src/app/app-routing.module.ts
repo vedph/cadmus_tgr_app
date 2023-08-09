@@ -17,7 +17,6 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { LoginPageComponent } from './login-page/login-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   // auth
   { path: 'login', component: LoginPageComponent },
@@ -38,14 +37,6 @@ const routes: Routes = [
   },
   // cadmus - items
   {
-    path: 'items',
-    loadChildren: () =>
-      import('@myrmidon/cadmus-item-list').then(
-        (module) => module.CadmusItemListModule
-      ),
-    canActivate: [AuthJwtGuardService],
-  },
-  {
     path: 'items/:id',
     loadChildren: () =>
       import('@myrmidon/cadmus-item-editor').then(
@@ -53,6 +44,14 @@ const routes: Routes = [
       ),
     canActivate: [AuthJwtGuardService],
     canDeactivate: [PendingChangesGuard],
+  },
+  {
+    path: 'items',
+    loadChildren: () =>
+      import('@myrmidon/cadmus-item-list').then(
+        (module) => module.CadmusItemListModule
+      ),
+    canActivate: [AuthJwtGuardService],
   },
   {
     path: 'search',
@@ -64,14 +63,6 @@ const routes: Routes = [
   },
   // cadmus - thesauri
   {
-    path: 'thesauri',
-    loadChildren: () =>
-      import('@myrmidon/cadmus-thesaurus-list').then(
-        (module) => module.CadmusThesaurusListModule
-      ),
-    canActivate: [EditorGuardService],
-  },
-  {
     path: 'thesauri/:id',
     loadChildren: () =>
       import('@myrmidon/cadmus-thesaurus-editor').then(
@@ -79,15 +70,15 @@ const routes: Routes = [
       ),
     canActivate: [EditorGuardService],
   },
-  // cadmus - parts
   {
-    path: 'items/:iid/general',
+    path: 'thesauri',
     loadChildren: () =>
-      import('@myrmidon/cadmus-part-general-pg').then(
-        (module) => module.CadmusPartGeneralPgModule
+      import('@myrmidon/cadmus-thesaurus-list').then(
+        (module) => module.CadmusThesaurusListModule
       ),
-    canActivate: [AuthJwtGuardService],
+    canActivate: [EditorGuardService],
   },
+  // cadmus - parts
   {
     path: 'items/:iid/general',
     loadChildren: () =>
@@ -130,6 +121,7 @@ const routes: Routes = [
     canActivate: [AuthJwtGuardService],
   },
   // fallback
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: HomeComponent },
 ];
 

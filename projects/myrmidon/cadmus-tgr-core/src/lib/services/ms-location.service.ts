@@ -10,20 +10,20 @@ import { MsLocation, MsLocationRange } from '../models';
 })
 export class MsLocationService {
   public static readonly locRegexp = new RegExp(
-    '^\\s*([0-9]+|[IVX]+)([a-z]{0,2})\\s*([0-9]+)?\\s*$'
+    '^\\s*([0-9]+|[IVX]+)([a-z]{0,2})\\s*([0-9]+)?\\s*(%)?\\s*$'
   );
   public static readonly locsRegexp = new RegExp(
-    '^(?:([0-9]+|[IVX]+)([a-z]{0,2})\\s*([0-9]+)?\\s*)*$'
+    '^(?:([0-9]+|[IVX]+)([a-z]{0,2})\\s*([0-9]+)?\\s*(%)?\\s*)*$'
   );
   public static readonly rangesRegexp = new RegExp(
-    '^(?:([0-9]+|[IVX]+)([a-z]{0,2})\\s*([0-9]+)?(\\s*-\\s*([0-9]+|[IVX]+)([a-z]{0,2})\\s*([0-9]+)?)?)*$'
+    '^(?:([0-9]+|[IVX]+)([a-z]{0,2})\\s*([0-9]+)?\\s*(%)?(\\s*-\\s*([0-9]+|[IVX]+)([a-z]{0,2})\\s*([0-9]+)?\\s*(%)?)?)*$'
   );
 
   /**
    * Parse the text representing a MsLocation, in the form
-   * nr + 0-2 lowercase letters + optional whitespace + ln,
-   * like "36r 12", where nr can be either Arabic or Roman
-   * (uppercase).
+   * nr + 0-2 lowercase letters + optional whitespace + ln
+   * + optional whitespace + %., like "36r 12", where nr
+   * can be either Arabic or Roman (uppercase).
    *
    * @param text The text to be parsed.
    * @returns The location, or null if invalid text.
@@ -55,6 +55,7 @@ export class MsLocationService {
       r,
       s: m[2] ? m[2] : undefined,
       l: m[3] ? +m[3] : 0,
+      p: m[4] === '%',
     };
   }
 
@@ -63,7 +64,8 @@ export class MsLocationService {
    * with parseLocation.
    *
    * @param location The location. If null, null is returned.
-   * @returns String with form nr + suffix + ln, like "36r12", "IIrv13", etc.
+   * @returns String with form nr + suffix + ln + optional %, like
+   * "36r12", "IIrv13", etc.
    */
   public locationToString(
     location: MsLocation | undefined | null
@@ -85,6 +87,11 @@ export class MsLocationService {
     if (location.l) {
       sb.push(location.l.toString());
     }
+
+    if (location.p) {
+      sb.push('%');
+    }
+
     return sb.join('');
   }
 

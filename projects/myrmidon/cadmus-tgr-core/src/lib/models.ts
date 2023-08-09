@@ -34,6 +34,7 @@ export interface LingTaggedForm {
   r?: boolean;
   s?: string;
   l?: number;
+  p?: boolean;
 }
 
 /**

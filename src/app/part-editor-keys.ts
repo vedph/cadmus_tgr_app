@@ -8,6 +8,7 @@ import {
   COMMENT_FRAGMENT_TYPEID,
   BIBLIOGRAPHY_PART_TYPEID,
   CHRONOLOGY_FRAGMENT_TYPEID,
+  METADATA_PART_TYPEID,
 } from '@myrmidon/cadmus-part-general-ui';
 import {
   APPARATUS_FRAGMENT_TYPEID,
@@ -59,6 +60,9 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
     part: GENERAL,
   },
   [KEYWORDS_PART_TYPEID]: {
+    part: GENERAL,
+  },
+  [METADATA_PART_TYPEID]: {
     part: GENERAL,
   },
   [NOTE_PART_TYPEID]: {
