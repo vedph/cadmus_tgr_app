@@ -55,7 +55,7 @@ export class MsLocationService {
       r,
       s: m[2] ? m[2] : undefined,
       l: m[3] ? +m[3] : 0,
-      p: m[4] === '%',
+      p: m[4] ? true : undefined,
     };
   }
 
