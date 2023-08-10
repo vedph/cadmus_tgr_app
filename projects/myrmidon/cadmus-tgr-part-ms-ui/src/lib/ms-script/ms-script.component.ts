@@ -265,7 +265,7 @@ export class MsScriptComponent implements OnInit, OnDestroy {
    * languages.
    */
   private updateLangArray(ids: string[] | undefined): void {
-    if (!this._langEntries?.length || !ids) {
+    if (!this._langEntries?.length || !ids || !this.langChecks) {
       this.langCount.setValue(0);
       return;
     }
@@ -302,7 +302,7 @@ export class MsScriptComponent implements OnInit, OnDestroy {
   }
 
   private updateCheckedCount(): void {
-    if (!this._langEntries?.length) {
+    if (!this._langEntries?.length || !this.langChecks) {
       return;
     }
     let n = 0;
