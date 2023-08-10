@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -6,9 +13,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
-import { take } from 'rxjs/operators';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import { DialogService } from '@myrmidon/ng-mat-tools';
 
@@ -19,7 +28,8 @@ import { MsHand, MsScript } from '../ms-scripts-part';
   templateUrl: './ms-script.component.html',
   styleUrls: ['./ms-script.component.css'],
 })
-export class MsScriptComponent implements OnInit {
+export class MsScriptComponent implements OnInit, OnDestroy {
+  private _sub?: Subscription;
   private _editedIndex: number;
   private _langEntries: ThesaurusEntry[] | undefined;
   private _model: MsScript | undefined;
@@ -41,6 +51,9 @@ export class MsScriptComponent implements OnInit {
     return this._langEntries;
   }
   public set langEntries(value: ThesaurusEntry[] | undefined) {
+    if (this._langEntries === value) {
+      return;
+    }
     this._langEntries = value;
     this.buildLangArray(this.getCheckedLanguages());
   }
@@ -97,10 +110,17 @@ export class MsScriptComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.updateForm(this.model);
-    this.langChecks.valueChanges.subscribe((_) => {
+    // build lang array with up to date values - this can be necessary
+    // if the lang entries are set before the form has been built
+    this.buildLangArray(this.getCheckedLanguages());
+
+    this._sub = this.langChecks.valueChanges.subscribe((_) => {
       this.updateCheckedCount();
     });
+  }
+
+  ngOnDestroy(): void {
+    this._sub?.unsubscribe();
   }
 
   private updateForm(model: MsScript | undefined): void {
@@ -223,6 +243,9 @@ export class MsScriptComponent implements OnInit {
    * @param ids The IDs of the selected languages.
    */
   private buildLangArray(ids: string[]): void {
+    if (!this.langChecks) {
+      return;
+    }
     this.langChecks.clear();
     if (!this._langEntries?.length) {
       return;
