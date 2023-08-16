@@ -5,19 +5,19 @@ import {
   FormGroup,
   UntypedFormGroup,
 } from '@angular/forms';
+import { take } from 'rxjs/operators';
 
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 
 import {
   MsScript,
   MsScriptsPart,
   MSSCRIPTS_PART_TYPEID,
 } from '../ms-scripts-part';
-import { take } from 'rxjs/operators';
-import { DialogService } from '@myrmidon/ng-mat-tools';
-import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
 
 /**
  * MsScripts editor component.
@@ -34,13 +34,13 @@ export class MsScriptsPartComponent
   implements OnInit
 {
   public editedScriptIndex: number;
-  public editedScript: MsScript | undefined;
+  public editedScript?: MsScript;
 
   public scripts: FormControl<MsScript[]>;
 
-  public langEntries: ThesaurusEntry[] | undefined;
-  public scrTypeEntries: ThesaurusEntry[] | undefined;
-  public scrRoleEntries: ThesaurusEntry[] | undefined;
+  public langEntries?: ThesaurusEntry[];
+  public scrTypeEntries?: ThesaurusEntry[];
+  public scrRoleEntries?: ThesaurusEntry[];
 
   constructor(
     authService: AuthJwtService,

@@ -308,6 +308,9 @@ export class MsScriptComponent implements OnInit, OnDestroy {
     let n = 0;
     for (let i = 0; i < this._langEntries.length; i++) {
       const g = this.langChecks.at(i) as FormGroup;
+      if (!g) {
+        break;
+      }
       if (g.controls.check.value) {
         n++;
       }
