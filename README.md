@@ -3,6 +3,7 @@
 - [Cadmus TGR App](#cadmus-tgr-app)
   - [Production](#production)
   - [History](#history)
+    - [3.1.3](#313)
     - [3.1.2](#312)
     - [3.1.1](#311)
     - [3.1.0](#310)
@@ -33,7 +34,7 @@
 
 1. `npm run build-lib`;
 2. update `env.js` version, and `ng build --configuration production`;
-3. `docker build . -t vedph2020/cadmus-tgr-app:3.1.2 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-tgr-app:3.1.3 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
 
 Web application frontend for Cadmus _TGR_. This application is built by packing together a number of components:
 
@@ -66,7 +67,7 @@ Swagger at <http://151.100.184.12:59590/swagger/index.html>.
 
 (note the API port number; the standard port 80/443 is reserved for this frontend).
 
-(3) `docker build . -t vedph2020/cadmus-tgr-app:3.1.2-prod` and then push the image.
+(3) `docker build . -t vedph2020/cadmus-tgr-app:3.1.3-prod` and then push the image.
 
 CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the `AllowedOrigins` of the API layer, e.g.:
 
@@ -75,6 +76,10 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 ```
 
 ## History
+
+### 3.1.3
+
+- 2023-08-17: refactored ms scripts editor.
 
 ### 3.1.2
 

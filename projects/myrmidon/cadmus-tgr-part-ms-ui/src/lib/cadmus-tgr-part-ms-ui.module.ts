@@ -26,6 +26,7 @@ import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-referen
 import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
 import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size';
+import { CadmusUiFlagsPickerModule } from '@myrmidon/cadmus-ui-flags-picker';
 
 // locals
 import { MsUnitsPartComponent } from './ms-units-part/ms-units-part.component';
@@ -90,6 +91,7 @@ import { MsSignaturesPartComponent } from './ms-signatures-part/ms-signatures-pa
     // Cadmus
     NgToolsModule,
     CadmusCoreModule,
+    CadmusUiFlagsPickerModule,
     CadmusUiModule,
     CadmusMatPhysicalSizeModule,
     CadmusRefsDocReferencesModule,

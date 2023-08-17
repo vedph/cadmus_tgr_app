@@ -1,22 +1,14 @@
 <form [formGroup]="form" (submit)="save()">
   <mat-tab-group [(selectedIndex)]="tabIndex">
     <mat-tab label="script">
-      <div class="form-row">
+      <div>
         <!-- languages (bound) -->
-        <div
-          formArrayName="langChecks"
-          *ngIf="langEntries?.length"
-          style="margin: 8px"
-        >
-          <div *ngFor="let c of langChecks.controls; let i = index">
-            <div [formGroupName]="i">
-              <mat-checkbox formControlName="check">{{
-                $any(langEntries)[i].value
-              }}</mat-checkbox>
-            </div>
-          </div>
-        </div>
-
+        <cadmus-ui-flags-picker
+          [flags]="langFlags$ | async"
+          (flagsChange)="onLangFlagsChange($event)"
+        ></cadmus-ui-flags-picker>
+      </div>
+      <div>
         <!-- role (bound) -->
         <mat-form-field *ngIf="scrRoleEntries?.length" style="width: 12em">
           <mat-label>role</mat-label>
@@ -45,8 +37,9 @@
         </mat-form-field>
       </div>
 
-      <div>
-        <!-- type -->
+      <!-- type -->
+      <fieldset>
+        <legend>type</legend>
         <cadmus-thesaurus-tree
           *ngIf="scrTypeEntries?.length"
           [entries]="$any(scrTypeEntries)"
@@ -63,7 +56,7 @@
             >too long</mat-error
           >
         </mat-form-field>
-      </div>
+      </fieldset>
 
       <!-- hands -->
       <div>

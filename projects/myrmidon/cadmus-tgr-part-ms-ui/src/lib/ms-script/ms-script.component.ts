@@ -1,38 +1,39 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import {
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { take } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 import { DialogService } from '@myrmidon/ng-mat-tools';
+import { Flag, FlagsPickerAdapter } from '@myrmidon/cadmus-ui-flags-picker';
 
 import { MsHand, MsScript } from '../ms-scripts-part';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
+
+function entryToFlag(entry: ThesaurusEntry): Flag {
+  return {
+    id: entry.id,
+    label: entry.value,
+  };
+}
 
 @Component({
   selector: 'tgr-ms-script',
   templateUrl: './ms-script.component.html',
   styleUrls: ['./ms-script.component.css'],
 })
-export class MsScriptComponent implements OnInit, OnDestroy {
-  private _sub?: Subscription;
+export class MsScriptComponent {
   private _editedIndex: number;
   private _langEntries: ThesaurusEntry[] | undefined;
   private _model: MsScript | undefined;
+  private readonly _flagAdapter: FlagsPickerAdapter;
 
   @Input()
   public get model(): MsScript | undefined {
@@ -47,6 +48,12 @@ export class MsScriptComponent implements OnInit, OnDestroy {
   }
 
   @Input()
+  public scrRoleEntries: ThesaurusEntry[] | undefined;
+
+  @Input()
+  public scrTypeEntries: ThesaurusEntry[] | undefined;
+
+  @Input()
   public get langEntries(): ThesaurusEntry[] | undefined {
     return this._langEntries;
   }
@@ -54,15 +61,12 @@ export class MsScriptComponent implements OnInit, OnDestroy {
     if (this._langEntries === value) {
       return;
     }
-    this._langEntries = value;
-    this.buildLangArray(this.getCheckedLanguages());
+    this._langEntries = value || [];
+    this._flagAdapter.setSlotFlags(
+      'languages',
+      this._langEntries.map(entryToFlag)
+    );
   }
-
-  @Input()
-  public scrRoleEntries: ThesaurusEntry[] | undefined;
-
-  @Input()
-  public scrTypeEntries: ThesaurusEntry[] | undefined;
 
   @Output()
   public modelChange: EventEmitter<MsScript>;
@@ -70,16 +74,18 @@ export class MsScriptComponent implements OnInit, OnDestroy {
   public editorClose: EventEmitter<any>;
 
   public form: FormGroup;
-  public langChecks: FormArray;
-  public langCount: FormControl<number>;
+  public languages: FormControl<Flag[]>;
   public role: FormControl<string | null>;
   public type: FormControl<string | null>;
   public hands: FormControl<MsHand[]>;
   public tabIndex: number;
   public editedHand: MsHand | undefined;
 
+  // flags
+  public langFlags$: Observable<Flag[]>;
+
   constructor(
-    private _formBuilder: FormBuilder,
+    formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {
@@ -88,39 +94,26 @@ export class MsScriptComponent implements OnInit, OnDestroy {
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
-    this.langChecks = _formBuilder.array([]);
-    this.langCount = _formBuilder.control(0, {
-      validators: Validators.min(1),
+    this.languages = formBuilder.control([], {
+      validators: NgToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
-    this.role = _formBuilder.control(null, [
+    this.role = formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(50),
     ]);
-    this.type = _formBuilder.control(null, Validators.maxLength(50));
-    this.hands = _formBuilder.control([], { nonNullable: true });
+    this.type = formBuilder.control(null, Validators.maxLength(50));
+    this.hands = formBuilder.control([], { nonNullable: true });
 
-    this.form = _formBuilder.group({
-      langChecks: this.langChecks,
-      langCount: this.langCount,
+    this.form = formBuilder.group({
+      languages: this.languages,
       role: this.role,
       type: this.type,
       hands: this.hands,
     });
-  }
-
-  ngOnInit(): void {
-    // build lang array with up to date values - this can be necessary
-    // if the lang entries are set before the form has been built
-    this.buildLangArray(this.getCheckedLanguages());
-
-    this._sub = this.langChecks.valueChanges.subscribe((_) => {
-      this.updateCheckedCount();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this._sub?.unsubscribe();
+    // flags
+    this._flagAdapter = new FlagsPickerAdapter();
+    this.langFlags$ = this._flagAdapter.selectFlags('languages');
   }
 
   private updateForm(model: MsScript | undefined): void {
@@ -129,8 +122,10 @@ export class MsScriptComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.updateLangArray(model.languages || []);
-    this.updateCheckedCount();
+    this.languages.setValue(
+      this._flagAdapter.setSlotChecks('languages', model.languages)
+    );
+    this.languages.updateValueAndValidity();
     this.role.setValue(model.role);
     this.type.setValue(model.type || null);
     this.hands.setValue(model.hands || []);
@@ -140,11 +135,18 @@ export class MsScriptComponent implements OnInit, OnDestroy {
 
   private getModel(): MsScript {
     return {
-      languages: this.getCheckedLanguages(),
+      languages: this._flagAdapter.getOptionalCheckedFlagIds('languages') || [],
       role: this.role.value?.trim() || '',
       type: this.type.value?.trim(),
       hands: this.hands.value?.length ? this.hands.value : undefined,
     };
+  }
+
+  public onLangFlagsChange(flags: Flag[]): void {
+    this._flagAdapter.setSlotFlags('languages', flags, true);
+    this.languages.setValue(flags);
+    this.languages.markAsDirty();
+    this.languages.updateValueAndValidity();
   }
 
   //#region Hands
@@ -232,90 +234,6 @@ export class MsScriptComponent implements OnInit, OnDestroy {
 
   public locationToString(location: MsLocation | null): string {
     return this._locService.locationToString(location) ?? '';
-  }
-  //#endregion
-
-  //#region Languages
-  /**
-   * Add a FormControl to the languages array for each language
-   * entry, checked when its ID is found among the selected
-   * languages.
-   * @param ids The IDs of the selected languages.
-   */
-  private buildLangArray(ids: string[]): void {
-    if (!this.langChecks) {
-      return;
-    }
-    this.langChecks.clear();
-    if (!this._langEntries?.length) {
-      return;
-    }
-
-    this._langEntries.forEach((e) => {
-      const checked = ids.some((s: string) => s === e.id);
-      const g = this._formBuilder.group({
-        check: this._formBuilder.control(checked),
-      });
-      this.langChecks.push(g);
-    });
-  }
-
-  /**
-   * Update the languages array checks to reflect the selected
-   * languages.
-   */
-  private updateLangArray(ids: string[] | undefined): void {
-    if (!this._langEntries?.length || !ids || !this.langChecks) {
-      this.langCount.setValue(0);
-      return;
-    }
-
-    let n = 0;
-    for (let i = 0; i < this._langEntries.length; i++) {
-      const id = this._langEntries[i].id;
-      const checked = ids.some((s) => s === id);
-      const g = this.langChecks.at(i) as FormGroup;
-      g.controls.check.setValue(checked);
-      if (checked) {
-        n++;
-      }
-    }
-    this.langCount.setValue(n);
-  }
-
-  /**
-   * Gets the list of all the IDs corresponding to the checked
-   * languages.
-   */
-  private getCheckedLanguages(): string[] {
-    if (!this._langEntries?.length || !this.langChecks) {
-      return [];
-    }
-    const ids: string[] = [];
-    for (let i = 0; i < this._langEntries.length; i++) {
-      const g = this.langChecks.at(i) as FormGroup;
-      if (g?.controls?.check.value) {
-        ids.push(this._langEntries[i].id);
-      }
-    }
-    return ids;
-  }
-
-  private updateCheckedCount(): void {
-    if (!this._langEntries?.length || !this.langChecks) {
-      return;
-    }
-    let n = 0;
-    for (let i = 0; i < this._langEntries.length; i++) {
-      const g = this.langChecks.at(i) as FormGroup;
-      if (!g) {
-        break;
-      }
-      if (g.controls.check.value) {
-        n++;
-      }
-    }
-    this.langCount.setValue(n);
   }
   //#endregion
 

@@ -12,3 +12,11 @@ th {
 .form-row * {
   flex: 0 0 auto;
 }
+fieldset {
+  border: 1px solid silver;
+  padding: 0.5em;
+  margin: 0.5em 0;
+}
+legend {
+  color: silver;
+}
