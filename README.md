@@ -77,6 +77,9 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-09-24:
+  - updated Angular and packages.
+  - opted in thesauri import.
 - 2023-09-19: updated Angular and packages.
 
 ### 3.1.3
