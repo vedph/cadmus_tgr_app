@@ -51,7 +51,7 @@ export class MsGuardSheetComponent implements OnInit {
     // form
     this.back = _formBuilder.control(false, { nonNullable: true });
     this.material = _formBuilder.control(null, Validators.maxLength(50));
-    this.note = _formBuilder.control(null, Validators.maxLength(500));
+    this.note = _formBuilder.control(null, Validators.maxLength(1500));
     this.watermarks = _formBuilder.array([]);
     this.form = _formBuilder.group({
       back: this.back,

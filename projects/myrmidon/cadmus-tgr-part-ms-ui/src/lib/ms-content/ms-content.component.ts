@@ -79,7 +79,7 @@ export class MsContentComponent implements OnInit {
     this.title = formBuilder.control(null, Validators.maxLength(100));
     this.incipit = formBuilder.control(null, Validators.maxLength(500));
     this.explicit = formBuilder.control(null, Validators.maxLength(500));
-    this.note = formBuilder.control(null, Validators.maxLength(500));
+    this.note = formBuilder.control(null, Validators.maxLength(1500));
     this.editions = formBuilder.control([], { nonNullable: true });
     this.form = formBuilder.group({
       start: this.start,

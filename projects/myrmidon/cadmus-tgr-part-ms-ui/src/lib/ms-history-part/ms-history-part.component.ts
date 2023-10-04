@@ -77,7 +77,7 @@ export class MsHistoryPartComponent
     this.subLanguage = _formBuilder.control(null, [Validators.maxLength(50)]);
     this.subHandId = _formBuilder.control(null, Validators.maxLength(50));
     this.subText = _formBuilder.control(null, Validators.maxLength(1000));
-    this.subNote = _formBuilder.control(null, Validators.maxLength(500));
+    this.subNote = _formBuilder.control(null, Validators.maxLength(1500));
     this.annotations = _formBuilder.array([]);
   }
 

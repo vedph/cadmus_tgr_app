@@ -52,7 +52,7 @@ export class MsPalimpsestComponent implements OnInit {
       Validators.maxLength(100),
       this.locationsVal,
     ]);
-    this.note = formBuilder.control(null, Validators.maxLength(500));
+    this.note = formBuilder.control(null, Validators.maxLength(1500));
     this.form = formBuilder.group({
       locations: this.locations,
       note: this.note,

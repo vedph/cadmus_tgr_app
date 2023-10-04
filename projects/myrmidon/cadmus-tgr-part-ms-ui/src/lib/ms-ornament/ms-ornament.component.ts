@@ -94,7 +94,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
       Validators.pattern(MsLocationService.locRegexp),
     ]);
     this.description = formBuilder.control(null, Validators.maxLength(1000));
-    this.note = formBuilder.control(null, Validators.maxLength(500));
+    this.note = formBuilder.control(null, Validators.maxLength(1500));
     this.hasSize = formBuilder.control(false, { nonNullable: true });
     this.form = formBuilder.group({
       type: this.type,

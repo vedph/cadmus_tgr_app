@@ -4,7 +4,7 @@
 
   // environment-dependent settings
   window.__env.apiUrl = "http://localhost:59590/api/";
-  window.__env.version = "3.1.3";
+  window.__env.version = "4.0.0";
   // enable thesaurus import in thesaurus list for admins
   window.__env.thesImportEnabled = true;
 })(this);
