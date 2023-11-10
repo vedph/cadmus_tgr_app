@@ -78,6 +78,7 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-11-10: ⚠️ upgraded to Angular 17.
 - 2023-11-05:
   - updated Angular and packages.
   - removed hash in routing config.
