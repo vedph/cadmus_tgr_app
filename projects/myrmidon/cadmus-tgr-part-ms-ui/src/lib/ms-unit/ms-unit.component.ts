@@ -467,7 +467,6 @@ export class MsUnitComponent implements OnInit {
         Validators.maxLength(50),
       ]),
       system: this._formBuilder.control(ruling?.system, [
-        Validators.required,
         Validators.maxLength(50),
       ]),
       type: this._formBuilder.control(ruling?.type, Validators.maxLength(50)),
