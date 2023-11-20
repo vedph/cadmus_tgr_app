@@ -79,6 +79,8 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-11-20: refactored work in ms-content (non-editable, selected thesaurus entry).
+
 ### 5.0.0
 
 - 2023-11-17:
