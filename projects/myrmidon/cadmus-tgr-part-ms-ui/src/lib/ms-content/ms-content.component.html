@@ -29,25 +29,31 @@
           >
         </mat-form-field>
       </div>
-
-      <div *ngIf="workEntries?.length">
+      <!-- work -->
+      <fieldset *ngIf="workEntries?.length">
+        <legend>work</legend>
+        <!-- selected work -->
+        <div *ngIf="work.value" class="form-row">
+          <span class="work">{{ work.value.value }}</span>
+          <button
+            type="button"
+            mat-icon-button
+            color="warn"
+            matTooltip="Remove work"
+            (click)="removeWork()"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <!-- tree -->
         <cadmus-thesaurus-tree
           [entries]="$any(workEntries)"
           rootLabel="works"
           [renderLabel]="renderLabel"
           (entryChange)="onWorkEntryChange($event)"
         ></cadmus-thesaurus-tree>
-      </div>
+      </fieldset>
       <div class="form-row">
-        <!-- work -->
-        <mat-form-field class="long-text">
-          <mat-label>work</mat-label>
-          <input matInput [formControl]="work" />
-          <mat-error
-            *ngIf="work.errors?.maxLength && (work.dirty || work.touched)"
-            >too long</mat-error
-          >
-        </mat-form-field>
         <!-- location -->
         <mat-form-field>
           <mat-label>location</mat-label>

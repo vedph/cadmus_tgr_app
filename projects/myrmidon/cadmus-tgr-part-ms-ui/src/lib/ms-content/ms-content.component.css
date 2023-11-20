@@ -11,3 +11,16 @@
 .form-row * {
   flex: 0 0 auto;
 }
+.work {
+  font-weight: bold;
+  color: royalblue;
+}
+fieldset {
+  border: 1px solid silver;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0 0 8px 0;
+}
+legend {
+  color: silver;
+}

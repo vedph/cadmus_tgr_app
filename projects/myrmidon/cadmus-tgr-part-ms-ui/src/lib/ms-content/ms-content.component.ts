@@ -9,7 +9,9 @@ import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
+
 import { MsContent } from '../ms-contents-part';
+import { ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'tgr-ms-content',
@@ -47,7 +49,7 @@ export class MsContentComponent implements OnInit {
 
   public start: FormControl<string | null>;
   public end: FormControl<string | null>;
-  public work: FormControl<string | null>;
+  public work: FormControl<ThesaurusEntry | null>;
   public location: FormControl<string | null>;
   public title: FormControl<string | null>;
   public incipit: FormControl<string | null>;
@@ -74,13 +76,30 @@ export class MsContentComponent implements OnInit {
       Validators.required,
       Validators.pattern(MsLocationService.locRegexp),
     ]);
-    this.work = formBuilder.control(null, Validators.maxLength(100));
-    this.location = formBuilder.control(null, Validators.maxLength(50));
-    this.title = formBuilder.control(null, Validators.maxLength(100));
-    this.incipit = formBuilder.control(null, Validators.maxLength(500));
-    this.explicit = formBuilder.control(null, Validators.maxLength(500));
-    this.note = formBuilder.control(null, Validators.maxLength(1500));
-    this.editions = formBuilder.control([], { nonNullable: true });
+    this.work = formBuilder.control<ThesaurusEntry | null>(null);
+    this.location = formBuilder.control<string | null>(
+      null,
+      Validators.maxLength(50)
+    );
+    this.title = formBuilder.control<string | null>(
+      null,
+      Validators.maxLength(100)
+    );
+    this.incipit = formBuilder.control<string | null>(
+      null,
+      Validators.maxLength(500)
+    );
+    this.explicit = formBuilder.control<string | null>(
+      null,
+      Validators.maxLength(500)
+    );
+    this.note = formBuilder.control<string | null>(
+      null,
+      Validators.maxLength(1500)
+    );
+    this.editions = formBuilder.control<DocReference[]>([], {
+      nonNullable: true,
+    });
     this.form = formBuilder.group({
       start: this.start,
       end: this.end,
@@ -106,7 +125,13 @@ export class MsContentComponent implements OnInit {
 
     this.start.setValue(this._locService.locationToString(model.start));
     this.end.setValue(this._locService.locationToString(model.end));
-    this.work.setValue(model.work || null);
+    if (model.work && this.workEntries?.length) {
+      this.work.setValue(
+        this.workEntries?.find((e) => e.id === model.work) || null
+      );
+    } else {
+      this.work.reset();
+    }
     this.location.setValue(model.location || null);
     this.title.setValue(model.title || null);
     this.incipit.setValue(model.incipit);
@@ -121,7 +146,7 @@ export class MsContentComponent implements OnInit {
     return {
       start: this._locService.parseLocation(this.start.value) as MsLocation,
       end: this._locService.parseLocation(this.end.value) as MsLocation,
-      work: this.work.value?.trim(),
+      work: this.work.value?.id,
       location: this.location.value?.trim(),
       title: this.title.value?.trim(),
       incipit: this.incipit.value?.trim() || '',
@@ -136,7 +161,11 @@ export class MsContentComponent implements OnInit {
   }
 
   public onWorkEntryChange(entry: ThesaurusEntry): void {
-    this.work.setValue(entry.value);
+    this.work.setValue(entry);
+  }
+
+  public removeWork(): void {
+    this.work.reset();
   }
 
   public onEditionsChange(editions: DocReference[]): void {
