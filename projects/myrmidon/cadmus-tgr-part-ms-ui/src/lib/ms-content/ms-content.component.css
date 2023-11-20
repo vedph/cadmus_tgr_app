@@ -15,6 +15,9 @@
   font-weight: bold;
   color: royalblue;
 }
+.loc {
+  width: 8em;
+}
 fieldset {
   border: 1px solid silver;
   border-radius: 4px;

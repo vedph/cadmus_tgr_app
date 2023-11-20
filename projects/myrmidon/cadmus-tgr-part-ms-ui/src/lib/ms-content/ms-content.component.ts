@@ -11,7 +11,6 @@ import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 
 import { MsContent } from '../ms-contents-part';
-import { ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'tgr-ms-content',
