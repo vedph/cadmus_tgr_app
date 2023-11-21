@@ -8,14 +8,15 @@ import {
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
+import { DialogService } from '@myrmidon/ng-mat-tools';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
-import { DialogService } from '@myrmidon/ng-mat-tools';
 import { Flag, FlagsPickerAdapter } from '@myrmidon/cadmus-ui-flags-picker';
 
 import { MsHand, MsScript } from '../ms-scripts-part';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
 
 function entryToFlag(entry: ThesaurusEntry): Flag {
   return {

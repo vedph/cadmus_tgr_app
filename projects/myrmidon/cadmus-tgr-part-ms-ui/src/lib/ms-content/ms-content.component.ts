@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -11,13 +18,15 @@ import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
 
 import { MsContent } from '../ms-contents-part';
+import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'tgr-ms-content',
   templateUrl: './ms-content.component.html',
   styleUrls: ['./ms-content.component.css'],
 })
-export class MsContentComponent implements OnInit {
+export class MsContentComponent implements OnInit, OnDestroy {
+  private _sub?: Subscription;
   private _model: MsContent | undefined;
 
   @Input()
@@ -48,7 +57,7 @@ export class MsContentComponent implements OnInit {
 
   public start: FormControl<string | null>;
   public end: FormControl<string | null>;
-  public work: FormControl<ThesaurusEntry | null>;
+  public work: FormControl<string | null>;
   public location: FormControl<string | null>;
   public title: FormControl<string | null>;
   public incipit: FormControl<string | null>;
@@ -56,6 +65,8 @@ export class MsContentComponent implements OnInit {
   public note: FormControl<string | null>;
   public editions: FormControl<DocReference[]>;
   public form: FormGroup;
+
+  public workEntry?: ThesaurusEntry;
 
   public initialEditions: DocReference[];
 
@@ -75,7 +86,10 @@ export class MsContentComponent implements OnInit {
       Validators.required,
       Validators.pattern(MsLocationService.locRegexp),
     ]);
-    this.work = formBuilder.control<ThesaurusEntry | null>(null);
+    this.work = formBuilder.control<string | null>(
+      null,
+      Validators.maxLength(300)
+    );
     this.location = formBuilder.control<string | null>(
       null,
       Validators.maxLength(50)
@@ -113,7 +127,15 @@ export class MsContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.updateForm(this.model);
+    this._sub = this.work.valueChanges
+      .pipe(distinctUntilChanged(), debounceTime(300))
+      .subscribe((value) => {
+        this.workEntry = this.workEntries?.find((e) => e.id === value);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this._sub?.unsubscribe();
   }
 
   private updateForm(model: MsContent | undefined): void {
@@ -124,13 +146,14 @@ export class MsContentComponent implements OnInit {
 
     this.start.setValue(this._locService.locationToString(model.start));
     this.end.setValue(this._locService.locationToString(model.end));
+
+    this.work.setValue(model.work || null);
     if (model.work && this.workEntries?.length) {
-      this.work.setValue(
-        this.workEntries?.find((e) => e.id === model.work) || null
-      );
+      this.workEntry = this.workEntries?.find((e) => e.id === model.work);
     } else {
-      this.work.reset();
+      this.workEntry = undefined;
     }
+
     this.location.setValue(model.location || null);
     this.title.setValue(model.title || null);
     this.incipit.setValue(model.incipit);
@@ -145,7 +168,7 @@ export class MsContentComponent implements OnInit {
     return {
       start: this._locService.parseLocation(this.start.value) as MsLocation,
       end: this._locService.parseLocation(this.end.value) as MsLocation,
-      work: this.work.value?.id,
+      work: this.work.value?.trim() || undefined,
       location: this.location.value?.trim(),
       title: this.title.value?.trim(),
       incipit: this.incipit.value?.trim() || '',
@@ -160,7 +183,10 @@ export class MsContentComponent implements OnInit {
   }
 
   public onWorkEntryChange(entry: ThesaurusEntry): void {
-    this.work.setValue(entry);
+    this.workEntry = entry;
+    this.work.setValue(entry.id);
+    this.work.markAsDirty();
+    this.work.updateValueAndValidity();
   }
 
   public removeWork(): void {

@@ -80,6 +80,10 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-11-21:
+  - refactored work in ms content (back to editable, equal to entry ID if from thesaurus, else free).
+  - hand description max length up to 50k.
+
 ### 5.0.1
 
 - 2023-11-20: refactored work in ms-content (non-editable, selected thesaurus entry).

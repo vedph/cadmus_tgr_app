@@ -32,19 +32,18 @@
       <!-- work -->
       <fieldset *ngIf="workEntries?.length">
         <legend>work</legend>
-        <!-- selected work -->
-        <div *ngIf="work.value" class="form-row">
-          <span class="work">{{ work.value.value }}</span>
-          <button
-            type="button"
-            mat-icon-button
-            color="warn"
-            matTooltip="Remove work"
-            (click)="removeWork()"
+        <!-- work -->
+        <mat-form-field>
+          <mat-label>work</mat-label>
+          <input matInput [formControl]="work" />
+          <mat-error
+            *ngIf="$any(work).errors?.maxLength && (work.dirty || work.touched)"
+            >work too long</mat-error
           >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
+          <mat-hint *ngIf="workEntry"
+            >{{ workEntry.id }}={{ workEntry.value }}</mat-hint
+          >
+        </mat-form-field>
         <!-- tree -->
         <cadmus-thesaurus-tree
           [entries]="$any(workEntries)"

@@ -11,10 +11,6 @@
 .form-row * {
   flex: 0 0 auto;
 }
-.work {
-  font-weight: bold;
-  color: royalblue;
-}
 .loc {
   width: 8em;
 }

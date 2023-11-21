@@ -145,7 +145,7 @@ export class MsHandComponent implements OnInit {
       ]),
       description: this._formBuilder.control(letter?.description, [
         Validators.required,
-        Validators.maxLength(500),
+        Validators.maxLength(50000),
       ]),
       imageId: this._formBuilder.control(letter?.imageId, [
         Validators.maxLength(100),
