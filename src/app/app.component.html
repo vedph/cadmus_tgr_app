@@ -33,7 +33,11 @@
     </button>
 
     <!-- profile menu -->
-    <ng-container *ngIf="user && user.roles.includes('admin')">
+    <ng-container
+      *ngIf="
+        user && (user.roles.includes('editor') || user.roles.includes('admin'))
+      "
+    >
       <button type="button" mat-button [matMenuTriggerFor]="profileMenu">
         Profile
       </button>

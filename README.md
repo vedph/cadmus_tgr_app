@@ -81,6 +81,10 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 
 ## History
 
+- 2023-12-05:
+  - allow editors to access profile menu.
+  - updated Angular and packages.
+
 ### 5.0.2
 
 - 2023-11-21:
