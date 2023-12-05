@@ -3,6 +3,7 @@
 - [Cadmus TGR App](#cadmus-tgr-app)
   - [Production](#production)
   - [History](#history)
+    - [5.0.3](#503)
     - [5.0.2](#502)
     - [5.0.1](#501)
     - [5.0.0](#500)
@@ -38,7 +39,7 @@
 
 1. `npm run build-lib`;
 2. update `env.js` version, and `ng build --configuration production`;
-3. `docker build . -t vedph2020/cadmus-tgr-app:5.0.2 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-tgr-app:5.0.3 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
 
 Web application frontend for Cadmus _TGR_. This application is built by packing together a number of components:
 
@@ -80,6 +81,8 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 ```
 
 ## History
+
+### 5.0.3
 
 - 2023-12-05:
   - allow editors to access profile menu.
