@@ -62,7 +62,7 @@ export class MsHandComponent implements OnInit {
       Validators.required,
       Validators.pattern(MsLocationService.locRegexp),
     ]);
-    this.description = _formBuilder.control(null, Validators.maxLength(500));
+    this.description = _formBuilder.control(null, Validators.maxLength(50000));
     this.abbreviations = _formBuilder.control(null, Validators.maxLength(500));
     this.letters = _formBuilder.array([]);
 
@@ -145,7 +145,7 @@ export class MsHandComponent implements OnInit {
       ]),
       description: this._formBuilder.control(letter?.description, [
         Validators.required,
-        Validators.maxLength(50000),
+        Validators.maxLength(5000),
       ]),
       imageId: this._formBuilder.control(letter?.imageId, [
         Validators.maxLength(100),

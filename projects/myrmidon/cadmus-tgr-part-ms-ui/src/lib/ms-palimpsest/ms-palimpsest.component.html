@@ -9,55 +9,55 @@
         [formControl]="locations"
       ></textarea>
       <mat-hint>comma-separated</mat-hint>
-      <mat-error
-        *ngIf="
-          locations.errors?.invalid && (locations.dirty || locations.touched)
-        "
-        >invalid location(s)</mat-error
-      >
-      <mat-error
-        *ngIf="
+      @if (
+        locations.errors?.invalid && (locations.dirty || locations.touched)
+        ) {
+        <mat-error
+          >invalid location(s)</mat-error
+          >
+        }
+        @if (
           locations.errors?.maxLength && (locations.dirty || locations.touched)
-        "
-        >too long</mat-error
-      >
-    </mat-form-field>
-  </div>
-
-  <!-- date -->
-  <div>
-    <cadmus-refs-historical-date
-      [date]="$any(date)"
-      (dateChange)="onDateChange($event)"
-    ></cadmus-refs-historical-date>
-  </div>
-
-  <!-- note -->
-  <div>
-    <mat-form-field class="long-text">
-      <textarea matInput [formControl]="note"></textarea>
-    </mat-form-field>
-  </div>
-
-  <!-- buttons -->
-  <div>
-    <button
-      type="button"
-      color="warn"
-      mat-icon-button
-      matTooltip="Discard palimpsest changes"
-      (click)="cancel()"
-    >
-      <mat-icon>clear</mat-icon>
-    </button>
-    <button
-      type="submit"
-      color="primary"
-      mat-icon-button
-      matTooltip="Accept palimpsest changes"
-      [disabled]="form.invalid || form.pristine"
-    >
-      <mat-icon>check_circle</mat-icon>
-    </button>
-  </div>
-</form>
+          ) {
+          <mat-error
+            >too long</mat-error
+            >
+          }
+        </mat-form-field>
+      </div>
+      <!-- date -->
+      <div>
+        <cadmus-refs-historical-date
+          [date]="$any(date)"
+          (dateChange)="onDateChange($event)"
+        ></cadmus-refs-historical-date>
+      </div>
+      <!-- note -->
+      <div>
+        <mat-form-field class="long-text">
+          <textarea matInput [formControl]="note"></textarea>
+        </mat-form-field>
+      </div>
+      <!-- buttons -->
+      <div>
+        <button
+          type="button"
+          color="warn"
+          mat-icon-button
+          matTooltip="Discard palimpsest changes"
+          (click)="cancel()"
+          >
+          <mat-icon>clear</mat-icon>
+        </button>
+        <button
+          type="submit"
+          color="primary"
+          mat-icon-button
+          matTooltip="Accept palimpsest changes"
+          [disabled]="form.invalid || form.pristine"
+          >
+          <mat-icon>check_circle</mat-icon>
+        </button>
+      </div>
+    </form>
+    

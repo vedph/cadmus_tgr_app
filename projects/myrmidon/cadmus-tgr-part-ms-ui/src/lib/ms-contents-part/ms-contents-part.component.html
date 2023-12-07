@@ -13,95 +13,96 @@
           mat-flat-button
           color="primary"
           (click)="addContent()"
-        >
+          >
           <mat-icon>add_circle</mat-icon> content
         </button>
       </div>
-      <table *ngIf="contents?.value?.length">
-        <thead>
-          <tr>
-            <th></th>
-            <th>start</th>
-            <th>end</th>
-            <th>work</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="
-              let content of contents?.value;
-              let i = index;
-              let first = first;
-              let last = last
-            "
-          >
-            <td>
-              <button
-                type="button"
-                mat-icon-button
-                color="primary"
-                matTooltip="Edit this content"
-                (click)="editContent(content, i)"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button
-                type="button"
-                mat-icon-button
-                matTooltip="Move this content up"
-                [disabled]="first"
-                (click)="moveContentUp(i)"
-              >
-                <mat-icon>arrow_upward</mat-icon>
-              </button>
-              <button
-                type="button"
-                mat-icon-button
-                matTooltip="Move this content down"
-                [disabled]="last"
-                (click)="moveContentDown(i)"
-              >
-                <mat-icon>arrow_downward</mat-icon>
-              </button>
-              <button
-                type="button"
-                mat-icon-button
-                color="warn"
-                matTooltip="Delete this content"
-                (click)="deleteContent(i)"
-              >
-                <mat-icon>remove_circle</mat-icon>
-              </button>
-            </td>
-            <td>{{ locationToString(content.start) }}</td>
-            <td>{{ locationToString(content.end) }}</td>
-            <td>{{ content.work }}</td>
-          </tr>
-        </tbody>
-      </table>
+      @if (contents?.value?.length) {
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>start</th>
+              <th>end</th>
+              <th>work</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (
+              content of contents?.value; track
+              content; let i = $index; let first = $first; let last = $last) {
+              <tr
+                >
+                <td>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Edit this content"
+                    (click)="editContent(content, i)"
+                    >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this content up"
+                    [disabled]="first"
+                    (click)="moveContentUp(i)"
+                    >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this content down"
+                    [disabled]="last"
+                    (click)="moveContentDown(i)"
+                    >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="Delete this content"
+                    (click)="deleteContent(i)"
+                    >
+                    <mat-icon>remove_circle</mat-icon>
+                  </button>
+                </td>
+                <td>{{ locationToString(content.start) }}</td>
+                <td>{{ locationToString(content.end) }}</td>
+                <td>{{ content.work }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
       <mat-expansion-panel
         [expanded]="editedContent"
         [disabled]="!editedContent"
-      >
+        >
         <mat-expansion-panel-header
           >content #{{ editedContentIndex + 1 }}</mat-expansion-panel-header
-        >
-        <tgr-ms-content
-          [model]="editedContent"
-          [workEntries]="workEntries"
-          [docTagEntries]="docTagEntries"
-          [docTypeEntries]="docTypeEntries"
-          (modelChange)="saveContent($event)"
-          (editorClose)="closeContent()"
-        ></tgr-ms-content>
-      </mat-expansion-panel>
-    </mat-card-content>
-    <mat-card-actions>
-      <cadmus-close-save-buttons
-        [form]="form"
-        [noSave]="userLevel < 2"
-        (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
-    </mat-card-actions>
-  </mat-card>
-</form>
+          >
+          <tgr-ms-content
+            [model]="editedContent"
+            [workEntries]="workEntries"
+            [docTagEntries]="docTagEntries"
+            [docTypeEntries]="docTypeEntries"
+            (modelChange)="saveContent($event)"
+            (editorClose)="closeContent()"
+          ></tgr-ms-content>
+        </mat-expansion-panel>
+      </mat-card-content>
+      <mat-card-actions>
+        <cadmus-close-save-buttons
+          [form]="form"
+          [noSave]="userLevel < 2"
+          (closeRequest)="close()"
+        ></cadmus-close-save-buttons>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+  

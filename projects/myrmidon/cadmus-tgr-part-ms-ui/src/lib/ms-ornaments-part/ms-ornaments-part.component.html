@@ -13,76 +13,76 @@
           mat-flat-button
           color="primary"
           (click)="addOrnament()"
-        >
+          >
           <mat-icon>add_circle</mat-icon> ornamentation
         </button>
       </div>
-      <table *ngIf="ornaments.value.length">
-        <thead>
-          <tr>
-            <th></th>
-            <th>type</th>
-            <th>start</th>
-            <th>end</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="
-              let ornament of ornaments?.value;
-              let i = index;
-              let first = first;
-              let last = last
-            "
-          >
-            <td>
-              <button
-                type="button"
-                mat-icon-button
-                color="primary"
-                matTooltip="Edit this ornamentation"
-                (click)="editOrnament(ornament, i)"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button
-                type="button"
-                mat-icon-button
-                matTooltip="Move this ornamentation up"
-                [disabled]="first"
-                (click)="moveOrnamentUp(i)"
-              >
-                <mat-icon>arrow_upward</mat-icon>
-              </button>
-              <button
-                type="button"
-                mat-icon-button
-                matTooltip="Move this ornamentation down"
-                [disabled]="last"
-                (click)="moveOrnamentDown(i)"
-              >
-                <mat-icon>arrow_downward</mat-icon>
-              </button>
-              <button
-                type="button"
-                mat-icon-button
-                color="warn"
-                matTooltip="Delete this ornamentation"
-                (click)="deleteOrnament(i)"
-              >
-                <mat-icon>remove_circle</mat-icon>
-              </button>
-            </td>
-            <td>{{ ornament.type }}</td>
-            <td>{{ locationToString(ornament.start) }}</td>
-            <td>{{ locationToString(ornament.end) }}</td>
-          </tr>
-        </tbody>
-      </table>
+      @if (ornaments.value.length) {
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>type</th>
+              <th>start</th>
+              <th>end</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (
+              ornament of ornaments?.value; track
+              ornament; let i = $index; let first = $first; let last = $last) {
+              <tr
+                >
+                <td>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Edit this ornamentation"
+                    (click)="editOrnament(ornament, i)"
+                    >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this ornamentation up"
+                    [disabled]="first"
+                    (click)="moveOrnamentUp(i)"
+                    >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this ornamentation down"
+                    [disabled]="last"
+                    (click)="moveOrnamentDown(i)"
+                    >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="Delete this ornamentation"
+                    (click)="deleteOrnament(i)"
+                    >
+                    <mat-icon>remove_circle</mat-icon>
+                  </button>
+                </td>
+                <td>{{ ornament.type }}</td>
+                <td>{{ locationToString(ornament.start) }}</td>
+                <td>{{ locationToString(ornament.end) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
       <mat-expansion-panel
         [expanded]="editedOrnament"
         [disabled]="!editedOrnament"
-      >
+        >
         <mat-expansion-panel-header>
           ornamentation #{{ editedOrnamentIndex + 1 }}
         </mat-expansion-panel-header>
@@ -94,7 +94,7 @@
           [szDimTagEntries]="szDimTagEntries"
           (modelChange)="saveOrnament($event)"
           (editorClose)="closeOrnament()"
-        >
+          >
         </tgr-ms-ornament>
       </mat-expansion-panel>
     </mat-card-content>

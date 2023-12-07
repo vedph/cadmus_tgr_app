@@ -4,126 +4,129 @@
       ><img src="./assets/img/logo-white-40.png" alt="Fusisoft"
     /></span>
     <a mat-button routerLink="/home">Cadmus PAGES/TAL/ThDS</a>
-
     <!-- items menu -->
-    <button
-      type="button"
-      mat-button
-      [matMenuTriggerFor]="itemMenu"
-      *ngIf="logged && itemBrowsers"
-    >
-      Items
-    </button>
-    <mat-menu #itemMenu>
-      <a mat-menu-item routerLink="/items">Items</a>
-      <a
-        mat-menu-item
-        *ngFor="let entry of itemBrowsers"
-        [routerLink]="'item-browser/' + getItemBrowserRoute(entry.id)"
-        >{{ entry.value }}</a
-      >
-    </mat-menu>
-    <ng-container *ngIf="logged && !itemBrowsers">
-      <a mat-button routerLink="/items">Items</a>
-    </ng-container>
-
-    <!-- search menu -->
-    <button type="button" mat-button routerLink="/search" *ngIf="logged">
-      Search
-    </button>
-
-    <!-- profile menu -->
-    <ng-container
-      *ngIf="
-        user && (user.roles.includes('editor') || user.roles.includes('admin'))
-      "
-    >
-      <button type="button" mat-button [matMenuTriggerFor]="profileMenu">
-        Profile
-      </button>
-      <mat-menu #profileMenu>
-        <a mat-menu-item routerLink="/flags"> Flags </a>
-        <a mat-menu-item routerLink="/thesauri"> Thesauri </a>
-      </mat-menu>
-    </ng-container>
-
-    <span class="tb-fill-remaining-space"></span>
-
-    <div *ngIf="user">
-      <!-- indicators -->
-      <img
-        alt="avatar"
-        [src]="getGravatarUrl(user.email, 32)"
-        [alt]="user.userName"
-      />
-      <mat-icon
-        class="small-icon"
-        *ngIf="user && user.roles.includes('admin')"
-        title="admin"
-        >build</mat-icon
-      >
-      <mat-icon
-        class="small-icon"
-        *ngIf="user && !user.emailConfirmed"
-        title="You must verify your email address! Please check your mailbox {{
-          user.email
-        }}"
-        >feedback</mat-icon
-      >
-
-      <!-- admin menu -->
+    @if (logged && itemBrowsers) {
       <button
         type="button"
-        *ngIf="user && user.roles.includes('admin')"
         mat-button
-        [matMenuTriggerFor]="adminMenu"
-      >
-        <mat-icon>more_vert</mat-icon>
+        [matMenuTriggerFor]="itemMenu"
+        >
+        Items
       </button>
-      <mat-menu #adminMenu>
-        <a mat-menu-item routerLink="/manage-users">Manage users</a>
-        <a mat-menu-item routerLink="/register-user">Register user</a>
+    }
+    <mat-menu #itemMenu>
+      <a mat-menu-item routerLink="/items">Items</a>
+      @for (entry of itemBrowsers; track entry) {
+        <a
+          mat-menu-item
+          [routerLink]="'item-browser/' + getItemBrowserRoute(entry.id)"
+          >{{ entry.value }}</a
+          >
+        }
       </mat-menu>
-    </div>
-
-    <!-- login -->
-    <button type="button" *ngIf="!logged" mat-icon-button routerLink="/login">
-      <mat-icon>login</mat-icon>
-    </button>
-    <!-- logout -->
-    <button type="button" *ngIf="logged" mat-icon-button (click)="logout()">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </mat-toolbar>
-</header>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
-
-<footer>
-  <div layout="row" layout-align="center center">
-    <p>
-      <a rel="noopener" href="https://www.uniroma1.it" target="_blank"
-        >Sapienza Università di Roma</a
-      >
-      -
-      <a rel="noopener" href="https://www.uniroma3.it" target="_blank"
-        >Università Roma Tre</a
-      >
-      -
-      <a rel="noopener" href="https://www.unipi.it/" target="_blank"
-        >Università di Pisa</a
-      >
-      - Cadmus by
-      <a rel="noopener" href="http://www.fusisoft.it" target="_blank"
-        >Daniele Fusi</a
-      >
-      at
-      <a rel="noopener" href="https://www.unive.it/pag/39287" target="_blank"
-        >VeDPH</a
-      >
-      - version {{ version }}
-    </p>
-  </div>
-</footer>
+      @if (logged && !itemBrowsers) {
+        <a mat-button routerLink="/items">Items</a>
+      }
+      <!-- search menu -->
+      @if (logged) {
+        <button type="button" mat-button routerLink="/search">
+          Search
+        </button>
+      }
+      <!-- profile menu -->
+      @if (
+        user && (user.roles.includes('editor') || user.roles.includes('admin'))
+        ) {
+        <button type="button" mat-button [matMenuTriggerFor]="profileMenu">
+          Profile
+        </button>
+        <mat-menu #profileMenu>
+          <a mat-menu-item routerLink="/flags"> Flags </a>
+          <a mat-menu-item routerLink="/thesauri"> Thesauri </a>
+        </mat-menu>
+      }
+      <span class="tb-fill-remaining-space"></span>
+      @if (user) {
+        <div>
+          <!-- indicators -->
+          <img
+            alt="avatar"
+            [src]="getGravatarUrl(user.email, 32)"
+            [alt]="user.userName"
+            />
+            @if (user && user.roles.includes('admin')) {
+              <mat-icon
+                class="small-icon"
+                title="admin"
+                >build</mat-icon
+                >
+            }
+            @if (user && !user.emailConfirmed) {
+              <mat-icon
+                class="small-icon"
+                title="You must verify your email address! Please check your mailbox {{
+                user.email
+                }}"
+                >feedback</mat-icon
+                >
+              }
+              <!-- admin menu -->
+              @if (user && user.roles.includes('admin')) {
+                <button
+                  type="button"
+                  mat-button
+                  [matMenuTriggerFor]="adminMenu"
+                  >
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              }
+              <mat-menu #adminMenu>
+                <a mat-menu-item routerLink="/manage-users">Manage users</a>
+                <a mat-menu-item routerLink="/register-user">Register user</a>
+              </mat-menu>
+            </div>
+          }
+          <!-- login -->
+          @if (!logged) {
+            <button type="button" mat-icon-button routerLink="/login">
+              <mat-icon>login</mat-icon>
+            </button>
+          }
+          <!-- logout -->
+          @if (logged) {
+            <button type="button" mat-icon-button (click)="logout()">
+              <mat-icon>logout</mat-icon>
+            </button>
+          }
+        </mat-toolbar>
+      </header>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+      <footer>
+        <div layout="row" layout-align="center center">
+          <p>
+            <a rel="noopener" href="https://www.uniroma1.it" target="_blank"
+              >Sapienza Università di Roma</a
+              >
+              -
+              <a rel="noopener" href="https://www.uniroma3.it" target="_blank"
+                >Università Roma Tre</a
+                >
+                -
+                <a rel="noopener" href="https://www.unipi.it/" target="_blank"
+                  >Università di Pisa</a
+                  >
+                  - Cadmus by
+                  <a rel="noopener" href="http://www.fusisoft.it" target="_blank"
+                    >Daniele Fusi</a
+                    >
+                    at
+                    <a rel="noopener" href="https://www.unive.it/pag/39287" target="_blank"
+                      >VeDPH</a
+                      >
+                      - version {{ version }}
+                    </p>
+                  </div>
+                </footer>
+                

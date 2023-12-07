@@ -3,6 +3,7 @@
 - [Cadmus TGR App](#cadmus-tgr-app)
   - [Production](#production)
   - [History](#history)
+    - [5.0.4](#504)
     - [5.0.3](#503)
     - [5.0.2](#502)
     - [5.0.1](#501)
@@ -81,6 +82,12 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 ```
 
 ## History
+
+### 5.0.4
+
+- 2023-12-07:
+  - updated flow syntax.
+  - set 50K limit for hand description.
 
 ### 5.0.3
 

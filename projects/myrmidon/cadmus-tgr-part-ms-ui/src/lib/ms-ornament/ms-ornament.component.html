@@ -1,123 +1,139 @@
 <form [formGroup]="form" (submit)="save()">
   <div class="form-row">
     <!-- type (bound) -->
-    <mat-form-field *ngIf="ornTypeEntries?.length">
-      <mat-label>type</mat-label>
-      <mat-select [formControl]="type">
-        <mat-option *ngFor="let e of ornTypeEntries" [value]="e.id">{{
-          e.value
-        }}</mat-option>
-      </mat-select>
-      <mat-error *ngIf="type.errors?.required && (type.dirty || type.touched)"
-        >type required</mat-error
-      >
-    </mat-form-field>
-
-    <!-- type (free) -->
-    <mat-form-field *ngIf="!ornTypeEntries?.length">
-      <mat-label>type</mat-label>
-      <input matInput [formControl]="type" />
-      <mat-error *ngIf="type.errors?.required && (type.dirty || type.touched)"
-        >type required</mat-error
-      >
-      <mat-error *ngIf="type.errors?.maxLength && (type.dirty || type.touched)"
-        >type too long</mat-error
-      >
-    </mat-form-field>
-
-    <!-- start -->
-    <mat-form-field>
-      <mat-label>start</mat-label>
-      <input matInput [formControl]="start" />
-      <mat-error
-        *ngIf="start.errors?.required && (start.dirty || start.touched)"
-        >start required</mat-error
-      >
-      <mat-error *ngIf="start.errors?.pattern && (start.dirty || start.touched)"
-        >invalid start</mat-error
-      >
-    </mat-form-field>
-
-    <!-- end -->
-    <mat-form-field>
-      <mat-label>end</mat-label>
-      <input matInput [formControl]="end" />
-      <mat-error *ngIf="end.errors?.required && (end.dirty || end.touched)"
-        >end required</mat-error
-      >
-      <mat-error *ngIf="end.errors?.pattern && (end.dirty || end.touched)"
-        >invalid end</mat-error
-      >
-    </mat-form-field>
-  </div>
-
-  <div>
-    <!-- hasSize -->
-    <mat-checkbox [formControl]="hasSize">has size</mat-checkbox>
-
-    <!-- size-->
-    <cadmus-mat-physical-size
-      *ngIf="hasSize.value"
-      [size]="$any(size)"
-      [unitEntries]="$any(szUnitEntries)"
-      [tagEntries]="$any(szTagEntries)"
-      [dimTagEntries]="$any(szDimTagEntries)"
-      (sizeChange)="onSizeChange($event)"
-    >
-    </cadmus-mat-physical-size>
-  </div>
-
-  <div>
-    <!-- description -->
-    <ngx-monaco-editor
-      #dsceditor
-      [options]="editorOptions"
-      [formControl]="description"
-    ></ngx-monaco-editor>
-    <mat-error
-      *ngIf="
-        description.errors?.maxLength &&
-        (description.touched || description.dirty)
-      "
-      >too long</mat-error
-    >
-  </div>
-
-  <div>
-    <!-- note -->
-    <mat-form-field clss="long-text">
-      <mat-label>note</mat-label>
-      <textarea
-        rows="2"
-        matInput
-        [formControl]="note"
-        class="long-text"
-      ></textarea>
-      <mat-error *ngIf="note.errors?.maxLength && (note.dirty || note.touched)"
-        >note too long</mat-error
-      >
-    </mat-form-field>
-  </div>
-
-  <!-- buttons -->
-  <div>
-    <button
-      type="button"
-      color="warn"
-      mat-icon-button
-      matTooltip="Discard changes"
-      (click)="cancel()"
-    >
-      <mat-icon>clear</mat-icon>
-    </button>
-    <button
-      type="submit"
-      color="primary"
-      mat-icon-button
-      matTooltip="Accept changes"
-      [disabled]="form.invalid || form.pristine"
-    >
-      <mat-icon>check_circle</mat-icon>
-    </button>
-  </div>
-</form>
+    @if (ornTypeEntries?.length) {
+      <mat-form-field>
+        <mat-label>type</mat-label>
+        <mat-select [formControl]="type">
+          @for (e of ornTypeEntries; track e) {
+            <mat-option [value]="e.id">{{
+              e.value
+            }}</mat-option>
+          }
+        </mat-select>
+        @if (type.errors?.required && (type.dirty || type.touched)) {
+          <mat-error
+            >type required</mat-error
+            >
+          }
+        </mat-form-field>
+      }
+      <!-- type (free) -->
+      @if (!ornTypeEntries?.length) {
+        <mat-form-field>
+          <mat-label>type</mat-label>
+          <input matInput [formControl]="type" />
+          @if (type.errors?.required && (type.dirty || type.touched)) {
+            <mat-error
+              >type required</mat-error
+              >
+            }
+            @if (type.errors?.maxLength && (type.dirty || type.touched)) {
+              <mat-error
+                >type too long</mat-error
+                >
+              }
+            </mat-form-field>
+          }
+          <!-- start -->
+          <mat-form-field>
+            <mat-label>start</mat-label>
+            <input matInput [formControl]="start" />
+            @if (start.errors?.required && (start.dirty || start.touched)) {
+              <mat-error
+                >start required</mat-error
+                >
+              }
+              @if (start.errors?.pattern && (start.dirty || start.touched)) {
+                <mat-error
+                  >invalid start</mat-error
+                  >
+                }
+              </mat-form-field>
+              <!-- end -->
+              <mat-form-field>
+                <mat-label>end</mat-label>
+                <input matInput [formControl]="end" />
+                @if (end.errors?.required && (end.dirty || end.touched)) {
+                  <mat-error
+                    >end required</mat-error
+                    >
+                  }
+                  @if (end.errors?.pattern && (end.dirty || end.touched)) {
+                    <mat-error
+                      >invalid end</mat-error
+                      >
+                    }
+                  </mat-form-field>
+                </div>
+                <div>
+                  <!-- hasSize -->
+                  <mat-checkbox [formControl]="hasSize">has size</mat-checkbox>
+                  <!-- size-->
+                  @if (hasSize.value) {
+                    <cadmus-mat-physical-size
+                      [size]="$any(size)"
+                      [unitEntries]="$any(szUnitEntries)"
+                      [tagEntries]="$any(szTagEntries)"
+                      [dimTagEntries]="$any(szDimTagEntries)"
+                      (sizeChange)="onSizeChange($event)"
+                      >
+                    </cadmus-mat-physical-size>
+                  }
+                </div>
+                <div>
+                  <!-- description -->
+                  <ngx-monaco-editor
+                    #dsceditor
+                    [options]="editorOptions"
+                    [formControl]="description"
+                  ></ngx-monaco-editor>
+                  @if (
+                    description.errors?.maxLength &&
+                    (description.touched || description.dirty)
+                    ) {
+                    <mat-error
+                      >too long</mat-error
+                      >
+                    }
+                  </div>
+                  <div>
+                    <!-- note -->
+                    <mat-form-field clss="long-text">
+                      <mat-label>note</mat-label>
+                      <textarea
+                        rows="2"
+                        matInput
+                        [formControl]="note"
+                        class="long-text"
+                      ></textarea>
+                      @if (note.errors?.maxLength && (note.dirty || note.touched)) {
+                        <mat-error
+                          >note too long</mat-error
+                          >
+                        }
+                      </mat-form-field>
+                    </div>
+                    <!-- buttons -->
+                    <div>
+                      <button
+                        type="button"
+                        color="warn"
+                        mat-icon-button
+                        matTooltip="Discard changes"
+                        (click)="cancel()"
+                        >
+                        <mat-icon>clear</mat-icon>
+                      </button>
+                      <button
+                        type="submit"
+                        color="primary"
+                        mat-icon-button
+                        matTooltip="Accept changes"
+                        [disabled]="form.invalid || form.pristine"
+                        >
+                        <mat-icon>check_circle</mat-icon>
+                      </button>
+                    </div>
+                  </form>
+                  

@@ -11,421 +11,447 @@
             <mat-option [value]="2">addition after</mat-option>
             <mat-option [value]="3">note</mat-option>
           </mat-select>
-          <mat-error
-            *ngIf="type.errors?.required && (type.dirty || type.touched)"
-          ></mat-error>
+          @if (type.errors?.required && (type.dirty || type.touched)) {
+            <mat-error
+            ></mat-error>
+          }
         </mat-form-field>
-
         <!-- role (bound) -->
-        <mat-form-field *ngIf="intRoleEntries?.length">
-          <mat-label>role</mat-label>
-          <mat-select [formControl]="role">
-            <mat-option *ngFor="let e of intRoleEntries" [value]="e.id">{{
-              e.value
-            }}</mat-option>
-          </mat-select>
-          <mat-error
-            *ngIf="role.errors?.required && (role.dirty || role.touched)"
-            >role required</mat-error
-          >
-        </mat-form-field>
-
-        <!-- role (free) -->
-        <mat-form-field *ngIf="!intRoleEntries?.length">
-          <mat-label>role</mat-label>
-          <input matInput [formControl]="role" />
-          <mat-error
-            *ngIf="role.errors?.required && (role.dirty || role.touched)"
-            >role required</mat-error
-          >
-          <mat-error
-            *ngIf="role.errors?.maxLength && (role.dirty || role.touched)"
-            >role too long</mat-error
-          >
-        </mat-form-field>
-
-        <!-- tag (bound) -->
-        <mat-form-field *ngIf="intTagEntries?.length">
-          <mat-label>tag</mat-label>
-          <mat-select [formControl]="tag">
-            <mat-option *ngFor="let e of intTagEntries" [value]="e.id">{{
-              e.value
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <!-- tag (free) -->
-        <mat-form-field *ngIf="!intTagEntries?.length">
-          <mat-label>tag</mat-label>
-          <input matInput [formControl]="tag" />
-          <mat-error *ngIf="tag.errors?.maxLength && (tag.dirty || tag.touched)"
-            >tag too long</mat-error
-          >
-        </mat-form-field>
-
-        <!-- groupId -->
-        <mat-form-field>
-          <mat-label>group ID</mat-label>
-          <input matInput [formControl]="groupId" />
-          <mat-error
-            *ngIf="
-              groupId.errors?.required && (groupId.dirty || groupId.touched)
-            "
-            >ID required</mat-error
-          >
-          <mat-error
-            *ngIf="
-              groupId.errors?.maxLength && (groupId.dirty || groupId.touched)
-            "
-            >ID too long</mat-error
-          >
-        </mat-form-field>
-      </div>
-
-      <div>
-        <!-- value -->
-        <mat-form-field>
-          <mat-label>value</mat-label>
-          <input matInput [formControl]="value" />
-          <mat-error
-            *ngIf="value.errors?.required && (value.dirty || value.touched)"
-            >value required</mat-error
-          >
-          <mat-error
-            *ngIf="value.errors?.maxLength && (value.dirty || value.touched)"
-            >value too long</mat-error
-          >
-        </mat-form-field>
-      </div>
-
-      <!-- languages -->
-      <div formArrayName="languages">
-        <div>
-          <button
-            type="button"
-            mat-flat-button
-            color="primary"
-            (click)="addLanguage()"
-          >
-            <mat-icon>add_circle</mat-icon>
-            language
-          </button>
-        </div>
-        <div
-          *ngFor="
-            let item of languages.controls;
-            let i = index;
-            let first = first;
-            let last = last
-          "
-        >
-          <!-- child form -->
-          <div [formGroupName]="i">
-            <!-- child actions -->
-            {{ i + 1 }}.
-            <button
-              mat-icon-button
-              type="button"
-              matTooltip="Remove this language"
-              color="warn"
-              (click)="removeLanguage(i)"
-            >
-              <mat-icon>remove_circle</mat-icon>
-            </button>
-            <button
-              [disabled]="first"
-              mat-icon-button
-              type="button"
-              matTooltip="Move language up"
-              (click)="moveLanguageUp(i)"
-            >
-              <mat-icon>arrow_upward</mat-icon>
-            </button>
-            <button
-              [disabled]="last"
-              mat-icon-button
-              type="button"
-              matTooltip="Move language down"
-              (click)="moveLanguageDown(i)"
-            >
-              <mat-icon>arrow_downward</mat-icon>
-            </button>
-
-            <!-- child controls -->
-            <!-- id (bound) -->
-            <mat-form-field *ngIf="intLangEntries?.length">
-              <mat-label>ID</mat-label>
-              <mat-select formControlName="id">
-                <mat-option *ngFor="let e of intLangEntries" [value]="e.id">{{
+        @if (intRoleEntries?.length) {
+          <mat-form-field>
+            <mat-label>role</mat-label>
+            <mat-select [formControl]="role">
+              @for (e of intRoleEntries; track e) {
+                <mat-option [value]="e.id">{{
                   e.value
                 }}</mat-option>
-              </mat-select>
+              }
+            </mat-select>
+            @if (role.errors?.required && (role.dirty || role.touched)) {
               <mat-error
-                *ngIf="
-                  $any(item)['controls'].id.errors?.required &&
-                  ($any(item)['controls'].id.dirty ||
-                    $any(item)['controls'].id.touched)
-                "
-                >id required</mat-error
-              >
+                >role required</mat-error
+                >
+              }
             </mat-form-field>
-
-            <!-- id (free) -->
-            <mat-form-field *ngIf="!intLangEntries?.length">
-              <mat-label>ID</mat-label>
-              <input matInput formControlName="id" />
-              <mat-error
-                *ngIf="
-                  $any(item)['controls'].id.errors?.required &&
-                  ($any(item)['controls'].id.dirty ||
-                    $any(item)['controls'].id.touched)
-                "
-                >required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  $any(item)['controls'].id.errors?.maxLength &&
-                  ($any(item)['controls'].id.dirty ||
-                    $any(item)['controls'].id.touched)
-                "
-                >too long</mat-error
-              >
-            </mat-form-field>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <!-- note -->
-        <mat-form-field class="long-text">
-          <mat-label>note</mat-label>
-          <textarea matInput [formControl]="note"></textarea>
-          <mat-error
-            *ngIf="note.errors?.required && (note.dirty || note.touched)"
-            >note required</mat-error
-          >
-          <mat-error
-            *ngIf="note.errors?.maxLength && (note.dirty || note.touched)"
-            >note too long</mat-error
-          >
-        </mat-form-field>
-      </div>
-
-      <!-- sources -->
-      <br />
-      <div formArrayName="sources">
-        <div style="margin-top: 4px">
-          <button type="button" mat-flat-button (click)="addSource()">
-            <mat-icon>add_circle</mat-icon>
-            add source
-          </button>
-        </div>
-        <div
-          *ngFor="
-            let item of sources.controls;
-            let i = index;
-            let first = first;
-            let last = last
-          "
-        >
-          <!-- child form -->
-          <div [formGroupName]="i">
-            <!-- child actions -->
-            {{ i + 1 }}.
-            <button
-              mat-icon-button
-              type="button"
-              matTooltip="Remove this source"
-              color="warn"
-              (click)="removeSource(i)"
-            >
-              <mat-icon>remove_circle</mat-icon>
-            </button>
-            <button
-              [disabled]="first"
-              mat-icon-button
-              type="button"
-              matTooltip="Move source up"
-              (click)="moveSourceUp(i)"
-            >
-              <mat-icon>arrow_upward</mat-icon>
-            </button>
-            <button
-              [disabled]="last"
-              mat-icon-button
-              type="button"
-              matTooltip="Move source down"
-              (click)="moveSourceDown(i)"
-            >
-              <mat-icon>arrow_downward</mat-icon>
-            </button>
-
-            <!-- child controls -->
-            <!-- witness (bound) -->
-            <mat-form-field *ngIf="witEntries?.length">
-              <mat-label>witness</mat-label>
-              <mat-select formControlName="witness">
-                <mat-option *ngFor="let e of witEntries" [value]="e.id">{{
-                  e.value
-                }}</mat-option>
-              </mat-select>
-              <mat-error
-                *ngIf="
-                  $any(item)['controls'].witness.errors?.required &&
-                  ($any(item)['controls'].witness.dirty ||
-                    $any(item)['controls'].witness.touched)
-                "
-                >required</mat-error
-              >
-            </mat-form-field>
-
-            <mat-form-field *ngIf="!witEntries?.length">
-              <mat-label>witness</mat-label>
-              <input matInput formControlName="witness" />
-              <mat-error
-                *ngIf="
-                  $any(item)['controls'].witness.errors?.required &&
-                  ($any(item)['controls'].witness.dirty ||
-                    $any(item)['controls'].witness.touched)
-                "
-                >required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  $any(item)['controls'].witness.errors?.maxLength &&
-                  ($any(item)['controls'].witness.dirty ||
-                    $any(item)['controls'].witness.touched)
-                "
-                >too long</mat-error
-              >
-            </mat-form-field>
-            &nbsp;
-            <!-- handId -->
+          }
+          <!-- role (free) -->
+          @if (!intRoleEntries?.length) {
             <mat-form-field>
-              <mat-label>hand ID</mat-label>
-              <input matInput formControlName="handId" />
-              <mat-error
-                *ngIf="
-                  $any(item)['controls'].handId.errors?.maxLength &&
-                  ($any(item)['controls'].handId.dirty ||
-                    $any(item)['controls'].handId.touched)
-                "
-                >ID too long</mat-error
-              >
-            </mat-form-field>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <!-- quotations -->
-        <div style="margin-top: 4px">
-          <button type="button" mat-flat-button (click)="addQuotation()">
-            <mat-icon>add_circle</mat-icon> quotation
-          </button>
-        </div>
-        <table *ngIf="quotations?.value?.length">
-          <thead>
-            <tr>
-              <th></th>
-              <th>tag</th>
-              <th>authority</th>
-              <th>work</th>
-              <th>location</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="
-                let entry of quotations?.value;
-                let i = index;
-                let first = first;
-                let last = last
-              "
-            >
-              <td>
-                <button
-                  type="button"
-                  mat-icon-button
-                  color="primary"
-                  matTooltip="Edit this quotation"
-                  (click)="editQuotation(entry, i)"
-                >
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button
-                  type="button"
-                  mat-icon-button
-                  matTooltip="Move this quotation up"
-                  [disabled]="first"
-                  (click)="moveQuotationUp(i)"
-                >
-                  <mat-icon>arrow_upward</mat-icon>
-                </button>
-                <button
-                  type="button"
-                  mat-icon-button
-                  matTooltip="Move this quotation down"
-                  [disabled]="last"
-                  (click)="moveQuotationDown(i)"
-                >
-                  <mat-icon>arrow_downward</mat-icon>
-                </button>
-                <button
-                  type="button"
-                  mat-icon-button
-                  color="warn"
-                  matTooltip="Delete this quotation"
-                  (click)="deleteQuotation(i)"
-                >
-                  <mat-icon>remove_circle</mat-icon>
-                </button>
-              </td>
-              <td>{{ resolveId(entry.tag, "t") }}</td>
-              <td>{{ resolveId(entry.authority, "a") }}</td>
-              <td>{{ resolveId(entry.work, "w") }}</td>
-              <td>{{ entry.location }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </mat-tab>
-
-    <mat-tab label="quotation" *ngIf="editedQuotation">
-      <tgr-var-quotation
-        [model]="editedQuotation"
-        [quotTagEntries]="quotTagEntries"
-        [quotAuthEntries]="quotAuthEntries"
-        [workEntries]="workEntries"
-        [witEntries]="witEntries"
-        [authEntries]="authEntries"
-        [authTagEntries]="authTagEntries"
-        (modelChange)="saveQuotation($event)"
-        (editorClose)="closeQuotation()"
-      >
-      </tgr-var-quotation>
-    </mat-tab>
-  </mat-tab-group>
-
-  <!-- buttons -->
-  <div>
-    <button
-      type="button"
-      color="warn"
-      mat-icon-button
-      matTooltip="Discard changes"
-      (click)="cancel()"
-    >
-      <mat-icon>clear</mat-icon>
-    </button>
-    <button
-      type="submit"
-      color="primary"
-      mat-icon-button
-      matTooltip="Accept changes"
-      [disabled]="form.invalid || form.pristine"
-    >
-      <mat-icon>check_circle</mat-icon>
-    </button>
-  </div>
-</form>
+              <mat-label>role</mat-label>
+              <input matInput [formControl]="role" />
+              @if (role.errors?.required && (role.dirty || role.touched)) {
+                <mat-error
+                  >role required</mat-error
+                  >
+                }
+                @if (role.errors?.maxLength && (role.dirty || role.touched)) {
+                  <mat-error
+                    >role too long</mat-error
+                    >
+                  }
+                </mat-form-field>
+              }
+              <!-- tag (bound) -->
+              @if (intTagEntries?.length) {
+                <mat-form-field>
+                  <mat-label>tag</mat-label>
+                  <mat-select [formControl]="tag">
+                    @for (e of intTagEntries; track e) {
+                      <mat-option [value]="e.id">{{
+                        e.value
+                      }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              }
+              <!-- tag (free) -->
+              @if (!intTagEntries?.length) {
+                <mat-form-field>
+                  <mat-label>tag</mat-label>
+                  <input matInput [formControl]="tag" />
+                  @if (tag.errors?.maxLength && (tag.dirty || tag.touched)) {
+                    <mat-error
+                      >tag too long</mat-error
+                      >
+                    }
+                  </mat-form-field>
+                }
+                <!-- groupId -->
+                <mat-form-field>
+                  <mat-label>group ID</mat-label>
+                  <input matInput [formControl]="groupId" />
+                  @if (
+                    groupId.errors?.required && (groupId.dirty || groupId.touched)
+                    ) {
+                    <mat-error
+                      >ID required</mat-error
+                      >
+                    }
+                    @if (
+                      groupId.errors?.maxLength && (groupId.dirty || groupId.touched)
+                      ) {
+                      <mat-error
+                        >ID too long</mat-error
+                        >
+                      }
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <!-- value -->
+                    <mat-form-field>
+                      <mat-label>value</mat-label>
+                      <input matInput [formControl]="value" />
+                      @if (value.errors?.required && (value.dirty || value.touched)) {
+                        <mat-error
+                          >value required</mat-error
+                          >
+                        }
+                        @if (value.errors?.maxLength && (value.dirty || value.touched)) {
+                          <mat-error
+                            >value too long</mat-error
+                            >
+                          }
+                        </mat-form-field>
+                      </div>
+                      <!-- languages -->
+                      <div formArrayName="languages">
+                        <div>
+                          <button
+                            type="button"
+                            mat-flat-button
+                            color="primary"
+                            (click)="addLanguage()"
+                            >
+                            <mat-icon>add_circle</mat-icon>
+                            language
+                          </button>
+                        </div>
+                        @for (
+                          item of languages.controls; track
+                          item; let i = $index; let first = $first; let last = $last) {
+                          <div
+                            >
+                            <!-- child form -->
+                            <div [formGroupName]="i">
+                              <!-- child actions -->
+                              {{ i + 1 }}.
+                              <button
+                                mat-icon-button
+                                type="button"
+                                matTooltip="Remove this language"
+                                color="warn"
+                                (click)="removeLanguage(i)"
+                                >
+                                <mat-icon>remove_circle</mat-icon>
+                              </button>
+                              <button
+                                [disabled]="first"
+                                mat-icon-button
+                                type="button"
+                                matTooltip="Move language up"
+                                (click)="moveLanguageUp(i)"
+                                >
+                                <mat-icon>arrow_upward</mat-icon>
+                              </button>
+                              <button
+                                [disabled]="last"
+                                mat-icon-button
+                                type="button"
+                                matTooltip="Move language down"
+                                (click)="moveLanguageDown(i)"
+                                >
+                                <mat-icon>arrow_downward</mat-icon>
+                              </button>
+                              <!-- child controls -->
+                              <!-- id (bound) -->
+                              @if (intLangEntries?.length) {
+                                <mat-form-field>
+                                  <mat-label>ID</mat-label>
+                                  <mat-select formControlName="id">
+                                    @for (e of intLangEntries; track e) {
+                                      <mat-option [value]="e.id">{{
+                                        e.value
+                                      }}</mat-option>
+                                    }
+                                  </mat-select>
+                                  @if (
+                                    $any(item)['controls'].id.errors?.required &&
+                                    ($any(item)['controls'].id.dirty ||
+                                    $any(item)['controls'].id.touched)
+                                    ) {
+                                    <mat-error
+                                      >id required</mat-error
+                                      >
+                                    }
+                                  </mat-form-field>
+                                }
+                                <!-- id (free) -->
+                                @if (!intLangEntries?.length) {
+                                  <mat-form-field>
+                                    <mat-label>ID</mat-label>
+                                    <input matInput formControlName="id" />
+                                    @if (
+                                      $any(item)['controls'].id.errors?.required &&
+                                      ($any(item)['controls'].id.dirty ||
+                                      $any(item)['controls'].id.touched)
+                                      ) {
+                                      <mat-error
+                                        >required</mat-error
+                                        >
+                                      }
+                                      @if (
+                                        $any(item)['controls'].id.errors?.maxLength &&
+                                        ($any(item)['controls'].id.dirty ||
+                                        $any(item)['controls'].id.touched)
+                                        ) {
+                                        <mat-error
+                                          >too long</mat-error
+                                          >
+                                        }
+                                      </mat-form-field>
+                                    }
+                                  </div>
+                                </div>
+                              }
+                            </div>
+                            <div>
+                              <!-- note -->
+                              <mat-form-field class="long-text">
+                                <mat-label>note</mat-label>
+                                <textarea matInput [formControl]="note"></textarea>
+                                @if (note.errors?.required && (note.dirty || note.touched)) {
+                                  <mat-error
+                                    >note required</mat-error
+                                    >
+                                  }
+                                  @if (note.errors?.maxLength && (note.dirty || note.touched)) {
+                                    <mat-error
+                                      >note too long</mat-error
+                                      >
+                                    }
+                                  </mat-form-field>
+                                </div>
+                                <!-- sources -->
+                                <br />
+                                <div formArrayName="sources">
+                                  <div style="margin-top: 4px">
+                                    <button type="button" mat-flat-button (click)="addSource()">
+                                      <mat-icon>add_circle</mat-icon>
+                                      add source
+                                    </button>
+                                  </div>
+                                  @for (
+                                    item of sources.controls; track
+                                    item; let i = $index; let first = $first; let last = $last) {
+                                    <div
+                                      >
+                                      <!-- child form -->
+                                      <div [formGroupName]="i">
+                                        <!-- child actions -->
+                                        {{ i + 1 }}.
+                                        <button
+                                          mat-icon-button
+                                          type="button"
+                                          matTooltip="Remove this source"
+                                          color="warn"
+                                          (click)="removeSource(i)"
+                                          >
+                                          <mat-icon>remove_circle</mat-icon>
+                                        </button>
+                                        <button
+                                          [disabled]="first"
+                                          mat-icon-button
+                                          type="button"
+                                          matTooltip="Move source up"
+                                          (click)="moveSourceUp(i)"
+                                          >
+                                          <mat-icon>arrow_upward</mat-icon>
+                                        </button>
+                                        <button
+                                          [disabled]="last"
+                                          mat-icon-button
+                                          type="button"
+                                          matTooltip="Move source down"
+                                          (click)="moveSourceDown(i)"
+                                          >
+                                          <mat-icon>arrow_downward</mat-icon>
+                                        </button>
+                                        <!-- child controls -->
+                                        <!-- witness (bound) -->
+                                        @if (witEntries?.length) {
+                                          <mat-form-field>
+                                            <mat-label>witness</mat-label>
+                                            <mat-select formControlName="witness">
+                                              @for (e of witEntries; track e) {
+                                                <mat-option [value]="e.id">{{
+                                                  e.value
+                                                }}</mat-option>
+                                              }
+                                            </mat-select>
+                                            @if (
+                                              $any(item)['controls'].witness.errors?.required &&
+                                              ($any(item)['controls'].witness.dirty ||
+                                              $any(item)['controls'].witness.touched)
+                                              ) {
+                                              <mat-error
+                                                >required</mat-error
+                                                >
+                                              }
+                                            </mat-form-field>
+                                          }
+                                          @if (!witEntries?.length) {
+                                            <mat-form-field>
+                                              <mat-label>witness</mat-label>
+                                              <input matInput formControlName="witness" />
+                                              @if (
+                                                $any(item)['controls'].witness.errors?.required &&
+                                                ($any(item)['controls'].witness.dirty ||
+                                                $any(item)['controls'].witness.touched)
+                                                ) {
+                                                <mat-error
+                                                  >required</mat-error
+                                                  >
+                                                }
+                                                @if (
+                                                  $any(item)['controls'].witness.errors?.maxLength &&
+                                                  ($any(item)['controls'].witness.dirty ||
+                                                  $any(item)['controls'].witness.touched)
+                                                  ) {
+                                                  <mat-error
+                                                    >too long</mat-error
+                                                    >
+                                                  }
+                                                </mat-form-field>
+                                              }
+                                              &nbsp;
+                                              <!-- handId -->
+                                              <mat-form-field>
+                                                <mat-label>hand ID</mat-label>
+                                                <input matInput formControlName="handId" />
+                                                @if (
+                                                  $any(item)['controls'].handId.errors?.maxLength &&
+                                                  ($any(item)['controls'].handId.dirty ||
+                                                  $any(item)['controls'].handId.touched)
+                                                  ) {
+                                                  <mat-error
+                                                    >ID too long</mat-error
+                                                    >
+                                                  }
+                                                </mat-form-field>
+                                              </div>
+                                            </div>
+                                          }
+                                        </div>
+                                        <div>
+                                          <!-- quotations -->
+                                          <div style="margin-top: 4px">
+                                            <button type="button" mat-flat-button (click)="addQuotation()">
+                                              <mat-icon>add_circle</mat-icon> quotation
+                                            </button>
+                                          </div>
+                                          @if (quotations?.value?.length) {
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th></th>
+                                                  <th>tag</th>
+                                                  <th>authority</th>
+                                                  <th>work</th>
+                                                  <th>location</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                @for (
+                                                  entry of quotations?.value; track
+                                                  entry; let i = $index; let first = $first; let last = $last) {
+                                                  <tr
+                                                    >
+                                                    <td>
+                                                      <button
+                                                        type="button"
+                                                        mat-icon-button
+                                                        color="primary"
+                                                        matTooltip="Edit this quotation"
+                                                        (click)="editQuotation(entry, i)"
+                                                        >
+                                                        <mat-icon>edit</mat-icon>
+                                                      </button>
+                                                      <button
+                                                        type="button"
+                                                        mat-icon-button
+                                                        matTooltip="Move this quotation up"
+                                                        [disabled]="first"
+                                                        (click)="moveQuotationUp(i)"
+                                                        >
+                                                        <mat-icon>arrow_upward</mat-icon>
+                                                      </button>
+                                                      <button
+                                                        type="button"
+                                                        mat-icon-button
+                                                        matTooltip="Move this quotation down"
+                                                        [disabled]="last"
+                                                        (click)="moveQuotationDown(i)"
+                                                        >
+                                                        <mat-icon>arrow_downward</mat-icon>
+                                                      </button>
+                                                      <button
+                                                        type="button"
+                                                        mat-icon-button
+                                                        color="warn"
+                                                        matTooltip="Delete this quotation"
+                                                        (click)="deleteQuotation(i)"
+                                                        >
+                                                        <mat-icon>remove_circle</mat-icon>
+                                                      </button>
+                                                    </td>
+                                                    <td>{{ resolveId(entry.tag, "t") }}</td>
+                                                    <td>{{ resolveId(entry.authority, "a") }}</td>
+                                                    <td>{{ resolveId(entry.work, "w") }}</td>
+                                                    <td>{{ entry.location }}</td>
+                                                  </tr>
+                                                }
+                                              </tbody>
+                                            </table>
+                                          }
+                                        </div>
+                                      </mat-tab>
+                                      @if (editedQuotation) {
+                                        <mat-tab label="quotation">
+                                          <tgr-var-quotation
+                                            [model]="editedQuotation"
+                                            [quotTagEntries]="quotTagEntries"
+                                            [quotAuthEntries]="quotAuthEntries"
+                                            [workEntries]="workEntries"
+                                            [witEntries]="witEntries"
+                                            [authEntries]="authEntries"
+                                            [authTagEntries]="authTagEntries"
+                                            (modelChange)="saveQuotation($event)"
+                                            (editorClose)="closeQuotation()"
+                                            >
+                                          </tgr-var-quotation>
+                                        </mat-tab>
+                                      }
+                                    </mat-tab-group>
+                                    <!-- buttons -->
+                                    <div>
+                                      <button
+                                        type="button"
+                                        color="warn"
+                                        mat-icon-button
+                                        matTooltip="Discard changes"
+                                        (click)="cancel()"
+                                        >
+                                        <mat-icon>clear</mat-icon>
+                                      </button>
+                                      <button
+                                        type="submit"
+                                        color="primary"
+                                        mat-icon-button
+                                        matTooltip="Accept changes"
+                                        [disabled]="form.invalid || form.pristine"
+                                        >
+                                        <mat-icon>check_circle</mat-icon>
+                                      </button>
+                                    </div>
+                                  </form>
+                                  

@@ -13,89 +13,90 @@
           mat-flat-button
           color="primary"
           (click)="addFeature()"
-        >
+          >
           <mat-icon>add_circle</mat-icon> feature
         </button>
       </div>
-      <table *ngIf="features?.value?.length">
-        <thead>
-          <tr>
-            <th></th>
-            <th>hand</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="
-              let feature of features?.value;
-              let i = index;
-              let first = first;
-              let last = last
-            "
-          >
-            <td>
-              <button
-                type="button"
-                mat-icon-button
-                color="primary"
-                matTooltip="Edit this feature"
-                (click)="editFeature(feature, i)"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button
-                type="button"
-                mat-icon-button
-                matTooltip="Move this feature up"
-                [disabled]="first"
-                (click)="moveFeatureUp(i)"
-              >
-                <mat-icon>arrow_upward</mat-icon>
-              </button>
-              <button
-                type="button"
-                mat-icon-button
-                matTooltip="Move this feature down"
-                [disabled]="last"
-                (click)="moveFeatureDown(i)"
-              >
-                <mat-icon>arrow_downward</mat-icon>
-              </button>
-              <button
-                type="button"
-                mat-icon-button
-                color="warn"
-                matTooltip="Delete this feature"
-                (click)="deleteFeature(i)"
-              >
-                <mat-icon>remove_circle</mat-icon>
-              </button>
-            </td>
-            <td>{{ feature.handId }}</td>
-          </tr>
-        </tbody>
-      </table>
+      @if (features?.value?.length) {
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>hand</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (
+              feature of features?.value; track
+              feature; let i = $index; let first = $first; let last = $last) {
+              <tr
+                >
+                <td>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="Edit this feature"
+                    (click)="editFeature(feature, i)"
+                    >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this feature up"
+                    [disabled]="first"
+                    (click)="moveFeatureUp(i)"
+                    >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matTooltip="Move this feature down"
+                    [disabled]="last"
+                    (click)="moveFeatureDown(i)"
+                    >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="Delete this feature"
+                    (click)="deleteFeature(i)"
+                    >
+                    <mat-icon>remove_circle</mat-icon>
+                  </button>
+                </td>
+                <td>{{ feature.handId }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
       <mat-expansion-panel
         [expanded]="editedFeature"
         [disabled]="!editedFeature"
-      >
+        >
         <mat-expansion-panel-header
           >content #{{ editedFeatureIndex + 1 }}</mat-expansion-panel-header
-        >
-        <tgr-ms-formal-feature
-          [model]="editedFeature"
-          (modelChange)="saveFeature($event)"
-          (editorClose)="closeFeature()"
-        >
-        </tgr-ms-formal-feature>
-      </mat-expansion-panel>
-    </mat-card-content>
-    <mat-card-actions>
-      <cadmus-close-save-buttons
-        [form]="form"
-        [noSave]="userLevel < 2"
-        (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
-    </mat-card-actions>
-  </mat-card>
-</form>
+          >
+          <tgr-ms-formal-feature
+            [model]="editedFeature"
+            (modelChange)="saveFeature($event)"
+            (editorClose)="closeFeature()"
+            >
+          </tgr-ms-formal-feature>
+        </mat-expansion-panel>
+      </mat-card-content>
+      <mat-card-actions>
+        <cadmus-close-save-buttons
+          [form]="form"
+          [noSave]="userLevel < 2"
+          (closeRequest)="close()"
+        ></cadmus-close-save-buttons>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+  

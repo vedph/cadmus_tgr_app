@@ -4,55 +4,58 @@
     <mat-form-field>
       <mat-label>hand ID</mat-label>
       <input matInput [formControl]="handId" />
-      <mat-error
-        *ngIf="handId.errors?.maxLength && (handId.dirty || handId.touched)"
-        >too long</mat-error
-      >
-    </mat-form-field>
-  </div>
-  <!-- description -->
-  <div>
-    <mat-form-field class="long-text">
-      <mat-label>description</mat-label>
-      <textarea matInput rows="3" [formControl]="description"></textarea>
-      <mat-error
-        *ngIf="
+      @if (handId.errors?.maxLength && (handId.dirty || handId.touched)) {
+        <mat-error
+          >too long</mat-error
+          >
+        }
+      </mat-form-field>
+    </div>
+    <!-- description -->
+    <div>
+      <mat-form-field class="long-text">
+        <mat-label>description</mat-label>
+        <textarea matInput rows="3" [formControl]="description"></textarea>
+        @if (
           description.errors?.required &&
           (description.dirty || description.touched)
-        "
-        >description required</mat-error
-      >
-      <mat-error
-        *ngIf="
-          description.errors?.maxLength &&
-          (description.dirty || description.touched)
-        "
-        >description too long</mat-error
-      >
-    </mat-form-field>
-    <hr />
-    <markdown [data]="description?.value || undefined"></markdown>
-  </div>
-
-  <!-- buttons -->
-  <div>
-    <button
-      type="button"
-      color="warn"
-      mat-icon-button
-      matTooltip="Discard feature changes"
-      (click)="cancel()"
-    >
-      <mat-icon>clear</mat-icon>
-    </button>
-    <button
-      type="submit"
-      color="primary"
-      mat-icon-button
-      matTooltip="Accept feature changes"
-      [disabled]="form.invalid || form.pristine"
-    >
-      <mat-icon>check_circle</mat-icon>
-    </button>
-  </div>
-</form>
+          ) {
+          <mat-error
+            >description required</mat-error
+            >
+          }
+          @if (
+            description.errors?.maxLength &&
+            (description.dirty || description.touched)
+            ) {
+            <mat-error
+              >description too long</mat-error
+              >
+            }
+          </mat-form-field>
+          <hr />
+          <markdown [data]="description?.value || undefined"></markdown>
+        </div>
+        <!-- buttons -->
+        <div>
+          <button
+            type="button"
+            color="warn"
+            mat-icon-button
+            matTooltip="Discard feature changes"
+            (click)="cancel()"
+            >
+            <mat-icon>clear</mat-icon>
+          </button>
+          <button
+            type="submit"
+            color="primary"
+            mat-icon-button
+            matTooltip="Accept feature changes"
+            [disabled]="form.invalid || form.pristine"
+            >
+            <mat-icon>check_circle</mat-icon>
+          </button>
+        </div>
+      </form>
+      
