@@ -3,9 +3,7 @@ import { CadmusCoreModule } from '@myrmidon/cadmus-core';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CadmusCoreModule
-  ],
+  imports: [CadmusCoreModule],
   exports: [],
 })
 export class CadmusTgrCoreModule {}

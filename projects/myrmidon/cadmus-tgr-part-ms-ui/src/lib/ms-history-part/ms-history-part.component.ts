@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import {
   FormControl,
   FormBuilder,
@@ -23,6 +23,11 @@ import {
   MsLocationService,
 } from '@myrmidon/cadmus-tgr-core';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import {
+  CADMUS_TEXT_ED_BINDINGS_TOKEN,
+  CadmusTextEdBindings,
+  CadmusTextEdService,
+} from '@myrmidon/cadmus-text-ed';
 
 /**
  * Manuscript's history part editor component.
@@ -35,8 +40,12 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 })
 export class MsHistoryPartComponent
   extends ModelEditorComponentBase<MsHistoryPart>
-  implements OnInit
+  implements OnInit, OnDestroy
 {
+  private readonly _disposables: monaco.IDisposable[] = [];
+  private _editorModel?: monaco.editor.ITextModel;
+  private _editor?: monaco.editor.IStandaloneCodeEditor;
+
   public provenances: FormArray;
   public history: FormControl<string | null>;
   public owners: FormArray;
@@ -49,18 +58,14 @@ export class MsHistoryPartComponent
 
   public langEntries: ThesaurusEntry[] | undefined;
 
-  public editorOptions = {
-    theme: 'vs-light',
-    language: 'markdown',
-    wordWrap: 'on',
-    // https://github.com/atularen/ngx-monaco-editor/issues/19
-    automaticLayout: true,
-  };
-
   constructor(
     authService: AuthJwtService,
     private _formBuilder: FormBuilder,
-    private _locService: MsLocationService
+    private _locService: MsLocationService,
+    private _editService: CadmusTextEdService,
+    @Inject(CADMUS_TEXT_ED_BINDINGS_TOKEN)
+    @Optional()
+    private _editorBindings?: CadmusTextEdBindings
   ) {
     super(authService, _formBuilder);
     // form
@@ -81,6 +86,65 @@ export class MsHistoryPartComponent
     this.annotations = _formBuilder.array([]);
   }
 
+  private async applyEdit(selector: string) {
+    if (!this._editor) {
+      return;
+    }
+    const selection = this._editor.getSelection();
+    const text = selection
+      ? this._editor.getModel()!.getValueInRange(selection)
+      : '';
+
+    const result = await this._editService.edit({
+      selector,
+      text: text,
+    });
+
+    this._editor.executeEdits('my-source', [
+      {
+        range: selection!,
+        text: result.text,
+        forceMoveMarkers: true,
+      },
+    ]);
+  }
+
+  public onEditorInit(editor: monaco.editor.IEditor) {
+    editor.updateOptions({
+      minimap: {
+        side: 'left',
+      },
+      wordWrap: 'on',
+      automaticLayout: true,
+    });
+    this._editorModel =
+      this._editorModel || monaco.editor.createModel('', 'markdown');
+    editor.setModel(this._editorModel);
+    this._editor = editor as monaco.editor.IStandaloneCodeEditor;
+
+    this._disposables.push(
+      this._editorModel.onDidChangeContent((e) => {
+        this.history.setValue(this._editorModel!.getValue());
+        this.history.markAsDirty();
+        this.history.updateValueAndValidity();
+      })
+    );
+
+    if (this._editorBindings) {
+      Object.keys(this._editorBindings).forEach((key) => {
+        const n = parseInt(key, 10);
+        console.log(
+          'Binding ' + n + ' to ' + this._editorBindings![key as any]
+        );
+        this._editor!.addCommand(n, () => {
+          this.applyEdit(this._editorBindings![key as any]);
+        });
+      });
+    }
+
+    editor.focus();
+  }
+
   private locationsVal(control: AbstractControl): ValidationErrors | null {
     const locService = new MsLocationService();
     if (control.value) {
@@ -99,6 +163,11 @@ export class MsHistoryPartComponent
 
   public override ngOnInit(): void {
     super.ngOnInit();
+  }
+
+  public override ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this._disposables.forEach((d) => d.dispose());
   }
 
   protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
@@ -138,6 +207,7 @@ export class MsHistoryPartComponent
     }
     this.provenances.updateValueAndValidity();
     this.history.setValue(part.history);
+    this._editorModel?.setValue(part.history || '');
     // owners
     this.owners.clear();
     if (part.owners?.length) {

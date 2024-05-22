@@ -16,17 +16,23 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 
-import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { NgeMonacoModule } from '@cisstech/nge/monaco';
+
+import { NgToolsModule } from '@myrmidon/ng-tools';
+
+// bricks
+import { DocReferencesComponent } from '@myrmidon/cadmus-refs-doc-references';
+import { FlagsPickerComponent } from '@myrmidon/cadmus-ui-flags-picker';
+import {
+  PhysicalSizeComponent,
+  PhysicalSizePipe,
+} from '@myrmidon/cadmus-mat-physical-size';
+import { HistoricalDateComponent } from '@myrmidon/cadmus-refs-historical-date';
 
 // general Cadmus modules
-import { NgToolsModule } from '@myrmidon/ng-tools';
 import { CadmusCoreModule } from '@myrmidon/cadmus-core';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
-import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
-import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
-import { CadmusMatPhysicalSizeModule } from '@myrmidon/cadmus-mat-physical-size';
-import { CadmusUiFlagsPickerModule } from '@myrmidon/cadmus-ui-flags-picker';
 
 // locals
 import { MsUnitsPartComponent } from './ms-units-part/ms-units-part.component';
@@ -72,7 +78,7 @@ import { MsSignaturesPartComponent } from './ms-signatures-part/ms-signatures-pa
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MonacoEditorModule,
+    NgeMonacoModule,
     MarkdownModule,
     // material
     MatAutocompleteModule,
@@ -88,14 +94,16 @@ import { MsSignaturesPartComponent } from './ms-signatures-part/ms-signatures-pa
     MatTabsModule,
     MatTooltipModule,
     MatTreeModule,
-    // Cadmus
     NgToolsModule,
+    // bricks
+    FlagsPickerComponent,
+    PhysicalSizeComponent,
+    PhysicalSizePipe,
+    DocReferencesComponent,
+    HistoricalDateComponent,
+    // Cadmus
     CadmusCoreModule,
-    CadmusUiFlagsPickerModule,
     CadmusUiModule,
-    CadmusMatPhysicalSizeModule,
-    CadmusRefsDocReferencesModule,
-    CadmusRefsHistoricalDateModule,
     CadmusTgrCoreModule,
   ],
   exports: [

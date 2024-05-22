@@ -16,7 +16,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { NgeMonacoModule } from '@cisstech/nge/monaco';
 
 import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
@@ -49,7 +49,7 @@ import { AvailableWitnessesFragmentComponent } from './available-witnesses-fragm
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MonacoEditorModule,
+    NgeMonacoModule,
     // material
     ClipboardModule,
     MatAutocompleteModule,

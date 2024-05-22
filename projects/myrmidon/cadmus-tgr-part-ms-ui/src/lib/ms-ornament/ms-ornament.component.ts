@@ -2,8 +2,11 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  Inject,
   Input,
+  OnDestroy,
   OnInit,
+  Optional,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -13,9 +16,17 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { PhysicalSize } from '@myrmidon/cadmus-mat-physical-size';
+import {
+  CADMUS_TEXT_ED_BINDINGS_TOKEN,
+  CadmusTextEdBindings,
+  CadmusTextEdService,
+} from '@myrmidon/cadmus-text-ed';
+
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+
 import { MsOrnament } from '../ms-ornaments-part';
 
 @Component({
@@ -23,8 +34,12 @@ import { MsOrnament } from '../ms-ornaments-part';
   templateUrl: './ms-ornament.component.html',
   styleUrls: ['./ms-ornament.component.css'],
 })
-export class MsOrnamentComponent implements OnInit, AfterViewInit {
+export class MsOrnamentComponent implements OnInit, OnDestroy, AfterViewInit {
   private _model: MsOrnament | undefined;
+
+  private readonly _disposables: monaco.IDisposable[] = [];
+  private _editorModel?: monaco.editor.ITextModel;
+  private _editor?: monaco.editor.IStandaloneCodeEditor;
 
   @ViewChild('dsceditor') dscEditor: any;
 
@@ -66,17 +81,13 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
   public hasSize: FormControl<boolean>;
   public size: PhysicalSize | undefined;
 
-  public editorOptions = {
-    theme: 'vs-light',
-    language: 'markdown',
-    wordWrap: 'on',
-    // https://github.com/atularen/ngx-monaco-editor/issues/19
-    automaticLayout: true,
-  };
-
   constructor(
     formBuilder: FormBuilder,
-    private _locService: MsLocationService
+    private _locService: MsLocationService,
+    private _editService: CadmusTextEdService,
+    @Inject(CADMUS_TEXT_ED_BINDINGS_TOKEN)
+    @Optional()
+    private _editorBindings?: CadmusTextEdBindings
   ) {
     this.modelChange = new EventEmitter<MsOrnament>();
     this.editorClose = new EventEmitter<any>();
@@ -119,6 +130,71 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
     }, 150);
   }
 
+  public ngOnDestroy() {
+    this._disposables.forEach((d) => d.dispose());
+  }
+
+  private async applyEdit(selector: string) {
+    if (!this._editor) {
+      return;
+    }
+    const selection = this._editor.getSelection();
+    const text = selection
+      ? this._editor.getModel()!.getValueInRange(selection)
+      : '';
+
+    const result = await this._editService.edit({
+      selector,
+      text: text,
+    });
+
+    this._editor.executeEdits('my-source', [
+      {
+        range: selection!,
+        text: result.text,
+        forceMoveMarkers: true,
+      },
+    ]);
+  }
+
+  public onEditorInit(editor: monaco.editor.IEditor) {
+    editor.updateOptions({
+      minimap: {
+        side: 'left',
+      },
+      wordWrap: 'on',
+      automaticLayout: true,
+    });
+
+    this._editorModel =
+      this._editorModel || monaco.editor.createModel('', 'markdown');
+    editor.setModel(this._editorModel);
+    this._editor = editor as monaco.editor.IStandaloneCodeEditor;
+
+    this._disposables.push(
+      this._editorModel.onDidChangeContent((e) => {
+        this.description.setValue(this._editorModel!.getValue());
+        this.description.markAsDirty();
+        this.description.updateValueAndValidity();
+      })
+    );
+
+    if (this._editorBindings) {
+      Object.keys(this._editorBindings).forEach((key) => {
+        const n = parseInt(key, 10);
+        console.log(
+          'Binding ' + n + ' to ' + this._editorBindings![key as any]
+        );
+        this._editor!.addCommand(n, () => {
+          this.applyEdit(this._editorBindings![key as any]);
+        });
+      });
+    }
+
+    // focus to editor
+    editor.focus();
+  }
+
   private updateForm(model: MsOrnament | undefined): void {
     if (!model) {
       this.size = undefined;
@@ -130,6 +206,7 @@ export class MsOrnamentComponent implements OnInit, AfterViewInit {
     this.start.setValue(this._locService.locationToString(model.start));
     this.end.setValue(this._locService.locationToString(model.end));
     this.description.setValue(model.description || null);
+    this._editorModel?.setValue(model.description || '');
     this.note.setValue(model.note || null);
 
     if (model.size) {

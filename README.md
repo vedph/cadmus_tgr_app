@@ -1,46 +1,10 @@
 # Cadmus TGR App
 
-- [Cadmus TGR App](#cadmus-tgr-app)
-  - [Production](#production)
-  - [History](#history)
-    - [5.0.4](#504)
-    - [5.0.3](#503)
-    - [5.0.2](#502)
-    - [5.0.1](#501)
-    - [5.0.0](#500)
-    - [4.0.0](#400)
-    - [3.1.3](#313)
-    - [3.1.2](#312)
-    - [3.1.1](#311)
-    - [3.1.0](#310)
-    - [3.0.1](#301)
-    - [3.0.0](#300)
-    - [2.0.8](#208)
-    - [2.0.7](#207)
-    - [2.0.6](#206)
-    - [2.0.5](#205)
-    - [2.0.4](#204)
-    - [2.0.3](#203)
-    - [2.0.2](#202)
-    - [2.0.1](#201)
-    - [2.0.0](#200)
-    - [1.1.12](#1112)
-    - [1.1.11](#1111)
-    - [1.1.10](#1110)
-    - [1.1.9](#119)
-    - [1.1.8](#118)
-    - [1.1.7](#117)
-    - [1.1.6](#116)
-    - [1.1.5](#115)
-    - [1.1.4](#114)
-    - [1.1.3](#113)
-    - [1.1.1](#111)
-
 🐋 Quick Docker image build:
 
 1. `npm run build-lib`;
 2. update `env.js` version, and `ng build --configuration production`;
-3. `docker build . -t vedph2020/cadmus-tgr-app:5.0.4 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-tgr-app:6.0.0 -t vedph2020/cadmus-tgr-app:latest` (replace with the current version).
 
 Web application frontend for Cadmus _TGR_. This application is built by packing together a number of components:
 
@@ -82,6 +46,14 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 ```
 
 ## History
+
+### 6.0.0
+
+- 2024-05-21:
+  - updated Angular and packages ([bricks V2](https://github.com/vedph/cadmus-bricks-shell-v2/tree/master)).
+  - replaced Monaco editor with newer, lighter wrapper.
+  - added [text plugins](https://github.com/vedph/cadmus-bricks-shell-v2/tree/master/projects/myrmidon/cadmus-text-ed) and [lookup services](https://github.com/vedph/cadmus-bricks-shell-v2/tree/master/projects/myrmidon/cadmus-refs-lookup).
+  - updated libraries peer dependencies and bumped all versions to 5.x.x.
 
 ### 5.0.4
 

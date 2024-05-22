@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, Route } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -15,8 +15,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { NgToolsModule } from '@myrmidon/ng-tools';
+import { AuthJwtLoginModule } from '@myrmidon/auth-jwt-login';
+
 import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
 import { CadmusStateModule } from '@myrmidon/cadmus-state';
+import { CadmusUiModule } from '@myrmidon/cadmus-ui';
+import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
+
 import {
   AVAILABLE_WITNESSES_FRAGMENT_TYPEID,
   AVAILABLE_WITNESSES_PART_TYPEID,
@@ -25,10 +31,6 @@ import {
   VAR_QUOTATIONS_FRAGMENT_TYPEID,
   CadmusTgrPartGrUiModule,
 } from '@myrmidon/cadmus-tgr-part-gr-ui';
-import { CadmusUiModule } from '@myrmidon/cadmus-ui';
-import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
-import { NgToolsModule } from '@myrmidon/ng-tools';
-import { AuthJwtLoginModule } from '@myrmidon/auth-jwt-login';
 
 import { AvailableWitnessesFragmentFeatureComponent } from './available-witnesses-fragment-feature/available-witnesses-fragment-feature.component';
 import { AvailableWitnessesPartFeatureComponent } from './available-witnesses-part-feature/available-witnesses-part-feature.component';

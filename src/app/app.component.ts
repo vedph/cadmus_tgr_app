@@ -2,13 +2,21 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Thesaurus, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+
+import { EnvService, RamStorageService } from '@myrmidon/ng-tools';
+
+import { ASSERTED_COMPOSITE_ID_CONFIGS_KEY } from '@myrmidon/cadmus-refs-asserted-ids';
+import { ViafRefLookupService } from '@myrmidon/cadmus-refs-viaf-lookup';
+import { DbpediaRefLookupService } from '@myrmidon/cadmus-refs-dbpedia-lookup';
+import { GeoNamesRefLookupService } from '@myrmidon/cadmus-refs-geonames-lookup';
+import { RefLookupConfig } from '@myrmidon/cadmus-refs-lookup';
+
 import {
   AuthJwtService,
   GravatarService,
   User,
 } from '@myrmidon/auth-jwt-login';
 import { AppRepository } from '@myrmidon/cadmus-state';
-import { EnvService } from '@myrmidon/ng-tools';
 
 @Component({
   selector: 'app-root',
@@ -28,9 +36,44 @@ export class AppComponent implements OnInit {
     private _gravatarService: GravatarService,
     private _appRepository: AppRepository,
     private _router: Router,
-    envService: EnvService
+    envService: EnvService,
+    storage: RamStorageService,
+    viaf: ViafRefLookupService,
+    dbpedia: DbpediaRefLookupService,
+    geonames: GeoNamesRefLookupService
   ) {
     this.version = envService.get('version') || '';
+
+    // configure external lookup for asserted composite IDs
+    storage.store(ASSERTED_COMPOSITE_ID_CONFIGS_KEY, [
+      {
+        name: 'VIAF',
+        iconUrl: '/assets/img/viaf128.png',
+        description: 'Virtual International Authority File',
+        label: 'ID',
+        service: viaf,
+        itemIdGetter: (item: any) => item?.viafid,
+        itemLabelGetter: (item: any) => item?.displayForm,
+      },
+      {
+        name: 'DBpedia',
+        iconUrl: '/assets/img/dbpedia128.png',
+        description: 'DBpedia',
+        label: 'ID',
+        service: dbpedia,
+        itemIdGetter: (item: any) => item?.uri,
+        itemLabelGetter: (item: any) => item?.label,
+      },
+      {
+        name: 'geonames',
+        iconUrl: '/assets/img/geonames128.png',
+        description: 'GeoNames',
+        label: 'ID',
+        service: geonames,
+        itemIdGetter: (item: any) => item?.geonameId,
+        itemLabelGetter: (item: any) => item?.toponymName,
+      },
+    ] as RefLookupConfig[]);
   }
 
   ngOnInit(): void {
