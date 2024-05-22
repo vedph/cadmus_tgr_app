@@ -32,7 +32,7 @@ services:
     image: vedph2020/cadmus-tgr-api:7.0.0
     container_name: cadmus-tgr-api
     ports:
-      - 59590:80
+      - 59590:8080
     depends_on:
       - cadmus-tgr-mongo
       - cadmus-tgr-pgsql
