@@ -5,11 +5,11 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "esModuleInterop": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
@@ -19,7 +19,6 @@
       "es2018",
       "dom"
     ],
-    "allowSyntheticDefaultImports": true,
     "paths": {
       "@myrmidon/cadmus-tgr-core": [
         "dist/myrmidon/cadmus-tgr-core/myrmidon-cadmus-tgr-core",

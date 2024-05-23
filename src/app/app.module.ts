@@ -2,11 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import {
-  HttpClientModule,
-  HTTP_INTERCEPTORS,
-  HttpClientJsonpModule,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withJsonpSupport } from '@angular/common/http';
 
 // material
 import { ClipboardModule } from '@angular/cdk/clipboard';
@@ -102,173 +98,161 @@ import {
 import { TextBlockViewComponent } from '@myrmidon/cadmus-text-block-view';
 import { GEONAMES_USERNAME_TOKEN } from '@myrmidon/cadmus-refs-geonames-lookup';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LoginPageComponent,
-    ManageUsersPageComponent,
-    RegisterUserPageComponent,
-    ResetPasswordComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    HttpClientJsonpModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    // material
-    ClipboardModule,
-    DragDropModule,
-    MatAutocompleteModule,
-    MatBadgeModule,
-    MatButtonModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatNativeDateModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatSliderModule,
-    MatSnackBarModule,
-    MatTableModule,
-    MatTabsModule,
-    MatTooltipModule,
-    MatToolbarModule,
-    MatTreeModule,
-    // monaco
-    NgeMonacoModule.forRoot({}),
-    // markdown
-    MarkdownModule.forRoot(),
-    // myrmidon
-    NgToolsModule,
-    NgMatToolsModule,
-    AuthJwtLoginModule,
-    AuthJwtAdminModule,
-    NgxDirtyCheckModule,
-    // cadmus bricks
-    DocReferencesComponent,
-    HistoricalDateComponent,
-    ExternalIdsComponent,
-    RefLookupComponent,
-    PhysicalSizeComponent,
-    PhysicalSizePipe,
-    TextBlockViewComponent,
-    // cadmus
-    CadmusApiModule,
-    CadmusCoreModule,
-    CadmusProfileCoreModule,
-    CadmusStateModule,
-    CadmusUiModule,
-    CadmusUiPgModule,
-    CadmusPreviewUiModule,
-    CadmusPreviewPgModule,
-  ],
-  providers: [
-    EnvServiceProvider,
-    // parts and fragments type IDs to editor group keys mappings
-    // https://github.com/nrwl/nx/issues/208#issuecomment-384102058
-    // inject like: @Inject('partEditorKeys') partEditorKeys: PartEditorKeys
-    {
-      provide: 'partEditorKeys',
-      useValue: PART_EDITOR_KEYS,
-    },
-    // index lookup definitions
-    {
-      provide: 'indexLookupDefinitions',
-      useValue: INDEX_LOOKUP_DEFINITIONS,
-    },
-    // item browsers IDs to editor keys mappings
-    // inject like: @Inject('itemBrowserKeys') itemBrowserKeys: { [key: string]: string }
-    {
-      provide: 'itemBrowserKeys',
-      useValue: ITEM_BROWSER_KEYS,
-    },
-    // HTTP interceptor
-    // https://medium.com/@ryanchenkie_40935/angular-authentication-using-the-http-client-and-http-interceptors-2f9d1540eb8
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthJwtInterceptor,
-      multi: true,
-    },
-    // text plugins
-    // provide each single plugin
-    MdBoldCtePlugin,
-    MdItalicCtePlugin,
-    TxtEmojiCtePlugin,
-    MdLinkCtePlugin,
-    // provide a factory so that plugins can be instantiated via DI
-    {
-      provide: CADMUS_TEXT_ED_SERVICE_OPTIONS_TOKEN,
-      useFactory: (
-        mdBoldCtePlugin: MdBoldCtePlugin,
-        mdItalicCtePlugin: MdItalicCtePlugin,
-        txtEmojiCtePlugin: TxtEmojiCtePlugin,
-        mdLinkCtePlugin: MdLinkCtePlugin
-      ) => {
-        return {
-          plugins: [
-            mdBoldCtePlugin,
-            mdItalicCtePlugin,
-            txtEmojiCtePlugin,
-            mdLinkCtePlugin,
-          ],
-        };
-      },
-      deps: [
+@NgModule({ declarations: [
+        AppComponent,
+        HomeComponent,
+        LoginPageComponent,
+        ManageUsersPageComponent,
+        RegisterUserPageComponent,
+        ResetPasswordComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        // material
+        ClipboardModule,
+        DragDropModule,
+        MatAutocompleteModule,
+        MatBadgeModule,
+        MatButtonModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatChipsModule,
+        MatDatepickerModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatExpansionModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatMenuModule,
+        MatNativeDateModule,
+        MatPaginatorModule,
+        MatProgressBarModule,
+        MatProgressSpinnerModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatSliderModule,
+        MatSnackBarModule,
+        MatTableModule,
+        MatTabsModule,
+        MatTooltipModule,
+        MatToolbarModule,
+        MatTreeModule,
+        // monaco
+        NgeMonacoModule.forRoot({}),
+        // markdown
+        MarkdownModule.forRoot(),
+        // myrmidon
+        NgToolsModule,
+        NgMatToolsModule,
+        AuthJwtLoginModule,
+        AuthJwtAdminModule,
+        NgxDirtyCheckModule,
+        // cadmus bricks
+        DocReferencesComponent,
+        HistoricalDateComponent,
+        ExternalIdsComponent,
+        RefLookupComponent,
+        PhysicalSizeComponent,
+        PhysicalSizePipe,
+        TextBlockViewComponent,
+        // cadmus
+        CadmusApiModule,
+        CadmusCoreModule,
+        CadmusProfileCoreModule,
+        CadmusStateModule,
+        CadmusUiModule,
+        CadmusUiPgModule,
+        CadmusPreviewUiModule,
+        CadmusPreviewPgModule], providers: [
+        EnvServiceProvider,
+        // parts and fragments type IDs to editor group keys mappings
+        // https://github.com/nrwl/nx/issues/208#issuecomment-384102058
+        // inject like: @Inject('partEditorKeys') partEditorKeys: PartEditorKeys
+        {
+            provide: 'partEditorKeys',
+            useValue: PART_EDITOR_KEYS,
+        },
+        // index lookup definitions
+        {
+            provide: 'indexLookupDefinitions',
+            useValue: INDEX_LOOKUP_DEFINITIONS,
+        },
+        // item browsers IDs to editor keys mappings
+        // inject like: @Inject('itemBrowserKeys') itemBrowserKeys: { [key: string]: string }
+        {
+            provide: 'itemBrowserKeys',
+            useValue: ITEM_BROWSER_KEYS,
+        },
+        // HTTP interceptor
+        // https://medium.com/@ryanchenkie_40935/angular-authentication-using-the-http-client-and-http-interceptors-2f9d1540eb8
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthJwtInterceptor,
+            multi: true,
+        },
+        // text plugins
+        // provide each single plugin
         MdBoldCtePlugin,
         MdItalicCtePlugin,
         TxtEmojiCtePlugin,
         MdLinkCtePlugin,
-      ],
-    },
-    // monaco bindings for plugins
-    // 2080 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB;
-    // 2087 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyI;
-    // 2083 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyE;
-    // 2090 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyL;
-    {
-      provide: CADMUS_TEXT_ED_BINDINGS_TOKEN,
-      useValue: {
-        2080: 'md.bold', // Ctrl+B
-        2087: 'md.italic', // Ctrl+I
-        2083: 'txt.emoji', // Ctrl+E
-        2090: 'md.link', // Ctrl+L
-      },
-    },
-    // lookup
-    // GeoNames lookup (see environment.prod.ts for the username)
-    {
-      provide: GEONAMES_USERNAME_TOKEN,
-      useValue: 'myrmex',
-    },
-    // proxy
-    {
-      provide: PROXY_INTERCEPTOR_OPTIONS,
-      useValue: {
-        proxyUrl: (window as any).__env?.apiUrl + 'proxy',
-        urls: [
-          'http://lookup.dbpedia.org/api/search',
-          'http://lookup.dbpedia.org/api/prefix',
-        ],
-      },
-    },
-  ],
-  bootstrap: [AppComponent],
-})
+        // provide a factory so that plugins can be instantiated via DI
+        {
+            provide: CADMUS_TEXT_ED_SERVICE_OPTIONS_TOKEN,
+            useFactory: (mdBoldCtePlugin: MdBoldCtePlugin, mdItalicCtePlugin: MdItalicCtePlugin, txtEmojiCtePlugin: TxtEmojiCtePlugin, mdLinkCtePlugin: MdLinkCtePlugin) => {
+                return {
+                    plugins: [
+                        mdBoldCtePlugin,
+                        mdItalicCtePlugin,
+                        txtEmojiCtePlugin,
+                        mdLinkCtePlugin,
+                    ],
+                };
+            },
+            deps: [
+                MdBoldCtePlugin,
+                MdItalicCtePlugin,
+                TxtEmojiCtePlugin,
+                MdLinkCtePlugin,
+            ],
+        },
+        // monaco bindings for plugins
+        // 2080 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB;
+        // 2087 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyI;
+        // 2083 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyE;
+        // 2090 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyL;
+        {
+            provide: CADMUS_TEXT_ED_BINDINGS_TOKEN,
+            useValue: {
+                2080: 'md.bold', // Ctrl+B
+                2087: 'md.italic', // Ctrl+I
+                2083: 'txt.emoji', // Ctrl+E
+                2090: 'md.link', // Ctrl+L
+            },
+        },
+        // lookup
+        // GeoNames lookup (see environment.prod.ts for the username)
+        {
+            provide: GEONAMES_USERNAME_TOKEN,
+            useValue: 'myrmex',
+        },
+        // proxy
+        {
+            provide: PROXY_INTERCEPTOR_OPTIONS,
+            useValue: {
+                proxyUrl: (window as any).__env?.apiUrl + 'proxy',
+                urls: [
+                    'http://lookup.dbpedia.org/api/search',
+                    'http://lookup.dbpedia.org/api/prefix',
+                ],
+            },
+        },
+        provideHttpClient(withInterceptorsFromDi(), withJsonpSupport()),
+    ] })
 export class AppModule {}

@@ -1,36 +1,36 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AppComponent } from './app.component';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
 import { PART_EDITOR_KEYS } from './part-editor-keys';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule
-      ],
-      declarations: [
+    declarations: [
         AppComponent
-      ],
-      providers: [
+    ],
+    imports: [RouterTestingModule],
+    providers: [
         {
-          provide: 'partEditorKeys',
-          useValue: PART_EDITOR_KEYS,
+            provide: 'partEditorKeys',
+            useValue: PART_EDITOR_KEYS,
         },
         {
-          provide: 'indexLookupDefinitions',
-          useValue: INDEX_LOOKUP_DEFINITIONS,
+            provide: 'indexLookupDefinitions',
+            useValue: INDEX_LOOKUP_DEFINITIONS,
         },
         {
-          provide: 'itemBrowserKeys',
-          useValue: ITEM_BROWSER_KEYS,
+            provide: 'itemBrowserKeys',
+            useValue: ITEM_BROWSER_KEYS,
         },
-      ]
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
   });
 
   it('should create the app', () => {
