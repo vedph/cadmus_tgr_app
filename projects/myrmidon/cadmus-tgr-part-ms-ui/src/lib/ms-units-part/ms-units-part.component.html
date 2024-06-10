@@ -12,103 +12,101 @@
           type="button"
           mat-flat-button
           color="primary"
+          class="mat-primary"
           (click)="addUnit()"
-          >
+        >
           <mat-icon>add_circle</mat-icon> unit
         </button>
       </div>
       @if (units?.value?.length) {
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>start</th>
-              <th>end</th>
-              <th>sheets</th>
-              <th>guards</th>
-              <th>material</th>
-              <th>group</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (
-              unit of units.value; track
-              unit; let i = $index; let first = $first; let last = $last) {
-              <tr
-                >
-                <td>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    matTooltip="Edit this unit"
-                    (click)="editUnit(unit, i)"
-                    >
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this unit up"
-                    [disabled]="first"
-                    (click)="moveUnitUp(i)"
-                    >
-                    <mat-icon>arrow_upward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this unit down"
-                    [disabled]="last"
-                    (click)="moveUnitDown(i)"
-                    >
-                    <mat-icon>arrow_downward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="warn"
-                    matTooltip="Delete this unit"
-                    (click)="deleteUnit(i)"
-                    >
-                    <mat-icon>remove_circle</mat-icon>
-                  </button>
-                </td>
-                <td>{{ locationToString(unit.start) }}</td>
-                <td>{{ locationToString(unit.end) }}</td>
-                <td>{{ unit.sheetCount }}</td>
-                <td>{{ unit.guardSheetCount }}</td>
-                <td>{{ unit.material }}</td>
-                <td>{{ unit.groupId }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>start</th>
+            <th>end</th>
+            <th>sheets</th>
+            <th>guards</th>
+            <th>material</th>
+            <th>group</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for ( unit of units.value; track unit; let i = $index; let first =
+          $first; let last = $last) {
+          <tr>
+            <td>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit this unit"
+                (click)="editUnit(unit, i)"
+              >
+                <mat-icon class="mat-primary">edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this unit up"
+                [disabled]="first"
+                (click)="moveUnitUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this unit down"
+                [disabled]="last"
+                (click)="moveUnitDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                color="warn"
+                matTooltip="Delete this unit"
+                (click)="deleteUnit(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+            </td>
+            <td>{{ locationToString(unit.start) }}</td>
+            <td>{{ locationToString(unit.end) }}</td>
+            <td>{{ unit.sheetCount }}</td>
+            <td>{{ unit.guardSheetCount }}</td>
+            <td>{{ unit.material }}</td>
+            <td>{{ unit.groupId }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
       }
       <mat-expansion-panel [expanded]="editedUnit" [disabled]="!editedUnit">
         <mat-expansion-panel-header
           >unit #{{ editedUnitIndex + 1 }}</mat-expansion-panel-header
-          >
-          <tgr-ms-unit
-            [unit]="editedUnit"
-            [matEntries]="matEntries"
-            [rulManEntries]="rulManEntries"
-            [rulSysEntries]="rulSysEntries"
-            [szUnitEntries]="szUnitEntries"
-            [szTagEntries]="szTagEntries"
-            [szDimTagEntries]="szDimTagEntries"
-            (unitChange)="saveUnit($event)"
-            (editorClose)="closeUnit()"
-          ></tgr-ms-unit>
-        </mat-expansion-panel>
-      </mat-card-content>
-      <mat-card-actions>
-        <cadmus-close-save-buttons
-          [form]="form"
-          [noSave]="userLevel < 2"
-          (closeRequest)="close()"
-        ></cadmus-close-save-buttons>
-      </mat-card-actions>
-    </mat-card>
-  </form>
-  
+        >
+        <tgr-ms-unit
+          [unit]="editedUnit"
+          [matEntries]="matEntries"
+          [rulManEntries]="rulManEntries"
+          [rulSysEntries]="rulSysEntries"
+          [szUnitEntries]="szUnitEntries"
+          [szTagEntries]="szTagEntries"
+          [szDimTagEntries]="szDimTagEntries"
+          (unitChange)="saveUnit($event)"
+          (editorClose)="closeUnit()"
+        ></tgr-ms-unit>
+      </mat-expansion-panel>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

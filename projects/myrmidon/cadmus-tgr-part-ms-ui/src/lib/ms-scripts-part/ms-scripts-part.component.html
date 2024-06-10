@@ -13,98 +13,96 @@
           type="button"
           mat-flat-button
           color="primary"
+          class="mat-primary"
           (click)="addScript()"
-          >
+        >
           <mat-icon>add_circle</mat-icon> script
         </button>
       </div>
       @if (scripts?.value?.length) {
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>language</th>
-              <th>role</th>
-              <th>type</th>
-              <th>hands</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (
-              script of scripts?.value; track
-              script; let i = $index; let first = $first; let last = $last) {
-              <tr
-                >
-                <td>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    matTooltip="Edit this script"
-                    (click)="editScript(script, i)"
-                    >
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this script up"
-                    [disabled]="first"
-                    (click)="moveScriptUp(i)"
-                    >
-                    <mat-icon>arrow_upward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this script down"
-                    [disabled]="last"
-                    (click)="moveScriptDown(i)"
-                    >
-                    <mat-icon>arrow_downward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="warn"
-                    matTooltip="Delete this script"
-                    (click)="deleteScript(i)"
-                    >
-                    <mat-icon>remove_circle</mat-icon>
-                  </button>
-                </td>
-                <td>{{ entryToString(script.languages[0], "L") }}</td>
-                <td>{{ entryToString(script.role, "R") }}</td>
-                <td>{{ entryToString(script.type, "T") }}</td>
-                <td style="text-align: center">{{ script.hands?.length || 0 }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>language</th>
+            <th>role</th>
+            <th>type</th>
+            <th>hands</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for ( script of scripts?.value; track script; let i = $index; let
+          first = $first; let last = $last) {
+          <tr>
+            <td>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit this script"
+                (click)="editScript(script, i)"
+              >
+                <mat-icon class="mat-primary">edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this script up"
+                [disabled]="first"
+                (click)="moveScriptUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this script down"
+                [disabled]="last"
+                (click)="moveScriptDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                color="warn"
+                matTooltip="Delete this script"
+                (click)="deleteScript(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+            </td>
+            <td>{{ entryToString(script.languages[0], "L") }}</td>
+            <td>{{ entryToString(script.role, "R") }}</td>
+            <td>{{ entryToString(script.type, "T") }}</td>
+            <td style="text-align: center">{{ script.hands?.length || 0 }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
       }
       <!-- SCRIPT -->
       <mat-expansion-panel [expanded]="editedScript" [disabled]="!editedScript">
         <mat-expansion-panel-header
           >content #{{ editedScriptIndex + 1 }}</mat-expansion-panel-header
-          >
-          <tgr-ms-script
-            [model]="editedScript"
-            [langEntries]="langEntries"
-            [scrRoleEntries]="scrRoleEntries"
-            [scrTypeEntries]="scrTypeEntries"
-            (modelChange)="saveScript($event)"
-            (editorClose)="closeScript()"
-            >
-          </tgr-ms-script>
-        </mat-expansion-panel>
-      </mat-card-content>
-      <mat-card-actions>
-        <cadmus-close-save-buttons
-          [form]="form"
-          [noSave]="userLevel < 2"
-          (closeRequest)="close()"
-        ></cadmus-close-save-buttons>
-      </mat-card-actions>
-    </mat-card>
-  </form>
-  
+        >
+        <tgr-ms-script
+          [model]="editedScript"
+          [langEntries]="langEntries"
+          [scrRoleEntries]="scrRoleEntries"
+          [scrTypeEntries]="scrTypeEntries"
+          (modelChange)="saveScript($event)"
+          (editorClose)="closeScript()"
+        >
+        </tgr-ms-script>
+      </mat-expansion-panel>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

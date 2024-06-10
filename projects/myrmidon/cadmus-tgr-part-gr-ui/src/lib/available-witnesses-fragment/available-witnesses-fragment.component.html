@@ -15,8 +15,8 @@
           color="primary"
           matTooltip="Copy witnesses"
           (click)="copyWitnesses()"
-          >
-          <mat-icon>content_copy</mat-icon>
+        >
+          <mat-icon class="mat-primary">content_copy</mat-icon>
         </button>
         <button
           mat-icon-button
@@ -25,146 +25,125 @@
           matTooltip="Paste witnesses"
           [disabled]="!bucketAvailable"
           (click)="pasteWitnesses()"
-          >
-          <mat-icon>content_paste</mat-icon>
+        >
+          <mat-icon class="mat-warn">content_paste</mat-icon>
         </button>
         @if (witEntries?.length) {
-          <button
-            type="button"
-            mat-icon-button
-            matTooltip="Add all the witnesses"
-            (click)="addAllWitnesses()"
-            >
-            <mat-icon color="primary">done_all</mat-icon>
-          </button>
+        <button
+          type="button"
+          mat-icon-button
+          matTooltip="Add all the witnesses"
+          (click)="addAllWitnesses()"
+        >
+          <mat-icon color="primary" class="mat-primary">done_all</mat-icon>
+        </button>
         }
         <button
           type="button"
           mat-icon-button
           matTooltip="Add a new witness"
           color="primary"
+          class="mat-primary"
           (click)="addWitness()"
-          >
+        >
           <mat-icon>add_circle</mat-icon> witness
         </button>
       </div>
       <div formArrayName="witnesses">
-        @for (
-          item of witnesses.controls; track
-          item; let i = $index; let first = $first; let last = $last) {
-          <div
-            >
-            <!-- child form -->
-            <div [formGroupName]="i" class="form-row">
-              <!-- child actions -->
-              <div>
-                {{ i + 1 }}.
-                <button
-                  mat-icon-button
-                  type="button"
-                  matTooltip="Remove this witness"
-                  color="warn"
-                  (click)="removeWitness(i)"
-                  >
-                  <mat-icon>remove_circle</mat-icon>
-                </button>
-                <button
-                  [disabled]="first"
-                  mat-icon-button
-                  type="button"
-                  matTooltip="Move witness up"
-                  (click)="moveWitnessUp(i)"
-                  >
-                  <mat-icon>arrow_upward</mat-icon>
-                </button>
-                <button
-                  [disabled]="last"
-                  mat-icon-button
-                  type="button"
-                  matTooltip="Move witness down"
-                  (click)="moveWitnessDown(i)"
-                  >
-                  <mat-icon>arrow_downward</mat-icon>
-                </button>
-              </div>
-              <!-- child controls -->
-              <!-- id (bound) -->
-              @if (witEntries?.length) {
-                <mat-form-field>
-                  <mat-label>ID</mat-label>
-                  <mat-select formControlName="id">
-                    @for (e of witEntries; track e) {
-                      <mat-option [value]="e.id">{{
-                        e.value
-                      }}</mat-option>
-                    }
-                  </mat-select>
-                  @if (
-                    $any(item)['controls'].id.errors?.required &&
-                    ($any(item)['controls'].id.dirty ||
-                    $any(item)['controls'].id.touched)
-                    ) {
-                    <mat-error
-                      >ID required</mat-error
-                      >
-                    }
-                  </mat-form-field>
+        @for ( item of witnesses.controls; track item; let i = $index; let first
+        = $first; let last = $last) {
+        <div>
+          <!-- child form -->
+          <div [formGroupName]="i" class="form-row">
+            <!-- child actions -->
+            <div>
+              {{ i + 1 }}.
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Remove this witness"
+                color="warn"
+                (click)="removeWitness(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move witness up"
+                (click)="moveWitnessUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move witness down"
+                (click)="moveWitnessDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </div>
+            <!-- child controls -->
+            <!-- id (bound) -->
+            @if (witEntries?.length) {
+            <mat-form-field>
+              <mat-label>ID</mat-label>
+              <mat-select formControlName="id">
+                @for (e of witEntries; track e) {
+                <mat-option [value]="e.id">{{ e.value }}</mat-option>
                 }
-                <!-- id (free) -->
-                @if (!witEntries?.length) {
-                  <mat-form-field>
-                    <mat-label>ID</mat-label>
-                    <input matInput formControlName="id" />
-                    @if (
-                      $any(item)['controls'].id.errors?.required &&
-                      ($any(item)['controls'].id.dirty ||
-                      $any(item)['controls'].id.touched)
-                      ) {
-                      <mat-error
-                        >ID required</mat-error
-                        >
-                      }
-                      @if (
-                        $any(item)['controls'].id.errors?.maxLength &&
-                        ($any(item)['controls'].id.dirty ||
-                        $any(item)['controls'].id.touched)
-                        ) {
-                        <mat-error
-                          >ID too long</mat-error
-                          >
-                        }
-                      </mat-form-field>
-                    }
-                    <!-- partial -->
-                    <mat-checkbox formControlName="partial">partial</mat-checkbox>
-                    <!-- note -->
-                    <div style="flex: 1 0 auto">
-                      <mat-form-field class="long-text">
-                        <mat-label>note</mat-label>
-                        <input matInput formControlName="note" />
-                        @if (
-                          $any(item)['controls'].note.errors?.maxLength &&
-                          ($any(item)['controls'].note.dirty ||
-                          $any(item)['controls'].note.touched)
-                          ) {
-                          <mat-error
-                            >note too long</mat-error
-                            >
-                          }
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
+              </mat-select>
+              @if ( $any(item)['controls'].id.errors?.required &&
+              ($any(item)['controls'].id.dirty ||
+              $any(item)['controls'].id.touched) ) {
+              <mat-error>ID required</mat-error>
+              }
+            </mat-form-field>
+            }
+            <!-- id (free) -->
+            @if (!witEntries?.length) {
+            <mat-form-field>
+              <mat-label>ID</mat-label>
+              <input matInput formControlName="id" />
+              @if ( $any(item)['controls'].id.errors?.required &&
+              ($any(item)['controls'].id.dirty ||
+              $any(item)['controls'].id.touched) ) {
+              <mat-error>ID required</mat-error>
+              } @if ( $any(item)['controls'].id.errors?.maxLength &&
+              ($any(item)['controls'].id.dirty ||
+              $any(item)['controls'].id.touched) ) {
+              <mat-error>ID too long</mat-error>
+              }
+            </mat-form-field>
+            }
+            <!-- partial -->
+            <mat-checkbox formControlName="partial">partial</mat-checkbox>
+            <!-- note -->
+            <div style="flex: 1 0 auto">
+              <mat-form-field class="long-text">
+                <mat-label>note</mat-label>
+                <input matInput formControlName="note" />
+                @if ( $any(item)['controls'].note.errors?.maxLength &&
+                ($any(item)['controls'].note.dirty ||
+                $any(item)['controls'].note.touched) ) {
+                <mat-error>note too long</mat-error>
                 }
-              </div>
-            </mat-card-content>
-            <mat-card-actions>
-              <cadmus-close-save-buttons
-                [form]="form"
-                [noSave]="userLevel < 2"
-                (closeRequest)="close()"
-              ></cadmus-close-save-buttons>
-            </mat-card-actions>
-          </mat-card>
-        </form>
-        
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -1,121 +1,138 @@
 <div style="margin: 0 16px">
   <div class="banner">
     <img
+      alt="banner"
       class="banner-img"
       srcset="
-      ./assets/img/banner-1024.jpg 1024w,
-      ./assets/img/banner-512.jpg   512w
+        ./assets/img/banner-1024.jpg 1024w,
+        ./assets/img/banner-512.jpg   512w
       "
       sizes="(max-width: 600px) 512px, 1024px"
-      />
-    </div>
-    <article>
-      <h2>Cadmus for the study of the ancient grammatical tradition</h2>
-      <h3>Projects</h3>
-      <p>
-        This is the editing dashboard for a cluster of research projects related
-        to the ancient grammatical tradition:
-      </p>
-      <ul>
-        <li>
-          <a href="https://web.uniroma1.it/pages/" target="_blank">PAGES</a> -
-          <em
-            >Priscian's Ars Grammatica in European Scriptoria. A Millennium of
-            Latin and Greek Scholarship</em
-            >. ERC Grant 882588, 2021-2025. PI Prof.
-            <a href="https://www.lettere.uniroma1.it/users/michela-rosellini"
-              >Michela Rosellini</a
-              >
-              (Roma Sapienza)
-            </li>
-            <li>
-              <a
-                href="https://web.uniroma1.it/lcm/le-tradizioni-della-linguistica-antica-testi-e-contesti-degli-studi-grammaticali-nel-mondo-romano"
-                target="_blank"
-                >TAL</a
-                >
-                -
-                <em
-                  >The Transmission of Ancient Linguistics: Texts and Contexts of the
-                  Roman Grammatical Studies</em
-                  >
-                  /
-                  <em
-                    >Le tradizioni della linguistica antica: testi e contesti degli studi
-                    grammaticali nel mondo romano</em
-                    >. PRIN 2017. Coordinators: Prof.
-                    <a
-                      href="https://www.uniroma3.it/en/persone/VWFiNXorTzFrOFMrOWwzaWs4Q1ZOQ2NvQ05aMk5kd3pHRTJKVDZKZ21DQT0=/"
-                      >
-                      Mario De Nonno</a
-                      >
-                      (national PI, Roma Tre unit); Prof.
-                      <a href="https://www.lettere.uniroma1.it/users/claudio-giammona"
-                        >Claudio Giammona</a
-                        >
-                        (Roma Sapienza unit); Prof.
-                        <a href="https://unimap.unipi.it/cercapersone/dettaglio.php?ri=4151"
-                          >Rolando Ferri</a
-                          >
-                          (Pisa unit); Prof.
-                          <a href="https://www.dcuci.univr.it/?ent=persona&id=53286"
-                            >Paolo De Paolis</a
-                            >
-                            (Verona unit)
-                          </li>
-                          <li>
-                            ThDS -
-                            <em
-                              >Thesaurus dubii sermonis: Digital Critical Collection of Ancient
-                              Latin Linguistics (1st century BC – 8th century CE)</em
-                              >. A. von Humboldt Stiftung Forschungsstipendium für erfahrene
-                              Wissenschaftler 2020. PI: Dr.
-                              <a href="https://www.lettere.uniroma1.it/users/elena-spangenberg-yanes"
-                                >Elena Spangenberg Yanes</a
-                                >
-                                (Thesaurus linguae Latinae, Bayerische Akademie der Wissenschaften)
-                              </li>
-                              <li>
-                                <em
-                                  >Thesaurus dubii sermonis: repertorio critico digitale della
-                                  riflessione linguistica antica (I sec. a. C. – VIII sec. d. C.)</em
-                                  >. Research grant of Sapienza University of Rome 2018. PI: Prof.
-                                  <a href="https://www.lettere.uniroma1.it/users/michela-rosellini"
-                                    >Michela Rosellini</a
-                                    >
-                                    (Sapienza University of Rome).
-                                  </li>
-                                </ul>
-                                <h3>Cadmus GitHub resources</h3>
-                                <ul>
-                                  <li>
-                                    <a href="https://github.com/vedph/cadmus_tgr_doc" target="_blank"
-                                      >Cadmus documentation</a
-                                      >
-                                    </li>
-                                    <li>
-                                      <a href="https://github.com/vedph/cadmus_tgr" target="_blank">Core</a>:
-                                      models specific to the PAGES/TAL/ThDS projects.
-                                    </li>
-                                    <li>
-                                      <a href="https://github.com/vedph/cadmus_tgr_api" target="_blank"
-                                        >Web API</a
-                                        >: the PAGES/TAL/ThDS web API, powering this application.
-                                      </li>
-                                      <li>
-                                        <a href="https://github.com/vedph/cadmus_tgr_app" target="_blank"
-                                          >Web app</a
-                                          >: this web application.
-                                        </li>
-                                      </ul>
-                                      @if (!logged) {
-                                        <p style="margin-bottom: 8px">
-                                          <a mat-mini-fab color="primary" routerLink="/login"
-                                            ><mat-icon>login</mat-icon></a
-                                            >
-                                            <span style="margin-left: 8px">Login (for project editors)</span>
-                                          </p>
-                                        }
-                                      </article>
-                                    </div>
-                                    
+    />
+  </div>
+  <article>
+    <h2>Cadmus for the study of the ancient grammatical tradition</h2>
+    <h3>Projects</h3>
+    <p>
+      This is the editing dashboard for a cluster of research projects related
+      to the ancient grammatical tradition:
+    </p>
+    <ul>
+      <li>
+        <a href="https://web.uniroma1.it/pages/" target="_blank" rel="noopener"
+          >PAGES</a
+        >
+        -
+        <em
+          >Priscian's Ars Grammatica in European Scriptoria. A Millennium of
+          Latin and Greek Scholarship</em
+        >. ERC Grant 882588, 2021-2025. PI Prof.
+        <a href="https://www.lettere.uniroma1.it/users/michela-rosellini"
+          >Michela Rosellini</a
+        >
+        (Roma Sapienza)
+      </li>
+      <li>
+        <a
+          href="https://web.uniroma1.it/lcm/le-tradizioni-della-linguistica-antica-testi-e-contesti-degli-studi-grammaticali-nel-mondo-romano"
+          target="_blank"
+          rel="noopener"
+          >TAL</a
+        >
+        -
+        <em
+          >The Transmission of Ancient Linguistics: Texts and Contexts of the
+          Roman Grammatical Studies</em
+        >
+        /
+        <em
+          >Le tradizioni della linguistica antica: testi e contesti degli studi
+          grammaticali nel mondo romano</em
+        >. PRIN 2017. Coordinators: Prof.
+        <a
+          href="https://www.uniroma3.it/en/persone/VWFiNXorTzFrOFMrOWwzaWs4Q1ZOQ2NvQ05aMk5kd3pHRTJKVDZKZ21DQT0=/"
+        >
+          Mario De Nonno</a
+        >
+        (national PI, Roma Tre unit); Prof.
+        <a href="https://www.lettere.uniroma1.it/users/claudio-giammona"
+          >Claudio Giammona</a
+        >
+        (Roma Sapienza unit); Prof.
+        <a href="https://unimap.unipi.it/cercapersone/dettaglio.php?ri=4151"
+          >Rolando Ferri</a
+        >
+        (Pisa unit); Prof.
+        <a href="https://www.dcuci.univr.it/?ent=persona&id=53286"
+          >Paolo De Paolis</a
+        >
+        (Verona unit)
+      </li>
+      <li>
+        ThDS -
+        <em
+          >Thesaurus dubii sermonis: Digital Critical Collection of Ancient
+          Latin Linguistics (1st century BC – 8th century CE)</em
+        >. A. von Humboldt Stiftung Forschungsstipendium für erfahrene
+        Wissenschaftler 2020. PI: Dr.
+        <a href="https://www.lettere.uniroma1.it/users/elena-spangenberg-yanes"
+          >Elena Spangenberg Yanes</a
+        >
+        (Thesaurus linguae Latinae, Bayerische Akademie der Wissenschaften)
+      </li>
+      <li>
+        <em
+          >Thesaurus dubii sermonis: repertorio critico digitale della
+          riflessione linguistica antica (I sec. a. C. – VIII sec. d. C.)</em
+        >. Research grant of Sapienza University of Rome 2018. PI: Prof.
+        <a href="https://www.lettere.uniroma1.it/users/michela-rosellini"
+          >Michela Rosellini</a
+        >
+        (Sapienza University of Rome).
+      </li>
+    </ul>
+    <h3>Cadmus GitHub resources</h3>
+    <ul>
+      <li>
+        <a
+          href="https://github.com/vedph/cadmus_tgr_doc"
+          target="_blank"
+          rel="noopener"
+          >Cadmus documentation</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://github.com/vedph/cadmus_tgr"
+          target="_blank"
+          rel="noopener"
+          >Core</a
+        >: models specific to the PAGES/TAL/ThDS projects.
+      </li>
+      <li>
+        <a
+          href="https://github.com/vedph/cadmus_tgr_api"
+          target="_blank"
+          rel="noopener"
+          >Web API</a
+        >: the PAGES/TAL/ThDS web API, powering this application.
+      </li>
+      <li>
+        <a
+          href="https://github.com/vedph/cadmus_tgr_app"
+          target="_blank"
+          rel="noopener"
+          >Web app</a
+        >: this web application.
+      </li>
+    </ul>
+    @if (!logged) {
+    <p style="margin-bottom: 8px">
+      <a mat-mini-fab color="primary" routerLink="/login"
+        ><mat-icon>login</mat-icon></a
+      >
+      <span style="margin-left: 8px">Login (for project editors)</span>
+    </p>
+    }
+  </article>
+</div>

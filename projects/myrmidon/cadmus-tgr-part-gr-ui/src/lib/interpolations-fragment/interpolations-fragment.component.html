@@ -7,119 +7,117 @@
       <mat-card-title
         >Interpolations/Transcriptions Fragment
         {{ data?.value?.location }}</mat-card-title
+      >
+      <mat-card-subtitle> {{ data?.baseText }} </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div style="margin-top: 4px">
+        <button
+          type="button"
+          mat-flat-button
+          color="primary"
+          class="mat-primary"
+          (click)="addInterpolation()"
         >
-        <mat-card-subtitle> {{ data?.baseText }} </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div style="margin-top: 4px">
-          <button
-            type="button"
-            mat-flat-button
-            color="primary"
-            (click)="addInterpolation()"
-            >
-            <mat-icon>add_circle</mat-icon> interpolation
-          </button>
-        </div>
-        @if (interpolations?.value?.length) {
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>type</th>
-                <th>role</th>
-                <th>language</th>
-                <th>value</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (
-                entry of interpolations?.value; track
-                entry; let i = $index; let first = $first; let last = $last) {
-                <tr
-                  >
-                  <td>
-                    <button
-                      type="button"
-                      mat-icon-button
-                      color="primary"
-                      matTooltip="Edit this interpolation"
-                      (click)="editInterpolation(entry, i)"
-                      >
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                    <button
-                      type="button"
-                      mat-icon-button
-                      matTooltip="Move this interpolation up"
-                      [disabled]="first"
-                      (click)="moveInterpolationUp(i)"
-                      >
-                      <mat-icon>arrow_upward</mat-icon>
-                    </button>
-                    <button
-                      type="button"
-                      mat-icon-button
-                      matTooltip="Move this interpolation down"
-                      [disabled]="last"
-                      (click)="moveInterpolationDown(i)"
-                      >
-                      <mat-icon>arrow_downward</mat-icon>
-                    </button>
-                    <button
-                      type="button"
-                      mat-icon-button
-                      color="warn"
-                      matTooltip="Delete this interpolation"
-                      (click)="deleteInterpolation(i)"
-                      >
-                      <mat-icon>remove_circle</mat-icon>
-                    </button>
-                  </td>
-                  <td [matTooltip]="getEntryTypeDsc(entry.type)">
-                    <mat-icon>{{ getEntryTypeIcon(entry.type) }}</mat-icon>
-                  </td>
-                  <td>{{ resolveId(entry.role, "r") }}</td>
-                  <td>{{ languagesToString(entry.languages) }}</td>
-                  <td>{{ entry.value }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        }
-        <mat-expansion-panel
-          [expanded]="editedInterpolation"
-          [disabled]="!editedInterpolation"
-          >
-          <mat-expansion-panel-header
-            >content #{{
-            editedInterpolationIndex + 1
-            }}</mat-expansion-panel-header
-            >
-            <tgr-interpolation
-              [model]="editedInterpolation"
-              [authEntries]="authEntries"
-              [authTagEntries]="authTagEntries"
-              [intLangEntries]="intLangEntries"
-              [intRoleEntries]="intRoleEntries"
-              [intTagEntries]="intTagEntries"
-              [quotAuthEntries]="quotAuthEntries"
-              [quotTagEntries]="quotTagEntries"
-              [witEntries]="witEntries"
-              [workEntries]="workEntries"
-              (modelChange)="saveInterpolation($event)"
-              (editorClose)="closeInterpolation()"
+          <mat-icon>add_circle</mat-icon> interpolation
+        </button>
+      </div>
+      @if (interpolations?.value?.length) {
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>type</th>
+            <th>role</th>
+            <th>language</th>
+            <th>value</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for ( entry of interpolations?.value; track entry; let i = $index;
+          let first = $first; let last = $last) {
+          <tr>
+            <td>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit this interpolation"
+                (click)="editInterpolation(entry, i)"
               >
-            </tgr-interpolation>
-          </mat-expansion-panel>
-        </mat-card-content>
-        <mat-card-actions>
-          <cadmus-close-save-buttons
-            [form]="form"
-            [noSave]="userLevel < 2"
-            (closeRequest)="close()"
-          ></cadmus-close-save-buttons>
-        </mat-card-actions>
-      </mat-card>
-    </form>
-    
+                <mat-icon class="mat-primary">edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this interpolation up"
+                [disabled]="first"
+                (click)="moveInterpolationUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this interpolation down"
+                [disabled]="last"
+                (click)="moveInterpolationDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                color="warn"
+                matTooltip="Delete this interpolation"
+                (click)="deleteInterpolation(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+            </td>
+            <td [matTooltip]="getEntryTypeDsc(entry.type)">
+              <mat-icon>{{ getEntryTypeIcon(entry.type) }}</mat-icon>
+            </td>
+            <td>{{ resolveId(entry.role, "r") }}</td>
+            <td>{{ languagesToString(entry.languages) }}</td>
+            <td>{{ entry.value }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+      <mat-expansion-panel
+        [expanded]="editedInterpolation"
+        [disabled]="!editedInterpolation"
+      >
+        <mat-expansion-panel-header
+          >content #{{
+            editedInterpolationIndex + 1
+          }}</mat-expansion-panel-header
+        >
+        <tgr-interpolation
+          [model]="editedInterpolation"
+          [authEntries]="authEntries"
+          [authTagEntries]="authTagEntries"
+          [intLangEntries]="intLangEntries"
+          [intRoleEntries]="intRoleEntries"
+          [intTagEntries]="intTagEntries"
+          [quotAuthEntries]="quotAuthEntries"
+          [quotTagEntries]="quotTagEntries"
+          [witEntries]="witEntries"
+          [workEntries]="workEntries"
+          (modelChange)="saveInterpolation($event)"
+          (editorClose)="closeInterpolation()"
+        >
+        </tgr-interpolation>
+      </mat-expansion-panel>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

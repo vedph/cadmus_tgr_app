@@ -5,221 +5,177 @@
       <mat-label>ID</mat-label>
       <input matInput [formControl]="id" />
       @if (id.errors?.maxLength && (id.dirty || id.touched)) {
-        <mat-error
-          >id too long</mat-error
+      <mat-error>id too long</mat-error>
+      }
+    </mat-form-field>
+    &nbsp;
+    <!-- start -->
+    <mat-form-field>
+      <mat-label>start</mat-label>
+      <input matInput [formControl]="start" />
+      @if (start.errors?.required && (start.dirty || start.touched)) {
+      <mat-error>start required</mat-error>
+      } @if (start.errors?.pattern && (start.dirty || start.touched)) {
+      <mat-error>invalid start</mat-error>
+      }
+    </mat-form-field>
+    &nbsp;
+    <!-- end -->
+    <mat-form-field>
+      <mat-label>end</mat-label>
+      <input matInput [formControl]="end" />
+      @if (end.errors?.required && (end.dirty || end.touched)) {
+      <mat-error>end required</mat-error>
+      } @if (end.errors?.pattern && (end.dirty || end.touched)) {
+      <mat-error>invalid end</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <!-- date -->
+  <div>
+    <cadmus-refs-historical-date
+      [date]="$any(date)"
+      (dateChange)="onDateChange($event)"
+    ></cadmus-refs-historical-date>
+  </div>
+  <br />
+  <div>
+    <!-- description -->
+    <mat-form-field class="long-text">
+      <mat-label>description</mat-label>
+      <textarea matInput rows="3" [formControl]="description"></textarea>
+      @if ( description.errors?.maxLength && (description.dirty ||
+      description.touched) ) {
+      <mat-error>description too long</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div>
+    <!-- abbreviations -->
+    <mat-form-field class="long-text">
+      <mat-label>abbreviations</mat-label>
+      <textarea matInput rows="3" [formControl]="abbreviations"></textarea>
+      @if ( abbreviations.errors?.maxLength && (abbreviations.dirty ||
+      abbreviations.touched) ) {
+      <mat-error>abbreviations too long</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div>
+    <!-- letters -->
+    <div formArrayName="letters">
+      <div>
+        <button
+          type="button"
+          mat-flat-button
+          color="primary"
+          class="mat-primary"
+          (click)="addLetter()"
+        >
+          <mat-icon>add_circle</mat-icon>
+          letter
+        </button>
+      </div>
+      @for ( item of letters.controls; track item; let i = $index; let first =
+      $first; let last = $last) {
+      <div>
+        <!-- child form -->
+        <div [formGroupName]="i">
+          <!-- child actions -->
+          {{ i + 1 }}.
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Remove this letter"
+            color="warn"
+            (click)="removeLetter(i)"
           >
-        }
-      </mat-form-field>
-      &nbsp;
-      <!-- start -->
-      <mat-form-field>
-        <mat-label>start</mat-label>
-        <input matInput [formControl]="start" />
-        @if (start.errors?.required && (start.dirty || start.touched)) {
-          <mat-error
-            >start required</mat-error
-            >
-          }
-          @if (start.errors?.pattern && (start.dirty || start.touched)) {
-            <mat-error
-              >invalid start</mat-error
-              >
+            <mat-icon class="mat-warn">remove_circle</mat-icon>
+          </button>
+          <button
+            [disabled]="first"
+            mat-icon-button
+            type="button"
+            matTooltip="Move letter up"
+            (click)="moveLetterUp(i)"
+          >
+            <mat-icon>arrow_upward</mat-icon>
+          </button>
+          <button
+            [disabled]="last"
+            mat-icon-button
+            type="button"
+            matTooltip="Move letter down"
+            (click)="moveLetterDown(i)"
+          >
+            <mat-icon>arrow_downward</mat-icon>
+          </button>
+          <!-- child controls -->
+          <!-- letter -->
+          <mat-form-field>
+            <mat-label>letter</mat-label>
+            <input matInput formControlName="letter" />
+            @if ( $any(item)['controls'].letter.errors?.required &&
+            ($any(item)['controls'].letter.dirty ||
+            $any(item)['controls'].letter.touched) ) {
+            <mat-error>letter required</mat-error>
+            } @if ( $any(item)['controls'].letter.errors?.maxLength &&
+            ($any(item)['controls'].letter.dirty ||
+            $any(item)['controls'].letter.touched) ) {
+            <mat-error>too long</mat-error>
             }
           </mat-form-field>
           &nbsp;
-          <!-- end -->
+          <!-- imageId-->
           <mat-form-field>
-            <mat-label>end</mat-label>
-            <input matInput [formControl]="end" />
-            @if (end.errors?.required && (end.dirty || end.touched)) {
-              <mat-error
-                >end required</mat-error
-                >
+            <mat-label>image ID</mat-label>
+            <input matInput formControlName="imageId" />
+            @if ( $any(item)['controls'].imageId.errors?.maxLength &&
+            ($any(item)['controls'].imageId.dirty ||
+            $any(item)['controls'].imageId.touched) ) {
+            <mat-error>too long</mat-error>
+            }
+          </mat-form-field>
+          <!-- description -->
+          <div>
+            <mat-label>description</mat-label>
+            <mat-form-field class="long-text-indented">
+              <input matInput formControlName="description" />
+              @if ( $any(item)['controls'].description.errors?.required &&
+              ($any(item)['controls'].description.dirty ||
+              $any(item)['controls'].description.touched) ) {
+              <mat-error>required</mat-error>
+              } @if ( $any(item)['controls'].description.errors?.maxLength &&
+              ($any(item)['controls'].description.dirty ||
+              $any(item)['controls'].description.touched) ) {
+              <mat-error>too long</mat-error>
               }
-              @if (end.errors?.pattern && (end.dirty || end.touched)) {
-                <mat-error
-                  >invalid end</mat-error
-                  >
-                }
-              </mat-form-field>
-            </div>
-            <!-- date -->
-            <div>
-              <cadmus-refs-historical-date
-                [date]="$any(date)"
-                (dateChange)="onDateChange($event)"
-              ></cadmus-refs-historical-date>
-            </div>
-            <br />
-            <div>
-              <!-- description -->
-              <mat-form-field class="long-text">
-                <mat-label>description</mat-label>
-                <textarea matInput rows="3" [formControl]="description"></textarea>
-                @if (
-                  description.errors?.maxLength &&
-                  (description.dirty || description.touched)
-                  ) {
-                  <mat-error
-                    >description too long</mat-error
-                    >
-                  }
-                </mat-form-field>
-              </div>
-              <div>
-                <!-- abbreviations -->
-                <mat-form-field class="long-text">
-                  <mat-label>abbreviations</mat-label>
-                  <textarea matInput rows="3" [formControl]="abbreviations"></textarea>
-                  @if (
-                    abbreviations.errors?.maxLength &&
-                    (abbreviations.dirty || abbreviations.touched)
-                    ) {
-                    <mat-error
-                      >abbreviations too long</mat-error
-                      >
-                    }
-                  </mat-form-field>
-                </div>
-                <div>
-                  <!-- letters -->
-                  <div formArrayName="letters">
-                    <div>
-                      <button
-                        type="button"
-                        mat-flat-button
-                        color="primary"
-                        (click)="addLetter()"
-                        >
-                        <mat-icon>add_circle</mat-icon>
-                        letter
-                      </button>
-                    </div>
-                    @for (
-                      item of letters.controls; track
-                      item; let i = $index; let first = $first; let last = $last) {
-                      <div
-                        >
-                        <!-- child form -->
-                        <div [formGroupName]="i">
-                          <!-- child actions -->
-                          {{ i + 1 }}.
-                          <button
-                            mat-icon-button
-                            type="button"
-                            matTooltip="Remove this letter"
-                            color="warn"
-                            (click)="removeLetter(i)"
-                            >
-                            <mat-icon>remove_circle</mat-icon>
-                          </button>
-                          <button
-                            [disabled]="first"
-                            mat-icon-button
-                            type="button"
-                            matTooltip="Move letter up"
-                            (click)="moveLetterUp(i)"
-                            >
-                            <mat-icon>arrow_upward</mat-icon>
-                          </button>
-                          <button
-                            [disabled]="last"
-                            mat-icon-button
-                            type="button"
-                            matTooltip="Move letter down"
-                            (click)="moveLetterDown(i)"
-                            >
-                            <mat-icon>arrow_downward</mat-icon>
-                          </button>
-                          <!-- child controls -->
-                          <!-- letter -->
-                          <mat-form-field>
-                            <mat-label>letter</mat-label>
-                            <input matInput formControlName="letter" />
-                            @if (
-                              $any(item)['controls'].letter.errors?.required &&
-                              ($any(item)['controls'].letter.dirty ||
-                              $any(item)['controls'].letter.touched)
-                              ) {
-                              <mat-error
-                                >letter required</mat-error
-                                >
-                              }
-                              @if (
-                                $any(item)['controls'].letter.errors?.maxLength &&
-                                ($any(item)['controls'].letter.dirty ||
-                                $any(item)['controls'].letter.touched)
-                                ) {
-                                <mat-error
-                                  >too long</mat-error
-                                  >
-                                }
-                              </mat-form-field>
-                              &nbsp;
-                              <!-- imageId-->
-                              <mat-form-field>
-                                <mat-label>image ID</mat-label>
-                                <input matInput formControlName="imageId" />
-                                @if (
-                                  $any(item)['controls'].imageId.errors?.maxLength &&
-                                  ($any(item)['controls'].imageId.dirty ||
-                                  $any(item)['controls'].imageId.touched)
-                                  ) {
-                                  <mat-error
-                                    >too long</mat-error
-                                    >
-                                  }
-                                </mat-form-field>
-                                <!-- description -->
-                                <div>
-                                  <mat-label>description</mat-label>
-                                  <mat-form-field class="long-text-indented">
-                                    <input matInput formControlName="description" />
-                                    @if (
-                                      $any(item)['controls'].description.errors?.required &&
-                                      ($any(item)['controls'].description.dirty ||
-                                      $any(item)['controls'].description.touched)
-                                      ) {
-                                      <mat-error
-                                        >required</mat-error
-                                        >
-                                      }
-                                      @if (
-                                        $any(item)['controls'].description.errors?.maxLength &&
-                                        ($any(item)['controls'].description.dirty ||
-                                        $any(item)['controls'].description.touched)
-                                        ) {
-                                        <mat-error
-                                          >too long</mat-error
-                                          >
-                                        }
-                                      </mat-form-field>
-                                    </div>
-                                  </div>
-                                </div>
-                              }
-                            </div>
-                          </div>
-                          <!-- buttons -->
-                          <div>
-                            <button
-                              type="button"
-                              color="warn"
-                              mat-icon-button
-                              matTooltip="Discard hand changes"
-                              (click)="cancel()"
-                              >
-                              <mat-icon>clear</mat-icon>
-                            </button>
-                            <button
-                              type="submit"
-                              color="primary"
-                              mat-icon-button
-                              matTooltip="Accept hand changes"
-                              [disabled]="form.invalid || form.pristine"
-                              >
-                              <mat-icon>check_circle</mat-icon>
-                            </button>
-                          </div>
-                        </form>
-                        
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard hand changes"
+      (click)="cancel()"
+    >
+      <mat-icon class="mat-warn">clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept hand changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon class="mat-primary">check_circle</mat-icon>
+    </button>
+  </div>
+</form>

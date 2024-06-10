@@ -12,96 +12,91 @@
           type="button"
           mat-flat-button
           color="primary"
+          class="mat-primary"
           (click)="addPlace()"
-          >
+        >
           <mat-icon>add_circle</mat-icon> place
         </button>
       </div>
       @if (places?.value?.length) {
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>area</th>
-              <th>city</th>
-              <th>rank</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (
-              entry of places?.value; track
-              entry; let i = $index; let first = $first; let last = $last) {
-              <tr
-                >
-                <td>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    matTooltip="Edit this place"
-                    (click)="editPlace(entry, i)"
-                    >
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this place up"
-                    [disabled]="first"
-                    (click)="movePlaceUp(i)"
-                    >
-                    <mat-icon>arrow_upward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    matTooltip="Move this place down"
-                    [disabled]="last"
-                    (click)="movePlaceDown(i)"
-                    >
-                    <mat-icon>arrow_downward</mat-icon>
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="warn"
-                    matTooltip="Delete this place"
-                    (click)="deletePlace(i)"
-                    >
-                    <mat-icon>remove_circle</mat-icon>
-                  </button>
-                </td>
-                <td>{{ entry.area }}</td>
-                <td>{{ entry.city }}</td>
-                <td>{{ entry.rank }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>area</th>
+            <th>city</th>
+            <th>rank</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for ( entry of places?.value; track entry; let i = $index; let first
+          = $first; let last = $last) {
+          <tr>
+            <td>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit this place"
+                (click)="editPlace(entry, i)"
+              >
+                <mat-icon class="mat-primary">edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this place up"
+                [disabled]="first"
+                (click)="movePlaceUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                matTooltip="Move this place down"
+                [disabled]="last"
+                (click)="movePlaceDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-icon-button
+                color="warn"
+                matTooltip="Delete this place"
+                (click)="deletePlace(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+            </td>
+            <td>{{ entry.area }}</td>
+            <td>{{ entry.city }}</td>
+            <td>{{ entry.rank }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
       }
-      <mat-expansion-panel
-        [expanded]="editedPlace"
-        [disabled]="!editedPlace"
-        >
+      <mat-expansion-panel [expanded]="editedPlace" [disabled]="!editedPlace">
         <mat-expansion-panel-header
           >place #{{ editedPlaceIndex + 1 }}</mat-expansion-panel-header
-          >
-          <tgr-ms-place
-            [model]="editedPlace"
-            [areaEntries]="areaEntries"
-            [tagEntries]="tagEntries"
-            (modelChange)="savePlace($event)"
-            (editorClose)="closePlace()"
-          ></tgr-ms-place>
-        </mat-expansion-panel>
-      </mat-card-content>
-      <mat-card-actions>
-        <cadmus-close-save-buttons
-          [form]="form"
-          [noSave]="userLevel < 2"
-          (closeRequest)="close()"
-        ></cadmus-close-save-buttons>
-      </mat-card-actions>
-    </mat-card>
-  </form>
-  
+        >
+        <tgr-ms-place
+          [model]="editedPlace"
+          [areaEntries]="areaEntries"
+          [tagEntries]="tagEntries"
+          (modelChange)="savePlace($event)"
+          (editorClose)="closePlace()"
+        ></tgr-ms-place>
+      </mat-expansion-panel>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -13,168 +13,130 @@
             type="button"
             mat-flat-button
             color="primary"
+            class="mat-primary"
             (click)="addSignature()"
-            >
+          >
             <mat-icon>add_circle</mat-icon>
             signature
           </button>
         </div>
-        @for (
-          item of signatures.controls; track
-          item; let i = $index; let first = $first; let last = $last) {
-          <div
+        @for ( item of signatures.controls; track item; let i = $index; let
+        first = $first; let last = $last) {
+        <div>
+          <!-- child form -->
+          <div [formGroupName]="i">
+            <!-- child actions -->
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this signature"
+              color="warn"
+              (click)="removeSignature(i)"
             >
-            <!-- child form -->
-            <div [formGroupName]="i">
-              <!-- child actions -->
-              {{ i + 1 }}.
-              <button
-                mat-icon-button
-                type="button"
-                matTooltip="Remove this signature"
-                color="warn"
-                (click)="removeSignature(i)"
-                >
-                <mat-icon>remove_circle</mat-icon>
-              </button>
-              <button
-                [disabled]="first"
-                mat-icon-button
-                type="button"
-                matTooltip="Move signature up"
-                (click)="moveSignatureUp(i)"
-                >
-                <mat-icon>arrow_upward</mat-icon>
-              </button>
-              <button
-                [disabled]="last"
-                mat-icon-button
-                type="button"
-                matTooltip="Move signature down"
-                (click)="moveSignatureDown(i)"
-                >
-                <mat-icon>arrow_downward</mat-icon>
-              </button>
-              <!-- child controls -->
-              <!-- tag (bound) -->
-              @if (tagEntries?.length) {
-                <mat-form-field style="width: 6em">
-                  <mat-label>tag</mat-label>
-                  <mat-select formControlName="tag">
-                    @for (e of tagEntries; track e) {
-                      <mat-option [value]="e.id">{{
-                        e.value
-                      }}</mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
+              <mat-icon class="mat-warn">remove_circle</mat-icon>
+            </button>
+            <button
+              [disabled]="first"
+              mat-icon-button
+              type="button"
+              matTooltip="Move signature up"
+              (click)="moveSignatureUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              [disabled]="last"
+              mat-icon-button
+              type="button"
+              matTooltip="Move signature down"
+              (click)="moveSignatureDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <!-- child controls -->
+            <!-- tag (bound) -->
+            @if (tagEntries?.length) {
+            <mat-form-field style="width: 6em">
+              <mat-label>tag</mat-label>
+              <mat-select formControlName="tag">
+                @for (e of tagEntries; track e) {
+                <mat-option [value]="e.id">{{ e.value }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            }
+            <!-- tag (free) -->
+            @if (!tagEntries?.length) {
+            <mat-form-field style="width: 5em">
+              <mat-label>tag</mat-label>
+              <input matInput formControlName="tag" />
+              @if ( $any(item)['controls'].tag.errors?.maxLength &&
+              ($any(item)['controls'].tag.dirty ||
+              $any(item)['controls'].tag.touched) ) {
+              <mat-error>tag too long </mat-error>
               }
-              <!-- tag (free) -->
-              @if (!tagEntries?.length) {
-                <mat-form-field style="width: 5em">
-                  <mat-label>tag</mat-label>
-                  <input matInput formControlName="tag" />
-                  @if (
-                    $any(item)['controls'].tag.errors?.maxLength &&
-                    ($any(item)['controls'].tag.dirty ||
-                    $any(item)['controls'].tag.touched)
-                    ) {
-                    <mat-error
-                      >tag too long
-                    </mat-error>
-                  }
-                </mat-form-field>
+            </mat-form-field>
+            }
+            <!-- city -->
+            &nbsp;
+            <mat-form-field style="width: 10em">
+              <mat-label>city</mat-label>
+              <input matInput formControlName="city" #city />
+              @if ( $any(item)['controls'].city.errors?.required &&
+              ($any(item)['controls'].city.dirty ||
+              $any(item)['controls'].city.touched) ) {
+              <mat-error>city required </mat-error>
+              } @if ( $any(item)['controls'].city.errors?.maxLength &&
+              ($any(item)['controls'].city.dirty ||
+              $any(item)['controls'].city.touched) ) {
+              <mat-error>city too long </mat-error>
               }
-              <!-- city -->
-              &nbsp;
+            </mat-form-field>
+            <!-- library -->
+            &nbsp;
+            <mat-form-field style="width: 20em">
+              <mat-label>library</mat-label>
+              <input matInput formControlName="library" />
+              @if ( $any(item)['controls'].library.errors?.required &&
+              ($any(item)['controls'].library.dirty ||
+              $any(item)['controls'].library.touched) ) {
+              <mat-error>library required </mat-error>
+              } @if ( $any(item)['controls'].library.errors?.maxLength &&
+              ($any(item)['controls'].library.dirty ||
+              $any(item)['controls'].library.touched) ) {
+              <mat-error>library too long </mat-error>
+              }
+            </mat-form-field>
+            <div class="fund-row">
+              <!-- fund -->
               <mat-form-field style="width: 10em">
-                <mat-label>city</mat-label>
-                <input matInput formControlName="city" #city />
-                @if (
-                  $any(item)['controls'].city.errors?.required &&
-                  ($any(item)['controls'].city.dirty ||
-                  $any(item)['controls'].city.touched)
-                  ) {
-                  <mat-error
-                    >city required
-                  </mat-error>
-                }
-                @if (
-                  $any(item)['controls'].city.errors?.maxLength &&
-                  ($any(item)['controls'].city.dirty ||
-                  $any(item)['controls'].city.touched)
-                  ) {
-                  <mat-error
-                    >city too long
-                  </mat-error>
+                <mat-label>fund</mat-label>
+                <input matInput formControlName="fund" />
+                @if ( $any(item)['controls'].fund.errors?.maxLength &&
+                ($any(item)['controls'].fund.dirty ||
+                $any(item)['controls'].fund.touched) ) {
+                <mat-error>fund too long </mat-error>
                 }
               </mat-form-field>
-              <!-- library -->
+              <!-- location -->
               &nbsp;
-              <mat-form-field style="width: 20em">
-                <mat-label>library</mat-label>
-                <input matInput formControlName="library" />
-                @if (
-                  $any(item)['controls'].library.errors?.required &&
-                  ($any(item)['controls'].library.dirty ||
-                  $any(item)['controls'].library.touched)
-                  ) {
-                  <mat-error
-                    >library required
-                  </mat-error>
-                }
-                @if (
-                  $any(item)['controls'].library.errors?.maxLength &&
-                  ($any(item)['controls'].library.dirty ||
-                  $any(item)['controls'].library.touched)
-                  ) {
-                  <mat-error
-                    >library too long
-                  </mat-error>
+              <mat-form-field style="width: 8em">
+                <mat-label>location</mat-label>
+                <input matInput formControlName="location" />
+                @if ( $any(item)['controls'].location.errors?.required &&
+                ($any(item)['controls'].location.dirty ||
+                $any(item)['controls'].location.touched) ) {
+                <mat-error>location required </mat-error>
+                } @if ( $any(item)['controls'].location.errors?.maxLength &&
+                ($any(item)['controls'].location.dirty ||
+                $any(item)['controls'].location.touched) ) {
+                <mat-error>location too long </mat-error>
                 }
               </mat-form-field>
-              <div class="fund-row">
-                <!-- fund -->
-                <mat-form-field style="width: 10em">
-                  <mat-label>fund</mat-label>
-                  <input matInput formControlName="fund" />
-                  @if (
-                    $any(item)['controls'].fund.errors?.maxLength &&
-                    ($any(item)['controls'].fund.dirty ||
-                    $any(item)['controls'].fund.touched)
-                    ) {
-                    <mat-error
-                      >fund too long
-                    </mat-error>
-                  }
-                </mat-form-field>
-                <!-- location -->
-                &nbsp;
-                <mat-form-field style="width: 8em">
-                  <mat-label>location</mat-label>
-                  <input matInput formControlName="location" />
-                  @if (
-                    $any(item)['controls'].location.errors?.required &&
-                    ($any(item)['controls'].location.dirty ||
-                    $any(item)['controls'].location.touched)
-                    ) {
-                    <mat-error
-                      >location required
-                    </mat-error>
-                  }
-                  @if (
-                    $any(item)['controls'].location.errors?.maxLength &&
-                    ($any(item)['controls'].location.dirty ||
-                    $any(item)['controls'].location.touched)
-                    ) {
-                    <mat-error
-                      >location too long
-                    </mat-error>
-                  }
-                </mat-form-field>
-              </div>
             </div>
           </div>
+        </div>
         }
       </div>
     </mat-card-content>
@@ -183,7 +145,7 @@
         [form]="form"
         [noSave]="userLevel < 2"
         (closeRequest)="close()"
-        >
+      >
       </cadmus-close-save-buttons>
     </mat-card-actions>
   </mat-card>

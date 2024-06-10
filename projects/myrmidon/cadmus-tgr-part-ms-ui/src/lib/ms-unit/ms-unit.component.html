@@ -8,788 +8,669 @@
           <mat-label>start</mat-label>
           <input matInput [formControl]="start" />
           @if (start.errors?.required && (start.dirty || start.touched)) {
-            <mat-error
-              >start required</mat-error
-              >
+          <mat-error>start required</mat-error>
+          } @if (start.errors?.pattern && (start.dirty || start.touched)) {
+          <mat-error>invalid start</mat-error>
+          }
+        </mat-form-field>
+        &nbsp;
+        <!-- end -->
+        <mat-form-field>
+          <mat-label>end</mat-label>
+          <input matInput [formControl]="end" />
+          @if (end.errors?.required && (end.dirty || end.touched)) {
+          <mat-error>end required</mat-error>
+          } @if (end.errors?.pattern && (end.dirty || end.touched)) {
+          <mat-error>invalid end</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="form-row">
+        <!-- material (bound) -->
+        @if (matEntries?.length) {
+        <mat-form-field>
+          <mat-label>material</mat-label>
+          <mat-select [formControl]="material">
+            @for (e of matEntries; track e) {
+            <mat-option [value]="e.id">{{ e.value }}</mat-option>
             }
-            @if (start.errors?.pattern && (start.dirty || start.touched)) {
-              <mat-error
-                >invalid start</mat-error
-                >
+          </mat-select>
+        </mat-form-field>
+        }
+        <!-- material (free) -->
+        @if (!matEntries?.length) {
+        <mat-form-field>
+          <mat-label>material</mat-label>
+          <input matInput [formControl]="material" />
+          @if ( material.errors?.maxLength && (material.dirty ||
+          material.touched) ) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
+        }
+        <!-- guard sheets material (bound) -->
+        @if (matEntries?.length) {
+        <mat-form-field>
+          <mat-label>guards material</mat-label>
+          <mat-select [formControl]="guardSheetMaterial">
+            @for (e of matEntries; track e) {
+            <mat-option [value]="e.id">{{ e.value }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        }
+        <!-- guard sheets material (free) -->
+        @if (!matEntries?.length) {
+        <mat-form-field>
+          <mat-label>guards material</mat-label>
+          <input matInput [formControl]="guardSheetMaterial" />
+          @if ( guardSheetMaterial.errors?.maxLength &&
+          (guardSheetMaterial.dirty || guardSheetMaterial.touched) ) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
+        }
+        <!-- sheetCount -->
+        <mat-form-field style="width: 5em">
+          <mat-label>sheets count</mat-label>
+          <input
+            matInput
+            [formControl]="sheetCount"
+            type="number"
+            min="0"
+            max="1000"
+          />
+        </mat-form-field>
+        <!-- guardSheetCount -->
+        <mat-form-field style="width: 5em">
+          <mat-label>guard sheets count</mat-label>
+          <input
+            matInput
+            [formControl]="guardSheetCount"
+            type="number"
+            min="0"
+            max="100"
+          />
+        </mat-form-field>
+        <!-- backGuardSheetCount -->
+        <mat-form-field style="width: 5em">
+          <mat-label>back guard sheets count</mat-label>
+          <input
+            matInput
+            [formControl]="backGuardSheetCount"
+            type="number"
+            min="0"
+            max="100"
+          />
+        </mat-form-field>
+      </div>
+      <div class="form-row">
+        <!-- group ID -->
+        <mat-form-field>
+          <mat-label>group ID</mat-label>
+          <input matInput [formControl]="groupId" />
+          @if ( groupId.errors?.maxLength && (groupId.dirty || groupId.touched)
+          ) {
+          <mat-error>ID too long</mat-error>
+          }
+        </mat-form-field>
+        <!-- groupOrdinal -->
+        <mat-form-field style="width: 5em">
+          <mat-label>group ordinal</mat-label>
+          <input matInput [formControl]="groupOrdinal" type="number" min="0" />
+        </mat-form-field>
+      </div>
+      <!-- date -->
+      <div>
+        <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
+        @if (hasDate?.value) {
+        <cadmus-refs-historical-date
+          [date]="$any(date)"
+          (dateChange)="onDateChange($event)"
+        ></cadmus-refs-historical-date>
+        }
+      </div>
+      <!-- quires -->
+      <div>
+        <mat-form-field class="long-text">
+          <mat-label>quires</mat-label>
+          <textarea rows="3" matInput [formControl]="quires"></textarea>
+          @if (quires.errors?.maxLength && (quires.dirty || quires.touched)) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <!-- sheetNumbering -->
+      <div>
+        <mat-form-field class="long-text">
+          <mat-label>sheet numbering</mat-label>
+          <textarea rows="3" matInput [formControl]="sheetNumbering"></textarea>
+          @if ( sheetNumbering.errors?.maxLength && (sheetNumbering.dirty ||
+          sheetNumbering.touched) ) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <!-- quireNumbering -->
+      <div>
+        <mat-form-field class="long-text">
+          <mat-label>quire numbering</mat-label>
+          <textarea rows="3" matInput [formControl]="quireNumbering"></textarea>
+          @if ( quireNumbering.errors?.maxLength && (quireNumbering.dirty ||
+          quireNumbering.touched) ) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <!-- state -->
+      <div>
+        <mat-form-field class="long-text">
+          <mat-label>state</mat-label>
+          <textarea rows="3" matInput [formControl]="state"></textarea>
+          @if (state.errors?.maxLength && (state.dirty || state.touched)) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <!-- binding -->
+      <div>
+        <mat-form-field class="long-text">
+          <mat-label>binding</mat-label>
+          <textarea rows="3" matInput [formControl]="binding"></textarea>
+          @if ( binding.errors?.maxLength && (binding.dirty || binding.touched)
+          ) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-tab>
+    <!-- RULINGS -->
+    <mat-tab label="rulings">
+      <div formArrayName="rulings">
+        <div>
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            class="mat-primary"
+            (click)="addRuling()"
+          >
+            <mat-icon>add_circle</mat-icon>
+            ruling
+          </button>
+        </div>
+        @for ( item of rulings.controls; track item; let i = $index; let first =
+        $first; let last = $last) {
+        <div>
+          <div [formGroupName]="i">
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this ruling"
+              color="warn"
+              (click)="removeRuling(i)"
+            >
+              <mat-icon class="mat-warn">remove_circle</mat-icon>
+            </button>
+            <button
+              [disabled]="first"
+              mat-icon-button
+              type="button"
+              matTooltip="Move ruling up"
+              (click)="moveRulingUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              [disabled]="last"
+              mat-icon-button
+              type="button"
+              matTooltip="Move ruling down"
+              (click)="moveRulingDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <!-- child controls -->
+            <!-- manner (bound) -->
+            @if (rulManEntries?.length) {
+            <mat-form-field>
+              <mat-label>manner</mat-label>
+              <mat-select formControlName="manner">
+                @for (e of rulManEntries; track e) {
+                <mat-option [value]="e.id">{{ e.value }}</mat-option>
+                }
+              </mat-select>
+              @if ( $any(item)['controls'].manner.errors?.required &&
+              ($any(item)['controls'].manner.dirty ||
+              $any(item)['controls'].manner.touched) ) {
+              <mat-error>manner required</mat-error>
               }
             </mat-form-field>
-            &nbsp;
-            <!-- end -->
+            }
+            <!-- manner (free) -->
+            @if (!rulManEntries?.length) {
             <mat-form-field>
-              <mat-label>end</mat-label>
-              <input matInput [formControl]="end" />
-              @if (end.errors?.required && (end.dirty || end.touched)) {
-                <mat-error
-                  >end required</mat-error
-                  >
+              <mat-label>manner</mat-label>
+              <input matInput formControlName="manner" />
+              @if ( $any(item)['controls'].manner.errors?.required &&
+              ($any(item)['controls'].manner.dirty ||
+              $any(item)['controls'].manner.touched) ) {
+              <mat-error>manner required</mat-error>
+              } @if ( $any(item)['controls'].manner.errors?.maxLength &&
+              ($any(item)['controls'].manner.dirty ||
+              $any(item)['controls'].manner.touched) ) {
+              <mat-error>too long</mat-error>
+              }
+            </mat-form-field>
+            } &nbsp;
+            <!-- system (bound) -->
+            @if (rulSysEntries?.length) {
+            <mat-form-field>
+              <mat-label>system</mat-label>
+              <mat-select formControlName="system">
+                @for (e of rulSysEntries; track e) {
+                <mat-option [value]="e.id">{{ e.value }}</mat-option>
                 }
-                @if (end.errors?.pattern && (end.dirty || end.touched)) {
-                  <mat-error
-                    >invalid end</mat-error
-                    >
-                  }
-                </mat-form-field>
-              </div>
-              <div class="form-row">
-                <!-- material (bound) -->
-                @if (matEntries?.length) {
-                  <mat-form-field>
-                    <mat-label>material</mat-label>
-                    <mat-select [formControl]="material">
-                      @for (e of matEntries; track e) {
-                        <mat-option [value]="e.id">{{
-                          e.value
-                        }}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
+              </mat-select>
+              @if ( $any(item)['controls'].system.errors?.required &&
+              ($any(item)['controls'].system.dirty ||
+              $any(item)['controls'].system.touched) ) {
+              <mat-error>system required</mat-error>
+              }
+            </mat-form-field>
+            }
+            <!-- system (free) -->
+            @if (!rulSysEntries?.length) {
+            <mat-form-field>
+              <mat-label>system</mat-label>
+              <input matInput formControlName="system" />
+              @if ( $any(item)['controls'].system.errors?.required &&
+              ($any(item)['controls'].system.dirty ||
+              $any(item)['controls'].system.touched) ) {
+              <mat-error>system required</mat-error>
+              } @if ( $any(item)['controls'].system.errors?.maxLength &&
+              ($any(item)['controls'].system.dirty ||
+              $any(item)['controls'].system.touched) ) {
+              <mat-error>too long</mat-error>
+              }
+            </mat-form-field>
+            }
+            <!-- type -->
+            &nbsp;
+            <mat-form-field>
+              <mat-label>type</mat-label>
+              <input matInput formControlName="type" />
+              @if ( $any(item)['controls'].type.errors?.maxLength &&
+              ($any(item)['controls'].type.dirty ||
+              $any(item)['controls'].type.touched) ) {
+              <mat-error>too long</mat-error>
+              }
+            </mat-form-field>
+            <div>
+              <!-- description -->
+              <mat-form-field class="long-text-indented">
+                <mat-label>description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+                @if ( $any(item)['controls'].description.errors?.maxLength &&
+                ($any(item)['controls'].description.dirty ||
+                $any(item)['controls'].description.touched) ) {
+                <mat-error>description too long</mat-error>
                 }
-                <!-- material (free) -->
-                @if (!matEntries?.length) {
-                  <mat-form-field>
-                    <mat-label>material</mat-label>
-                    <input matInput [formControl]="material" />
-                    @if (
-                      material.errors?.maxLength && (material.dirty || material.touched)
-                      ) {
-                      <mat-error
-                        >too long</mat-error
-                        >
-                      }
-                    </mat-form-field>
-                  }
-                  <!-- guard sheets material (bound) -->
-                  @if (matEntries?.length) {
-                    <mat-form-field>
-                      <mat-label>guards material</mat-label>
-                      <mat-select [formControl]="guardSheetMaterial">
-                        @for (e of matEntries; track e) {
-                          <mat-option [value]="e.id">{{
-                            e.value
-                          }}</mat-option>
-                        }
-                      </mat-select>
-                    </mat-form-field>
-                  }
-                  <!-- guard sheets material (free) -->
-                  @if (!matEntries?.length) {
-                    <mat-form-field>
-                      <mat-label>guards material</mat-label>
-                      <input matInput [formControl]="guardSheetMaterial" />
-                      @if (
-                        guardSheetMaterial.errors?.maxLength &&
-                        (guardSheetMaterial.dirty || guardSheetMaterial.touched)
-                        ) {
-                        <mat-error
-                          >too long</mat-error
-                          >
-                        }
-                      </mat-form-field>
-                    }
-                    <!-- sheetCount -->
-                    <mat-form-field style="width: 5em">
-                      <mat-label>sheets count</mat-label>
-                      <input
-                        matInput
-                        [formControl]="sheetCount"
-                        type="number"
-                        min="0"
-                        max="1000"
-                        />
-                      </mat-form-field>
-                      <!-- guardSheetCount -->
-                      <mat-form-field style="width: 5em">
-                        <mat-label>guard sheets count</mat-label>
-                        <input
-                          matInput
-                          [formControl]="guardSheetCount"
-                          type="number"
-                          min="0"
-                          max="100"
-                          />
-                        </mat-form-field>
-                        <!-- backGuardSheetCount -->
-                        <mat-form-field style="width: 5em">
-                          <mat-label>back guard sheets count</mat-label>
-                          <input
-                            matInput
-                            [formControl]="backGuardSheetCount"
-                            type="number"
-                            min="0"
-                            max="100"
-                            />
-                          </mat-form-field>
-                        </div>
-                        <div class="form-row">
-                          <!-- group ID -->
-                          <mat-form-field>
-                            <mat-label>group ID</mat-label>
-                            <input matInput [formControl]="groupId" />
-                            @if (
-                              groupId.errors?.maxLength && (groupId.dirty || groupId.touched)
-                              ) {
-                              <mat-error
-                                >ID too long</mat-error
-                                >
-                            }
-                          </mat-form-field>
-                          <!-- groupOrdinal -->
-                          <mat-form-field style="width: 5em">
-                            <mat-label>group ordinal</mat-label>
-                            <input matInput [formControl]="groupOrdinal" type="number" min="0" />
-                          </mat-form-field>
-                        </div>
-                        <!-- date -->
-                        <div>
-                          <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
-                          @if (hasDate?.value) {
-                            <cadmus-refs-historical-date
-                              [date]="$any(date)"
-                              (dateChange)="onDateChange($event)"
-                            ></cadmus-refs-historical-date>
-                          }
-                        </div>
-                        <!-- quires -->
-                        <div>
-                          <mat-form-field class="long-text">
-                            <mat-label>quires</mat-label>
-                            <textarea rows="3" matInput [formControl]="quires"></textarea>
-                            @if (quires.errors?.maxLength && (quires.dirty || quires.touched)) {
-                              <mat-error
-                                >too long</mat-error
-                                >
-                              }
-                            </mat-form-field>
-                          </div>
-                          <!-- sheetNumbering -->
-                          <div>
-                            <mat-form-field class="long-text">
-                              <mat-label>sheet numbering</mat-label>
-                              <textarea rows="3" matInput [formControl]="sheetNumbering"></textarea>
-                              @if (
-                                sheetNumbering.errors?.maxLength &&
-                                (sheetNumbering.dirty || sheetNumbering.touched)
-                                ) {
-                                <mat-error
-                                  >too long</mat-error
-                                  >
-                                }
-                              </mat-form-field>
-                            </div>
-                            <!-- quireNumbering -->
-                            <div>
-                              <mat-form-field class="long-text">
-                                <mat-label>quire numbering</mat-label>
-                                <textarea rows="3" matInput [formControl]="quireNumbering"></textarea>
-                                @if (
-                                  quireNumbering.errors?.maxLength &&
-                                  (quireNumbering.dirty || quireNumbering.touched)
-                                  ) {
-                                  <mat-error
-                                    >too long</mat-error
-                                    >
-                                  }
-                                </mat-form-field>
-                              </div>
-                              <!-- state -->
-                              <div>
-                                <mat-form-field class="long-text">
-                                  <mat-label>state</mat-label>
-                                  <textarea rows="3" matInput [formControl]="state"></textarea>
-                                  @if (state.errors?.maxLength && (state.dirty || state.touched)) {
-                                    <mat-error
-                                      >too long</mat-error
-                                      >
-                                    }
-                                  </mat-form-field>
-                                </div>
-                                <!-- binding -->
-                                <div>
-                                  <mat-form-field class="long-text">
-                                    <mat-label>binding</mat-label>
-                                    <textarea rows="3" matInput [formControl]="binding"></textarea>
-                                    @if (
-                                      binding.errors?.maxLength && (binding.dirty || binding.touched)
-                                      ) {
-                                      <mat-error
-                                        >too long</mat-error
-                                        >
-                                      }
-                                    </mat-form-field>
-                                  </div>
-                                </mat-tab>
-                                <!-- RULINGS -->
-                                <mat-tab label="rulings">
-                                  <div formArrayName="rulings">
-                                    <div>
-                                      <button
-                                        type="button"
-                                        mat-flat-button
-                                        color="primary"
-                                        (click)="addRuling()"
-                                        >
-                                        <mat-icon>add_circle</mat-icon>
-                                        ruling
-                                      </button>
-                                    </div>
-                                    @for (
-                                      item of rulings.controls; track
-                                      item; let i = $index; let first = $first; let last = $last) {
-                                      <div
-                                        >
-                                        <div [formGroupName]="i">
-                                          {{ i + 1 }}.
-                                          <button
-                                            mat-icon-button
-                                            type="button"
-                                            matTooltip="Remove this ruling"
-                                            color="warn"
-                                            (click)="removeRuling(i)"
-                                            >
-                                            <mat-icon>remove_circle</mat-icon>
-                                          </button>
-                                          <button
-                                            [disabled]="first"
-                                            mat-icon-button
-                                            type="button"
-                                            matTooltip="Move ruling up"
-                                            (click)="moveRulingUp(i)"
-                                            >
-                                            <mat-icon>arrow_upward</mat-icon>
-                                          </button>
-                                          <button
-                                            [disabled]="last"
-                                            mat-icon-button
-                                            type="button"
-                                            matTooltip="Move ruling down"
-                                            (click)="moveRulingDown(i)"
-                                            >
-                                            <mat-icon>arrow_downward</mat-icon>
-                                          </button>
-                                          <!-- child controls -->
-                                          <!-- manner (bound) -->
-                                          @if (rulManEntries?.length) {
-                                            <mat-form-field>
-                                              <mat-label>manner</mat-label>
-                                              <mat-select formControlName="manner">
-                                                @for (e of rulManEntries; track e) {
-                                                  <mat-option [value]="e.id">{{
-                                                    e.value
-                                                  }}</mat-option>
-                                                }
-                                              </mat-select>
-                                              @if (
-                                                $any(item)['controls'].manner.errors?.required &&
-                                                ($any(item)['controls'].manner.dirty ||
-                                                $any(item)['controls'].manner.touched)
-                                                ) {
-                                                <mat-error
-                                                  >manner required</mat-error
-                                                  >
-                                                }
-                                              </mat-form-field>
-                                            }
-                                            <!-- manner (free) -->
-                                            @if (!rulManEntries?.length) {
-                                              <mat-form-field>
-                                                <mat-label>manner</mat-label>
-                                                <input matInput formControlName="manner" />
-                                                @if (
-                                                  $any(item)['controls'].manner.errors?.required &&
-                                                  ($any(item)['controls'].manner.dirty ||
-                                                  $any(item)['controls'].manner.touched)
-                                                  ) {
-                                                  <mat-error
-                                                    >manner required</mat-error
-                                                    >
-                                                  }
-                                                  @if (
-                                                    $any(item)['controls'].manner.errors?.maxLength &&
-                                                    ($any(item)['controls'].manner.dirty ||
-                                                    $any(item)['controls'].manner.touched)
-                                                    ) {
-                                                    <mat-error
-                                                      >too long</mat-error
-                                                      >
-                                                    }
-                                                  </mat-form-field>
-                                                }
-                                                &nbsp;
-                                                <!-- system (bound) -->
-                                                @if (rulSysEntries?.length) {
-                                                  <mat-form-field>
-                                                    <mat-label>system</mat-label>
-                                                    <mat-select formControlName="system">
-                                                      @for (e of rulSysEntries; track e) {
-                                                        <mat-option [value]="e.id">{{
-                                                          e.value
-                                                        }}</mat-option>
-                                                      }
-                                                    </mat-select>
-                                                    @if (
-                                                      $any(item)['controls'].system.errors?.required &&
-                                                      ($any(item)['controls'].system.dirty ||
-                                                      $any(item)['controls'].system.touched)
-                                                      ) {
-                                                      <mat-error
-                                                        >system required</mat-error
-                                                        >
-                                                      }
-                                                    </mat-form-field>
-                                                  }
-                                                  <!-- system (free) -->
-                                                  @if (!rulSysEntries?.length) {
-                                                    <mat-form-field>
-                                                      <mat-label>system</mat-label>
-                                                      <input matInput formControlName="system" />
-                                                      @if (
-                                                        $any(item)['controls'].system.errors?.required &&
-                                                        ($any(item)['controls'].system.dirty ||
-                                                        $any(item)['controls'].system.touched)
-                                                        ) {
-                                                        <mat-error
-                                                          >system required</mat-error
-                                                          >
-                                                        }
-                                                        @if (
-                                                          $any(item)['controls'].system.errors?.maxLength &&
-                                                          ($any(item)['controls'].system.dirty ||
-                                                          $any(item)['controls'].system.touched)
-                                                          ) {
-                                                          <mat-error
-                                                            >too long</mat-error
-                                                            >
-                                                          }
-                                                        </mat-form-field>
-                                                      }
-                                                      <!-- type -->
-                                                      &nbsp;
-                                                      <mat-form-field>
-                                                        <mat-label>type</mat-label>
-                                                        <input matInput formControlName="type" />
-                                                        @if (
-                                                          $any(item)['controls'].type.errors?.maxLength &&
-                                                          ($any(item)['controls'].type.dirty ||
-                                                          $any(item)['controls'].type.touched)
-                                                          ) {
-                                                          <mat-error
-                                                            >too long</mat-error
-                                                            >
-                                                          }
-                                                        </mat-form-field>
-                                                        <div>
-                                                          <!-- description -->
-                                                          <mat-form-field class="long-text-indented">
-                                                            <mat-label>description</mat-label>
-                                                            <textarea matInput formControlName="description"></textarea>
-                                                            @if (
-                                                              $any(item)['controls'].description.errors?.maxLength &&
-                                                              ($any(item)['controls'].description.dirty ||
-                                                              $any(item)['controls'].description.touched)
-                                                              ) {
-                                                              <mat-error
-                                                                >description too long</mat-error
-                                                                >
-                                                              }
-                                                            </mat-form-field>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                    }
-                                                  </div>
-                                                </mat-tab>
-                                                <!-- LEAF SIZES -->
-                                                <mat-tab label="leaf sizes">
-                                                  <div>
-                                                    <mat-form-field class="long-text">
-                                                      <mat-label>samples</mat-label>
-                                                      <input matInput [formControl]="leafSizeSamples" />
-                                                      <mat-hint>comma delimited</mat-hint>
-                                                      @if (
-                                                        leafSizeSamples.errors?.pattern &&
-                                                        (leafSizeSamples.dirty || leafSizeSamples.touched)
-                                                        ) {
-                                                        <mat-error
-                                                          >invalid</mat-error
-                                                          >
-                                                        }
-                                                        @if (
-                                                          leafSizeSamples.errors?.maxLength &&
-                                                          (leafSizeSamples.dirty || leafSizeSamples.touched)
-                                                          ) {
-                                                          <mat-error
-                                                            >too long</mat-error
-                                                            >
-                                                          }
-                                                        </mat-form-field>
-                                                      </div>
-                                                      <button
-                                                        type="button"
-                                                        mat-flat-button
-                                                        color="primary"
-                                                        (click)="addLeafSize()"
-                                                        >
-                                                        <mat-icon>add_circle</mat-icon> size
-                                                      </button>
-                                                      @if (leafSizes?.length) {
-                                                        <table>
-                                                          <thead>
-                                                            <tr>
-                                                              <th></th>
-                                                              <th>tag</th>
-                                                              <th>w</th>
-                                                              <th>h</th>
-                                                            </tr>
-                                                          </thead>
-                                                          <tbody>
-                                                            @for (
-                                                              size of leafSizes; track
-                                                              size; let i = $index; let first = $first; let last = $last) {
-                                                              <tr
-                                                                >
-                                                                <td>
-                                                                  <button
-                                                                    mat-icon-button
-                                                                    type="button"
-                                                                    color="primary"
-                                                                    matTooltip="Edit this size"
-                                                                    (click)="editLeafSize(i)"
-                                                                    >
-                                                                    <mat-icon>edit</mat-icon>
-                                                                  </button>
-                                                                  <button
-                                                                    mat-icon-button
-                                                                    type="button"
-                                                                    matTooltip="Remove this size"
-                                                                    color="warn"
-                                                                    (click)="removeLeafSize(i)"
-                                                                    >
-                                                                    <mat-icon>remove_circle</mat-icon>
-                                                                  </button>
-                                                                  <button
-                                                                    [disabled]="first"
-                                                                    mat-icon-button
-                                                                    type="button"
-                                                                    matTooltip="Move size up"
-                                                                    (click)="moveLeafSizeUp(i)"
-                                                                    >
-                                                                    <mat-icon>arrow_upward</mat-icon>
-                                                                  </button>
-                                                                  <button
-                                                                    [disabled]="last"
-                                                                    mat-icon-button
-                                                                    type="button"
-                                                                    matTooltip="Move size down"
-                                                                    (click)="moveLeafSizeDown(i)"
-                                                                    >
-                                                                    <mat-icon>arrow_downward</mat-icon>
-                                                                  </button>
-                                                                </td>
-                                                                <td>
-                                                                  {{ size.tag }}
-                                                                </td>
-                                                                <td>
-                                                                  {{ dimToString(size.w) }}
-                                                                </td>
-                                                                <td>
-                                                                  {{ dimToString(size.h) }}
-                                                                </td>
-                                                              </tr>
-                                                            }
-                                                          </tbody>
-                                                        </table>
-                                                      }
-                                                      <mat-expansion-panel
-                                                        [expanded]="editingLeafSize"
-                                                        [disabled]="!editingLeafSize"
-                                                        >
-                                                        <mat-expansion-panel-header>size</mat-expansion-panel-header>
-                                                        <cadmus-mat-physical-size
-                                                          [unitEntries]="$any(szUnitEntries)"
-                                                          [tagEntries]="$any(szTagEntries)"
-                                                          [hBeforeW]="true"
-                                                          [dimTagEntries]="$any(szDimTagEntries)"
-                                                          [size]="$any(editedLeafSize)"
-                                                          (sizeChange)="onEditedLeafSizeChange($event)"
-                                                        ></cadmus-mat-physical-size>
-                                                        <button
-                                                          type="button"
-                                                          mat-icon-button
-                                                          (click)="editLeafSize(-1)"
-                                                          matTooltip="Discard size"
-                                                          >
-                                                          <mat-icon color="warn">clear</mat-icon>
-                                                        </button>
-                                                        <button
-                                                          type="button"
-                                                          mat-icon-button
-                                                          (click)="saveLeafSize()"
-                                                          matTooltip="Save size"
-                                                          >
-                                                          <mat-icon color="primary">check_circle</mat-icon>
-                                                        </button>
-                                                      </mat-expansion-panel>
-                                                    </mat-tab>
-                                                    <!-- AREA SIZES -->
-                                                    <mat-tab label="area sizes">
-                                                      <div>
-                                                        <mat-form-field class="long-text">
-                                                          <mat-label>samples</mat-label>
-                                                          <input matInput [formControl]="areaSizeSamples" />
-                                                          <mat-hint>comma delimited</mat-hint>
-                                                          @if (
-                                                            areaSizeSamples.errors?.pattern &&
-                                                            (areaSizeSamples.dirty || areaSizeSamples.touched)
-                                                            ) {
-                                                            <mat-error
-                                                              >invalid</mat-error
-                                                              >
-                                                            }
-                                                            @if (
-                                                              areaSizeSamples.errors?.maxLength &&
-                                                              (areaSizeSamples.dirty || areaSizeSamples.touched)
-                                                              ) {
-                                                              <mat-error
-                                                                >too long</mat-error
-                                                                >
-                                                              }
-                                                            </mat-form-field>
-                                                          </div>
-                                                          <button
-                                                            type="button"
-                                                            mat-flat-button
-                                                            color="primary"
-                                                            (click)="addAreaSize()"
-                                                            >
-                                                            <mat-icon>add_circle</mat-icon> size
-                                                          </button>
-                                                          @if (areaSizes?.length) {
-                                                            <table>
-                                                              <thead>
-                                                                <tr>
-                                                                  <th></th>
-                                                                  <th>tag</th>
-                                                                  <th>w</th>
-                                                                  <th>h</th>
-                                                                </tr>
-                                                              </thead>
-                                                              <tbody>
-                                                                @for (
-                                                                  size of areaSizes; track
-                                                                  size; let i = $index; let first = $first; let last = $last) {
-                                                                  <tr
-                                                                    >
-                                                                    <td>
-                                                                      <button
-                                                                        mat-icon-button
-                                                                        type="button"
-                                                                        color="primary"
-                                                                        matTooltip="Edit this size"
-                                                                        (click)="editAreaSize(i)"
-                                                                        >
-                                                                        <mat-icon>edit</mat-icon>
-                                                                      </button>
-                                                                      <button
-                                                                        mat-icon-button
-                                                                        type="button"
-                                                                        matTooltip="Remove this size"
-                                                                        color="warn"
-                                                                        (click)="removeAreaSize(i)"
-                                                                        >
-                                                                        <mat-icon>remove_circle</mat-icon>
-                                                                      </button>
-                                                                      <button
-                                                                        [disabled]="first"
-                                                                        mat-icon-button
-                                                                        type="button"
-                                                                        matTooltip="Move size up"
-                                                                        (click)="moveAreaSizeUp(i)"
-                                                                        >
-                                                                        <mat-icon>arrow_upward</mat-icon>
-                                                                      </button>
-                                                                      <button
-                                                                        [disabled]="last"
-                                                                        mat-icon-button
-                                                                        type="button"
-                                                                        matTooltip="Move size down"
-                                                                        (click)="moveAreaSizeDown(i)"
-                                                                        >
-                                                                        <mat-icon>arrow_downward</mat-icon>
-                                                                      </button>
-                                                                    </td>
-                                                                    <td>
-                                                                      {{ size.tag }}
-                                                                    </td>
-                                                                    <td>
-                                                                      {{ dimToString(size.w) }}
-                                                                    </td>
-                                                                    <td>
-                                                                      {{ dimToString(size.h) }}
-                                                                    </td>
-                                                                  </tr>
-                                                                }
-                                                              </tbody>
-                                                            </table>
-                                                          }
-                                                          <mat-expansion-panel
-                                                            [expanded]="editingAreaSize"
-                                                            [disabled]="!editingAreaSize"
-                                                            >
-                                                            <mat-expansion-panel-header>size</mat-expansion-panel-header>
-                                                            <cadmus-mat-physical-size
-                                                              [unitEntries]="$any(szUnitEntries)"
-                                                              [tagEntries]="$any(szTagEntries)"
-                                                              [hBeforeW]="true"
-                                                              [dimTagEntries]="$any(szDimTagEntries)"
-                                                              [size]="$any(editedAreaSize)"
-                                                              (sizeChange)="onEditedAreaSizeChange($event)"
-                                                            ></cadmus-mat-physical-size>
-                                                            <button
-                                                              type="button"
-                                                              mat-icon-button
-                                                              (click)="editAreaSize(-1)"
-                                                              matTooltip="Discard size"
-                                                              >
-                                                              <mat-icon color="warn">clear</mat-icon>
-                                                            </button>
-                                                            <button
-                                                              type="button"
-                                                              mat-icon-button
-                                                              (click)="saveAreaSize()"
-                                                              matTooltip="Save size"
-                                                              >
-                                                              <mat-icon color="primary">check_circle</mat-icon>
-                                                            </button>
-                                                          </mat-expansion-panel>
-                                                        </mat-tab>
-                                                        <!-- WATERMARKS -->
-                                                        <mat-tab label="watermarks">
-                                                          <div formArrayName="watermarks">
-                                                            <div>
-                                                              <button
-                                                                type="button"
-                                                                mat-flat-button
-                                                                color="primary"
-                                                                (click)="addWatermark()"
-                                                                >
-                                                                <mat-icon>add_circle</mat-icon>
-                                                                watermark
-                                                              </button>
-                                                            </div>
-                                                            @for (
-                                                              item of watermarks.controls; track
-                                                              item; let i = $index; let first = $first; let last = $last) {
-                                                              <div
-                                                                >
-                                                                <!-- child form -->
-                                                                <div [formGroupName]="i">
-                                                                  <!-- child actions -->
-                                                                  {{ i + 1 }}.
-                                                                  <button
-                                                                    mat-icon-button
-                                                                    type="button"
-                                                                    matTooltip="Remove this watermark"
-                                                                    color="warn"
-                                                                    (click)="removeWatermark(i)"
-                                                                    >
-                                                                    <mat-icon>remove_circle</mat-icon>
-                                                                  </button>
-                                                                  <button
-                                                                    [disabled]="first"
-                                                                    mat-icon-button
-                                                                    type="button"
-                                                                    matTooltip="Move watermark up"
-                                                                    (click)="moveWatermarkUp(i)"
-                                                                    >
-                                                                    <mat-icon>arrow_upward</mat-icon>
-                                                                  </button>
-                                                                  <button
-                                                                    [disabled]="last"
-                                                                    mat-icon-button
-                                                                    type="button"
-                                                                    matTooltip="Move watermark down"
-                                                                    (click)="moveWatermarkDown(i)"
-                                                                    >
-                                                                    <mat-icon>arrow_downward</mat-icon>
-                                                                  </button>
-                                                                  <!-- child controls -->
-                                                                  <!-- value -->
-                                                                  <mat-form-field>
-                                                                    <mat-label>value</mat-label>
-                                                                    <input matInput formControlName="value" />
-                                                                    @if (
-                                                                      $any(item)['controls'].value.errors?.required &&
-                                                                      ($any(item)['controls'].value.dirty ||
-                                                                      $any(item)['controls'].value.touched)
-                                                                      ) {
-                                                                      <mat-error
-                                                                        >value required</mat-error
-                                                                        >
-                                                                      }
-                                                                      @if (
-                                                                        $any(item)['controls'].value.errors?.maxLength &&
-                                                                        ($any(item)['controls'].value.dirty ||
-                                                                        $any(item)['controls'].value.touched)
-                                                                        ) {
-                                                                        <mat-error
-                                                                          >value too long</mat-error
-                                                                          >
-                                                                        }
-                                                                      </mat-form-field>
-                                                                      <!-- description -->
-                                                                      <mat-form-field>
-                                                                        <mat-label>description</mat-label>
-                                                                        <input matInput formControlName="description" />
-                                                                        @if (
-                                                                          $any(item)['controls'].description.errors?.required &&
-                                                                          ($any(item)['controls'].description.dirty ||
-                                                                          $any(item)['controls'].description.touched)
-                                                                          ) {
-                                                                          <mat-error
-                                                                            >description required</mat-error
-                                                                            >
-                                                                          }
-                                                                          @if (
-                                                                            $any(item)['controls'].description.errors?.maxLength &&
-                                                                            ($any(item)['controls'].description.dirty ||
-                                                                            $any(item)['controls'].description.touched)
-                                                                            ) {
-                                                                            <mat-error
-                                                                              >description too long</mat-error
-                                                                              >
-                                                                            }
-                                                                          </mat-form-field>
-                                                                        </div>
-                                                                      </div>
-                                                                    }
-                                                                  </div>
-                                                                </mat-tab>
-                                                              </mat-tab-group>
-                                                              <!-- buttons -->
-                                                              <div>
-                                                                <button
-                                                                  type="button"
-                                                                  color="warn"
-                                                                  mat-icon-button
-                                                                  matTooltip="Discard unit changes"
-                                                                  (click)="cancel()"
-                                                                  >
-                                                                  <mat-icon>clear</mat-icon>
-                                                                </button>
-                                                                <button
-                                                                  type="submit"
-                                                                  color="primary"
-                                                                  mat-icon-button
-                                                                  matTooltip="Accept unit changes"
-                                                                  [disabled]="form.invalid || form.pristine"
-                                                                  >
-                                                                  <mat-icon>check_circle</mat-icon>
-                                                                </button>
-                                                              </div>
-                                                            </form>
-                                                            
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </mat-tab>
+    <!-- LEAF SIZES -->
+    <mat-tab label="leaf sizes">
+      <div>
+        <mat-form-field class="long-text">
+          <mat-label>samples</mat-label>
+          <input matInput [formControl]="leafSizeSamples" />
+          <mat-hint>comma delimited</mat-hint>
+          @if ( leafSizeSamples.errors?.pattern && (leafSizeSamples.dirty ||
+          leafSizeSamples.touched) ) {
+          <mat-error>invalid</mat-error>
+          } @if ( leafSizeSamples.errors?.maxLength && (leafSizeSamples.dirty ||
+          leafSizeSamples.touched) ) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <button
+        type="button"
+        mat-flat-button
+        color="primary"
+        class="mat-primary"
+        (click)="addLeafSize()"
+      >
+        <mat-icon>add_circle</mat-icon> size
+      </button>
+      @if (leafSizes?.length) {
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>tag</th>
+            <th>w</th>
+            <th>h</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for ( size of leafSizes; track size; let i = $index; let first =
+          $first; let last = $last) {
+          <tr>
+            <td>
+              <button
+                mat-icon-button
+                type="button"
+                color="primary"
+                matTooltip="Edit this size"
+                (click)="editLeafSize(i)"
+              >
+                <mat-icon class="mat-primary">edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Remove this size"
+                color="warn"
+                (click)="removeLeafSize(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move size up"
+                (click)="moveLeafSizeUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move size down"
+                (click)="moveLeafSizeDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </td>
+            <td>
+              {{ size.tag }}
+            </td>
+            <td>
+              {{ dimToString(size.w) }}
+            </td>
+            <td>
+              {{ dimToString(size.h) }}
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+      <mat-expansion-panel
+        [expanded]="editingLeafSize"
+        [disabled]="!editingLeafSize"
+      >
+        <mat-expansion-panel-header>size</mat-expansion-panel-header>
+        <cadmus-mat-physical-size
+          [unitEntries]="$any(szUnitEntries)"
+          [tagEntries]="$any(szTagEntries)"
+          [hBeforeW]="true"
+          [dimTagEntries]="$any(szDimTagEntries)"
+          [size]="$any(editedLeafSize)"
+          (sizeChange)="onEditedLeafSizeChange($event)"
+        ></cadmus-mat-physical-size>
+        <button
+          type="button"
+          mat-icon-button
+          (click)="editLeafSize(-1)"
+          matTooltip="Discard size"
+        >
+          <mat-icon color="warn" class="mat-warn">clear</mat-icon>
+        </button>
+        <button
+          type="button"
+          mat-icon-button
+          (click)="saveLeafSize()"
+          matTooltip="Save size"
+        >
+          <mat-icon color="primary" class="mat-primary">check_circle</mat-icon>
+        </button>
+      </mat-expansion-panel>
+    </mat-tab>
+    <!-- AREA SIZES -->
+    <mat-tab label="area sizes">
+      <div>
+        <mat-form-field class="long-text">
+          <mat-label>samples</mat-label>
+          <input matInput [formControl]="areaSizeSamples" />
+          <mat-hint>comma delimited</mat-hint>
+          @if ( areaSizeSamples.errors?.pattern && (areaSizeSamples.dirty ||
+          areaSizeSamples.touched) ) {
+          <mat-error>invalid</mat-error>
+          } @if ( areaSizeSamples.errors?.maxLength && (areaSizeSamples.dirty ||
+          areaSizeSamples.touched) ) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <button
+        type="button"
+        mat-flat-button
+        color="primary"
+        class="mat-primary"
+        (click)="addAreaSize()"
+      >
+        <mat-icon>add_circle</mat-icon> size
+      </button>
+      @if (areaSizes?.length) {
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>tag</th>
+            <th>w</th>
+            <th>h</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for ( size of areaSizes; track size; let i = $index; let first =
+          $first; let last = $last) {
+          <tr>
+            <td>
+              <button
+                mat-icon-button
+                type="button"
+                color="primary"
+                matTooltip="Edit this size"
+                (click)="editAreaSize(i)"
+              >
+                <mat-icon class="mat-primary">edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Remove this size"
+                color="warn"
+                (click)="removeAreaSize(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move size up"
+                (click)="moveAreaSizeUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move size down"
+                (click)="moveAreaSizeDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </td>
+            <td>
+              {{ size.tag }}
+            </td>
+            <td>
+              {{ dimToString(size.w) }}
+            </td>
+            <td>
+              {{ dimToString(size.h) }}
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+      <mat-expansion-panel
+        [expanded]="editingAreaSize"
+        [disabled]="!editingAreaSize"
+      >
+        <mat-expansion-panel-header>size</mat-expansion-panel-header>
+        <cadmus-mat-physical-size
+          [unitEntries]="$any(szUnitEntries)"
+          [tagEntries]="$any(szTagEntries)"
+          [hBeforeW]="true"
+          [dimTagEntries]="$any(szDimTagEntries)"
+          [size]="$any(editedAreaSize)"
+          (sizeChange)="onEditedAreaSizeChange($event)"
+        ></cadmus-mat-physical-size>
+        <button
+          type="button"
+          mat-icon-button
+          (click)="editAreaSize(-1)"
+          matTooltip="Discard size"
+        >
+          <mat-icon color="warn" class="mat-warn">clear</mat-icon>
+        </button>
+        <button
+          type="button"
+          mat-icon-button
+          (click)="saveAreaSize()"
+          matTooltip="Save size"
+        >
+          <mat-icon color="primary" class="mat-primary">check_circle</mat-icon>
+        </button>
+      </mat-expansion-panel>
+    </mat-tab>
+    <!-- WATERMARKS -->
+    <mat-tab label="watermarks">
+      <div formArrayName="watermarks">
+        <div>
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            class="mat-primary"
+            (click)="addWatermark()"
+          >
+            <mat-icon>add_circle</mat-icon>
+            watermark
+          </button>
+        </div>
+        @for ( item of watermarks.controls; track item; let i = $index; let
+        first = $first; let last = $last) {
+        <div>
+          <!-- child form -->
+          <div [formGroupName]="i">
+            <!-- child actions -->
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this watermark"
+              color="warn"
+              (click)="removeWatermark(i)"
+            >
+              <mat-icon class="mat-warn">remove_circle</mat-icon>
+            </button>
+            <button
+              [disabled]="first"
+              mat-icon-button
+              type="button"
+              matTooltip="Move watermark up"
+              (click)="moveWatermarkUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              [disabled]="last"
+              mat-icon-button
+              type="button"
+              matTooltip="Move watermark down"
+              (click)="moveWatermarkDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <!-- child controls -->
+            <!-- value -->
+            <mat-form-field>
+              <mat-label>value</mat-label>
+              <input matInput formControlName="value" />
+              @if ( $any(item)['controls'].value.errors?.required &&
+              ($any(item)['controls'].value.dirty ||
+              $any(item)['controls'].value.touched) ) {
+              <mat-error>value required</mat-error>
+              } @if ( $any(item)['controls'].value.errors?.maxLength &&
+              ($any(item)['controls'].value.dirty ||
+              $any(item)['controls'].value.touched) ) {
+              <mat-error>value too long</mat-error>
+              }
+            </mat-form-field>
+            <!-- description -->
+            <mat-form-field>
+              <mat-label>description</mat-label>
+              <input matInput formControlName="description" />
+              @if ( $any(item)['controls'].description.errors?.required &&
+              ($any(item)['controls'].description.dirty ||
+              $any(item)['controls'].description.touched) ) {
+              <mat-error>description required</mat-error>
+              } @if ( $any(item)['controls'].description.errors?.maxLength &&
+              ($any(item)['controls'].description.dirty ||
+              $any(item)['controls'].description.touched) ) {
+              <mat-error>description too long</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <!-- buttons -->
+  <div>
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard unit changes"
+      (click)="cancel()"
+    >
+      <mat-icon class="mat-warn">clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept unit changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon class="mat-primary">check_circle</mat-icon>
+    </button>
+  </div>
+</form>

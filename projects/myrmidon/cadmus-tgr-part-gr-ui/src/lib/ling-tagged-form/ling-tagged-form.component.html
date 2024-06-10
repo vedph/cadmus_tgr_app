@@ -10,8 +10,8 @@
           matTooltip="Copy tags"
           [disabled]="!tags.value.length"
           (click)="copyTags()"
-          >
-          <mat-icon>content_copy</mat-icon>
+        >
+          <mat-icon class="mat-primary">content_copy</mat-icon>
         </button>
         <button
           mat-icon-button
@@ -20,8 +20,8 @@
           matTooltip="Paste tags"
           [disabled]="!bucketAvailable"
           (click)="pasteTags()"
-          >
-          <mat-icon>content_paste</mat-icon>
+        >
+          <mat-icon class="mat-warn">content_paste</mat-icon>
         </button>
       </div>
       <!-- tags -->
@@ -32,47 +32,45 @@
         (entryChange)="onEntryChange($event)"
       ></cadmus-thesaurus-tree>
       @if (tags.value.length) {
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>tag</th>
-              <th>notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (t of tags.value; track t; let i = $index) {
-              <tr
-                [class.hilite]="i === editedTagIndex"
-                >
-                <td>
-                  <button
-                    type="button"
-                    color="warn"
-                    mat-icon-button
-                    matTooltip="Delete this tag"
-                    (click)="deleteTag(i)"
-                    >
-                    <mat-icon>remove_circle</mat-icon>
-                  </button>
-                  @if (tagHasNotes(t.value)) {
-                    <button
-                      type="button"
-                      color="primary"
-                      mat-icon-button
-                      matTooltip="Edit this tag's notes"
-                      (click)="editTagNotes(i)"
-                      >
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                  }
-                </td>
-                <td>{{ getTagLabel(t.value) }}</td>
-                <td style="text-align: center">{{ t.notes?.length || 0 }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>tag</th>
+            <th>notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of tags.value; track t; let i = $index) {
+          <tr [class.hilite]="i === editedTagIndex">
+            <td>
+              <button
+                type="button"
+                color="warn"
+                mat-icon-button
+                matTooltip="Delete this tag"
+                (click)="deleteTag(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+              @if (tagHasNotes(t.value)) {
+              <button
+                type="button"
+                color="primary"
+                mat-icon-button
+                matTooltip="Edit this tag's notes"
+                (click)="editTagNotes(i)"
+              >
+                <mat-icon class="mat-primary">edit</mat-icon>
+              </button>
+              }
+            </td>
+            <td>{{ getTagLabel(t.value) }}</td>
+            <td style="text-align: center">{{ t.notes?.length || 0 }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
       }
       <!-- tag notes -->
       <mat-expansion-panel [expanded]="editingNotes" [disabled]="!editingNotes">
@@ -82,109 +80,99 @@
         <form [formGroup]="noteForm" (submit)="saveTagNotes()">
           <div formArrayName="notes">
             @for (item of notes.controls; track item; let i = $index) {
-              <div>
-                <!-- child form -->
-                <div [formGroupName]="i">
-                  <h4>{{ i + 1 }}. {{ $any(item)["controls"].label.value }}</h4>
-                  <div>
-                    <mat-form-field class="long-text">
-                      <mat-label>note</mat-label>
-                      <textarea
-                        matInput
-                        rows="2"
-                        formControlName="note"
-                        maxlength="500"
-                      ></textarea>
-                      @if (
-                        $any(item)['controls'].note.errors?.maxLength &&
-                        ($any(item)['controls'].note.dirty ||
-                        $any(item)['controls'].note.touched)
-                        ) {
-                        <mat-error
-                          >note too long</mat-error
-                          >
-                        }
-                      </mat-form-field>
-                    </div>
-                  </div>
+            <div>
+              <!-- child form -->
+              <div [formGroupName]="i">
+                <h4>{{ i + 1 }}. {{ $any(item)["controls"].label.value }}</h4>
+                <div>
+                  <mat-form-field class="long-text">
+                    <mat-label>note</mat-label>
+                    <textarea
+                      matInput
+                      rows="2"
+                      formControlName="note"
+                      maxlength="500"
+                    ></textarea>
+                    @if ( $any(item)['controls'].note.errors?.maxLength &&
+                    ($any(item)['controls'].note.dirty ||
+                    $any(item)['controls'].note.touched) ) {
+                    <mat-error>note too long</mat-error>
+                    }
+                  </mat-form-field>
                 </div>
-              }
+              </div>
             </div>
-            <div #notebar>
-              <button
-                type="button"
-                mat-icon-button
-                color="warn"
-                matTooltip="Discard changes to notes"
-                (click)="closeTagNotes()"
-                >
-                <mat-icon>clear</mat-icon>
-              </button>
-              <button
-                type="submit"
-                mat-icon-button
-                color="primary"
-                matTooltip="Accept changes to notes"
-                >
-                <mat-icon>check_circle</mat-icon>
-              </button>
-            </div>
-          </form>
-        </mat-expansion-panel>
-      </mat-tab>
-      <mat-tab label="general">
-        <!-- dubious -->
-        <div>
-          <mat-checkbox [formControl]="dubious">dubious</mat-checkbox>
-        </div>
-        <!-- lemmata -->
-        <div>
-          <mat-form-field class="long-text">
-            <mat-label>lemmata</mat-label>
-            <textarea rows="3" matInput [formControl]="lemmata"></textarea>
-            <mat-hint>1 per line</mat-hint>
-            @if (
-              lemmata.errors?.maxLength && (lemmata.dirty || lemmata.touched)
-              ) {
-              <mat-error
-                >lemmata too long</mat-error
-                >
-              }
-            </mat-form-field>
+            }
           </div>
-          <!-- note -->
-          <div>
-            <mat-form-field class="long-text">
-              <mat-label>note</mat-label>
-              <textarea rows="3" matInput [formControl]="note"></textarea>
-              @if (note.errors?.maxLength && (note.dirty || note.touched)) {
-                <mat-error
-                  >note too long</mat-error
-                  >
-                }
-              </mat-form-field>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
-        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
-          <button
-            type="button"
-            mat-icon-button
-            color="warn"
-            matTooltip="Discard tag changes"
-            (click)="cancel()"
+          <div #notebar>
+            <button
+              type="button"
+              mat-icon-button
+              color="warn"
+              matTooltip="Discard changes to notes"
+              (click)="closeTagNotes()"
             >
-            <mat-icon>clear</mat-icon>
-          </button>
-          <button
-            [disabled]="form.invalid || form.pristine"
-            type="submit"
-            mat-icon-button
-            color="primary"
-            matTooltip="Accept tag changes"
+              <mat-icon class="mat-warn">clear</mat-icon>
+            </button>
+            <button
+              type="submit"
+              mat-icon-button
+              color="primary"
+              matTooltip="Accept changes to notes"
             >
-            <mat-icon>check_circle</mat-icon>
-          </button>
-        </div>
-      </form>
-      
+              <mat-icon class="mat-primary">check_circle</mat-icon>
+            </button>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-tab>
+    <mat-tab label="general">
+      <!-- dubious -->
+      <div>
+        <mat-checkbox [formControl]="dubious">dubious</mat-checkbox>
+      </div>
+      <!-- lemmata -->
+      <div>
+        <mat-form-field class="long-text">
+          <mat-label>lemmata</mat-label>
+          <textarea rows="3" matInput [formControl]="lemmata"></textarea>
+          <mat-hint>1 per line</mat-hint>
+          @if ( lemmata.errors?.maxLength && (lemmata.dirty || lemmata.touched)
+          ) {
+          <mat-error>lemmata too long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <!-- note -->
+      <div>
+        <mat-form-field class="long-text">
+          <mat-label>note</mat-label>
+          <textarea rows="3" matInput [formControl]="note"></textarea>
+          @if (note.errors?.maxLength && (note.dirty || note.touched)) {
+          <mat-error>note too long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+    <button
+      type="button"
+      mat-icon-button
+      color="warn"
+      matTooltip="Discard tag changes"
+      (click)="cancel()"
+    >
+      <mat-icon class="mat-warn">clear</mat-icon>
+    </button>
+    <button
+      [disabled]="form.invalid || form.pristine"
+      type="submit"
+      mat-icon-button
+      color="primary"
+      matTooltip="Accept tag changes"
+    >
+      <mat-icon class="mat-primary">check_circle</mat-icon>
+    </button>
+  </div>
+</form>
