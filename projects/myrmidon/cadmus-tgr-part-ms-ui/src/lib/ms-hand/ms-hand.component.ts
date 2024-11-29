@@ -15,6 +15,7 @@ import { MsHand, MsHandLetter } from '../ms-scripts-part';
   selector: 'tgr-ms-hand',
   templateUrl: './ms-hand.component.html',
   styleUrls: ['./ms-hand.component.css'],
+  standalone: false,
 })
 export class MsHandComponent implements OnInit {
   private _model: MsHand | undefined;

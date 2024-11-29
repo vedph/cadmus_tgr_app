@@ -8,6 +8,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'tgr-ms-ornaments-part-feature',
   templateUrl: './ms-ornaments-part-feature.component.html',
   styleUrls: ['./ms-ornaments-part-feature.component.css'],
+  standalone: false,
 })
 export class MsOrnamentsPartFeatureComponent
   extends EditPartFeatureBase

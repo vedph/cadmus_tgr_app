@@ -56,7 +56,6 @@ import {
   authJwtInterceptor,
 } from '@myrmidon/auth-jwt-login';
 import { AuthJwtAdminModule } from '@myrmidon/auth-jwt-admin';
-import { NgxDirtyCheckModule } from '@myrmidon/ngx-dirty-check';
 
 // cadmus bricks
 import {
@@ -162,7 +161,6 @@ import { GEONAMES_USERNAME_TOKEN } from '@myrmidon/cadmus-refs-geonames-lookup';
     NgMatToolsModule,
     AuthJwtLoginModule,
     AuthJwtAdminModule,
-    NgxDirtyCheckModule,
     // cadmus bricks
     DocReferencesComponent,
     HistoricalDateComponent,

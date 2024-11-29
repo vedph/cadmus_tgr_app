@@ -7,6 +7,8 @@ import {
   UntypedFormGroup,
 } from '@angular/forms';
 
+import { NgToolsValidators } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
@@ -14,8 +16,6 @@ import {
   AvailableWitnessesPart,
   AVAILABLE_WITNESSES_PART_TYPEID,
 } from '../available-witnesses-part';
-import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
-import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * AvailableWitnessesPart editor component.
@@ -25,6 +25,7 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
   selector: 'tgr-available-witnesses-part',
   templateUrl: './available-witnesses-part.component.html',
   styleUrls: ['./available-witnesses-part.component.css'],
+  standalone: false,
 })
 export class AvailableWitnessesPartComponent
   extends ModelEditorComponentBase<AvailableWitnessesPart>

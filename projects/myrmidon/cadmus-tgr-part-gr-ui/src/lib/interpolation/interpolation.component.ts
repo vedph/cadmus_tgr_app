@@ -18,6 +18,7 @@ import { VarQuotation } from '../var-quotations-fragment';
   selector: 'tgr-interpolation',
   templateUrl: './interpolation.component.html',
   styleUrls: ['./interpolation.component.css'],
+  standalone: false,
 })
 export class InterpolationComponent implements OnInit {
   private _model: Interpolation | undefined;

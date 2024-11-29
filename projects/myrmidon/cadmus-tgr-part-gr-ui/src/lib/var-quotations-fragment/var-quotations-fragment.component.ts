@@ -27,6 +27,7 @@ import {
   selector: 'tgr-var-quotations-fragment',
   templateUrl: './var-quotations-fragment.component.html',
   styleUrls: ['./var-quotations-fragment.component.css'],
+  standalone: false,
 })
 export class VarQuotationsFragmentComponent
   extends ModelEditorComponentBase<VarQuotationsFragment>

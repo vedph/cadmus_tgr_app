@@ -21,6 +21,7 @@ import { QuotationVariant } from '../var-quotations-fragment';
   selector: 'tgr-quotation-variant',
   templateUrl: './quotation-variant.component.html',
   styleUrls: ['./quotation-variant.component.css'],
+  standalone: false,
 })
 export class QuotationVariantComponent implements OnInit {
   private _model: QuotationVariant | undefined;

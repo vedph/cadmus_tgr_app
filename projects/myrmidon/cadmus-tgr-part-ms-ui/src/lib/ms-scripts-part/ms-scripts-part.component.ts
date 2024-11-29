@@ -28,6 +28,7 @@ import {
   selector: 'tgr-ms-scripts-part',
   templateUrl: './ms-scripts-part.component.html',
   styleUrls: ['./ms-scripts-part.component.css'],
+  standalone: false,
 })
 export class MsScriptsPartComponent
   extends ModelEditorComponentBase<MsScriptsPart>

@@ -8,6 +8,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'tgr-ms-places-part-feature',
   templateUrl: './ms-places-part-feature.component.html',
   styleUrls: ['./ms-places-part-feature.component.css'],
+  standalone: false,
 })
 export class MsPlacesPartFeatureComponent
   extends EditPartFeatureBase

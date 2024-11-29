@@ -25,6 +25,7 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
   selector: 'tgr-ms-units-part',
   templateUrl: './ms-units-part.component.html',
   styleUrls: ['./ms-units-part.component.css'],
+  standalone: false,
 })
 export class MsUnitsPartComponent
   extends ModelEditorComponentBase<MsUnitsPart>
@@ -217,7 +218,7 @@ export class MsUnitsPartComponent
     this.units.setValue(units);
     this.units.updateValueAndValidity();
     this.units.markAsDirty();
-}
+  }
 
   public moveUnitDown(index: number): void {
     if (index + 1 >= this.units.value.length) {
@@ -230,7 +231,7 @@ export class MsUnitsPartComponent
     this.units.setValue(units);
     this.units.updateValueAndValidity();
     this.units.markAsDirty();
-}
+  }
 
   public locationToString(location?: MsLocation | null): string {
     if (!location) {

@@ -7,4 +7,3 @@ WORKDIR /usr/share/nginx/html
 COPY dist/cadmus-tgr-app/browser/ .
 
 EXPOSE 80
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]

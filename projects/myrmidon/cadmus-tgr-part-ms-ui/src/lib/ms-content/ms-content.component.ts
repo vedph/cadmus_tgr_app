@@ -24,6 +24,7 @@ import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
   selector: 'tgr-ms-content',
   templateUrl: './ms-content.component.html',
   styleUrls: ['./ms-content.component.css'],
+  standalone: false,
 })
 export class MsContentComponent implements OnInit, OnDestroy {
   private _sub?: Subscription;

@@ -21,6 +21,7 @@ import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
   selector: 'tgr-ms-unit',
   templateUrl: './ms-unit.component.html',
   styleUrls: ['./ms-unit.component.css'],
+  standalone: false,
 })
 export class MsUnitComponent implements OnInit {
   private _unit?: MsUnit;

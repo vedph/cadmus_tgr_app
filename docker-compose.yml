@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   # MongoDB
   cadmus-tgr-mongo:
@@ -37,9 +35,11 @@ services:
       - cadmus-tgr-mongo
       - cadmus-tgr-pgsql
     environment:
+      - ASPNETCORE_URLS=http://+:8080
       - CONNECTIONSTRINGS__DEFAULT=mongodb://cadmus-tgr-mongo:27017/{0}
+      - CONNECTIONSTRINGS__AUTH=Server=cadmus-tgr-pgsql;port=5432;Database={0};User Id=postgres;Password=postgres;Include Error Detail=True
       - CONNECTIONSTRINGS__INDEX=Server=cadmus-tgr-pgsql;port=5432;Database={0};User Id=postgres;Password=postgres;Include Error Detail=True
-      - SEED__INDEXDELAY=25
+      - SEED__DELAY=20
       - MESSAGING__APIROOTURL=http://cadmusapi.azurewebsites.net
       - MESSAGING__APPROOTURL=http://cadmusapi.com/
       - MESSAGING__SUPPORTEMAIL=support@cadmus.com

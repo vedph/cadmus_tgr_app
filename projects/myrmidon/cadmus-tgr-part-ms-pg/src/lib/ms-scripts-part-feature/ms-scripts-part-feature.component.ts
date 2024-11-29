@@ -8,6 +8,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'tgr-ms-scripts-part-feature',
   templateUrl: './ms-scripts-part-feature.component.html',
   styleUrls: ['./ms-scripts-part-feature.component.css'],
+  standalone: false,
 })
 export class MsScriptsPartFeatureComponent
   extends EditPartFeatureBase

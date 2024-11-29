@@ -37,6 +37,7 @@ import {
   selector: 'tgr-ms-history-part',
   templateUrl: './ms-history-part.component.html',
   styleUrls: ['./ms-history-part.component.css'],
+  standalone: false,
 })
 export class MsHistoryPartComponent
   extends ModelEditorComponentBase<MsHistoryPart>

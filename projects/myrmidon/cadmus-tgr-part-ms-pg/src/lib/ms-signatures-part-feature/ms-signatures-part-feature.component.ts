@@ -8,6 +8,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'tgr-ms-signatures-part-feature',
   templateUrl: './ms-signatures-part-feature.component.html',
   styleUrls: ['./ms-signatures-part-feature.component.css'],
+  standalone: false,
 })
 export class MsSignaturesPartFeatureComponent
   extends EditPartFeatureBase

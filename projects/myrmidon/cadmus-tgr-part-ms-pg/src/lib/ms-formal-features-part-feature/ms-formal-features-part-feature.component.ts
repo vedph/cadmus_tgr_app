@@ -8,6 +8,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'tgr-ms-formal-features-part-feature',
   templateUrl: './ms-formal-features-part-feature.component.html',
   styleUrls: ['./ms-formal-features-part-feature.component.css'],
+  standalone: false,
 })
 export class MsFormalFeaturesPartFeatureComponent
   extends EditPartFeatureBase

@@ -26,6 +26,7 @@ import {
   selector: 'tgr-ms-formal-features-part',
   templateUrl: './ms-formal-features-part.component.html',
   styleUrls: ['./ms-formal-features-part.component.css'],
+  standalone: false,
 })
 export class MsFormalFeaturesPartComponent
   extends ModelEditorComponentBase<MsFormalFeaturesPart>

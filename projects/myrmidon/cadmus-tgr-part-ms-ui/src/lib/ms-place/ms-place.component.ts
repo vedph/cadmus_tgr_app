@@ -14,6 +14,7 @@ import { MsPlace } from '../ms-places-part';
   selector: 'tgr-ms-place',
   templateUrl: './ms-place.component.html',
   styleUrls: ['./ms-place.component.css'],
+  standalone: false,
 })
 export class MsPlaceComponent implements OnInit {
   private _model: MsPlace | undefined;

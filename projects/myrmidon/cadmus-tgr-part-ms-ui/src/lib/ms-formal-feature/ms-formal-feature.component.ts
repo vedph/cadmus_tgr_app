@@ -18,6 +18,7 @@ import { MsFormalFeature } from '../ms-formal-features-part';
   selector: 'tgr-ms-formal-feature',
   templateUrl: './ms-formal-feature.component.html',
   styleUrls: ['./ms-formal-feature.component.css'],
+  standalone: false,
 })
 export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
   private _model: MsFormalFeature | undefined;

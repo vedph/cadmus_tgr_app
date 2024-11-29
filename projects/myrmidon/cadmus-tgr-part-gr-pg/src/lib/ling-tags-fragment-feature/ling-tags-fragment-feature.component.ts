@@ -11,6 +11,7 @@ import {
   selector: 'tgr-ling-tags-fragment-feature',
   templateUrl: './ling-tags-fragment-feature.component.html',
   styleUrls: ['./ling-tags-fragment-feature.component.css'],
+  standalone: false,
 })
 export class LingTagsFragmentFeatureComponent
   extends EditFragmentFeatureBase

@@ -23,6 +23,7 @@ import { MsPlace, MsPlacesPart, MSPLACES_PART_TYPEID } from '../ms-places-part';
   selector: 'tgr-ms-places-part',
   templateUrl: './ms-places-part.component.html',
   styleUrls: ['./ms-places-part.component.css'],
+  standalone: false,
 })
 export class MsPlacesPartComponent
   extends ModelEditorComponentBase<MsPlacesPart>

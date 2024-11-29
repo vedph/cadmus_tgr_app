@@ -25,6 +25,10 @@ mat-icon.small-icon {
   flex: 1 1 auto;
 }
 
+mat-toolbar {
+  background-color: #bcb7a6;
+  color: white;
+}
 mat-toolbar mat-icon {
   color: white;
 }

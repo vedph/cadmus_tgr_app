@@ -33,6 +33,7 @@ import { MsOrnament } from '../ms-ornaments-part';
   selector: 'tgr-ms-ornament',
   templateUrl: './ms-ornament.component.html',
   styleUrls: ['./ms-ornament.component.css'],
+  standalone: false,
 })
 export class MsOrnamentComponent implements OnInit, OnDestroy, AfterViewInit {
   private _model: MsOrnament | undefined;

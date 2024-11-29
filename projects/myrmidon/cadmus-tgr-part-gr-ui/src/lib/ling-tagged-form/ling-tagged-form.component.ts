@@ -40,6 +40,7 @@ const BUCKET_TAGS_KEY = 'ling-tags';
   selector: 'tgr-ling-tagged-form',
   templateUrl: './ling-tagged-form.component.html',
   styleUrls: ['./ling-tagged-form.component.css'],
+  standalone: false,
 })
 export class LingTaggedFormComponent implements OnInit {
   private _tagEntries: ThesaurusEntry[] | undefined;

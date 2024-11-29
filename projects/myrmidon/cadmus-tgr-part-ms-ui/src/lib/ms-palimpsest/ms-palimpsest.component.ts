@@ -15,6 +15,7 @@ import { MsPalimpsest } from '../ms-units-part';
   selector: 'tgr-ms-palimpsest',
   templateUrl: './ms-palimpsest.component.html',
   styleUrls: ['./ms-palimpsest.component.css'],
+  standalone: false,
 })
 export class MsPalimpsestComponent implements OnInit {
   private _model: MsPalimpsest | undefined;

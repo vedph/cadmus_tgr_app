@@ -11,6 +11,7 @@ import {
   selector: 'tgr-interpolations-fragment-feature',
   templateUrl: './interpolations-fragment-feature.component.html',
   styleUrls: ['./interpolations-fragment-feature.component.css'],
+  standalone: false,
 })
 export class InterpolationsFragmentFeatureComponent
   extends EditFragmentFeatureBase

@@ -28,6 +28,7 @@ import {
   selector: 'tgr-interpolations-fragment',
   templateUrl: './interpolations-fragment.component.html',
   styleUrls: ['./interpolations-fragment.component.css'],
+  standalone: false,
 })
 export class InterpolationsFragmentComponent
   extends ModelEditorComponentBase<InterpolationsFragment>

@@ -26,6 +26,7 @@ const BUCKET_AVAIL_WITNESSES_KEY = 'available-witnesses';
   selector: 'cadmus-available-witnesses-fragment',
   templateUrl: './available-witnesses-fragment.component.html',
   styleUrls: ['./available-witnesses-fragment.component.css'],
+  standalone: false,
 })
 export class AvailableWitnessesFragmentComponent
   extends ModelEditorComponentBase<AvailableWitnessesFragment>

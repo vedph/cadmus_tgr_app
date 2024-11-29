@@ -35,6 +35,7 @@ import {
   selector: 'tgr-ms-signatures-part',
   templateUrl: './ms-signatures-part.component.html',
   styleUrls: ['./ms-signatures-part.component.css'],
+  standalone: false,
 })
 export class MsSignaturesPartComponent
   extends ModelEditorComponentBase<MsSignaturesPart>

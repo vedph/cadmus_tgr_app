@@ -23,6 +23,7 @@ import { LingTagsFragment } from '../ling-tags-fragment';
   selector: 'tgr-ling-tags-fragment',
   templateUrl: './ling-tags-fragment.component.html',
   styleUrls: ['./ling-tags-fragment.component.css'],
+  standalone: false,
 })
 export class LingTagsFragmentComponent
   extends ModelEditorComponentBase<LingTagsFragment>

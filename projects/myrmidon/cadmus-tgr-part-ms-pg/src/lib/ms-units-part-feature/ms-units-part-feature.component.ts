@@ -8,6 +8,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'tgr-ms-units-part-feature',
   templateUrl: './ms-units-part-feature.component.html',
   styleUrls: ['./ms-units-part-feature.component.css'],
+  standalone: false,
 })
 export class MsUnitsPartFeatureComponent
   extends EditPartFeatureBase

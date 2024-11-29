@@ -11,17 +11,14 @@ import { DbpediaRefLookupService } from '@myrmidon/cadmus-refs-dbpedia-lookup';
 import { GeoNamesRefLookupService } from '@myrmidon/cadmus-refs-geonames-lookup';
 import { RefLookupConfig } from '@myrmidon/cadmus-refs-lookup';
 
-import {
-  AuthJwtService,
-  GravatarService,
-  User,
-} from '@myrmidon/auth-jwt-login';
+import { AuthJwtService, User } from '@myrmidon/auth-jwt-login';
 import { AppRepository } from '@myrmidon/cadmus-state';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: false,
 })
 export class AppComponent implements OnInit {
   public user?: User;
@@ -33,7 +30,6 @@ export class AppComponent implements OnInit {
     @Inject('itemBrowserKeys')
     private _itemBrowserKeys: { [key: string]: string },
     private _authService: AuthJwtService,
-    private _gravatarService: GravatarService,
     private _appRepository: AppRepository,
     private _router: Router,
     envService: EnvService,
@@ -98,10 +94,6 @@ export class AppComponent implements OnInit {
 
   public getItemBrowserRoute(id: string): string {
     return this._itemBrowserKeys[id] || id;
-  }
-
-  public getGravatarUrl(email: string, size = 80): string | null {
-    return this._gravatarService.buildGravatarUrl(email, size);
   }
 
   public logout(): void {

@@ -22,6 +22,7 @@ import {
   selector: 'tgr-var-quotation',
   templateUrl: './var-quotation.component.html',
   styleUrls: ['./var-quotation.component.css'],
+  standalone: false,
 })
 export class VarQuotationComponent implements OnInit {
   private _model: VarQuotation | undefined;
@@ -173,7 +174,10 @@ export class VarQuotationComponent implements OnInit {
         Validators.required,
         Validators.maxLength(50),
       ]),
-      note: this._formBuilder.control(parallel?.note, Validators.maxLength(1000)),
+      note: this._formBuilder.control(
+        parallel?.note,
+        Validators.maxLength(1000)
+      ),
       qtag: this._formBuilder.control(parallel?.tag, Validators.maxLength(50)),
     });
     g.valueChanges.subscribe((_) => {
@@ -220,7 +224,7 @@ export class VarQuotationComponent implements OnInit {
         work: g.controls.work.value?.trim(),
         location: g.controls.location.value?.trim(),
         tag: g.controls.qtag.value?.trim(),
-        note: g.controls.note.value?.trim()
+        note: g.controls.note.value?.trim(),
       });
     }
     return entries.length ? entries : undefined;

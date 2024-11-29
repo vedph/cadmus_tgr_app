@@ -8,6 +8,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'tgr-ms-history-part-feature',
   templateUrl: './ms-history-part-feature.component.html',
   styleUrls: ['./ms-history-part-feature.component.css'],
+  standalone: false,
 })
 export class MsHistoryPartFeatureComponent
   extends EditPartFeatureBase

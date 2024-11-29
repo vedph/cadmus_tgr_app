@@ -29,6 +29,7 @@ import {
   selector: 'tgr-ms-contents-part',
   templateUrl: './ms-contents-part.component.html',
   styleUrls: ['./ms-contents-part.component.css'],
+  standalone: false,
 })
 export class MsContentsPartComponent
   extends ModelEditorComponentBase<MsContentsPart>

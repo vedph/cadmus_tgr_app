@@ -29,6 +29,7 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
   selector: 'tgr-ms-script',
   templateUrl: './ms-script.component.html',
   styleUrls: ['./ms-script.component.css'],
+  standalone: false,
 })
 export class MsScriptComponent {
   private _editedIndex: number;

@@ -13,6 +13,7 @@ import { MsGuardSheet, MsWatermark } from '../ms-units-part';
   selector: 'tgr-ms-guard-sheet',
   templateUrl: './ms-guard-sheet.component.html',
   styleUrls: ['./ms-guard-sheet.component.css'],
+  standalone: false,
 })
 export class MsGuardSheetComponent implements OnInit {
   private _model: MsGuardSheet | undefined;

@@ -11,6 +11,7 @@ import {
   selector: 'tgr-var-quotations-fragment-feature',
   templateUrl: './var-quotations-fragment-feature.component.html',
   styleUrls: ['./var-quotations-fragment-feature.component.css'],
+  standalone: false,
 })
 export class VarQuotationsFragmentFeatureComponent
   extends EditFragmentFeatureBase

@@ -30,6 +30,7 @@ import { NgToolsValidators } from '@myrmidon/ng-tools';
   selector: 'tgr-ms-ornaments-part',
   templateUrl: './ms-ornaments-part.component.html',
   styleUrls: ['./ms-ornaments-part.component.css'],
+  standalone: false,
 })
 export class MsOrnamentsPartComponent
   extends ModelEditorComponentBase<MsOrnamentsPart>

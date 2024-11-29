@@ -12,6 +12,7 @@ import {
   selector: 'cadmus-available-witnesses-fragment-feature',
   templateUrl: './available-witnesses-fragment-feature.component.html',
   styleUrls: ['./available-witnesses-fragment-feature.component.css'],
+  standalone: false,
 })
 export class AvailableWitnessesFragmentFeatureComponent
   extends EditFragmentFeatureBase
