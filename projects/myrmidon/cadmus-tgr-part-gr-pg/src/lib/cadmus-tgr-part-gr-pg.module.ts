@@ -15,21 +15,17 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { NgToolsModule } from '@myrmidon/ng-tools';
-import { AuthJwtLoginModule } from '@myrmidon/auth-jwt-login';
-
-import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
-import { CadmusStateModule } from '@myrmidon/cadmus-state';
-import { CadmusUiModule } from '@myrmidon/cadmus-ui';
-import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
+import { PendingChangesGuard } from '@myrmidon/cadmus-core';
+import { DecoratedTokenTextComponent } from '@myrmidon/cadmus-ui';
+import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
 
 import {
   AVAILABLE_WITNESSES_FRAGMENT_TYPEID,
   AVAILABLE_WITNESSES_PART_TYPEID,
+  AvailableWitnessesFragmentComponent,
   INTERPOLATIONS_FRAGMENT_TYPEID,
   LING_TAGS_FRAGMENT_TYPEID,
   VAR_QUOTATIONS_FRAGMENT_TYPEID,
-  CadmusTgrPartGrUiModule,
 } from '@myrmidon/cadmus-tgr-part-gr-ui';
 
 import { AvailableWitnessesFragmentFeatureComponent } from './available-witnesses-fragment-feature/available-witnesses-fragment-feature.component';
@@ -72,13 +68,6 @@ export const RouterModuleForChild = RouterModule.forChild([
 ]);
 
 @NgModule({
-  declarations: [
-    AvailableWitnessesFragmentFeatureComponent,
-    AvailableWitnessesPartFeatureComponent,
-    InterpolationsFragmentFeatureComponent,
-    LingTagsFragmentFeatureComponent,
-    VarQuotationsFragmentFeatureComponent,
-  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -96,14 +85,14 @@ export const RouterModuleForChild = RouterModule.forChild([
     MatTabsModule,
     MatTooltipModule,
     // Cadmus
-    NgToolsModule,
-    AuthJwtLoginModule,
     RouterModuleForChild,
-    CadmusCoreModule,
-    CadmusStateModule,
-    CadmusUiModule,
-    CadmusUiPgModule,
-    CadmusTgrPartGrUiModule,
+    CurrentItemBarComponent,
+    DecoratedTokenTextComponent,
+    AvailableWitnessesFragmentFeatureComponent,
+    AvailableWitnessesPartFeatureComponent,
+    InterpolationsFragmentFeatureComponent,
+    LingTagsFragmentFeatureComponent,
+    VarQuotationsFragmentFeatureComponent,
   ],
   exports: [
     AvailableWitnessesFragmentFeatureComponent,

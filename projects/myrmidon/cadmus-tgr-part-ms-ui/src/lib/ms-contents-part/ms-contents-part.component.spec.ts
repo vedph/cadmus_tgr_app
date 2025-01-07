@@ -8,8 +8,8 @@ describe('MsContentsPartComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MsContentsPartComponent ]
-    })
+    imports: [MsContentsPartComponent]
+})
     .compileComponents();
   });
 

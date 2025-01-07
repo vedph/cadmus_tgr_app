@@ -8,8 +8,8 @@ describe('MsHandComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MsHandComponent ]
-    })
+    imports: [MsHandComponent]
+})
     .compileComponents();
   });
 

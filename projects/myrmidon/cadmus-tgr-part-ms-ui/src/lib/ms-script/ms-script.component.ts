@@ -4,19 +4,33 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { take } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
-import { DialogService } from '@myrmidon/ng-mat-tools';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 
+import { DialogService } from '@myrmidon/ngx-mat-tools';
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
+
+import {
+  renderLabelFromLastColon,
+  ThesaurusTreeComponent,
+} from '@myrmidon/cadmus-ui';
+import { Flag, FlagSetComponent } from '@myrmidon/cadmus-ui-flag-set';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
-import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
-import { Flag, FlagsPickerAdapter } from '@myrmidon/cadmus-ui-flags-picker';
 
 import { MsHand, MsScript } from '../ms-scripts-part';
+import { MsHandComponent } from '../ms-hand/ms-hand.component';
 
 function entryToFlag(entry: ThesaurusEntry): Flag {
   return {
@@ -29,13 +43,30 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
   selector: 'tgr-ms-script',
   templateUrl: './ms-script.component.html',
   styleUrls: ['./ms-script.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatTabGroup,
+    MatTab,
+    FlagSetComponent,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatError,
+    MatInput,
+    ThesaurusTreeComponent,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+    MsHandComponent,
+  ],
 })
 export class MsScriptComponent {
   private _editedIndex: number;
   private _langEntries: ThesaurusEntry[] | undefined;
   private _model: MsScript | undefined;
-  private readonly _flagAdapter: FlagsPickerAdapter;
 
   @Input()
   public get model(): MsScript | undefined {
@@ -64,10 +95,7 @@ export class MsScriptComponent {
       return;
     }
     this._langEntries = value || [];
-    this._flagAdapter.setSlotFlags(
-      'languages',
-      this._langEntries.map(entryToFlag)
-    );
+    this.langFlags = this._langEntries.map(entryToFlag);
   }
 
   @Output()
@@ -76,7 +104,7 @@ export class MsScriptComponent {
   public editorClose: EventEmitter<any>;
 
   public form: FormGroup;
-  public languages: FormControl<Flag[]>;
+  public languages: FormControl<string[]>;
   public role: FormControl<string | null>;
   public type: FormControl<string | null>;
   public hands: FormControl<MsHand[]>;
@@ -84,7 +112,7 @@ export class MsScriptComponent {
   public editedHand: MsHand | undefined;
 
   // flags
-  public langFlags$: Observable<Flag[]>;
+  public langFlags: Flag[] = [];
 
   constructor(
     formBuilder: FormBuilder,
@@ -97,7 +125,7 @@ export class MsScriptComponent {
     this.tabIndex = 0;
     // form
     this.languages = formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
     this.role = formBuilder.control(null, [
@@ -113,9 +141,6 @@ export class MsScriptComponent {
       type: this.type,
       hands: this.hands,
     });
-    // flags
-    this._flagAdapter = new FlagsPickerAdapter();
-    this.langFlags$ = this._flagAdapter.selectFlags('languages');
   }
 
   private updateForm(model: MsScript | undefined): void {
@@ -124,9 +149,7 @@ export class MsScriptComponent {
       return;
     }
 
-    this.languages.setValue(
-      this._flagAdapter.setSlotChecks('languages', model.languages)
-    );
+    this.languages.setValue(model.languages);
     this.languages.updateValueAndValidity();
     this.role.setValue(model.role);
     this.type.setValue(model.type || null);
@@ -137,16 +160,15 @@ export class MsScriptComponent {
 
   private getModel(): MsScript {
     return {
-      languages: this._flagAdapter.getOptionalCheckedFlagIds('languages') || [],
+      languages: this.languages.value,
       role: this.role.value?.trim() || '',
       type: this.type.value?.trim(),
       hands: this.hands.value?.length ? this.hands.value : undefined,
     };
   }
 
-  public onLangFlagsChange(flags: Flag[]): void {
-    this._flagAdapter.setSlotFlags('languages', flags, true);
-    this.languages.setValue(flags);
+  public onLangIdsChange(ids: string[]): void {
+    this.languages.setValue(ids);
     this.languages.markAsDirty();
     this.languages.updateValueAndValidity();
   }

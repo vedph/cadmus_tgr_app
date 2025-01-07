@@ -19,7 +19,7 @@
         <mat-form-field>
           <mat-label>tag</mat-label>
           <input matInput [formControl]="tag" />
-          @if (tag.errors?.maxLength && (tag.dirty || tag.touched)) {
+          @if ($any(tag).errors?.maxLength && (tag.dirty || tag.touched)) {
           <mat-error>tag too long</mat-error>
           }
         </mat-form-field>
@@ -33,7 +33,7 @@
             <mat-option [value]="e.id">{{ e.value }}</mat-option>
             }
           </mat-select>
-          @if ( authority.errors?.required && (authority.dirty ||
+          @if ( $any(authority).errors?.required && (authority.dirty ||
           authority.touched) ) {
           <mat-error>required</mat-error>
           }
@@ -44,10 +44,10 @@
         <mat-form-field>
           <mat-label>authority</mat-label>
           <input matInput [formControl]="authority" />
-          @if ( authority.errors?.required && (authority.dirty ||
+          @if ( $any(authority).errors?.required && (authority.dirty ||
           authority.touched) ) {
           <mat-error>required</mat-error>
-          } @if ( authority.errors?.maxLength && (authority.dirty ||
+          } @if ( $any(authority).errors?.maxLength && (authority.dirty ||
           authority.touched) ) {
           <mat-error>too long</mat-error>
           }
@@ -67,9 +67,9 @@
         <mat-form-field>
           <mat-label>work</mat-label>
           <input matInput [formControl]="work" />
-          @if (work.errors?.required && (work.dirty || work.touched)) {
+          @if ($any(work).errors?.required && (work.dirty || work.touched)) {
           <mat-error>required</mat-error>
-          } @if (work.errors?.maxLength && (work.dirty || work.touched)) {
+          } @if ($any(work).errors?.maxLength && (work.dirty || work.touched)) {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -78,10 +78,10 @@
         <mat-form-field>
           <mat-label>location</mat-label>
           <input matInput [formControl]="location" />
-          @if ( location.errors?.required && (location.dirty ||
+          @if ( $any(location).errors?.required && (location.dirty ||
           location.touched) ) {
           <mat-error>required</mat-error>
-          } @if ( location.errors?.maxLength && (location.dirty ||
+          } @if ( $any(location).errors?.maxLength && (location.dirty ||
           location.touched) ) {
           <mat-error>too long</mat-error>
           }
@@ -241,7 +241,7 @@
           </tr>
         </thead>
         <tbody>
-          @for ( variant of variants?.value; track variant; let i = $index; let
+          @for ( variant of variants.value; track variant; let i = $index; let
           first = $first; let last = $last) {
           <tr>
             <td>
@@ -302,8 +302,7 @@
           [workEntries]="workEntries"
           (modelChange)="onVariantSave($event)"
           (editorClose)="onVariantClose()"
-        >
-        </tgr-quotation-variant>
+        />
       </mat-expansion-panel>
     </mat-tab>
   </mat-tab-group>

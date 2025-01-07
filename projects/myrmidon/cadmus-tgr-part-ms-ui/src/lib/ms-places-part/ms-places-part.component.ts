@@ -4,16 +4,40 @@ import {
   FormBuilder,
   FormGroup,
   UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { DialogService } from '@myrmidon/ng-mat-tools';
-import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
-
 import { MsPlace, MsPlacesPart, MSPLACES_PART_TYPEID } from '../ms-places-part';
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
+
+import { DialogService } from '@myrmidon/ngx-mat-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
+
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+
+import { MsPlaceComponent } from '../ms-place/ms-place.component';
 
 /**
  * Manuscript's place(s) of origin part editor.
@@ -23,7 +47,24 @@ import { MsPlace, MsPlacesPart, MSPLACES_PART_TYPEID } from '../ms-places-part';
   selector: 'tgr-ms-places-part',
   templateUrl: './ms-places-part.component.html',
   styleUrls: ['./ms-places-part.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardContent,
+    MatButton,
+    MatIconButton,
+    MatTooltip,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MsPlaceComponent,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class MsPlacesPartComponent
   extends ModelEditorComponentBase<MsPlacesPart>
@@ -46,7 +87,7 @@ export class MsPlacesPartComponent
     this.editedPlaceIndex = -1;
     // form
     this.places = formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
   }

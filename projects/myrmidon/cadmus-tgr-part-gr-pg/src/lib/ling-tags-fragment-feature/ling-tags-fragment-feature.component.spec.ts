@@ -8,8 +8,8 @@ describe('LingTagsFragmentFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LingTagsFragmentFeatureComponent ]
-    })
+    imports: [LingTagsFragmentFeatureComponent]
+})
     .compileComponents();
   });
 

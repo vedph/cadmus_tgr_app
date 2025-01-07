@@ -8,26 +8,57 @@ import {
   ValidationErrors,
   FormGroup,
   UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
-  MsAnnotation,
-  MsHistoryPart,
-  MSHISTORY_PART_TYPEID,
-} from '../ms-history-part';
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
 import {
-  GeoAddress,
-  MsLocation,
-  MsLocationService,
-} from '@myrmidon/cadmus-tgr-core';
+  MatFormField,
+  MatLabel,
+  MatError,
+  MatHint,
+} from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { NgeMonacoModule } from '@cisstech/nge/monaco';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import {
   CADMUS_TEXT_ED_BINDINGS_TOKEN,
   CadmusTextEdBindings,
   CadmusTextEdService,
 } from '@myrmidon/cadmus-text-ed';
+
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  GeoAddress,
+  MsLocation,
+  MsLocationService,
+} from '@myrmidon/cadmus-tgr-core';
+
+import {
+  MsAnnotation,
+  MsHistoryPart,
+  MSHISTORY_PART_TYPEID,
+} from '../ms-history-part';
 
 /**
  * Manuscript's history part editor component.
@@ -37,7 +68,31 @@ import {
   selector: 'tgr-ms-history-part',
   templateUrl: './ms-history-part.component.html',
   styleUrls: ['./ms-history-part.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardContent,
+    MatTabGroup,
+    MatTab,
+    MatButton,
+    MatIconButton,
+    MatTooltip,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    NgeMonacoModule,
+    MatHint,
+    MatSelect,
+    MatOption,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class MsHistoryPartComponent
   extends ModelEditorComponentBase<MsHistoryPart>
@@ -322,8 +377,8 @@ export class MsHistoryPartComponent
     for (let i = 0; i < this.provenances.length; i++) {
       const g = this.provenances.at(i) as FormGroup;
       provenances.push({
-        area: g.controls.area.value?.trim(),
-        address: g.controls.address.value?.trim(),
+        area: g.controls['area'].value?.trim(),
+        address: g.controls['address'].value?.trim(),
       });
     }
     return provenances.length ? provenances : undefined;
@@ -370,7 +425,7 @@ export class MsHistoryPartComponent
     const owners: string[] = [];
     for (let i = 0; i < this.owners.length; i++) {
       const g = this.owners.at(i) as FormGroup;
-      owners.push(g.controls.name.value?.trim());
+      owners.push(g.controls['name'].value?.trim());
     }
     return owners.length ? owners : undefined;
   }
@@ -425,9 +480,9 @@ export class MsHistoryPartComponent
     for (let i = 0; i < this.annotations.length; i++) {
       const g = this.annotations.at(i) as FormGroup;
       annotations.push({
-        language: g.controls.language.value?.trim(),
-        handId: g.controls.handId.value?.trim(),
-        note: g.controls.note.value?.trim(),
+        language: g.controls['language'].value?.trim(),
+        handId: g.controls['handId'].value?.trim(),
+        note: g.controls['note'].value?.trim(),
       });
     }
     return annotations.length ? annotations : undefined;

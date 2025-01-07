@@ -5,15 +5,42 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
+
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+
 import { MsGuardSheet, MsWatermark } from '../ms-units-part';
 
 @Component({
   selector: 'tgr-ms-guard-sheet',
   templateUrl: './ms-guard-sheet.component.html',
   styleUrls: ['./ms-guard-sheet.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCheckbox,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatInput,
+    MatError,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+  ],
 })
 export class MsGuardSheetComponent implements OnInit {
   private _model: MsGuardSheet | undefined;
@@ -99,8 +126,8 @@ export class MsGuardSheetComponent implements OnInit {
       for (let i = 0; i < this.watermarks.controls.length; i++) {
         const g = this.watermarks.at(i) as FormGroup;
         model.watermarks.push({
-          value: g.controls.value.value?.trim(),
-          description: g.controls.description.value?.trim(),
+          value: g.controls['value'].value?.trim(),
+          description: g.controls['description'].value?.trim(),
         });
       }
     }

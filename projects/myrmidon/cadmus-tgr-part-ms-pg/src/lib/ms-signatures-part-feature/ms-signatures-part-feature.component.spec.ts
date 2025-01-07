@@ -8,8 +8,8 @@ describe('MsSignaturesPartFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MsSignaturesPartFeatureComponent ]
-    })
+    imports: [MsSignaturesPartFeatureComponent]
+})
     .compileComponents();
   });
 

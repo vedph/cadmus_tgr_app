@@ -18,7 +18,7 @@
           <mat-icon>add_circle</mat-icon> feature
         </button>
       </div>
-      @if (features?.value?.length) {
+      @if (features.value.length) {
       <table>
         <thead>
           <tr>
@@ -27,7 +27,7 @@
           </tr>
         </thead>
         <tbody>
-          @for ( feature of features?.value; track feature; let i = $index; let
+          @for ( feature of features.value; track feature; let i = $index; let
           first = $first; let last = $last) {
           <tr>
             <td>

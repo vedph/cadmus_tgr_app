@@ -12,13 +12,13 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      @if (!forms.value?.length) {
+      @if (!forms.value.length) {
       <div>
         <button type="button" mat-stroked-button (click)="addForm()">
           <mat-icon>add_circle</mat-icon> form
         </button>
       </div>
-      } @if (forms.value?.length) {
+      } @if (forms.value.length) {
       <table>
         <thead>
           <tr>
@@ -90,7 +90,7 @@
           [model]="editedForm"
           (modelChange)="saveForm($event)"
           (editorClose)="closeForm()"
-        ></tgr-ling-tagged-form>
+        />
       </mat-expansion-panel>
     </mat-card-content>
     <mat-card-actions>
@@ -98,7 +98,7 @@
         [form]="form"
         [noSave]="userLevel < 2"
         (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
+      />
     </mat-card-actions>
   </mat-card>
 </form>

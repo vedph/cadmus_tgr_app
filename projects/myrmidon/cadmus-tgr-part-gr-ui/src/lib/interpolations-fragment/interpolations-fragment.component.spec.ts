@@ -8,8 +8,8 @@ describe('InterpolationsFragmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InterpolationsFragmentComponent ]
-    })
+    imports: [InterpolationsFragmentComponent]
+})
     .compileComponents();
   });
 

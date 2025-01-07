@@ -1,5 +1,7 @@
 # Cadmus TGR App
 
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+
 🐋 Quick Docker image build:
 
 1. `npm run build-lib`;
@@ -45,7 +47,29 @@ CORS Note: in `docker-compose.yml`, ensure that your web app IP is found in the 
 - ALLOWEDORIGINS__0=http://90.147.166.176
 ```
 
+## Setup
+
+This workspace has been created with these commands:
+
+```sh
+ng new cadmus-tgr-app
+cd cadmus-tgr-app
+ng add @angular/material
+ng add @angular/localize
+ng g library @myrmidon/cadmus-tgr-core --prefix cadmus --force
+ng g library @myrmidon/cadmus-tgr-part-gr-pg --prefix cadmus --force
+ng g library @myrmidon/cadmus-tgr-part-gr-ui --prefix cadmus --force
+ng g library @myrmidon/cadmus-tgr-part-ms-pg --prefix cadmus --force
+ng g library @myrmidon/cadmus-tgr-part-ms-ui --prefix cadmus --force
+```
+
 ## History
+
+### 8.0.0
+
+- 2025-01-07:
+  - ⚠️ standalone components.
+  - refactored app for modern Angular.
 
 ### 7.0.0
 

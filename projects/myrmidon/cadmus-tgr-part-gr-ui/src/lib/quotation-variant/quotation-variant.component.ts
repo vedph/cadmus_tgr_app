@@ -5,15 +5,34 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { Clipboard } from '@angular/cdk/clipboard';
+
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+  MatExpansionPanelDescription,
+} from '@angular/material/expansion';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
 
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
   AnnotatedValue,
   LocAnnotatedValue,
 } from '@myrmidon/cadmus-part-philology-ui';
-import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
+import {
+  renderLabelFromLastColon,
+  ThesaurusTreeComponent,
+} from '@myrmidon/cadmus-ui';
 
 import { QuotationVariant } from '../var-quotations-fragment';
 
@@ -21,7 +40,25 @@ import { QuotationVariant } from '../var-quotations-fragment';
   selector: 'tgr-quotation-variant',
   templateUrl: './quotation-variant.component.html',
   styleUrls: ['./quotation-variant.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatError,
+    MatInput,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatExpansionPanelDescription,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatButton,
+    ThesaurusTreeComponent,
+  ],
 })
 export class QuotationVariantComponent implements OnInit {
   private _model: QuotationVariant | undefined;
@@ -193,8 +230,8 @@ export class QuotationVariantComponent implements OnInit {
     for (let i = 0; i < this.witnesses.length; i++) {
       const g = this.witnesses.at(i) as FormGroup;
       entries.push({
-        value: g.controls.value.value?.trim(),
-        note: g.controls.note.value?.trim(),
+        value: g.controls['value'].value?.trim(),
+        note: g.controls['note'].value?.trim(),
       });
     }
     return entries.length ? entries : undefined;
@@ -252,10 +289,10 @@ export class QuotationVariantComponent implements OnInit {
     for (let i = 0; i < this.authors.length; i++) {
       const g = this.authors.at(i) as FormGroup;
       entries.push({
-        tag: g.controls.tag.value?.trim(),
-        value: g.controls.value.value?.trim(),
-        location: g.controls.location.value?.trim(),
-        note: g.controls.note.value?.trim(),
+        tag: g.controls['tag'].value?.trim(),
+        value: g.controls['value'].value?.trim(),
+        location: g.controls['location'].value?.trim(),
+        note: g.controls['note'].value?.trim(),
       });
     }
     return entries.length ? entries : undefined;

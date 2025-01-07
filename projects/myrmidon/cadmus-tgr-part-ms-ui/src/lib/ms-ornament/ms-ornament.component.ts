@@ -15,16 +15,31 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { PhysicalSize } from '@myrmidon/cadmus-mat-physical-size';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { NgeMonacoModule } from '@cisstech/nge/monaco';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+
+import {
+  PhysicalSize,
+  PhysicalSizeComponent,
+} from '@myrmidon/cadmus-mat-physical-size';
 import {
   CADMUS_TEXT_ED_BINDINGS_TOKEN,
   CadmusTextEdBindings,
   CadmusTextEdService,
 } from '@myrmidon/cadmus-text-ed';
 
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 
 import { MsOrnament } from '../ms-ornaments-part';
@@ -33,7 +48,22 @@ import { MsOrnament } from '../ms-ornaments-part';
   selector: 'tgr-ms-ornament',
   templateUrl: './ms-ornament.component.html',
   styleUrls: ['./ms-ornament.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatError,
+    MatInput,
+    MatCheckbox,
+    PhysicalSizeComponent,
+    NgeMonacoModule,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+  ],
 })
 export class MsOrnamentComponent implements OnInit, OnDestroy, AfterViewInit {
   private _model: MsOrnament | undefined;

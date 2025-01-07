@@ -3,34 +3,35 @@
     <mat-tab label="script">
       <div>
         <!-- languages (bound) -->
-        <cadmus-ui-flags-picker
-          [flags]="langFlags$ | async"
-          (flagsChange)="onLangFlagsChange($event)"
-        ></cadmus-ui-flags-picker>
+        <cadmus-ui-flag-set
+          [flags]="langFlags"
+          [checkedIds]="languages.value"
+          (checkedIdsChange)="onLangIdsChange($event)"
+        />
       </div>
       <div>
         <!-- role (bound) -->
         @if (scrRoleEntries?.length) {
-        <mat-form-field style="width: 12em">
+        <mat-form-field>
           <mat-label>role</mat-label>
           <mat-select [formControl]="role">
             @for (e of scrRoleEntries; track e) {
             <mat-option [value]="e.id">{{ e.value }}</mat-option>
             }
           </mat-select>
-          @if (role.errors?.required && (role.dirty || role.touched)) {
+          @if ($any(role).errors?.required && (role.dirty || role.touched)) {
           <mat-error>required</mat-error>
           }
         </mat-form-field>
         }
         <!-- role (free) -->
-        @if (!scrRoleEntries?.length) {
-        <mat-form-field style="width: 12em">
+        @else {
+        <mat-form-field>
           <mat-label>role</mat-label>
           <input matInput [formControl]="role" />
-          @if (role.errors?.required && (role.dirty || role.touched)) {
+          @if ($any(role).errors?.required && (role.dirty || role.touched)) {
           <mat-error>required</mat-error>
-          } @if (role.errors?.maxLength && (role.dirty || role.touched)) {
+          } @if ($any(role).errors?.maxLength && (role.dirty || role.touched)) {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -45,12 +46,12 @@
           rootLabel="scripts"
           [renderLabel]="renderLabel"
           (entryChange)="onScrTypeEntryChange($event)"
-        ></cadmus-thesaurus-tree>
+        />
         }
         <mat-form-field>
           <mat-label>type</mat-label>
           <input matInput [formControl]="type" />
-          @if (type.errors?.maxLength && (type.dirty || type.touched)) {
+          @if ($any(type).errors?.maxLength && (type.dirty || type.touched)) {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -67,7 +68,7 @@
           <mat-icon>add_circle</mat-icon> hand
         </button>
       </div>
-      @if (hands?.value?.length) {
+      @if (hands.value.length) {
       <table>
         <thead>
           <tr>
@@ -78,7 +79,7 @@
           </tr>
         </thead>
         <tbody>
-          @for ( hand of hands?.value; track hand; let i = $index; let first =
+          @for ( hand of hands.value; track hand; let i = $index; let first =
           $first; let last = $last) {
           <tr>
             <td>
@@ -134,7 +135,7 @@
         [model]="editedHand"
         (modelChange)="onHandSave($event)"
         (editorClose)="onHandClose()"
-      ></tgr-ms-hand>
+      />
     </mat-tab>
     }
   </mat-tab-group>

@@ -4,20 +4,44 @@ import {
   FormBuilder,
   FormGroup,
   UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { DialogService } from '@myrmidon/ng-mat-tools';
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
+
+import { DialogService } from '@myrmidon/ngx-mat-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
+
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
 
 import {
   MsScript,
   MsScriptsPart,
   MSSCRIPTS_PART_TYPEID,
 } from '../ms-scripts-part';
+import { MsScriptComponent } from '../ms-script/ms-script.component';
 
 /**
  * MsScripts editor component.
@@ -28,7 +52,24 @@ import {
   selector: 'tgr-ms-scripts-part',
   templateUrl: './ms-scripts-part.component.html',
   styleUrls: ['./ms-scripts-part.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardContent,
+    MatButton,
+    MatIconButton,
+    MatTooltip,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MsScriptComponent,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class MsScriptsPartComponent
   extends ModelEditorComponentBase<MsScriptsPart>
@@ -52,7 +93,7 @@ export class MsScriptsPartComponent
     this.editedScriptIndex = -1;
     // form
     this.scripts = formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
   }

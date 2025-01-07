@@ -9,7 +9,7 @@
         <mat-option [value]="e.id">{{ e.value }}</mat-option>
         }
       </mat-select>
-      @if (area.errors?.required && (area.dirty || area.touched)) {
+      @if ($any(area).errors?.required && (area.dirty || area.touched)) {
       <mat-error>area required</mat-error>
       }
     </mat-form-field>
@@ -19,9 +19,9 @@
     <mat-form-field>
       <mat-label>area</mat-label>
       <input matInput [formControl]="area" />
-      @if (area.errors?.required && (area.dirty || area.touched)) {
+      @if ($any(area).errors?.required && (area.dirty || area.touched)) {
       <mat-error>area required</mat-error>
-      } @if (area.errors?.maxLength && (area.dirty || area.touched)) {
+      } @if ($any(area).errors?.maxLength && (area.dirty || area.touched)) {
       <mat-error>area too long</mat-error>
       }
     </mat-form-field>
@@ -30,7 +30,8 @@
     <mat-form-field style="width: 30em">
       <mat-label>address</mat-label>
       <input matInput [formControl]="address" />
-      @if (address.errors?.maxLength && (address.dirty || address.touched)) {
+      @if ($any(address).errors?.maxLength && (address.dirty ||
+      address.touched)) {
       <mat-error>address too long</mat-error>
       }
     </mat-form-field>
@@ -40,7 +41,7 @@
     <mat-form-field>
       <mat-label>city</mat-label>
       <input matInput [formControl]="city" />
-      @if (city.errors?.maxLength && (city.dirty || city.touched)) {
+      @if ($any(city).errors?.maxLength && (city.dirty || city.touched)) {
       <mat-error>city too long</mat-error>
       }
     </mat-form-field>
@@ -48,7 +49,7 @@
     <mat-form-field>
       <mat-label>site</mat-label>
       <input matInput [formControl]="site" />
-      @if (site.errors?.maxLength && (site.dirty || site.touched)) {
+      @if ($any(site).errors?.maxLength && (site.dirty || site.touched)) {
       <mat-error>site too long</mat-error>
       }
     </mat-form-field>

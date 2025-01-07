@@ -4,7 +4,7 @@
     <mat-form-field>
       <mat-label>ID</mat-label>
       <input matInput [formControl]="id" />
-      @if (id.errors?.maxLength && (id.dirty || id.touched)) {
+      @if ($any(id).errors?.maxLength && (id.dirty || id.touched)) {
       <mat-error>id too long</mat-error>
       }
     </mat-form-field>
@@ -13,9 +13,9 @@
     <mat-form-field>
       <mat-label>start</mat-label>
       <input matInput [formControl]="start" />
-      @if (start.errors?.required && (start.dirty || start.touched)) {
+      @if ($any(start).errors?.required && (start.dirty || start.touched)) {
       <mat-error>start required</mat-error>
-      } @if (start.errors?.pattern && (start.dirty || start.touched)) {
+      } @if ($any(start).errors?.pattern && (start.dirty || start.touched)) {
       <mat-error>invalid start</mat-error>
       }
     </mat-form-field>
@@ -24,9 +24,9 @@
     <mat-form-field>
       <mat-label>end</mat-label>
       <input matInput [formControl]="end" />
-      @if (end.errors?.required && (end.dirty || end.touched)) {
+      @if ($any(end).errors?.required && (end.dirty || end.touched)) {
       <mat-error>end required</mat-error>
-      } @if (end.errors?.pattern && (end.dirty || end.touched)) {
+      } @if ($any(end).errors?.pattern && (end.dirty || end.touched)) {
       <mat-error>invalid end</mat-error>
       }
     </mat-form-field>
@@ -35,8 +35,8 @@
   <div>
     <cadmus-refs-historical-date
       [date]="$any(date)"
-      (dateChange)="onDateChange($event)"
-    ></cadmus-refs-historical-date>
+      (dateChange)="onDateChange($event!)"
+    />
   </div>
   <br />
   <div>
@@ -44,7 +44,7 @@
     <mat-form-field class="long-text">
       <mat-label>description</mat-label>
       <textarea matInput rows="3" [formControl]="description"></textarea>
-      @if ( description.errors?.maxLength && (description.dirty ||
+      @if ( $any(description).errors?.maxLength && (description.dirty ||
       description.touched) ) {
       <mat-error>description too long</mat-error>
       }
@@ -55,7 +55,7 @@
     <mat-form-field class="long-text">
       <mat-label>abbreviations</mat-label>
       <textarea matInput rows="3" [formControl]="abbreviations"></textarea>
-      @if ( abbreviations.errors?.maxLength && (abbreviations.dirty ||
+      @if ( $any(abbreviations).errors?.maxLength && (abbreviations.dirty ||
       abbreviations.touched) ) {
       <mat-error>abbreviations too long</mat-error>
       }

@@ -58,7 +58,7 @@
                   <mat-icon>arrow_downward</mat-icon>
                 </button>
                 <!-- child controls -->
-                <mat-form-field style="width: 12em">
+                <mat-form-field>
                   <mat-label>area</mat-label>
                   <input matInput formControlName="area" />
                   @if ( $any(item)['controls'].area.errors?.required &&
@@ -94,7 +94,7 @@
                 (ready)="onEditorInit($event)"
               />
             </div>
-            @if ( history.errors?.maxLength && (history.touched ||
+            @if ( $any(history).errors?.maxLength && (history.touched ||
             history.dirty) ) {
             <mat-error>history too long</mat-error>
             }
@@ -174,11 +174,11 @@
               <mat-label>locations</mat-label>
               <textarea matInput [formControl]="subLocations"></textarea>
               <mat-hint>comma-separated</mat-hint>
-              @if ( subLocations.errors?.invalid && (subLocations.dirty ||
+              @if ( $any(subLocations).errors?.invalid && (subLocations.dirty ||
               subLocations.touched) ) {
               <mat-error>invalid location(s)</mat-error>
-              } @if ( subLocations.errors?.maxLength && (subLocations.dirty ||
-              subLocations.touched) ) {
+              } @if ( $any(subLocations).errors?.maxLength &&
+              (subLocations.dirty || subLocations.touched) ) {
               <mat-error>too long</mat-error>
               }
             </mat-form-field>
@@ -193,7 +193,7 @@
                 <mat-option [value]="e.id">{{ e.value }}</mat-option>
                 }
               </mat-select>
-              @if ( subLanguage.errors?.required && (subLanguage.dirty ||
+              @if ($any(subLanguage).errors?.required && (subLanguage.dirty ||
               subLanguage.touched) ) {
               <mat-error>language required</mat-error>
               }
@@ -204,11 +204,11 @@
             <mat-form-field>
               <mat-label>language</mat-label>
               <input matInput [formControl]="subLanguage" />
-              @if ( subLanguage.errors?.required && (subLanguage.dirty ||
+              @if ($any(subLanguage).errors?.required && (subLanguage.dirty ||
               subLanguage.touched) ) {
               <mat-error>language required</mat-error>
-              } @if ( subLanguage.errors?.maxLength && (subLanguage.dirty ||
-              subLanguage.touched) ) {
+              } @if ($any(subLanguage).errors?.maxLength && (subLanguage.dirty
+              || subLanguage.touched) ) {
               <mat-error>language too long</mat-error>
               }
             </mat-form-field>
@@ -217,10 +217,10 @@
             <mat-form-field>
               <mat-label>hand ID</mat-label>
               <input matInput [formControl]="subHandId" />
-              @if ( subHandId.errors?.required && (subHandId.dirty ||
+              @if ($any(subHandId).errors?.required && (subHandId.dirty ||
               subHandId.touched) ) {
               <mat-error>ID required</mat-error>
-              } @if ( subHandId.errors?.maxLength && (subHandId.dirty ||
+              } @if ($any(subHandId).errors?.maxLength && (subHandId.dirty ||
               subHandId.touched) ) {
               <mat-error>ID too long</mat-error>
               }
@@ -231,10 +231,10 @@
             <mat-form-field class="long-text">
               <mat-label>text</mat-label>
               <textarea rows="3" matInput [formControl]="subText"></textarea>
-              @if ( subText.errors?.required && (subText.dirty ||
+              @if ($any(subText).errors?.required && (subText.dirty ||
               subText.touched) ) {
               <mat-error>text required</mat-error>
-              } @if ( subText.errors?.maxLength && (subText.dirty ||
+              } @if ($any(subText).errors?.maxLength && (subText.dirty ||
               subText.touched) ) {
               <mat-error>text too long</mat-error>
               }
@@ -245,10 +245,10 @@
             <mat-form-field class="long-text">
               <mat-label>note</mat-label>
               <textarea rows="3" matInput [formControl]="subNote"></textarea>
-              @if ( subNote.errors?.required && (subNote.dirty ||
+              @if ($any(subNote).errors?.required && (subNote.dirty ||
               subNote.touched) ) {
               <mat-error>note required</mat-error>
-              } @if ( subNote.errors?.maxLength && (subNote.dirty ||
+              } @if ($any(subNote).errors?.maxLength && (subNote.dirty ||
               subNote.touched) ) {
               <mat-error>note too long</mat-error>
               }
@@ -371,7 +371,7 @@
         [form]="form"
         [noSave]="userLevel < 2"
         (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
+      />
     </mat-card-actions>
   </mat-card>
 </form>

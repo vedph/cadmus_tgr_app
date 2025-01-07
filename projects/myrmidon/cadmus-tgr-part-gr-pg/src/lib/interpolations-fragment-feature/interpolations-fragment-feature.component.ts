@@ -1,17 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LibraryRouteService } from '@myrmidon/cadmus-core';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 import {
   EditFragmentFeatureBase,
   FragmentEditorService,
 } from '@myrmidon/cadmus-state';
+import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
+import { DecoratedTokenTextComponent } from '@myrmidon/cadmus-ui';
+import { InterpolationsFragmentComponent } from '@myrmidon/cadmus-tgr-part-gr-ui';
 
 @Component({
   selector: 'tgr-interpolations-fragment-feature',
   templateUrl: './interpolations-fragment-feature.component.html',
   styleUrls: ['./interpolations-fragment-feature.component.css'],
-  standalone: false,
+  imports: [
+    CurrentItemBarComponent,
+    DecoratedTokenTextComponent,
+    InterpolationsFragmentComponent,
+  ],
 })
 export class InterpolationsFragmentFeatureComponent
   extends EditFragmentFeatureBase

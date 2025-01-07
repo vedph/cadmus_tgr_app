@@ -11,20 +11,56 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
+import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
+
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import {
+  MatFormField,
+  MatLabel,
+  MatError,
+  MatHint,
+} from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
-import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
-import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
+import {
+  DocReference,
+  DocReferencesComponent,
+} from '@myrmidon/cadmus-refs-doc-references';
+import {
+  renderLabelFromLastColon,
+  ThesaurusTreeComponent,
+} from '@myrmidon/cadmus-ui';
 
 import { MsContent } from '../ms-contents-part';
-import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'tgr-ms-content',
   templateUrl: './ms-content.component.html',
   styleUrls: ['./ms-content.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatTabGroup,
+    MatTab,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatHint,
+    ThesaurusTreeComponent,
+    DocReferencesComponent,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+  ],
 })
 export class MsContentComponent implements OnInit, OnDestroy {
   private _sub?: Subscription;

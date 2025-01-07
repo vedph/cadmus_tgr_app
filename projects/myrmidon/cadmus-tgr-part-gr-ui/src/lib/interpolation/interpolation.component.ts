@@ -5,20 +5,48 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { DialogService } from '@myrmidon/ng-mat-tools';
+import { DialogService } from '@myrmidon/ngx-mat-tools';
 
 import { Interpolation, ReadingSource } from '../interpolations-fragment';
 import { VarQuotation } from '../var-quotations-fragment';
+import { VarQuotationComponent } from '../var-quotation/var-quotation.component';
 
 @Component({
   selector: 'tgr-interpolation',
   templateUrl: './interpolation.component.html',
   styleUrls: ['./interpolation.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatTabGroup,
+    MatTab,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatError,
+    MatInput,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+    VarQuotationComponent,
+  ],
 })
 export class InterpolationComponent implements OnInit {
   private _model: Interpolation | undefined;
@@ -240,7 +268,7 @@ export class InterpolationComponent implements OnInit {
     const entries: string[] = [];
     for (let i = 0; i < this.languages.length; i++) {
       const g = this.languages.at(i) as FormGroup;
-      entries.push(g.controls.id.value?.trim());
+      entries.push(g.controls['id'].value?.trim());
     }
     return entries.length ? entries : undefined;
   }
@@ -296,8 +324,8 @@ export class InterpolationComponent implements OnInit {
     for (let i = 0; i < this.sources.length; i++) {
       const g = this.sources.at(i) as FormGroup;
       sources.push({
-        witness: g.controls.witness.value?.trim(),
-        handId: g.controls.handId.value?.trim(),
+        witness: g.controls['witness'].value?.trim(),
+        handId: g.controls['handId'].value?.trim(),
       });
     }
     return sources.length ? sources : undefined;

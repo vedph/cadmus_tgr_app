@@ -4,16 +4,41 @@ import {
   FormBuilder,
   FormGroup,
   UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
-
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { MsUnit, MsUnitsPart, MSUNITS_PART_TYPEID } from '../ms-units-part';
 import { take } from 'rxjs/operators';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
-import { DialogService } from '@myrmidon/ng-mat-tools';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
+
+import { DialogService } from '@myrmidon/ngx-mat-tools';
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+
+import { MsUnit, MsUnitsPart, MSUNITS_PART_TYPEID } from '../ms-units-part';
+import { MsUnitComponent } from '../ms-unit/ms-unit.component';
 
 /**
  * MsUnitsPart editor component.
@@ -25,7 +50,24 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
   selector: 'tgr-ms-units-part',
   templateUrl: './ms-units-part.component.html',
   styleUrls: ['./ms-units-part.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardContent,
+    MatButton,
+    MatIconButton,
+    MatTooltip,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MsUnitComponent,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class MsUnitsPartComponent
   extends ModelEditorComponentBase<MsUnitsPart>
@@ -71,7 +113,7 @@ export class MsUnitsPartComponent
     this.editedUnitIndex = -1;
     // form
     this.units = formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
   }

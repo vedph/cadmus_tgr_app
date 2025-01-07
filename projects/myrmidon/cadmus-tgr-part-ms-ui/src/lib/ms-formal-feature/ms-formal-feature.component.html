@@ -4,7 +4,7 @@
     <mat-form-field>
       <mat-label>hand ID</mat-label>
       <input matInput [formControl]="handId" />
-      @if (handId.errors?.maxLength && (handId.dirty || handId.touched)) {
+      @if ($any(handId).errors?.maxLength && (handId.dirty || handId.touched)) {
       <mat-error>too long</mat-error>
       }
     </mat-form-field>
@@ -14,16 +14,16 @@
     <mat-form-field class="long-text">
       <mat-label>description</mat-label>
       <textarea matInput rows="3" [formControl]="description"></textarea>
-      @if ( description.errors?.required && (description.dirty ||
+      @if ( $any(description).errors?.required && (description.dirty ||
       description.touched) ) {
       <mat-error>description required</mat-error>
-      } @if ( description.errors?.maxLength && (description.dirty ||
+      } @if ( $any(description).errors?.maxLength && (description.dirty ||
       description.touched) ) {
       <mat-error>description too long</mat-error>
       }
     </mat-form-field>
     <hr />
-    <markdown [data]="description?.value || undefined"></markdown>
+    <markdown [data]="description.value || undefined"></markdown>
   </div>
   <!-- buttons -->
   <div>

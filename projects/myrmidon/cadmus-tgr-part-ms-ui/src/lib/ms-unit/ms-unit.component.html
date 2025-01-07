@@ -7,9 +7,10 @@
         <mat-form-field>
           <mat-label>start</mat-label>
           <input matInput [formControl]="start" />
-          @if (start.errors?.required && (start.dirty || start.touched)) {
+          @if ($any(start).errors?.required && (start.dirty || start.touched)) {
           <mat-error>start required</mat-error>
-          } @if (start.errors?.pattern && (start.dirty || start.touched)) {
+          } @if ($any(start).errors?.pattern && (start.dirty || start.touched))
+          {
           <mat-error>invalid start</mat-error>
           }
         </mat-form-field>
@@ -18,9 +19,9 @@
         <mat-form-field>
           <mat-label>end</mat-label>
           <input matInput [formControl]="end" />
-          @if (end.errors?.required && (end.dirty || end.touched)) {
+          @if ($any(end).errors?.required && (end.dirty || end.touched)) {
           <mat-error>end required</mat-error>
-          } @if (end.errors?.pattern && (end.dirty || end.touched)) {
+          } @if ($any(end).errors?.pattern && (end.dirty || end.touched)) {
           <mat-error>invalid end</mat-error>
           }
         </mat-form-field>
@@ -42,7 +43,7 @@
         <mat-form-field>
           <mat-label>material</mat-label>
           <input matInput [formControl]="material" />
-          @if ( material.errors?.maxLength && (material.dirty ||
+          @if ( $any(material).errors?.maxLength && (material.dirty ||
           material.touched) ) {
           <mat-error>too long</mat-error>
           }
@@ -64,7 +65,7 @@
         <mat-form-field>
           <mat-label>guards material</mat-label>
           <input matInput [formControl]="guardSheetMaterial" />
-          @if ( guardSheetMaterial.errors?.maxLength &&
+          @if ( $any(guardSheetMaterial).errors?.maxLength &&
           (guardSheetMaterial.dirty || guardSheetMaterial.touched) ) {
           <mat-error>too long</mat-error>
           }
@@ -109,8 +110,8 @@
         <mat-form-field>
           <mat-label>group ID</mat-label>
           <input matInput [formControl]="groupId" />
-          @if ( groupId.errors?.maxLength && (groupId.dirty || groupId.touched)
-          ) {
+          @if ( $any(groupId).errors?.maxLength && (groupId.dirty ||
+          groupId.touched) ) {
           <mat-error>ID too long</mat-error>
           }
         </mat-form-field>
@@ -126,8 +127,8 @@
         @if (hasDate?.value) {
         <cadmus-refs-historical-date
           [date]="$any(date)"
-          (dateChange)="onDateChange($event)"
-        ></cadmus-refs-historical-date>
+          (dateChange)="onDateChange($event!)"
+        />
         }
       </div>
       <!-- quires -->
@@ -135,7 +136,8 @@
         <mat-form-field class="long-text">
           <mat-label>quires</mat-label>
           <textarea rows="3" matInput [formControl]="quires"></textarea>
-          @if (quires.errors?.maxLength && (quires.dirty || quires.touched)) {
+          @if ($any(quires).errors?.maxLength && (quires.dirty ||
+          quires.touched)) {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -145,8 +147,8 @@
         <mat-form-field class="long-text">
           <mat-label>sheet numbering</mat-label>
           <textarea rows="3" matInput [formControl]="sheetNumbering"></textarea>
-          @if ( sheetNumbering.errors?.maxLength && (sheetNumbering.dirty ||
-          sheetNumbering.touched) ) {
+          @if ($any(sheetNumbering).errors?.maxLength && (sheetNumbering.dirty
+          || sheetNumbering.touched) ) {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -156,8 +158,8 @@
         <mat-form-field class="long-text">
           <mat-label>quire numbering</mat-label>
           <textarea rows="3" matInput [formControl]="quireNumbering"></textarea>
-          @if ( quireNumbering.errors?.maxLength && (quireNumbering.dirty ||
-          quireNumbering.touched) ) {
+          @if ($any(quireNumbering).errors?.maxLength && (quireNumbering.dirty
+          || quireNumbering.touched) ) {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -167,7 +169,8 @@
         <mat-form-field class="long-text">
           <mat-label>state</mat-label>
           <textarea rows="3" matInput [formControl]="state"></textarea>
-          @if (state.errors?.maxLength && (state.dirty || state.touched)) {
+          @if ($any(state).errors?.maxLength && (state.dirty || state.touched))
+          {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -177,8 +180,8 @@
         <mat-form-field class="long-text">
           <mat-label>binding</mat-label>
           <textarea rows="3" matInput [formControl]="binding"></textarea>
-          @if ( binding.errors?.maxLength && (binding.dirty || binding.touched)
-          ) {
+          @if ($any(binding).errors?.maxLength && (binding.dirty ||
+          binding.touched) ) {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -331,11 +334,11 @@
           <mat-label>samples</mat-label>
           <input matInput [formControl]="leafSizeSamples" />
           <mat-hint>comma delimited</mat-hint>
-          @if ( leafSizeSamples.errors?.pattern && (leafSizeSamples.dirty ||
-          leafSizeSamples.touched) ) {
+          @if ($any(leafSizeSamples).errors?.pattern && (leafSizeSamples.dirty
+          || leafSizeSamples.touched) ) {
           <mat-error>invalid</mat-error>
-          } @if ( leafSizeSamples.errors?.maxLength && (leafSizeSamples.dirty ||
-          leafSizeSamples.touched) ) {
+          } @if ($any(leafSizeSamples).errors?.maxLength &&
+          (leafSizeSamples.dirty || leafSizeSamples.touched) ) {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -349,7 +352,7 @@
       >
         <mat-icon>add_circle</mat-icon> size
       </button>
-      @if (leafSizes?.length) {
+      @if (leafSizes.length) {
       <table>
         <thead>
           <tr>
@@ -426,8 +429,8 @@
           [hBeforeW]="true"
           [dimTagEntries]="$any(szDimTagEntries)"
           [size]="$any(editedLeafSize)"
-          (sizeChange)="onEditedLeafSizeChange($event)"
-        ></cadmus-mat-physical-size>
+          (sizeChange)="onEditedLeafSizeChange($event!)"
+        />
         <button
           type="button"
           mat-icon-button
@@ -453,11 +456,11 @@
           <mat-label>samples</mat-label>
           <input matInput [formControl]="areaSizeSamples" />
           <mat-hint>comma delimited</mat-hint>
-          @if ( areaSizeSamples.errors?.pattern && (areaSizeSamples.dirty ||
-          areaSizeSamples.touched) ) {
+          @if ($any(areaSizeSamples).errors?.pattern && (areaSizeSamples.dirty
+          || areaSizeSamples.touched) ) {
           <mat-error>invalid</mat-error>
-          } @if ( areaSizeSamples.errors?.maxLength && (areaSizeSamples.dirty ||
-          areaSizeSamples.touched) ) {
+          } @if ($any(areaSizeSamples).errors?.maxLength &&
+          (areaSizeSamples.dirty || areaSizeSamples.touched) ) {
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
@@ -471,7 +474,7 @@
       >
         <mat-icon>add_circle</mat-icon> size
       </button>
-      @if (areaSizes?.length) {
+      @if (areaSizes.length) {
       <table>
         <thead>
           <tr>
@@ -548,8 +551,8 @@
           [hBeforeW]="true"
           [dimTagEntries]="$any(szDimTagEntries)"
           [size]="$any(editedAreaSize)"
-          (sizeChange)="onEditedAreaSizeChange($event)"
-        ></cadmus-mat-physical-size>
+          (sizeChange)="onEditedAreaSizeChange($event!)"
+        />
         <button
           type="button"
           mat-icon-button

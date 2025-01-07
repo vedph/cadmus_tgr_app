@@ -13,9 +13,31 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
+
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import {
+  MatFormField,
+  MatLabel,
+  MatError,
+  MatHint,
+} from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatCheckbox } from '@angular/material/checkbox';
+
+import { deepCopy, NgxToolsValidators } from '@myrmidon/ngx-tools';
 
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import {
@@ -23,9 +45,11 @@ import {
   BucketStoreService,
   TaggedNote,
 } from '@myrmidon/cadmus-tgr-core';
-import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
+import {
+  renderLabelFromLastColon,
+  ThesaurusTreeComponent,
+} from '@myrmidon/cadmus-ui';
 import { LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
-import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
 
 interface EditedTaggedNote extends TaggedNote {
   label: string;
@@ -40,7 +64,25 @@ const BUCKET_TAGS_KEY = 'ling-tags';
   selector: 'tgr-ling-tagged-form',
   templateUrl: './ling-tagged-form.component.html',
   styleUrls: ['./ling-tagged-form.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatTabGroup,
+    MatTab,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    ThesaurusTreeComponent,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatCheckbox,
+    MatHint,
+  ],
 })
 export class LingTaggedFormComponent implements OnInit {
   private _tagEntries: ThesaurusEntry[] | undefined;
@@ -110,7 +152,7 @@ export class LingTaggedFormComponent implements OnInit {
     this.lemmata = _formBuilder.control(null, Validators.maxLength(500));
     this.note = _formBuilder.control(null, Validators.maxLength(500));
     this.tags = _formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
     this.form = _formBuilder.group({

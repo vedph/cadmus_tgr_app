@@ -5,8 +5,21 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
+
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+
+import {
+  HistoricalDateModel,
+  HistoricalDateComponent,
+} from '@myrmidon/cadmus-refs-historical-date';
+
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 
 import { MsHand, MsHandLetter } from '../ms-scripts-part';
@@ -15,7 +28,19 @@ import { MsHand, MsHandLetter } from '../ms-scripts-part';
   selector: 'tgr-ms-hand',
   templateUrl: './ms-hand.component.html',
   styleUrls: ['./ms-hand.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    HistoricalDateComponent,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+  ],
 })
 export class MsHandComponent implements OnInit {
   private _model: MsHand | undefined;
@@ -112,9 +137,9 @@ export class MsHandComponent implements OnInit {
     for (let i = 0; i < this.letters.controls.length; i++) {
       const g = this.letters.at(i) as FormGroup;
       letters.push({
-        letter: g.controls.letter.value?.trim(),
-        description: g.controls.description.value?.trim(),
-        imageId: g.controls.imageId.value?.trim(),
+        letter: g.controls['letter'].value?.trim(),
+        description: g.controls['description'].value?.trim(),
+        imageId: g.controls['imageId'].value?.trim(),
       });
     }
     return letters;

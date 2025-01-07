@@ -18,7 +18,7 @@
           <mat-icon>add_circle</mat-icon> unit
         </button>
       </div>
-      @if (units?.value?.length) {
+      @if (units.value.length) {
       <table>
         <thead>
           <tr>
@@ -98,7 +98,7 @@
           [szDimTagEntries]="szDimTagEntries"
           (unitChange)="saveUnit($event)"
           (editorClose)="closeUnit()"
-        ></tgr-ms-unit>
+        />
       </mat-expansion-panel>
     </mat-card-content>
     <mat-card-actions>
@@ -106,7 +106,7 @@
         [form]="form"
         [noSave]="userLevel < 2"
         (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
+      />
     </mat-card-actions>
   </mat-card>
 </form>

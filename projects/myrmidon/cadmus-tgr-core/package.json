@@ -19,7 +19,7 @@
     "@angular/core": "^19.0.0",
     "@myrmidon/cadmus-core": "^9.0.0",
     "@myrmidon/cadmus-state": "^9.0.0",
-    "@myrmidon/ng-tools": "^4.0.0",
+    "@myrmidon/ngx-tools": "^4.0.0",
     "@myrmidon/auth-jwt-login": "^6.0.0",
     "@myrmidon/cadmus-ui": "^9.0.0",
     "@myrmidon/cadmus-ui-pg": "^9.0.0"

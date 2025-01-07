@@ -12,14 +12,37 @@ import {
   FormGroup,
   UntypedFormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
 
 import {
   MsSignature,
@@ -35,7 +58,27 @@ import {
   selector: 'tgr-ms-signatures-part',
   templateUrl: './ms-signatures-part.component.html',
   styleUrls: ['./ms-signatures-part.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardContent,
+    MatButton,
+    MatIconButton,
+    MatTooltip,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatInput,
+    MatError,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class MsSignaturesPartComponent
   extends ModelEditorComponentBase<MsSignaturesPart>
@@ -53,7 +96,7 @@ export class MsSignaturesPartComponent
     // form
     this.signatures = _formBuilder.array(
       [],
-      NgToolsValidators.strictMinLengthValidator(1)
+      NgxToolsValidators.strictMinLengthValidator(1)
     );
   }
 
@@ -79,7 +122,7 @@ export class MsSignaturesPartComponent
     }
   }
 
-  public ngOnDestroy(): void {
+  public override ngOnDestroy(): void {
     this._citySubscription?.unsubscribe();
   }
 
@@ -121,11 +164,11 @@ export class MsSignaturesPartComponent
     for (let i = 0; i < this.signatures.length; i++) {
       const g = this.signatures.controls[i] as FormGroup;
       part.signatures.push({
-        tag: g.controls.tag.value?.trim(),
-        city: g.controls.city.value?.trim(),
-        library: g.controls.library.value?.trim(),
-        fund: g.controls.fund.value?.trim(),
-        location: g.controls.location.value?.trim(),
+        tag: g.controls['tag'].value?.trim(),
+        city: g.controls['city'].value?.trim(),
+        library: g.controls['library'].value?.trim(),
+        fund: g.controls['fund'].value?.trim(),
+        location: g.controls['location'].value?.trim(),
       });
     }
     return part;

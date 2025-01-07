@@ -4,9 +4,24 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
+
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+
+import {
+  DocReference,
+  DocReferencesComponent,
+} from '@myrmidon/cadmus-refs-doc-references';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 
 import { MsPlace } from '../ms-places-part';
 
@@ -14,7 +29,20 @@ import { MsPlace } from '../ms-places-part';
   selector: 'tgr-ms-place',
   templateUrl: './ms-place.component.html',
   styleUrls: ['./ms-place.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatError,
+    MatInput,
+    DocReferencesComponent,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+  ],
 })
 export class MsPlaceComponent implements OnInit {
   private _model: MsPlace | undefined;

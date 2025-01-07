@@ -18,7 +18,7 @@
           <mat-icon>add_circle</mat-icon> place
         </button>
       </div>
-      @if (places?.value?.length) {
+      @if (places.value.length) {
       <table>
         <thead>
           <tr>
@@ -29,7 +29,7 @@
           </tr>
         </thead>
         <tbody>
-          @for ( entry of places?.value; track entry; let i = $index; let first
+          @for ( entry of places.value; track entry; let i = $index; let first
           = $first; let last = $last) {
           <tr>
             <td>
@@ -88,7 +88,7 @@
           [tagEntries]="tagEntries"
           (modelChange)="savePlace($event)"
           (editorClose)="closePlace()"
-        ></tgr-ms-place>
+        />
       </mat-expansion-panel>
     </mat-card-content>
     <mat-card-actions>
@@ -96,7 +96,7 @@
         [form]="form"
         [noSave]="userLevel < 2"
         (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
+      />
     </mat-card-actions>
   </mat-card>
 </form>

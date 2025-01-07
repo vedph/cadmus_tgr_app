@@ -19,8 +19,8 @@
     <mat-form-field>
       <mat-label>material</mat-label>
       <input matInput [formControl]="material" />
-      @if ( material.errors?.maxLength && (material.dirty || material.touched) )
-      {
+      @if ( $any(material).errors?.maxLength && (material.dirty ||
+      material.touched) ) {
       <mat-error>too long</mat-error>
       }
     </mat-form-field>
@@ -31,7 +31,7 @@
     <mat-form-field class="long-text">
       <mat-label>note</mat-label>
       <textarea matInput [formControl]="note"></textarea>
-      @if (note.errors?.maxLength && (note.dirty || note.touched)) {
+      @if ($any(note).errors?.maxLength && (note.dirty || note.touched)) {
       <mat-error>too long</mat-error>
       }
     </mat-form-field>

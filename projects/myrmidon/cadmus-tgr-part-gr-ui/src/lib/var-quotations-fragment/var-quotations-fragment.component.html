@@ -101,8 +101,7 @@
           [authTagEntries]="authTagEntries"
           (modelChange)="saveQuotation($event)"
           (editorClose)="closeQuotation()"
-        >
-        </tgr-var-quotation>
+        />
       </mat-expansion-panel>
     </mat-card-content>
     <mat-card-actions>
@@ -110,7 +109,7 @@
         [form]="form"
         [noSave]="userLevel < 2"
         (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
+      />
     </mat-card-actions>
   </mat-card>
 </form>

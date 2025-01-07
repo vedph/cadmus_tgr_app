@@ -6,16 +6,47 @@ import {
   FormGroup,
   ValidationErrors,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
+
+import {
+  MatFormField,
+  MatLabel,
+  MatHint,
+  MatError,
+} from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+
+import {
+  HistoricalDateModel,
+  HistoricalDateComponent,
+} from '@myrmidon/cadmus-refs-historical-date';
+
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+
 import { MsPalimpsest } from '../ms-units-part';
 
 @Component({
   selector: 'tgr-ms-palimpsest',
   templateUrl: './ms-palimpsest.component.html',
   styleUrls: ['./ms-palimpsest.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatHint,
+    MatError,
+    HistoricalDateComponent,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+  ],
 })
 export class MsPalimpsestComponent implements OnInit {
   private _model: MsPalimpsest | undefined;

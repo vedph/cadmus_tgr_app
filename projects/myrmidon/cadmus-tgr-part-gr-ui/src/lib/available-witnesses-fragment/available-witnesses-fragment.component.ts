@@ -5,13 +5,36 @@ import {
   FormGroup,
   UntypedFormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
+
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { BucketStoreService } from '@myrmidon/cadmus-tgr-core';
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
+import { deepCopy, NgxToolsValidators } from '@myrmidon/ngx-tools';
 
 import { AvailableWitnessesFragment } from '../available-witnesses-fragment';
 import { AvailableWitness } from '../available-witnesses-part';
@@ -26,7 +49,27 @@ const BUCKET_AVAIL_WITNESSES_KEY = 'available-witnesses';
   selector: 'cadmus-available-witnesses-fragment',
   templateUrl: './available-witnesses-fragment.component.html',
   styleUrls: ['./available-witnesses-fragment.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardContent,
+    MatIconButton,
+    MatTooltip,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatError,
+    MatInput,
+    MatCheckbox,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class AvailableWitnessesFragmentComponent
   extends ModelEditorComponentBase<AvailableWitnessesFragment>
@@ -50,7 +93,7 @@ export class AvailableWitnessesFragmentComponent
     // form
     this.witnesses = _formBuilder.array(
       [],
-      NgToolsValidators.strictMinLengthValidator(1)
+      NgxToolsValidators.strictMinLengthValidator(1)
     );
   }
 
@@ -179,9 +222,9 @@ export class AvailableWitnessesFragmentComponent
     for (let i = 0; i < this.witnesses.length; i++) {
       const g = this.witnesses.at(i) as FormGroup;
       witnesses.push({
-        id: g.controls.id.value?.trim(),
-        isPartial: g.controls.partial.value ? true : undefined,
-        note: g.controls.note.value?.trim(),
+        id: g.controls['id'].value?.trim(),
+        isPartial: g.controls['partial'].value ? true : undefined,
+        note: g.controls['note'].value?.trim(),
       });
     }
     return witnesses;

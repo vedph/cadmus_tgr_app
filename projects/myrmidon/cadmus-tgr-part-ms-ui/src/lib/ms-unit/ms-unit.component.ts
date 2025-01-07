@@ -7,21 +7,70 @@ import {
   FormGroup,
   ValidationErrors,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import {
+  MatFormField,
+  MatLabel,
+  MatError,
+  MatHint,
+} from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
+
 import {
   PhysicalDimension,
   PhysicalSize,
+  PhysicalSizeComponent,
 } from '@myrmidon/cadmus-mat-physical-size';
-import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
+import {
+  HistoricalDateModel,
+  HistoricalDateComponent,
+} from '@myrmidon/cadmus-refs-historical-date';
+
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+
 import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
 
 @Component({
   selector: 'tgr-ms-unit',
   templateUrl: './ms-unit.component.html',
   styleUrls: ['./ms-unit.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatTabGroup,
+    MatTab,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatSelect,
+    MatOption,
+    MatCheckbox,
+    HistoricalDateComponent,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+    MatHint,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    PhysicalSizeComponent,
+  ],
 })
 export class MsUnitComponent implements OnInit {
   private _unit?: MsUnit;
@@ -278,10 +327,10 @@ export class MsUnitComponent implements OnInit {
     for (let i = 0; i < this.rulings.length; i++) {
       const g = this.rulings.at(i) as FormGroup;
       rulings.push({
-        manner: g.controls.manner.value?.trim(),
-        system: g.controls.system.value?.trim(),
-        type: g.controls.type.value?.trim(),
-        description: g.controls.description.value?.trim(),
+        manner: g.controls['manner'].value?.trim(),
+        system: g.controls['system'].value?.trim(),
+        type: g.controls['type'].value?.trim(),
+        description: g.controls['description'].value?.trim(),
       });
     }
     return rulings.length ? rulings : undefined;
@@ -295,8 +344,8 @@ export class MsUnitComponent implements OnInit {
     for (let i = 0; i < this.watermarks.length; i++) {
       const g = this.watermarks.at(i) as FormGroup;
       watermarks.push({
-        value: g.controls.value.value?.trim(),
-        description: g.controls.description.value?.trim(),
+        value: g.controls['value'].value?.trim(),
+        description: g.controls['description'].value?.trim(),
       });
     }
     return watermarks.length ? watermarks : undefined;

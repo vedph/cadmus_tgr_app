@@ -108,8 +108,7 @@
           [workEntries]="workEntries"
           (modelChange)="saveInterpolation($event)"
           (editorClose)="closeInterpolation()"
-        >
-        </tgr-interpolation>
+        />
       </mat-expansion-panel>
     </mat-card-content>
     <mat-card-actions>
@@ -117,7 +116,7 @@
         [form]="form"
         [noSave]="userLevel < 2"
         (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
+      />
     </mat-card-actions>
   </mat-card>
 </form>

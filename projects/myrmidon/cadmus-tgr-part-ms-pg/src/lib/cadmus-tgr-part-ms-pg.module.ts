@@ -15,20 +15,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { NgToolsModule } from '@myrmidon/ng-tools';
-
 // bricks
 import { DocReferencesComponent } from '@myrmidon/cadmus-refs-doc-references';
 import { HistoricalDateComponent } from '@myrmidon/cadmus-refs-historical-date';
 
 // general Cadmus modules
-import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
-import { CadmusUiModule } from '@myrmidon/cadmus-ui';
-import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
+import { PendingChangesGuard } from '@myrmidon/cadmus-core';
 
-import { CadmusTgrCoreModule } from '@myrmidon/cadmus-tgr-core';
 import {
-  CadmusTgrPartMsUiModule,
   MSCONTENTS_PART_TYPEID,
   MSFORMAL_FEATURES_PART_TYPEID,
   MSHISTORY_PART_TYPEID,
@@ -47,6 +41,7 @@ import { MsOrnamentsPartFeatureComponent } from './ms-ornaments-part-feature/ms-
 import { MsHistoryPartFeatureComponent } from './ms-history-part-feature/ms-history-part-feature.component';
 import { MsPlacesPartFeatureComponent } from './ms-places-part-feature/ms-places-part-feature.component';
 import { MsSignaturesPartFeatureComponent } from './ms-signatures-part-feature/ms-signatures-part-feature.component';
+import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
 
 // https://github.com/ng-packagr/ng-packagr/issues/778
 export const RouterModuleForChild = RouterModule.forChild([
@@ -101,16 +96,6 @@ export const RouterModuleForChild = RouterModule.forChild([
 ]);
 
 @NgModule({
-  declarations: [
-    MsContentsPartFeatureComponent,
-    MsFormalFeaturesPartFeatureComponent,
-    MsHistoryPartFeatureComponent,
-    MsOrnamentsPartFeatureComponent,
-    MsPlacesPartFeatureComponent,
-    MsScriptsPartFeatureComponent,
-    MsSignaturesPartFeatureComponent,
-    MsUnitsPartFeatureComponent,
-  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -129,14 +114,17 @@ export const RouterModuleForChild = RouterModule.forChild([
     MatTabsModule,
     MatTooltipModule,
     // Cadmus
-    NgToolsModule,
-    CadmusCoreModule,
-    CadmusUiModule,
-    CadmusUiPgModule,
-    CadmusTgrCoreModule,
-    CadmusTgrPartMsUiModule,
     DocReferencesComponent,
     HistoricalDateComponent,
+    CurrentItemBarComponent,
+    MsContentsPartFeatureComponent,
+    MsFormalFeaturesPartFeatureComponent,
+    MsHistoryPartFeatureComponent,
+    MsOrnamentsPartFeatureComponent,
+    MsPlacesPartFeatureComponent,
+    MsScriptsPartFeatureComponent,
+    MsSignaturesPartFeatureComponent,
+    MsUnitsPartFeatureComponent,
   ],
   exports: [
     MsContentsPartFeatureComponent,

@@ -3,12 +3,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
 import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
+import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
+import { MsUnitsPartComponent } from '@myrmidon/cadmus-tgr-part-ms-ui';
 
 @Component({
   selector: 'tgr-ms-units-part-feature',
   templateUrl: './ms-units-part-feature.component.html',
   styleUrls: ['./ms-units-part-feature.component.css'],
-  standalone: false,
+  imports: [CurrentItemBarComponent, MsUnitsPartComponent],
 })
 export class MsUnitsPartFeatureComponent
   extends EditPartFeatureBase

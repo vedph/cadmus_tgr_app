@@ -4,16 +4,42 @@ import {
   FormControl,
   FormGroup,
   UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
+import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { AnnotatedTag, LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardSubtitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
+
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
+import { AnnotatedTag, LingTaggedForm } from '@myrmidon/cadmus-tgr-core';
+
 import { LingTagsFragment } from '../ling-tags-fragment';
+import { LingTaggedFormComponent } from '../ling-tagged-form/ling-tagged-form.component';
 
 /**
  * Linguistic tags fragment editor component.
@@ -23,7 +49,26 @@ import { LingTagsFragment } from '../ling-tags-fragment';
   selector: 'tgr-ling-tags-fragment',
   templateUrl: './ling-tags-fragment.component.html',
   styleUrls: ['./ling-tags-fragment.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatButton,
+    MatIconButton,
+    MatTooltip,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    LingTaggedFormComponent,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+    AsyncPipe,
+  ],
 })
 export class LingTagsFragmentComponent
   extends ModelEditorComponentBase<LingTagsFragment>
@@ -44,7 +89,7 @@ export class LingTagsFragmentComponent
     this.editedFormIndex = -1;
     // form
     this.forms = formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
   }

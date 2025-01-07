@@ -8,8 +8,8 @@ describe('VarQuotationsFragmentFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VarQuotationsFragmentFeatureComponent ]
-    })
+    imports: [VarQuotationsFragmentFeatureComponent]
+})
     .compileComponents();
   });
 

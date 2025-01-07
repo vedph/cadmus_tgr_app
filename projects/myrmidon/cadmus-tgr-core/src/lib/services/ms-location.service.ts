@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RomanNumber } from '@myrmidon/ng-tools';
+import { RomanNumber } from '@myrmidon/ngx-tools';
 import { MsLocation, MsLocationRange } from '../models';
 
 /**

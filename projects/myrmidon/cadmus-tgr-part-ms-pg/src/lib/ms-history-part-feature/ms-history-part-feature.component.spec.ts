@@ -8,8 +8,8 @@ describe('MsHistoryPartFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MsHistoryPartFeatureComponent ]
-    })
+    imports: [MsHistoryPartFeatureComponent]
+})
     .compileComponents();
   });
 

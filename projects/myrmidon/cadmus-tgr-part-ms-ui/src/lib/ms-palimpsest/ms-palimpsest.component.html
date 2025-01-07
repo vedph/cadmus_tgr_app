@@ -5,10 +5,10 @@
       <mat-label>locations</mat-label>
       <textarea matInput class="long-text" [formControl]="locations"></textarea>
       <mat-hint>comma-separated</mat-hint>
-      @if ( locations.errors?.invalid && (locations.dirty || locations.touched)
-      ) {
+      @if ( $any(locations).errors?.invalid && (locations.dirty ||
+      locations.touched) ) {
       <mat-error>invalid location(s)</mat-error>
-      } @if ( locations.errors?.maxLength && (locations.dirty ||
+      } @if ( $any(locations).errors?.maxLength && (locations.dirty ||
       locations.touched) ) {
       <mat-error>too long</mat-error>
       }
@@ -18,7 +18,7 @@
   <div>
     <cadmus-refs-historical-date
       [date]="$any(date)"
-      (dateChange)="onDateChange($event)"
+      (dateChange)="onDateChange($event!)"
     ></cadmus-refs-historical-date>
   </div>
   <!-- note -->

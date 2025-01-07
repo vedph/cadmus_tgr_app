@@ -8,8 +8,8 @@ describe('MsPlaceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MsPlaceComponent ]
-    })
+    imports: [MsPlaceComponent]
+})
     .compileComponents();
   });
 

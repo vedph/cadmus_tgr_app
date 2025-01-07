@@ -4,22 +4,45 @@ import {
   FormBuilder,
   FormGroup,
   UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
+
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { DialogService } from '@myrmidon/ng-mat-tools';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+import { DialogService } from '@myrmidon/ngx-mat-tools';
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
 
 import {
   MsContent,
   MsContentsPart,
   MSCONTENTS_PART_TYPEID,
 } from '../ms-contents-part';
+import { MsContentComponent } from '../ms-content/ms-content.component';
 
 /**
  * MsContentsPart editor component.
@@ -29,7 +52,24 @@ import {
   selector: 'tgr-ms-contents-part',
   templateUrl: './ms-contents-part.component.html',
   styleUrls: ['./ms-contents-part.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardContent,
+    MatButton,
+    MatIconButton,
+    MatTooltip,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MsContentComponent,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class MsContentsPartComponent
   extends ModelEditorComponentBase<MsContentsPart>
@@ -56,7 +96,7 @@ export class MsContentsPartComponent
     this.editedContentIndex = -1;
     // form
     this.contents = formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
   }

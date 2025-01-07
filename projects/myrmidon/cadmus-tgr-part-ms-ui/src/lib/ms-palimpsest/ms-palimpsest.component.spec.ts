@@ -8,8 +8,8 @@ describe('MsPalimpsestComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MsPalimpsestComponent ]
-    })
+    imports: [MsPalimpsestComponent]
+})
     .compileComponents();
   });
 

@@ -1,9 +1,17 @@
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Thesaurus, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { take } from 'rxjs/operators';
 
-import { EnvService, RamStorageService } from '@myrmidon/ng-tools';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { EnvService, RamStorageService } from '@myrmidon/ngx-tools';
 
 import { ASSERTED_COMPOSITE_ID_CONFIGS_KEY } from '@myrmidon/cadmus-refs-asserted-ids';
 import { ViafRefLookupService } from '@myrmidon/cadmus-refs-viaf-lookup';
@@ -11,14 +19,24 @@ import { DbpediaRefLookupService } from '@myrmidon/cadmus-refs-dbpedia-lookup';
 import { GeoNamesRefLookupService } from '@myrmidon/cadmus-refs-geonames-lookup';
 import { RefLookupConfig } from '@myrmidon/cadmus-refs-lookup';
 
-import { AuthJwtService, User } from '@myrmidon/auth-jwt-login';
+import { AuthJwtService, GravatarPipe, User } from '@myrmidon/auth-jwt-login';
 import { AppRepository } from '@myrmidon/cadmus-state';
 
 @Component({
   selector: 'app-root',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    GravatarPipe,
+  ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  standalone: false,
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   public user?: User;
@@ -44,7 +62,7 @@ export class AppComponent implements OnInit {
     storage.store(ASSERTED_COMPOSITE_ID_CONFIGS_KEY, [
       {
         name: 'VIAF',
-        iconUrl: '/assets/img/viaf128.png',
+        iconUrl: '/img/viaf128.png',
         description: 'Virtual International Authority File',
         label: 'ID',
         service: viaf,
@@ -53,7 +71,7 @@ export class AppComponent implements OnInit {
       },
       {
         name: 'DBpedia',
-        iconUrl: '/assets/img/dbpedia128.png',
+        iconUrl: '/img/dbpedia128.png',
         description: 'DBpedia',
         label: 'ID',
         service: dbpedia,
@@ -62,7 +80,7 @@ export class AppComponent implements OnInit {
       },
       {
         name: 'geonames',
-        iconUrl: '/assets/img/geonames128.png',
+        iconUrl: '/img/geonames128.png',
         description: 'GeoNames',
         label: 'ID',
         service: geonames,

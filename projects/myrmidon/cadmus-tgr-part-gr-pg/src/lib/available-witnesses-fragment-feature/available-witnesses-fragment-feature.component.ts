@@ -7,12 +7,19 @@ import {
   EditFragmentFeatureBase,
   FragmentEditorService,
 } from '@myrmidon/cadmus-state';
+import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
+import { DecoratedTokenTextComponent } from '@myrmidon/cadmus-ui';
+import { AvailableWitnessesFragmentComponent } from '@myrmidon/cadmus-tgr-part-gr-ui';
 
 @Component({
   selector: 'cadmus-available-witnesses-fragment-feature',
   templateUrl: './available-witnesses-fragment-feature.component.html',
   styleUrls: ['./available-witnesses-fragment-feature.component.css'],
-  standalone: false,
+  imports: [
+    CurrentItemBarComponent,
+    DecoratedTokenTextComponent,
+    AvailableWitnessesFragmentComponent,
+  ],
 })
 export class AvailableWitnessesFragmentFeatureComponent
   extends EditFragmentFeatureBase

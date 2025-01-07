@@ -11,14 +11,35 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
+
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MarkdownComponent } from 'ngx-markdown';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+
 import { MsFormalFeature } from '../ms-formal-features-part';
 
 @Component({
   selector: 'tgr-ms-formal-feature',
   templateUrl: './ms-formal-feature.component.html',
   styleUrls: ['./ms-formal-feature.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MarkdownComponent,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+  ],
 })
 export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
   private _model: MsFormalFeature | undefined;

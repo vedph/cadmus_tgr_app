@@ -8,8 +8,8 @@ describe('MsUnitsPartFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MsUnitsPartFeatureComponent ]
-    })
+    imports: [MsUnitsPartFeatureComponent]
+})
     .compileComponents();
   });
 

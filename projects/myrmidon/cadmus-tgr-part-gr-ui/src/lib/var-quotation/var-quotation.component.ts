@@ -5,24 +5,63 @@ import {
   FormControl,
   FormGroup,
   Validators,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { take } from 'rxjs/operators';
 
-import { DialogService } from '@myrmidon/ng-mat-tools';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+
+import { DialogService } from '@myrmidon/ngx-mat-tools';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { renderLabelFromLastColon } from '@myrmidon/cadmus-ui';
+import {
+  renderLabelFromLastColon,
+  ThesaurusTreeComponent,
+} from '@myrmidon/cadmus-ui';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
+
 import {
   QuotationParallel,
   QuotationVariant,
   VarQuotation,
 } from '../var-quotations-fragment';
+import { QuotationVariantComponent } from '../quotation-variant/quotation-variant.component';
 
 @Component({
   selector: 'tgr-var-quotation',
   templateUrl: './var-quotation.component.html',
   styleUrls: ['./var-quotation.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatTabGroup,
+    MatTab,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatInput,
+    MatError,
+    ThesaurusTreeComponent,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    QuotationVariantComponent,
+  ],
 })
 export class VarQuotationComponent implements OnInit {
   private _model: VarQuotation | undefined;
@@ -221,10 +260,10 @@ export class VarQuotationComponent implements OnInit {
     for (let i = 0; i < this.parallels.length; i++) {
       const g = this.parallels.at(i) as FormGroup;
       entries.push({
-        work: g.controls.work.value?.trim(),
-        location: g.controls.location.value?.trim(),
-        tag: g.controls.qtag.value?.trim(),
-        note: g.controls.note.value?.trim(),
+        work: g.controls['work'].value?.trim(),
+        location: g.controls['location'].value?.trim(),
+        tag: g.controls['qtag'].value?.trim(),
+        note: g.controls['note'].value?.trim(),
       });
     }
     return entries.length ? entries : undefined;

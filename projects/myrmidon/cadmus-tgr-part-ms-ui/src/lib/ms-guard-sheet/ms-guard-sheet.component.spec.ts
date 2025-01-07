@@ -8,8 +8,8 @@ describe('MsGuardSheetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MsGuardSheetComponent ]
-    })
+    imports: [MsGuardSheetComponent]
+})
     .compileComponents();
   });
 

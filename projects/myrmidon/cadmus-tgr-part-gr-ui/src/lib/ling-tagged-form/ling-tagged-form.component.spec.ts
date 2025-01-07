@@ -8,8 +8,8 @@ describe('LingTaggedFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LingTaggedFormComponent ]
-    })
+    imports: [LingTaggedFormComponent]
+})
     .compileComponents();
   });
 

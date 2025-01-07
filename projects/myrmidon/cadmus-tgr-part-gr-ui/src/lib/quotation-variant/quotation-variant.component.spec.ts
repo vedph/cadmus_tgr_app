@@ -8,8 +8,8 @@ describe('QuotationVariantComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ QuotationVariantComponent ]
-    })
+    imports: [QuotationVariantComponent]
+})
     .compileComponents();
   });
 

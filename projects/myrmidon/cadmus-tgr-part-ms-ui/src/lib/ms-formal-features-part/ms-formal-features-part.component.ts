@@ -4,14 +4,37 @@ import {
   FormBuilder,
   FormGroup,
   UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
-import { DialogService } from '@myrmidon/ng-mat-tools';
-import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
 
+import { DialogService } from '@myrmidon/ngx-mat-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
+
+import { MsFormalFeatureComponent } from '../ms-formal-feature/ms-formal-feature.component';
 import {
   MsFormalFeature,
   MsFormalFeaturesPart,
@@ -26,7 +49,24 @@ import {
   selector: 'tgr-ms-formal-features-part',
   templateUrl: './ms-formal-features-part.component.html',
   styleUrls: ['./ms-formal-features-part.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardContent,
+    MatButton,
+    MatIconButton,
+    MatTooltip,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MsFormalFeatureComponent,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class MsFormalFeaturesPartComponent
   extends ModelEditorComponentBase<MsFormalFeaturesPart>
@@ -46,7 +86,7 @@ export class MsFormalFeaturesPartComponent
     this.editedFeatureIndex = -1;
     // form
     this.features = formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
   }

@@ -30,7 +30,7 @@
         rootLabel="tags"
         [renderLabel]="renderLabel"
         (entryChange)="onEntryChange($event)"
-      ></cadmus-thesaurus-tree>
+      />
       @if (tags.value.length) {
       <table>
         <thead>
@@ -137,8 +137,8 @@
           <mat-label>lemmata</mat-label>
           <textarea rows="3" matInput [formControl]="lemmata"></textarea>
           <mat-hint>1 per line</mat-hint>
-          @if ( lemmata.errors?.maxLength && (lemmata.dirty || lemmata.touched)
-          ) {
+          @if ( $any(lemmata).errors?.maxLength && (lemmata.dirty ||
+          lemmata.touched) ) {
           <mat-error>lemmata too long</mat-error>
           }
         </mat-form-field>
@@ -148,7 +148,7 @@
         <mat-form-field class="long-text">
           <mat-label>note</mat-label>
           <textarea rows="3" matInput [formControl]="note"></textarea>
-          @if (note.errors?.maxLength && (note.dirty || note.touched)) {
+          @if ($any(note).errors?.maxLength && (note.dirty || note.touched)) {
           <mat-error>note too long</mat-error>
           }
         </mat-form-field>

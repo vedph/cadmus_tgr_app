@@ -8,8 +8,8 @@ describe('VarQuotationEntryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VarQuotationComponent ]
-    })
+    imports: [VarQuotationComponent]
+})
     .compileComponents();
   });
 

@@ -3,12 +3,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
 import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
+import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
+import { MsHistoryPartComponent } from '@myrmidon/cadmus-tgr-part-ms-ui';
 
 @Component({
   selector: 'tgr-ms-history-part-feature',
   templateUrl: './ms-history-part-feature.component.html',
   styleUrls: ['./ms-history-part-feature.component.css'],
-  standalone: false,
+  imports: [CurrentItemBarComponent, MsHistoryPartComponent],
 })
 export class MsHistoryPartFeatureComponent
   extends EditPartFeatureBase

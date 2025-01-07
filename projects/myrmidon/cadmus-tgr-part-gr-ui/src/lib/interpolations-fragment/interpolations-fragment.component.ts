@@ -4,19 +4,43 @@ import {
   FormBuilder,
   FormGroup,
   UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardAvatar,
+  MatCardTitle,
+  MatCardSubtitle,
+  MatCardContent,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
+
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { DialogService } from '@myrmidon/ng-mat-tools';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+import {
+  EditedObject,
+  ModelEditorComponentBase,
+  CloseSaveButtonsComponent,
+} from '@myrmidon/cadmus-ui';
+import { DialogService } from '@myrmidon/ngx-mat-tools';
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 
 import {
   Interpolation,
   InterpolationsFragment,
 } from '../interpolations-fragment';
+import { InterpolationComponent } from '../interpolation/interpolation.component';
 
 /**
  * Interpolations layer fragment.
@@ -28,7 +52,25 @@ import {
   selector: 'tgr-interpolations-fragment',
   templateUrl: './interpolations-fragment.component.html',
   styleUrls: ['./interpolations-fragment.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardAvatar,
+    MatIcon,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatButton,
+    MatIconButton,
+    MatTooltip,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    InterpolationComponent,
+    MatCardActions,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class InterpolationsFragmentComponent
   extends ModelEditorComponentBase<InterpolationsFragment>
@@ -85,7 +127,7 @@ export class InterpolationsFragmentComponent
     this.editedInterpolationIndex = -1;
     // form
     this.interpolations = formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
   }

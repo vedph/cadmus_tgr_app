@@ -20,5 +20,3 @@ export * from './lib/var-quotations-fragment';
 export * from './lib/var-quotations-fragment/var-quotations-fragment.component';
 export * from './lib/var-quotation/var-quotation.component';
 export * from './lib/quotation-variant/quotation-variant.component';
-
-export * from './lib/cadmus-tgr-part-gr-ui.module';
