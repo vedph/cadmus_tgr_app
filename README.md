@@ -65,6 +65,13 @@ ng g library @myrmidon/cadmus-tgr-part-ms-ui --prefix cadmus --force
 
 ## History
 
+### 9.0.0
+
+- 2025-01-30:
+  - ⚠️ migrated to signals.
+  - updated Angular and packages.
+  - minor aesthetic UI improvements.
+
 ### 8.0.0
 
 - 2025-01-07:

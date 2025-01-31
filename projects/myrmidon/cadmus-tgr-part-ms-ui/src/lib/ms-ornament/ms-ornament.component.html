@@ -1,11 +1,11 @@
 <form [formGroup]="form" (submit)="save()">
   <div class="form-row">
     <!-- type (bound) -->
-    @if (ornTypeEntries?.length) {
+    @if (ornTypeEntries()?.length) {
     <mat-form-field>
       <mat-label>type</mat-label>
       <mat-select [formControl]="type">
-        @for (e of ornTypeEntries; track e) {
+        @for (e of ornTypeEntries(); track e) {
         <mat-option [value]="e.id">{{ e.value }}</mat-option>
         }
       </mat-select>
@@ -15,7 +15,7 @@
     </mat-form-field>
     }
     <!-- type (free) -->
-    @if (!ornTypeEntries?.length) {
+    @else {
     <mat-form-field>
       <mat-label>type</mat-label>
       <input matInput [formControl]="type" />
@@ -54,12 +54,11 @@
     @if (hasSize.value) {
     <cadmus-mat-physical-size
       [size]="$any(size)"
-      [unitEntries]="$any(szUnitEntries)"
-      [tagEntries]="$any(szTagEntries)"
-      [dimTagEntries]="$any(szDimTagEntries)"
+      [unitEntries]="szUnitEntries()"
+      [tagEntries]="szTagEntries()"
+      [dimTagEntries]="szDimTagEntries()"
       (sizeChange)="onSizeChange($event!)"
-    >
-    </cadmus-mat-physical-size>
+    />
     }
   </div>
   <div>

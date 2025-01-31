@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
@@ -46,11 +46,10 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    MatTabGroup,
-    MatTab,
     FlagSetComponent,
     MatFormField,
     MatLabel,
+    MatExpansionModule,
     MatSelect,
     MatOption,
     MatError,
@@ -64,51 +63,21 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
   ],
 })
 export class MsScriptComponent {
-  private _editedIndex: number;
-  private _langEntries: ThesaurusEntry[] | undefined;
-  private _model: MsScript | undefined;
+  public editedIndex: number;
 
-  @Input()
-  public get model(): MsScript | undefined {
-    return this._model;
-  }
-  public set model(value: MsScript | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(this._model);
-  }
+  public script = model<MsScript>();
 
-  @Input()
-  public scrRoleEntries: ThesaurusEntry[] | undefined;
+  public readonly scrRoleEntries = input<ThesaurusEntry[]>();
+  public readonly scrTypeEntries = input<ThesaurusEntry[]>();
+  public readonly langEntries = input<ThesaurusEntry[]>();
 
-  @Input()
-  public scrTypeEntries: ThesaurusEntry[] | undefined;
-
-  @Input()
-  public get langEntries(): ThesaurusEntry[] | undefined {
-    return this._langEntries;
-  }
-  public set langEntries(value: ThesaurusEntry[] | undefined) {
-    if (this._langEntries === value) {
-      return;
-    }
-    this._langEntries = value || [];
-    this.langFlags = this._langEntries.map(entryToFlag);
-  }
-
-  @Output()
-  public modelChange: EventEmitter<MsScript>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public languages: FormControl<string[]>;
   public role: FormControl<string | null>;
   public type: FormControl<string | null>;
   public hands: FormControl<MsHand[]>;
-  public tabIndex: number;
   public editedHand: MsHand | undefined;
 
   // flags
@@ -119,10 +88,7 @@ export class MsScriptComponent {
     private _dialogService: DialogService,
     private _locService: MsLocationService
   ) {
-    this.modelChange = new EventEmitter<MsScript>();
-    this.editorClose = new EventEmitter<any>();
-    this._editedIndex = -1;
-    this.tabIndex = 0;
+    this.editedIndex = -1;
     // form
     this.languages = formBuilder.control([], {
       validators: NgxToolsValidators.strictMinLengthValidator(1),
@@ -141,24 +107,32 @@ export class MsScriptComponent {
       type: this.type,
       hands: this.hands,
     });
+
+    effect(() => {
+      this.updateForm(this.script());
+    });
+
+    effect(() => {
+      this.langFlags = this.langEntries()?.map(entryToFlag) || [];
+    });
   }
 
-  private updateForm(model: MsScript | undefined): void {
-    if (!model) {
+  private updateForm(script: MsScript | undefined): void {
+    if (!script) {
       this.form.reset();
       return;
     }
 
-    this.languages.setValue(model.languages);
+    this.languages.setValue(script.languages);
     this.languages.updateValueAndValidity();
-    this.role.setValue(model.role);
-    this.type.setValue(model.type || null);
-    this.hands.setValue(model.hands || []);
+    this.role.setValue(script.role);
+    this.type.setValue(script.type || null);
+    this.hands.setValue(script.hands || []);
 
     this.form.markAsPristine();
   }
 
-  private getModel(): MsScript {
+  private getScript(): MsScript {
     return {
       languages: this.languages.value,
       role: this.role.value?.trim() || '',
@@ -188,22 +162,18 @@ export class MsScriptComponent {
 
   public editHand(index: number): void {
     if (index < 0) {
-      this._editedIndex = -1;
-      this.tabIndex = 0;
+      this.editedIndex = -1;
       this.editedHand = undefined;
     } else {
-      this._editedIndex = index;
+      this.editedIndex = index;
       this.editedHand = this.hands.value[index];
-      setTimeout(() => {
-        this.tabIndex = 1;
-      }, 300);
     }
   }
 
   public onHandSave(item: MsHand): void {
     this.hands.setValue(
       this.hands.value.map((x: MsHand, i: number) =>
-        i === this._editedIndex ? item : x
+        i === this.editedIndex ? item : x
       )
     );
     this.hands.updateValueAndValidity();
@@ -277,7 +247,6 @@ export class MsScriptComponent {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.script.set(this.getScript());
   }
 }

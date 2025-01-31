@@ -31,7 +31,7 @@
         <tbody>
           @for ( content of contents.value; track content; let i = $index; let
           first = $first; let last = $last) {
-          <tr>
+          <tr [class.selected]="editedContent === content">
             <td>
               <button
                 type="button"
@@ -86,13 +86,13 @@
           >content #{{ editedContentIndex + 1 }}</mat-expansion-panel-header
         >
         <tgr-ms-content
-          [model]="editedContent"
+          [content]="editedContent"
           [workEntries]="workEntries"
           [docTagEntries]="docTagEntries"
           [docTypeEntries]="docTypeEntries"
-          (modelChange)="saveContent($event)"
+          (contentChange)="saveContent($event!)"
           (editorClose)="closeContent()"
-        ></tgr-ms-content>
+        />
       </mat-expansion-panel>
     </mat-card-content>
     <mat-card-actions>

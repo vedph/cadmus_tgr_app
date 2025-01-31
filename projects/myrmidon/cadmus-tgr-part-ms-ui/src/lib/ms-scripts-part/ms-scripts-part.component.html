@@ -33,7 +33,7 @@
         <tbody>
           @for ( script of scripts.value; track script; let i = $index; let
           first = $first; let last = $last) {
-          <tr>
+          <tr [class.selected]="i === editedScriptIndex">
             <td>
               <button
                 type="button"
@@ -87,14 +87,13 @@
           >content #{{ editedScriptIndex + 1 }}</mat-expansion-panel-header
         >
         <tgr-ms-script
-          [model]="editedScript"
+          [script]="editedScript"
           [langEntries]="langEntries"
           [scrRoleEntries]="scrRoleEntries"
           [scrTypeEntries]="scrTypeEntries"
-          (modelChange)="saveScript($event)"
+          (scriptChange)="saveScript($event!)"
           (editorClose)="closeScript()"
-        >
-        </tgr-ms-script>
+        />
       </mat-expansion-panel>
     </mat-card-content>
     <mat-card-actions>

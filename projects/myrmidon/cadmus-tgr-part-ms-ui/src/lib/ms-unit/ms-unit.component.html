@@ -2,7 +2,7 @@
   <mat-tab-group>
     <!-- GENERAL -->
     <mat-tab label="general">
-      <div>
+      <div class="form-row">
         <!-- start -->
         <mat-form-field>
           <mat-label>start</mat-label>
@@ -14,7 +14,6 @@
           <mat-error>invalid start</mat-error>
           }
         </mat-form-field>
-        &nbsp;
         <!-- end -->
         <mat-form-field>
           <mat-label>end</mat-label>
@@ -28,18 +27,18 @@
       </div>
       <div class="form-row">
         <!-- material (bound) -->
-        @if (matEntries?.length) {
+        @if (matEntries()?.length) {
         <mat-form-field>
           <mat-label>material</mat-label>
           <mat-select [formControl]="material">
-            @for (e of matEntries; track e) {
+            @for (e of matEntries(); track e) {
             <mat-option [value]="e.id">{{ e.value }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
         }
         <!-- material (free) -->
-        @if (!matEntries?.length) {
+        @else {
         <mat-form-field>
           <mat-label>material</mat-label>
           <input matInput [formControl]="material" />
@@ -50,18 +49,18 @@
         </mat-form-field>
         }
         <!-- guard sheets material (bound) -->
-        @if (matEntries?.length) {
+        @if (matEntries()?.length) {
         <mat-form-field>
           <mat-label>guards material</mat-label>
           <mat-select [formControl]="guardSheetMaterial">
-            @for (e of matEntries; track e) {
+            @for (e of matEntries(); track e) {
             <mat-option [value]="e.id">{{ e.value }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
         }
         <!-- guard sheets material (free) -->
-        @if (!matEntries?.length) {
+        @else {
         <mat-form-field>
           <mat-label>guards material</mat-label>
           <input matInput [formControl]="guardSheetMaterial" />
@@ -205,42 +204,44 @@
         @for ( item of rulings.controls; track item; let i = $index; let first =
         $first; let last = $last) {
         <div>
-          <div [formGroupName]="i">
-            {{ i + 1 }}.
-            <button
-              mat-icon-button
-              type="button"
-              matTooltip="Remove this ruling"
-              color="warn"
-              (click)="removeRuling(i)"
-            >
-              <mat-icon class="mat-warn">remove_circle</mat-icon>
-            </button>
-            <button
-              [disabled]="first"
-              mat-icon-button
-              type="button"
-              matTooltip="Move ruling up"
-              (click)="moveRulingUp(i)"
-            >
-              <mat-icon>arrow_upward</mat-icon>
-            </button>
-            <button
-              [disabled]="last"
-              mat-icon-button
-              type="button"
-              matTooltip="Move ruling down"
-              (click)="moveRulingDown(i)"
-            >
-              <mat-icon>arrow_downward</mat-icon>
-            </button>
+          <div [formGroupName]="i" class="form-row">
+            <div>
+              {{ i + 1 }}.
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Remove this ruling"
+                color="warn"
+                (click)="removeRuling(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move ruling up"
+                (click)="moveRulingUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move ruling down"
+                (click)="moveRulingDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </div>
             <!-- child controls -->
             <!-- manner (bound) -->
-            @if (rulManEntries?.length) {
+            @if (rulManEntries()?.length) {
             <mat-form-field>
               <mat-label>manner</mat-label>
               <mat-select formControlName="manner">
-                @for (e of rulManEntries; track e) {
+                @for (e of rulManEntries(); track e) {
                 <mat-option [value]="e.id">{{ e.value }}</mat-option>
                 }
               </mat-select>
@@ -252,7 +253,7 @@
             </mat-form-field>
             }
             <!-- manner (free) -->
-            @if (!rulManEntries?.length) {
+            @else {
             <mat-form-field>
               <mat-label>manner</mat-label>
               <input matInput formControlName="manner" />
@@ -266,13 +267,13 @@
               <mat-error>too long</mat-error>
               }
             </mat-form-field>
-            } &nbsp;
+            }
             <!-- system (bound) -->
-            @if (rulSysEntries?.length) {
+            @if (rulSysEntries()?.length) {
             <mat-form-field>
               <mat-label>system</mat-label>
               <mat-select formControlName="system">
-                @for (e of rulSysEntries; track e) {
+                @for (e of rulSysEntries(); track e) {
                 <mat-option [value]="e.id">{{ e.value }}</mat-option>
                 }
               </mat-select>
@@ -284,7 +285,7 @@
             </mat-form-field>
             }
             <!-- system (free) -->
-            @if (!rulSysEntries?.length) {
+            @else {
             <mat-form-field>
               <mat-label>system</mat-label>
               <input matInput formControlName="system" />
@@ -300,7 +301,6 @@
             </mat-form-field>
             }
             <!-- type -->
-            &nbsp;
             <mat-form-field>
               <mat-label>type</mat-label>
               <input matInput formControlName="type" />
@@ -365,7 +365,7 @@
         <tbody>
           @for ( size of leafSizes; track size; let i = $index; let first =
           $first; let last = $last) {
-          <tr>
+          <tr [class.selected]="i === editedLeafSizeIndex">
             <td>
               <button
                 mat-icon-button
@@ -417,18 +417,18 @@
           }
         </tbody>
       </table>
-      }
+      } @if (editingLeafSize) {
       <mat-expansion-panel
         [expanded]="editingLeafSize"
         [disabled]="!editingLeafSize"
       >
         <mat-expansion-panel-header>size</mat-expansion-panel-header>
         <cadmus-mat-physical-size
-          [unitEntries]="$any(szUnitEntries)"
-          [tagEntries]="$any(szTagEntries)"
+          [unitEntries]="szUnitEntries()"
+          [tagEntries]="szTagEntries()"
           [hBeforeW]="true"
-          [dimTagEntries]="$any(szDimTagEntries)"
-          [size]="$any(editedLeafSize)"
+          [dimTagEntries]="szDimTagEntries()"
+          [size]="editedLeafSize"
           (sizeChange)="onEditedLeafSizeChange($event!)"
         />
         <button
@@ -448,6 +448,7 @@
           <mat-icon color="primary" class="mat-primary">check_circle</mat-icon>
         </button>
       </mat-expansion-panel>
+      }
     </mat-tab>
     <!-- AREA SIZES -->
     <mat-tab label="area sizes">
@@ -487,7 +488,7 @@
         <tbody>
           @for ( size of areaSizes; track size; let i = $index; let first =
           $first; let last = $last) {
-          <tr>
+          <tr [class.selected]="i === editedAreaSizeIndex">
             <td>
               <button
                 mat-icon-button
@@ -539,17 +540,17 @@
           }
         </tbody>
       </table>
-      }
+      } @if (editingAreaSize) {
       <mat-expansion-panel
         [expanded]="editingAreaSize"
         [disabled]="!editingAreaSize"
       >
         <mat-expansion-panel-header>size</mat-expansion-panel-header>
         <cadmus-mat-physical-size
-          [unitEntries]="$any(szUnitEntries)"
-          [tagEntries]="$any(szTagEntries)"
+          [unitEntries]="szUnitEntries()"
+          [tagEntries]="szTagEntries()"
           [hBeforeW]="true"
-          [dimTagEntries]="$any(szDimTagEntries)"
+          [dimTagEntries]="szDimTagEntries()"
           [size]="$any(editedAreaSize)"
           (sizeChange)="onEditedAreaSizeChange($event!)"
         />
@@ -570,6 +571,7 @@
           <mat-icon color="primary" class="mat-primary">check_circle</mat-icon>
         </button>
       </mat-expansion-panel>
+      }
     </mat-tab>
     <!-- WATERMARKS -->
     <mat-tab label="watermarks">
@@ -590,36 +592,38 @@
         first = $first; let last = $last) {
         <div>
           <!-- child form -->
-          <div [formGroupName]="i">
+          <div [formGroupName]="i" class="form-row">
             <!-- child actions -->
-            {{ i + 1 }}.
-            <button
-              mat-icon-button
-              type="button"
-              matTooltip="Remove this watermark"
-              color="warn"
-              (click)="removeWatermark(i)"
-            >
-              <mat-icon class="mat-warn">remove_circle</mat-icon>
-            </button>
-            <button
-              [disabled]="first"
-              mat-icon-button
-              type="button"
-              matTooltip="Move watermark up"
-              (click)="moveWatermarkUp(i)"
-            >
-              <mat-icon>arrow_upward</mat-icon>
-            </button>
-            <button
-              [disabled]="last"
-              mat-icon-button
-              type="button"
-              matTooltip="Move watermark down"
-              (click)="moveWatermarkDown(i)"
-            >
-              <mat-icon>arrow_downward</mat-icon>
-            </button>
+            <div>
+              {{ i + 1 }}.
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Remove this watermark"
+                color="warn"
+                (click)="removeWatermark(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move watermark up"
+                (click)="moveWatermarkUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move watermark down"
+                (click)="moveWatermarkDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </div>
             <!-- child controls -->
             <!-- value -->
             <mat-form-field>

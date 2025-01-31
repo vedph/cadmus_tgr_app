@@ -80,36 +80,38 @@
       $first; let last = $last) {
       <div>
         <!-- child form -->
-        <div [formGroupName]="i">
+        <div [formGroupName]="i" class="form-row">
           <!-- child actions -->
-          {{ i + 1 }}.
-          <button
-            mat-icon-button
-            type="button"
-            matTooltip="Remove this letter"
-            color="warn"
-            (click)="removeLetter(i)"
-          >
-            <mat-icon class="mat-warn">remove_circle</mat-icon>
-          </button>
-          <button
-            [disabled]="first"
-            mat-icon-button
-            type="button"
-            matTooltip="Move letter up"
-            (click)="moveLetterUp(i)"
-          >
-            <mat-icon>arrow_upward</mat-icon>
-          </button>
-          <button
-            [disabled]="last"
-            mat-icon-button
-            type="button"
-            matTooltip="Move letter down"
-            (click)="moveLetterDown(i)"
-          >
-            <mat-icon>arrow_downward</mat-icon>
-          </button>
+          <div>
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this letter"
+              color="warn"
+              (click)="removeLetter(i)"
+            >
+              <mat-icon class="mat-warn">remove_circle</mat-icon>
+            </button>
+            <button
+              [disabled]="first"
+              mat-icon-button
+              type="button"
+              matTooltip="Move letter up"
+              (click)="moveLetterUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              [disabled]="last"
+              mat-icon-button
+              type="button"
+              matTooltip="Move letter down"
+              (click)="moveLetterDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+          </div>
           <!-- child controls -->
           <!-- letter -->
           <mat-form-field>
@@ -125,7 +127,7 @@
             <mat-error>too long</mat-error>
             }
           </mat-form-field>
-          &nbsp;
+
           <!-- imageId-->
           <mat-form-field>
             <mat-label>image ID</mat-label>
@@ -136,6 +138,7 @@
             <mat-error>too long</mat-error>
             }
           </mat-form-field>
+
           <!-- description -->
           <div>
             <mat-label>description</mat-label>

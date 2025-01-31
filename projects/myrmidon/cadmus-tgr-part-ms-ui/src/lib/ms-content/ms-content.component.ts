@@ -1,10 +1,11 @@
 import {
   Component,
-  EventEmitter,
-  Input,
+  effect,
+  input,
+  model,
   OnDestroy,
   OnInit,
-  Output,
+  output,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -64,33 +65,16 @@ import { MsContent } from '../ms-contents-part';
 })
 export class MsContentComponent implements OnInit, OnDestroy {
   private _sub?: Subscription;
-  private _model: MsContent | undefined;
 
-  @Input()
-  public get model(): MsContent | undefined {
-    return this._model;
-  }
-  public set model(value: MsContent | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(this._model);
-  }
+  public readonly content = model<MsContent>();
 
   /**
    * Author and works.
    */
-  @Input()
-  public workEntries: ThesaurusEntry[] | undefined;
-  @Input()
-  public docTypeEntries: ThesaurusEntry[] | undefined;
-  @Input()
-  public docTagEntries: ThesaurusEntry[] | undefined;
-  @Output()
-  public modelChange: EventEmitter<MsContent>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly workEntries = input<ThesaurusEntry[]>();
+  public readonly docTypeEntries = input<ThesaurusEntry[]>();
+  public readonly docTagEntries = input<ThesaurusEntry[]>();
+  public readonly editorClose = output();
 
   public start: FormControl<string | null>;
   public end: FormControl<string | null>;
@@ -111,8 +95,6 @@ export class MsContentComponent implements OnInit, OnDestroy {
     formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
-    this.modelChange = new EventEmitter<MsContent>();
-    this.editorClose = new EventEmitter<any>();
     this.initialEditions = [];
     // form
     this.start = formBuilder.control(null, [
@@ -161,17 +143,21 @@ export class MsContentComponent implements OnInit, OnDestroy {
       note: this.note,
       editions: this.editions,
     });
+
+    effect(() => {
+      this.updateForm(this.content());
+    });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this._sub = this.work.valueChanges
       .pipe(distinctUntilChanged(), debounceTime(300))
       .subscribe((value) => {
-        this.workEntry = this.workEntries?.find((e) => e.id === value);
+        this.workEntry = this.workEntries()?.find((e) => e.id === value);
       });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this._sub?.unsubscribe();
   }
 
@@ -185,8 +171,8 @@ export class MsContentComponent implements OnInit, OnDestroy {
     this.end.setValue(this._locService.locationToString(model.end));
 
     this.work.setValue(model.work || null);
-    if (model.work && this.workEntries?.length) {
-      this.workEntry = this.workEntries?.find((e) => e.id === model.work);
+    if (model.work && this.workEntries()?.length) {
+      this.workEntry = this.workEntries()?.find((e) => e.id === model.work);
     } else {
       this.workEntry = undefined;
     }
@@ -201,7 +187,7 @@ export class MsContentComponent implements OnInit, OnDestroy {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsContent {
+  private getContent(): MsContent {
     return {
       start: this._locService.parseLocation(this.start.value) as MsLocation,
       end: this._locService.parseLocation(this.end.value) as MsLocation,
@@ -243,7 +229,6 @@ export class MsContentComponent implements OnInit, OnDestroy {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.content.set(this.getContent());
   }
 }

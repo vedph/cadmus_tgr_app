@@ -1,6 +1,6 @@
 {
   "name": "@myrmidon/cadmus-tgr-part-ms-ui",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "description": "Cadmus TGR - codicologic editors components.",
   "keywords": [
     "Cadmus",
@@ -18,13 +18,13 @@
     "@angular/common": "^19.0.0",
     "@angular/core": "^19.0.0",
     "@cisstech/nge": "^18.0.4",
-    "@myrmidon/ngx-tools": "^4.0.0",
-    "@myrmidon/cadmus-core": "^9.0.0",
-    "@myrmidon/cadmus-mat-physical-size": "^6.0.0",
-    "@myrmidon/cadmus-refs-doc-references": "^6.0.1",
-    "@myrmidon/cadmus-refs-historical-date": "^6.0.0",
+    "@myrmidon/ngx-tools": "^1.0.0",
+    "@myrmidon/cadmus-core": "^11.0.0",
+    "@myrmidon/cadmus-mat-physical-size": "^8.0.1",
+    "@myrmidon/cadmus-refs-doc-references": "^9.0.0",
+    "@myrmidon/cadmus-refs-historical-date": "^8.0.0",
     "@myrmidon/cadmus-ui-flags-picker": "^6.0.0",
-    "@myrmidon/cadmus-ui": "^9.0.0",
+    "@myrmidon/cadmus-ui": "^12.0.0",
     "@myrmidon/cadmus-tgr-core": "^5.0.0"
   },
   "dependencies": {

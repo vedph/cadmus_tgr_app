@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -60,48 +60,31 @@ import { QuotationVariant } from '../var-quotations-fragment';
     ThesaurusTreeComponent,
   ],
 })
-export class QuotationVariantComponent implements OnInit {
-  private _model: QuotationVariant | undefined;
+export class QuotationVariantComponent {
+  private _variant: QuotationVariant | undefined;
 
-  @Input()
-  public get model(): QuotationVariant | undefined {
-    return this._model;
-  }
-  public set model(value: QuotationVariant | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(value);
-  }
+  public readonly variant = model<QuotationVariant>();
 
   /**
    * Witnesses.
    */
-  @Input()
-  public witEntries: ThesaurusEntry[] | undefined;
+  public readonly witEntries = input<ThesaurusEntry[]>();
   /**
    * Authors.
    */
-  @Input()
-  public authEntries: ThesaurusEntry[] | undefined;
+  public readonly authEntries = input<ThesaurusEntry[]>();
   /**
    * Author's tags.
    */
-  @Input()
-  public authTagEntries: ThesaurusEntry[] | undefined;
+  public readonly authTagEntries = input<ThesaurusEntry[]>();
   /**
    * Author/work tags. This can be alternative or additional
    * to authEntries, and allows picking the work from a tree
    * of authors and works.
    */
-  @Input()
-  public workEntries: ThesaurusEntry[] | undefined;
+  public readonly workEntries = input<ThesaurusEntry[]>();
 
-  @Output()
-  public modelChange: EventEmitter<QuotationVariant>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public type: FormControl<number>;
@@ -115,9 +98,6 @@ export class QuotationVariantComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _clipboard: Clipboard
   ) {
-    this.modelChange = new EventEmitter<QuotationVariant>();
-    this.editorClose = new EventEmitter<any>();
-    // form
     this.type = _formBuilder.control(0, {
       validators: Validators.required,
       nonNullable: true,
@@ -138,10 +118,10 @@ export class QuotationVariantComponent implements OnInit {
       witnesses: this.witnesses,
       authors: this.authors,
     });
-  }
 
-  ngOnInit(): void {
-    this.updateForm(this.model);
+    effect(() => {
+      this.updateForm(this.variant());
+    });
   }
 
   private updateForm(model: QuotationVariant | undefined): void {
@@ -173,7 +153,7 @@ export class QuotationVariantComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): QuotationVariant {
+  private getVariant(): QuotationVariant {
     return {
       type: this.type.value,
       lemma: this.lemma.value?.trim() || '',
@@ -317,7 +297,6 @@ export class QuotationVariantComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.variant.set(this.getVariant());
   }
 }

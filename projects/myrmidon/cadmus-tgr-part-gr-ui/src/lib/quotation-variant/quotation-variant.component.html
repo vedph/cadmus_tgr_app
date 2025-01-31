@@ -45,48 +45,50 @@
     <mat-expansion-panel-header>
       <mat-panel-title>witnesses</mat-panel-title>
       <mat-panel-description>{{
-        model?.witnesses?.length || 0
+        variant()?.witnesses?.length || 0
       }}</mat-panel-description>
     </mat-expansion-panel-header>
     <div formArrayName="witnesses">
       @for ( item of witnesses.controls; track item; let i = $index; let first =
       $first; let last = $last) {
       <div>
-        <div [formGroupName]="i">
-          {{ i + 1 }}.
-          <button
-            mat-icon-button
-            type="button"
-            matTooltip="Move this witness up"
-            [disabled]="first"
-            (click)="moveWitnessUp(i)"
-          >
-            <mat-icon>arrow_upward</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            type="button"
-            matTooltip="Move this witness down"
-            [disabled]="last"
-            (click)="moveWitnessDown(i)"
-          >
-            <mat-icon>arrow_downward</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            type="button"
-            matTooltip="Remove this witness"
-            color="warn"
-            (click)="removeWitness(i)"
-          >
-            <mat-icon class="mat-warn">remove_circle</mat-icon>
-          </button>
+        <div [formGroupName]="i" class="form-row">
+          <div>
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Move this witness up"
+              [disabled]="first"
+              (click)="moveWitnessUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Move this witness down"
+              [disabled]="last"
+              (click)="moveWitnessDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this witness"
+              color="warn"
+              (click)="removeWitness(i)"
+            >
+              <mat-icon class="mat-warn">remove_circle</mat-icon>
+            </button>
+          </div>
           <!-- witness: value (thesaurus) -->
-          @if (witEntries?.length) {
+          @if (witEntries()?.length) {
           <mat-form-field>
             <mat-label>value</mat-label>
             <mat-select formControlName="value">
-              @for (e of witEntries; track e) {
+              @for (e of witEntries(); track e) {
               <mat-option [value]="e.id">{{ e.value }}</mat-option>
               }
             </mat-select>
@@ -98,7 +100,7 @@
           </mat-form-field>
           }
           <!-- witness: value (free) -->
-          @if (!witEntries?.length) {
+          @else {
           <mat-form-field>
             <mat-label>value</mat-label>
             <input matInput formControlName="value" />
@@ -112,7 +114,7 @@
             <mat-error>value too long</mat-error>
             }
           </mat-form-field>
-          } &nbsp;
+          }
           <!-- witness: note -->
           <mat-form-field>
             <mat-label>note</mat-label>
@@ -142,48 +144,50 @@
     <mat-expansion-panel-header>
       <mat-panel-title>authors</mat-panel-title>
       <mat-panel-description>{{
-        model?.authors?.length || 0
+        variant()?.authors?.length || 0
       }}</mat-panel-description>
     </mat-expansion-panel-header>
     <div formArrayName="authors">
       @for ( item of authors.controls; track item; let i = $index; let first =
       $first; let last = $last) {
       <div>
-        <div [formGroupName]="i">
-          {{ i + 1 }}.
-          <button
-            mat-icon-button
-            type="button"
-            matTooltip="Move this author up"
-            [disabled]="first"
-            (click)="moveAuthorUp(i)"
-          >
-            <mat-icon>arrow_upward</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            type="button"
-            matTooltip="Move this author down"
-            [disabled]="last"
-            (click)="moveAuthorDown(i)"
-          >
-            <mat-icon>arrow_downward</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            type="button"
-            matTooltip="Remove this author"
-            color="warn"
-            (click)="removeAuthor(i)"
-          >
-            <mat-icon class="mat-warn">remove_circle</mat-icon>
-          </button>
+        <div [formGroupName]="i" class="form-row">
+          <div>
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Move this author up"
+              [disabled]="first"
+              (click)="moveAuthorUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Move this author down"
+              [disabled]="last"
+              (click)="moveAuthorDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this author"
+              color="warn"
+              (click)="removeAuthor(i)"
+            >
+              <mat-icon class="mat-warn">remove_circle</mat-icon>
+            </button>
+          </div>
           <!-- author: value (thesaurus) -->
-          @if (authEntries?.length) {
+          @if (authEntries()?.length) {
           <mat-form-field>
             <mat-label>value</mat-label>
             <mat-select formControlName="value">
-              @for (e of authEntries; track e) {
+              @for (e of authEntries(); track e) {
               <mat-option [value]="e.id">{{ e.value }}</mat-option>
               }
             </mat-select>
@@ -195,7 +199,7 @@
           </mat-form-field>
           }
           <!-- author: value (free) -->
-          @if (!authEntries?.length) {
+          @else {
           <mat-form-field>
             <mat-label>value</mat-label>
             <input matInput formControlName="value" />
@@ -209,7 +213,7 @@
             <mat-error>value too long</mat-error>
             }
           </mat-form-field>
-          } &nbsp;
+          }
           <!-- author: location -->
           <mat-form-field>
             <mat-label>location</mat-label>
@@ -220,20 +224,19 @@
             <mat-error>loc. too long</mat-error>
             }
           </mat-form-field>
-          &nbsp;
           <!-- author: tag (thesaurus) -->
-          @if (authTagEntries?.length) {
+          @if (authTagEntries()?.length) {
           <mat-form-field>
             <mat-label>tag</mat-label>
             <mat-select formControlName="tag">
-              @for (e of authTagEntries; track e) {
+              @for (e of authTagEntries(); track e) {
               <mat-option [value]="e.id">{{ e.value }}</mat-option>
               }
             </mat-select>
           </mat-form-field>
           }
           <!-- author: tag (free) -->
-          @if (!authTagEntries?.length) {
+          @else {
           <mat-form-field>
             <mat-label>tag</mat-label>
             <input matInput formControlName="tag" />
@@ -243,7 +246,7 @@
             <mat-error>tag too long</mat-error>
             }
           </mat-form-field>
-          } &nbsp;
+          }
           <!-- author: note -->
           <mat-form-field>
             <mat-label>note</mat-label>
@@ -267,10 +270,10 @@
     >
       <mat-icon>add_circle</mat-icon> author
     </button>
-    @if (workEntries?.length) {
+    @if (workEntries()?.length) {
     <div>
       <cadmus-thesaurus-tree
-        [entries]="workEntries || []"
+        [entries]="workEntries() || []"
         rootLabel="works"
         [renderLabel]="renderLabel"
         (entryChange)="onEntryChange($event)"

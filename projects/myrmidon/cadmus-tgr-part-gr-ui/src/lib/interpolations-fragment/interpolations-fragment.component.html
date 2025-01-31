@@ -6,9 +6,9 @@
       </div>
       <mat-card-title
         >Interpolations/Transcriptions Fragment
-        {{ data?.value?.location }}</mat-card-title
+        {{ data()?.value?.location }}</mat-card-title
       >
-      <mat-card-subtitle> {{ data?.baseText }} </mat-card-subtitle>
+      <mat-card-subtitle> {{ data()?.baseText }} </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <div style="margin-top: 4px">
@@ -22,7 +22,7 @@
           <mat-icon>add_circle</mat-icon> interpolation
         </button>
       </div>
-      @if (interpolations?.value?.length) {
+      @if (interpolations.value.length) {
       <table>
         <thead>
           <tr>
@@ -34,9 +34,9 @@
           </tr>
         </thead>
         <tbody>
-          @for ( entry of interpolations?.value; track entry; let i = $index;
-          let first = $first; let last = $last) {
-          <tr>
+          @for ( entry of interpolations.value; track entry; let i = $index; let
+          first = $first; let last = $last) {
+          <tr [class.selected]="i === editedInterpolationIndex">
             <td>
               <button
                 type="button"
@@ -85,7 +85,7 @@
           }
         </tbody>
       </table>
-      }
+      } @if (editedInterpolation){
       <mat-expansion-panel
         [expanded]="editedInterpolation"
         [disabled]="!editedInterpolation"
@@ -96,7 +96,7 @@
           }}</mat-expansion-panel-header
         >
         <tgr-interpolation
-          [model]="editedInterpolation"
+          [interpolation]="editedInterpolation"
           [authEntries]="authEntries"
           [authTagEntries]="authTagEntries"
           [intLangEntries]="intLangEntries"
@@ -106,10 +106,11 @@
           [quotTagEntries]="quotTagEntries"
           [witEntries]="witEntries"
           [workEntries]="workEntries"
-          (modelChange)="saveInterpolation($event)"
+          (interpolationChange)="saveInterpolation($event!)"
           (editorClose)="closeInterpolation()"
         />
       </mat-expansion-panel>
+      }
     </mat-card-content>
     <mat-card-actions>
       <cadmus-close-save-buttons

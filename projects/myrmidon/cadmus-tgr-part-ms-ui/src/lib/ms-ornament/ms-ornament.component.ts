@@ -1,13 +1,13 @@
 import {
   AfterViewInit,
   Component,
-  EventEmitter,
+  effect,
   Inject,
-  Input,
+  input,
+  model,
   OnDestroy,
-  OnInit,
   Optional,
-  Output,
+  output,
   ViewChild,
 } from '@angular/core';
 import {
@@ -65,43 +65,21 @@ import { MsOrnament } from '../ms-ornaments-part';
     MatIcon,
   ],
 })
-export class MsOrnamentComponent implements OnInit, OnDestroy, AfterViewInit {
-  private _model: MsOrnament | undefined;
-
+export class MsOrnamentComponent implements OnDestroy, AfterViewInit {
   private readonly _disposables: monaco.IDisposable[] = [];
   private _editorModel?: monaco.editor.ITextModel;
   private _editor?: monaco.editor.IStandaloneCodeEditor;
 
   @ViewChild('dsceditor') dscEditor: any;
 
-  @Input()
-  public get model(): MsOrnament | undefined {
-    return this._model;
-  }
-  public set model(value: MsOrnament | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(value);
-  }
+  public readonly ornament = model<MsOrnament>();
 
-  @Input()
-  public ornTypeEntries: ThesaurusEntry[] | undefined;
+  public readonly ornTypeEntries = input<ThesaurusEntry[]>();
+  public readonly szUnitEntries = input<ThesaurusEntry[]>();
+  public readonly szTagEntries = input<ThesaurusEntry[]>();
+  public readonly szDimTagEntries = input<ThesaurusEntry[]>();
 
-  @Input()
-  public szUnitEntries: ThesaurusEntry[] | undefined;
-
-  @Input()
-  public szTagEntries: ThesaurusEntry[] | undefined;
-
-  @Input()
-  public szDimTagEntries: ThesaurusEntry[] | undefined;
-
-  @Output()
-  public modelChange: EventEmitter<MsOrnament>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public type: FormControl<string | null>;
@@ -120,9 +98,6 @@ export class MsOrnamentComponent implements OnInit, OnDestroy, AfterViewInit {
     @Optional()
     private _editorBindings?: CadmusTextEdBindings
   ) {
-    this.modelChange = new EventEmitter<MsOrnament>();
-    this.editorClose = new EventEmitter<any>();
-    // form
     this.type = formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(50),
@@ -146,14 +121,13 @@ export class MsOrnamentComponent implements OnInit, OnDestroy, AfterViewInit {
       note: this.note,
       hasSize: this.hasSize,
     });
-  }
 
-  ngOnInit(): void {
-    this.updateForm(this.model);
+    effect(() => {
+      this.updateForm(this.ornament());
+    });
   }
 
   ngAfterViewInit(): void {
-    this.updateForm(this.model);
     // HACK: required to show the monaco editor when this component
     // is used in some initially-hidden container, e.g. a tab
     setTimeout(() => {
@@ -251,7 +225,7 @@ export class MsOrnamentComponent implements OnInit, OnDestroy, AfterViewInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsOrnament {
+  private getOrnament(): MsOrnament {
     return {
       type: this.type.value?.trim() || '',
       start: this._locService.parseLocation(this.start.value) as MsLocation,
@@ -275,7 +249,6 @@ export class MsOrnamentComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.ornament.set(this.getOrnament());
   }
 }

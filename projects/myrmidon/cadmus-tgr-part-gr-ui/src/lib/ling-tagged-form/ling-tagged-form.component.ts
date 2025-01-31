@@ -1,10 +1,12 @@
 import {
   Component,
+  effect,
   ElementRef,
-  EventEmitter,
-  Input,
+  input,
+  model,
+  OnDestroy,
   OnInit,
-  Output,
+  output,
   ViewChild,
 } from '@angular/core';
 import {
@@ -16,7 +18,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
@@ -84,43 +86,17 @@ const BUCKET_TAGS_KEY = 'ling-tags';
     MatHint,
   ],
 })
-export class LingTaggedFormComponent implements OnInit {
-  private _tagEntries: ThesaurusEntry[] | undefined;
-  private _auxEntries: ThesaurusEntry[] | undefined;
-  private _model: LingTaggedForm | undefined;
+export class LingTaggedFormComponent implements OnInit, OnDestroy {
+  private _sub?: Subscription;
   private _updates$: BehaviorSubject<string>;
 
-  @Input()
-  public get tagEntries(): ThesaurusEntry[] | undefined {
-    return this._tagEntries;
-  }
-  public set tagEntries(value: ThesaurusEntry[] | undefined) {
-    this._tagEntries = value;
-    this._updates$.next('tag');
-  }
+  public readonly tagEntries = input<ThesaurusEntry[]>();
 
-  @Input()
-  public get auxEntries(): ThesaurusEntry[] | undefined {
-    return this._auxEntries;
-  }
-  public set auxEntries(value: ThesaurusEntry[] | undefined) {
-    this._auxEntries = value;
-    this._updates$.next('aux');
-  }
+  public readonly auxEntries = input<ThesaurusEntry[]>();
 
-  @Input()
-  public get model(): LingTaggedForm | undefined {
-    return this._model;
-  }
-  public set model(value: LingTaggedForm | undefined) {
-    this._model = value;
-    this._updates$.next('mod');
-  }
+  public readonly taggedForm = model<LingTaggedForm>();
 
-  @Output()
-  public modelChange: EventEmitter<LingTaggedForm>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   @ViewChild('notebar', { static: false })
   noteDivRef?: ElementRef<HTMLElement>;
@@ -141,8 +117,6 @@ export class LingTaggedFormComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _store: BucketStoreService
   ) {
-    this.modelChange = new EventEmitter<LingTaggedForm>();
-    this.editorClose = new EventEmitter<any>();
     this._updates$ = new BehaviorSubject<string>('');
     this.editedTagIndex = -1;
     this.editingNotes = false;
@@ -166,21 +140,50 @@ export class LingTaggedFormComponent implements OnInit {
     this.noteForm = _formBuilder.group({
       notes: this.notes,
     });
+
+    // when tagged form changes, update for mod
+    effect(() => {
+      this.onTaggedFormChange(this.taggedForm());
+    });
+
+    effect(() => {
+      this.onTagEntriesChange(this.tagEntries());
+    });
+
+    effect(() => {
+      this.onAuxEntriesChange(this.auxEntries());
+    });
   }
 
-  ngOnInit(): void {
-    this._updates$
+  private onTaggedFormChange(form?: LingTaggedForm): void {
+    this._updates$.next('mod');
+  }
+
+  private onTagEntriesChange(entries?: ThesaurusEntry[]): void {
+    this._updates$.next('tag');
+  }
+
+  private onAuxEntriesChange(entries?: ThesaurusEntry[]): void {
+    this._updates$.next('aux');
+  }
+
+  public ngOnInit(): void {
+    this._sub = this._updates$
       .pipe(
         filter((s) => (s ? true : false)),
         debounceTime(200)
       )
       .subscribe((_) => {
-        this.updateForm(this._model);
+        this.updateForm(this.taggedForm());
       });
 
     this._store.changes$.subscribe((_) => {
       this.bucketAvailable = this._store.has(BUCKET_TAGS_KEY);
     });
+  }
+
+  public ngOnDestroy(): void {
+    this._sub?.unsubscribe();
   }
 
   private updateForm(model: LingTaggedForm | undefined): void {
@@ -198,7 +201,7 @@ export class LingTaggedFormComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): LingTaggedForm {
+  private getTaggedForm(): LingTaggedForm {
     // split text into lemmata, trimming and removing
     // empty or duplicate lemmata
     const lemmata = [
@@ -259,12 +262,12 @@ export class LingTaggedFormComponent implements OnInit {
 
   public getTagLabel(tag: string): string {
     // get the tag label from the thesaurus if any, else use ID
-    const entry = this._tagEntries?.find((e) => e.id === tag);
+    const entry = this.tagEntries()?.find((e) => e.id === tag);
     return entry ? entry.value : tag;
   }
 
   public getAuxLabel(tag: string): string {
-    const entry = this._auxEntries?.find((e) => e.id === tag);
+    const entry = this.auxEntries()?.find((e) => e.id === tag);
     return entry ? entry.value : tag;
   }
 
@@ -298,11 +301,11 @@ export class LingTaggedFormComponent implements OnInit {
   public tagHasNotes(tag: string): boolean {
     // a tag may have notes when the aux thesaurus has any
     // entry starting with its ID plus "--"
-    if (!this.auxEntries?.length) {
+    if (!this.auxEntries()?.length) {
       return false;
     }
     const prefix = tag + '--';
-    return this.auxEntries.some((e) => e.id.startsWith(prefix));
+    return this.auxEntries()!.some((e) => e.id.startsWith(prefix));
   }
 
   private getEditTagNotes(tag: AnnotatedTag): EditedTaggedNote[] {
@@ -314,7 +317,7 @@ export class LingTaggedFormComponent implements OnInit {
     // [ { tag: 'one', label: 'A1' },
     //   { tag: 'two', label: 'A2' }]
 
-    if (!this.auxEntries) {
+    if (!this.auxEntries()?.length) {
       return [];
     }
     const prefix = tag.value + '--';
@@ -329,7 +332,7 @@ export class LingTaggedFormComponent implements OnInit {
     });
 
     // add to them all the notes defined for the tag
-    this.auxEntries
+    this.auxEntries()!
       .filter((e) => e.id.startsWith(prefix))
       .forEach((entry) => {
         const nid = entry.id.substring(prefix.length);
@@ -359,7 +362,7 @@ export class LingTaggedFormComponent implements OnInit {
   }
 
   public editTagNotes(index: number): void {
-    if (!this.auxEntries || index === this.editedTagIndex || !this.tags) {
+    if (!this.auxEntries()?.length || index === this.editedTagIndex || !this.tags) {
       return;
     }
     this.editedTagIndex = index;
@@ -423,8 +426,7 @@ export class LingTaggedFormComponent implements OnInit {
     if (this.editedTagIndex > -1) {
       this.closeTagNotes();
     }
-    const model = this.getModel();
-    this.modelChange.emit(model);
+    this.taggedForm.set(this.getTaggedForm());
     this.form.markAsPristine();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, model, output } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -42,25 +42,10 @@ import { MsHand, MsHandLetter } from '../ms-scripts-part';
     MatTooltip,
   ],
 })
-export class MsHandComponent implements OnInit {
-  private _model: MsHand | undefined;
+export class MsHandComponent {
+  public readonly hand = model<MsHand>();
 
-  @Input()
-  public get model(): MsHand | undefined {
-    return this._model;
-  }
-  public set model(value: MsHand | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(this._model);
-  }
-
-  @Output()
-  public modelChange: EventEmitter<MsHand>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public id: FormControl<string | null>;
@@ -76,9 +61,6 @@ export class MsHandComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
-    this.modelChange = new EventEmitter<MsHand>();
-    this.editorClose = new EventEmitter<any>();
-    // form
     this.id = _formBuilder.control(null, Validators.maxLength(50));
     this.start = _formBuilder.control(null, [
       Validators.required,
@@ -100,10 +82,10 @@ export class MsHandComponent implements OnInit {
       abbreviations: this.abbreviations,
       letters: this.letters,
     });
-  }
 
-  ngOnInit(): void {
-    // this.updateForm(this.model);
+    effect(() => {
+      this.updateForm(this.hand());
+    });
   }
 
   private updateForm(model: MsHand | undefined): void {
@@ -145,7 +127,7 @@ export class MsHandComponent implements OnInit {
     return letters;
   }
 
-  private getModel(): MsHand {
+  private getHand(): MsHand {
     return {
       id: this.id.value?.trim() || '',
       start: this._locService.parseLocation(this.start.value) as MsLocation,
@@ -214,7 +196,6 @@ export class MsHandComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.hand.set(this.getHand());
   }
 }

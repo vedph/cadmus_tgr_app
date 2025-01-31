@@ -24,36 +24,38 @@
         first = $first; let last = $last) {
         <div>
           <!-- child form -->
-          <div [formGroupName]="i">
+          <div [formGroupName]="i" class="form-row">
             <!-- child actions -->
-            {{ i + 1 }}.
-            <button
-              mat-icon-button
-              type="button"
-              matTooltip="Remove this signature"
-              color="warn"
-              (click)="removeSignature(i)"
-            >
-              <mat-icon class="mat-warn">remove_circle</mat-icon>
-            </button>
-            <button
-              [disabled]="first"
-              mat-icon-button
-              type="button"
-              matTooltip="Move signature up"
-              (click)="moveSignatureUp(i)"
-            >
-              <mat-icon>arrow_upward</mat-icon>
-            </button>
-            <button
-              [disabled]="last"
-              mat-icon-button
-              type="button"
-              matTooltip="Move signature down"
-              (click)="moveSignatureDown(i)"
-            >
-              <mat-icon>arrow_downward</mat-icon>
-            </button>
+            <div>
+              {{ i + 1 }}.
+              <button
+                mat-icon-button
+                type="button"
+                matTooltip="Remove this signature"
+                color="warn"
+                (click)="removeSignature(i)"
+              >
+                <mat-icon class="mat-warn">remove_circle</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move signature up"
+                (click)="moveSignatureUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move signature down"
+                (click)="moveSignatureDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </div>
             <!-- child controls -->
             <!-- tag (bound) -->
             @if (tagEntries?.length) {
@@ -79,7 +81,6 @@
             </mat-form-field>
             }
             <!-- city -->
-            &nbsp;
             <mat-form-field style="width: 10em">
               <mat-label>city</mat-label>
               <input matInput formControlName="city" #city />
@@ -94,7 +95,6 @@
               }
             </mat-form-field>
             <!-- library -->
-            &nbsp;
             <mat-form-field style="width: 20em">
               <mat-label>library</mat-label>
               <input matInput formControlName="library" />
@@ -120,7 +120,6 @@
                 }
               </mat-form-field>
               <!-- location -->
-              &nbsp;
               <mat-form-field style="width: 8em">
                 <mat-label>location</mat-label>
                 <input matInput formControlName="location" />

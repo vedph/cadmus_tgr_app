@@ -2,20 +2,20 @@
   <mat-tab-group>
     <!-- GENERAL -->
     <mat-tab label="general">
-      <div>
+      <div class="form-row">
         <!-- tag (bound) -->
-        @if (quotTagEntries?.length) {
+        @if (quotTagEntries()?.length) {
         <mat-form-field>
           <mat-label>tag</mat-label>
           <mat-select [formControl]="tag">
-            @for (e of quotTagEntries; track e) {
+            @for (e of quotTagEntries(); track e) {
             <mat-option [value]="e.id">{{ e.value }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
         }
         <!-- tag (free) -->
-        @if (!quotTagEntries?.length) {
+        @else {
         <mat-form-field>
           <mat-label>tag</mat-label>
           <input matInput [formControl]="tag" />
@@ -23,13 +23,13 @@
           <mat-error>tag too long</mat-error>
           }
         </mat-form-field>
-        } &nbsp;
+        }
         <!-- authority (bound) -->
-        @if (quotAuthEntries?.length) {
+        @if (quotAuthEntries()?.length) {
         <mat-form-field>
           <mat-label>authority</mat-label>
           <mat-select [formControl]="authority">
-            @for (e of quotAuthEntries; track e) {
+            @for (e of quotAuthEntries(); track e) {
             <mat-option [value]="e.id">{{ e.value }}</mat-option>
             }
           </mat-select>
@@ -40,7 +40,7 @@
         </mat-form-field>
         }
         <!-- authority (free) -->
-        @if (!quotAuthEntries?.length) {
+        @else {
         <mat-form-field>
           <mat-label>authority</mat-label>
           <input matInput [formControl]="authority" />
@@ -56,13 +56,13 @@
       </div>
       <div>
         <cadmus-thesaurus-tree
-          [entries]="workEntries || []"
+          [entries]="workEntries() || []"
           rootLabel="works"
           [renderLabel]="renderLabel"
           (entryChange)="onEntryChange($event)"
-        ></cadmus-thesaurus-tree>
+        />
       </div>
-      <div>
+      <div class="form-row">
         <!-- work -->
         <mat-form-field>
           <mat-label>work</mat-label>
@@ -74,7 +74,6 @@
           }
         </mat-form-field>
         <!-- location -->
-        &nbsp;
         <mat-form-field>
           <mat-label>location</mat-label>
           <input matInput [formControl]="location" />
@@ -116,36 +115,38 @@
           first = $first; let last = $last) {
           <div>
             <!-- child form -->
-            <div [formGroupName]="i">
+            <div [formGroupName]="i" class="form-row">
               <!-- child actions -->
-              {{ i + 1 }}.
-              <button
-                mat-icon-button
-                type="button"
-                matTooltip="Remove this parallel"
-                color="warn"
-                (click)="removeParallel(i)"
-              >
-                <mat-icon class="mat-warn">remove_circle</mat-icon>
-              </button>
-              <button
-                [disabled]="first"
-                mat-icon-button
-                type="button"
-                matTooltip="Move parallel up"
-                (click)="moveParallelUp(i)"
-              >
-                <mat-icon>arrow_upward</mat-icon>
-              </button>
-              <button
-                [disabled]="last"
-                mat-icon-button
-                type="button"
-                matTooltip="Move parallel down"
-                (click)="moveParallelDown(i)"
-              >
-                <mat-icon>arrow_downward</mat-icon>
-              </button>
+              <div>
+                {{ i + 1 }}.
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Remove this parallel"
+                  color="warn"
+                  (click)="removeParallel(i)"
+                >
+                  <mat-icon class="mat-warn">remove_circle</mat-icon>
+                </button>
+                <button
+                  [disabled]="first"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move parallel up"
+                  (click)="moveParallelUp(i)"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button
+                  [disabled]="last"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move parallel down"
+                  (click)="moveParallelDown(i)"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+              </div>
               <!-- child controls -->
               <!-- work -->
               <mat-form-field>
@@ -161,7 +162,6 @@
                 <mat-error>too long</mat-error>
                 }
               </mat-form-field>
-              &nbsp;
               <!-- location -->
               <mat-form-field>
                 <mat-label>location</mat-label>
@@ -176,20 +176,19 @@
                 <mat-error>too long</mat-error>
                 }
               </mat-form-field>
-              &nbsp;
               <!-- tag (bound) -->
-              @if (quotTagEntries?.length) {
+              @if (quotTagEntries()?.length) {
               <mat-form-field>
                 <mat-label>tag</mat-label>
                 <mat-select formControlName="qtag">
-                  @for (e of quotTagEntries; track e) {
+                  @for (e of quotTagEntries(); track e) {
                   <mat-option [value]="e.id">{{ e.value }}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
               }
               <!-- tag (free) -->
-              @if (!quotTagEntries?.length) {
+              @else {
               <mat-form-field>
                 <mat-label>tag</mat-label>
                 <input matInput formControlName="qtag" />
@@ -201,7 +200,6 @@
               </mat-form-field>
               }
               <!-- note -->
-              &nbsp;
               <mat-form-field>
                 <mat-label>note</mat-label>
                 <input matInput formControlName="note" />
@@ -230,7 +228,7 @@
           <mat-icon>add_circle</mat-icon> variant
         </button>
       </div>
-      @if (variants?.value?.length) {
+      @if (variants.value.length) {
       <table>
         <thead>
           <tr>
@@ -243,7 +241,7 @@
         <tbody>
           @for ( variant of variants.value; track variant; let i = $index; let
           first = $first; let last = $last) {
-          <tr>
+          <tr [class.selected]="editedVariant === variant">
             <td>
               <button
                 type="button"
@@ -291,19 +289,20 @@
           }
         </tbody>
       </table>
-      }
+      } @if (editedVariant) {
       <mat-expansion-panel [disabled]="!editedVariant" [expanded]="variantOpen">
         <mat-expansion-panel-header>variant</mat-expansion-panel-header>
         <tgr-quotation-variant
-          [model]="editedVariant"
-          [witEntries]="witEntries"
-          [authEntries]="authEntries"
-          [authTagEntries]="authTagEntries"
-          [workEntries]="workEntries"
-          (modelChange)="onVariantSave($event)"
+          [variant]="editedVariant"
+          [witEntries]="witEntries()"
+          [authEntries]="authEntries()"
+          [authTagEntries]="authTagEntries()"
+          [workEntries]="workEntries()"
+          (variantChange)="onVariantSave($event!)"
           (editorClose)="onVariantClose()"
         />
       </mat-expansion-panel>
+      }
     </mat-tab>
   </mat-tab-group>
   <!-- buttons -->

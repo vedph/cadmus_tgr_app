@@ -6,9 +6,9 @@
       </div>
       <mat-card-title
         >Quotations with Variants Fragment
-        {{ data?.value?.location }}</mat-card-title
+        {{ data()?.value?.location }}</mat-card-title
       >
-      <mat-card-subtitle> {{ data?.baseText }} </mat-card-subtitle>
+      <mat-card-subtitle> {{ data()?.baseText }} </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <div>
@@ -36,7 +36,7 @@
         <tbody>
           @for ( entry of quotations.value; track entry; let i = $index; let
           first = $first; let last = $last) {
-          <tr>
+          <tr [class.selected]="editedQuotationIndex === i">
             <td>
               <button
                 type="button"
@@ -83,7 +83,7 @@
           }
         </tbody>
       </table>
-      }
+      } @if (editedQuotation){
       <mat-expansion-panel
         [expanded]="editedQuotation"
         [disabled]="!editedQuotation"
@@ -92,17 +92,18 @@
           >#{{ editedQuotationIndex + 1 }}</mat-expansion-panel-header
         >
         <tgr-var-quotation
-          [model]="editedQuotation"
+          [quotation]="editedQuotation"
           [quotTagEntries]="quotTagEntries"
           [quotAuthEntries]="quotAuthEntries"
           [workEntries]="workEntries"
           [witEntries]="witEntries"
           [authEntries]="authEntries"
           [authTagEntries]="authTagEntries"
-          (modelChange)="saveQuotation($event)"
+          (quotationChange)="saveQuotation($event!)"
           (editorClose)="closeQuotation()"
         />
       </mat-expansion-panel>
+      }
     </mat-card-content>
     <mat-card-actions>
       <cadmus-close-save-buttons

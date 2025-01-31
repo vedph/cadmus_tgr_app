@@ -29,9 +29,9 @@
           </tr>
         </thead>
         <tbody>
-          @for ( entry of places.value; track entry; let i = $index; let first
-          = $first; let last = $last) {
-          <tr>
+          @for ( entry of places.value; track entry; let i = $index; let first =
+          $first; let last = $last) {
+          <tr [class.selected]="editedPlaceIndex === i">
             <td>
               <button
                 type="button"
@@ -77,19 +77,20 @@
           }
         </tbody>
       </table>
-      }
+      } @if (editedPlace) {
       <mat-expansion-panel [expanded]="editedPlace" [disabled]="!editedPlace">
         <mat-expansion-panel-header
           >place #{{ editedPlaceIndex + 1 }}</mat-expansion-panel-header
         >
         <tgr-ms-place
-          [model]="editedPlace"
+          [place]="editedPlace"
           [areaEntries]="areaEntries"
           [tagEntries]="tagEntries"
-          (modelChange)="savePlace($event)"
+          (placeChange)="savePlace($event!)"
           (editorClose)="closePlace()"
         />
       </mat-expansion-panel>
+      }
     </mat-card-content>
     <mat-card-actions>
       <cadmus-close-save-buttons

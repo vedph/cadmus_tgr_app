@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -44,25 +44,10 @@ import { MsPlace } from '../ms-places-part';
     MatIcon,
   ],
 })
-export class MsPlaceComponent implements OnInit {
-  private _model: MsPlace | undefined;
+export class MsPlaceComponent {
+  public readonly place = model<MsPlace>();
 
-  @Input()
-  public get model(): MsPlace | undefined {
-    return this._model;
-  }
-  public set model(value: MsPlace | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(this._model);
-  }
-
-  @Output()
-  public modelChange: EventEmitter<MsPlace>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public area: FormControl<string | null>;
@@ -77,17 +62,13 @@ export class MsPlaceComponent implements OnInit {
   /**
    * ms-place-areas thesaurus entries.
    */
-  @Input()
-  public areaEntries: ThesaurusEntry[] | undefined;
+  public readonly areaEntries = input<ThesaurusEntry[]>();
   /**
    * doc-reference-tags thesaurus entries.
    */
-  @Input()
-  public tagEntries: ThesaurusEntry[] | undefined;
+  public readonly tagEntries = input<ThesaurusEntry[]>();
 
   constructor(formBuilder: FormBuilder) {
-    this.modelChange = new EventEmitter<MsPlace>();
-    this.editorClose = new EventEmitter<any>();
     this.initialSources = [];
     // form
     this.area = formBuilder.control(null, [
@@ -107,29 +88,29 @@ export class MsPlaceComponent implements OnInit {
       rank: this.rank,
       sources: this.sources,
     });
+
+    effect(() => {
+      this.updateForm(this.place());
+    });
   }
 
-  ngOnInit(): void {
-    // this.updateForm(this.model);
-  }
-
-  private updateForm(model: MsPlace | undefined): void {
-    if (!model) {
+  private updateForm(place: MsPlace | undefined): void {
+    if (!place) {
       this.form.reset();
       return;
     }
 
-    this.area.setValue(model.area);
-    this.address.setValue(model.address || null);
-    this.city.setValue(model.city || null);
-    this.site.setValue(model.site || null);
-    this.rank.setValue(model.rank || 0);
-    this.initialSources = model.sources || [];
+    this.area.setValue(place.area);
+    this.address.setValue(place.address || null);
+    this.city.setValue(place.city || null);
+    this.site.setValue(place.site || null);
+    this.rank.setValue(place.rank || 0);
+    this.initialSources = place.sources || [];
 
     this.form.markAsPristine();
   }
 
-  private getModel(): MsPlace {
+  private getPlace(): MsPlace {
     return {
       area: this.area.value?.trim() || '',
       address: this.address.value?.trim(),
@@ -153,7 +134,6 @@ export class MsPlaceComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.place.set(this.getPlace());
   }
 }

@@ -4,18 +4,18 @@
     <mat-checkbox [formControl]="back">back</mat-checkbox>
     &nbsp;
     <!-- material (bound) -->
-    @if (matEntries?.length) {
+    @if (matEntries()?.length) {
     <mat-form-field>
       <mat-label>material</mat-label>
       <mat-select [formControl]="material">
-        @for (e of matEntries; track e) {
+        @for (e of matEntries(); track e) {
         <mat-option [value]="e.id">{{ e.value }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
     }
     <!-- material (free) -->
-    @if (!matEntries?.length) {
+    @else {
     <mat-form-field>
       <mat-label>material</mat-label>
       <input matInput [formControl]="material" />

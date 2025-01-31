@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -63,60 +63,40 @@ import { QuotationVariantComponent } from '../quotation-variant/quotation-varian
     QuotationVariantComponent,
   ],
 })
-export class VarQuotationComponent implements OnInit {
-  private _model: VarQuotation | undefined;
+export class VarQuotationComponent {
   private _editedIndex;
 
   public editedVariant: QuotationVariant | undefined;
   public variantOpen: boolean;
 
-  @Input()
-  public get model(): VarQuotation | undefined {
-    return this._model;
-  }
-  public set model(value: VarQuotation | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(value);
-  }
+  public readonly quotation = model<VarQuotation>();
 
   /**
    * Quotation tags.
    */
-  @Input()
-  public quotTagEntries: ThesaurusEntry[] | undefined;
+  public readonly quotTagEntries = input<ThesaurusEntry[]>();
   /**
    * Quotation authorities.
    */
-  @Input()
-  public quotAuthEntries: ThesaurusEntry[] | undefined;
+  public readonly quotAuthEntries = input<ThesaurusEntry[]>();
   /**
    * Authors and works.
    */
-  @Input()
-  public workEntries: ThesaurusEntry[] | undefined;
+  public readonly workEntries = input<ThesaurusEntry[]>();
   /**
    * Witnesses.
    */
-  @Input()
-  public witEntries: ThesaurusEntry[] | undefined;
+  public readonly witEntries = input<ThesaurusEntry[]>();
   /**
    * Authors.
    */
-  @Input()
-  public authEntries: ThesaurusEntry[] | undefined;
+  public readonly authEntries = input<ThesaurusEntry[]>();
   /**
    * Author's tags.
    */
-  @Input()
-  public authTagEntries: ThesaurusEntry[] | undefined;
+  public readonly authTagEntries = input<ThesaurusEntry[]>();
 
-  @Output()
-  public modelChange: EventEmitter<VarQuotation>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public tag: FormControl<string | null>;
@@ -132,8 +112,6 @@ export class VarQuotationComponent implements OnInit {
     private _clipboard: Clipboard,
     private _dialogService: DialogService
   ) {
-    this.modelChange = new EventEmitter<VarQuotation>();
-    this.editorClose = new EventEmitter<any>();
     this._editedIndex = -1;
     this.variantOpen = false;
     // form
@@ -162,10 +140,10 @@ export class VarQuotationComponent implements OnInit {
       parallels: this.parallels,
       variants: this.variants,
     });
-  }
 
-  ngOnInit(): void {
-    this.updateForm(this.model);
+    effect(() => {
+      this.updateForm(this.quotation());
+    });
   }
 
   private updateForm(model: VarQuotation | undefined): void {
@@ -190,7 +168,7 @@ export class VarQuotationComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): VarQuotation {
+  private getQuotation(): VarQuotation {
     return {
       tag: this.tag.value?.trim(),
       authority: this.authority.value?.trim() || '',
@@ -359,7 +337,7 @@ export class VarQuotationComponent implements OnInit {
   }
 
   public quoteTagToString(tag: string): string {
-    const entry = this.quotTagEntries?.find((e) => e.id === tag);
+    const entry = this.quotTagEntries()?.find((e) => e.id === tag);
     return entry ? entry.value : tag;
   }
 
@@ -397,7 +375,6 @@ export class VarQuotationComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.quotation.set(this.getQuotation());
   }
 }

@@ -26,7 +26,7 @@
       </div>
       <!-- tags -->
       <cadmus-thesaurus-tree
-        [entries]="tagEntries || []"
+        [entries]="tagEntries() || []"
         rootLabel="tags"
         [renderLabel]="renderLabel"
         (entryChange)="onEntryChange($event)"
@@ -155,7 +155,7 @@
       </div>
     </mat-tab>
   </mat-tab-group>
-  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+  <div class="form-row">
     <button
       type="button"
       mat-icon-button

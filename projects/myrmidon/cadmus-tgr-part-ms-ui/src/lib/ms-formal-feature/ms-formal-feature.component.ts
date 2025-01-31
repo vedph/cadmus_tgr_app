@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, effect, model, output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -41,34 +34,16 @@ import { MsFormalFeature } from '../ms-formal-features-part';
     MatIcon,
   ],
 })
-export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
-  private _model: MsFormalFeature | undefined;
+export class MsFormalFeatureComponent {
+  public readonly feature = model<MsFormalFeature>();
 
-  @Input()
-  public get model(): MsFormalFeature | undefined {
-    return this._model;
-  }
-  public set model(value: MsFormalFeature | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(value);
-  }
-
-  @Output()
-  public modelChange: EventEmitter<MsFormalFeature>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public handId: FormControl<string | null>;
   public description: FormControl<string | null>;
 
   constructor(formBuilder: FormBuilder) {
-    this.modelChange = new EventEmitter<MsFormalFeature>();
-    this.editorClose = new EventEmitter<any>();
-    // form
     this.handId = formBuilder.control(null, Validators.maxLength(50));
     this.description = formBuilder.control(null, [
       Validators.required,
@@ -78,12 +53,10 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
       handId: this.handId,
       description: this.description,
     });
-  }
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
-    this.updateForm(this.model);
+    effect(() => {
+      this.updateForm(this.feature());
+    });
   }
 
   private updateForm(model: MsFormalFeature | undefined): void {
@@ -98,7 +71,7 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsFormalFeature {
+  private getFeature(): MsFormalFeature {
     return {
       handId: this.handId.value?.trim() || '',
       description: this.description.value?.trim() || '',
@@ -113,7 +86,6 @@ export class MsFormalFeatureComponent implements OnInit, AfterViewInit {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.feature.set(this.getFeature());
   }
 }

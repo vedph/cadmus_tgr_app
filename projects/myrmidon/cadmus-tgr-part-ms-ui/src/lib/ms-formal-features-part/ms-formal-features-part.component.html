@@ -29,7 +29,7 @@
         <tbody>
           @for ( feature of features.value; track feature; let i = $index; let
           first = $first; let last = $last) {
-          <tr>
+          <tr [class.selected]="editedFeature === feature">
             <td>
               <button
                 type="button"
@@ -73,7 +73,7 @@
           }
         </tbody>
       </table>
-      }
+      } @if (editedFeature) {
       <mat-expansion-panel
         [expanded]="editedFeature"
         [disabled]="!editedFeature"
@@ -82,12 +82,12 @@
           >content #{{ editedFeatureIndex + 1 }}</mat-expansion-panel-header
         >
         <tgr-ms-formal-feature
-          [model]="editedFeature"
-          (modelChange)="saveFeature($event)"
+          [feature]="editedFeature"
+          (featureChange)="saveFeature($event!)"
           (editorClose)="closeFeature()"
-        >
-        </tgr-ms-formal-feature>
+        />
       </mat-expansion-panel>
+      }
     </mat-card-content>
     <mat-card-actions>
       <cadmus-close-save-buttons

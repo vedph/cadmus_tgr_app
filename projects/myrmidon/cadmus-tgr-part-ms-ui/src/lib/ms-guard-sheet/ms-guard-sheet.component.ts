@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -42,30 +42,15 @@ import { MsGuardSheet, MsWatermark } from '../ms-units-part';
     MatTooltip,
   ],
 })
-export class MsGuardSheetComponent implements OnInit {
-  private _model: MsGuardSheet | undefined;
-
-  @Input()
-  public get model(): MsGuardSheet | undefined {
-    return this._model;
-  }
-  public set model(value: MsGuardSheet | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(this._model);
-  }
+export class MsGuardSheetComponent {
+  public readonly sheet = model<MsGuardSheet>();
 
   /**
    * Manuscript materials entries.
    */
-  @Input()
-  public matEntries: ThesaurusEntry[] | undefined;
-  @Output()
-  public modelChange: EventEmitter<MsGuardSheet>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly matEntries = input<ThesaurusEntry[]>();
+
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public back: FormControl<boolean>;
@@ -74,9 +59,6 @@ export class MsGuardSheetComponent implements OnInit {
   public watermarks: FormArray;
 
   constructor(private _formBuilder: FormBuilder) {
-    this.modelChange = new EventEmitter<MsGuardSheet>();
-    this.editorClose = new EventEmitter<any>();
-    // form
     this.back = _formBuilder.control(false, { nonNullable: true });
     this.material = _formBuilder.control(null, Validators.maxLength(50));
     this.note = _formBuilder.control(null, Validators.maxLength(1500));
@@ -87,26 +69,26 @@ export class MsGuardSheetComponent implements OnInit {
       note: this.note,
       watermarks: this.watermarks,
     });
+
+    effect(() => {
+      this.updateForm(this.sheet());
+    });
   }
 
-  ngOnInit(): void {
-    // this.updateForm(this.model);
-  }
-
-  private updateForm(model: MsGuardSheet | undefined): void {
-    if (!model) {
+  private updateForm(sheet: MsGuardSheet | undefined): void {
+    if (!sheet) {
       this.form.reset();
       return;
     }
 
-    this.back.setValue(model.isBack ? true : false);
-    this.material.setValue(model.material || null);
-    this.note.setValue(model.note || null);
+    this.back.setValue(sheet.isBack ? true : false);
+    this.material.setValue(sheet.material || null);
+    this.note.setValue(sheet.note || null);
 
     // watermarks
     this.watermarks.clear();
-    if (model.watermarks?.length) {
-      for (const watermark of model.watermarks) {
+    if (sheet.watermarks?.length) {
+      for (const watermark of sheet.watermarks) {
         this.watermarks.push(this.getWatermarkGroup(watermark));
       }
     }
@@ -114,7 +96,7 @@ export class MsGuardSheetComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): MsGuardSheet {
+  private getSheet(): MsGuardSheet {
     const model: MsGuardSheet = {
       isBack: this.back.value,
       material: this.material.value?.trim(),
@@ -183,7 +165,6 @@ export class MsGuardSheetComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.sheet.set(this.getSheet());
   }
 }

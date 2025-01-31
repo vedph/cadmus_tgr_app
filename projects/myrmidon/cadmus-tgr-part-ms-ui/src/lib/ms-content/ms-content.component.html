@@ -26,7 +26,7 @@
         </mat-form-field>
       </div>
       <!-- work -->
-      @if (workEntries?.length) {
+      @if (workEntries()?.length) {
       <fieldset>
         <legend>work</legend>
         <!-- work -->
@@ -41,7 +41,7 @@
         </mat-form-field>
         <!-- tree -->
         <cadmus-thesaurus-tree
-          [entries]="$any(workEntries)"
+          [entries]="workEntries()"
           rootLabel="works"
           [renderLabel]="renderLabel"
           (entryChange)="onWorkEntryChange($event)"
@@ -109,8 +109,8 @@
     <!-- EDITIONS -->
     <mat-tab label="editions">
       <cadmus-refs-doc-references
-        [typeEntries]="docTypeEntries"
-        [tagEntries]="docTagEntries"
+        [typeEntries]="docTypeEntries()"
+        [tagEntries]="docTagEntries()"
         [references]="initialEditions"
         (referencesChange)="onEditionsChange($event)"
       />

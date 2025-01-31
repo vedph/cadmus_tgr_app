@@ -34,7 +34,7 @@
         <tbody>
           @for ( unit of units.value; track unit; let i = $index; let first =
           $first; let last = $last) {
-          <tr>
+          <tr [class.selected]="editedUnit === unit">
             <td>
               <button
                 type="button"
@@ -83,7 +83,7 @@
           }
         </tbody>
       </table>
-      }
+      } @if (editedUnit) {
       <mat-expansion-panel [expanded]="editedUnit" [disabled]="!editedUnit">
         <mat-expansion-panel-header
           >unit #{{ editedUnitIndex + 1 }}</mat-expansion-panel-header
@@ -96,10 +96,11 @@
           [szUnitEntries]="szUnitEntries"
           [szTagEntries]="szTagEntries"
           [szDimTagEntries]="szDimTagEntries"
-          (unitChange)="saveUnit($event)"
+          (unitChange)="saveUnit($event!)"
           (editorClose)="closeUnit()"
         />
       </mat-expansion-panel>
+      }
     </mat-card-content>
     <mat-card-actions>
       <cadmus-close-save-buttons

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -48,75 +48,52 @@ import { VarQuotationComponent } from '../var-quotation/var-quotation.component'
     VarQuotationComponent,
   ],
 })
-export class InterpolationComponent implements OnInit {
-  private _model: Interpolation | undefined;
+export class InterpolationComponent {
   private _editedIndex: number;
 
   public tabIndex: number;
   public editedQuotation: VarQuotation | undefined;
 
-  @Input()
-  public get model(): Interpolation | undefined {
-    return this._model;
-  }
-  public set model(value: Interpolation | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(value);
-  }
+  public readonly interpolation = model<Interpolation>();
 
   /**
    * Interpolation roles.
    */
-  @Input()
-  public intRoleEntries: ThesaurusEntry[] | undefined;
+  public readonly intRoleEntries = input<ThesaurusEntry[]>();
   /**
    * Interpolation tags.
    */
-  @Input()
-  public intTagEntries: ThesaurusEntry[] | undefined;
+  public readonly intTagEntries = input<ThesaurusEntry[]>();
   /**
    * Interpolation languages.
    */
-  @Input()
-  public intLangEntries: ThesaurusEntry[] | undefined;
+  public readonly intLangEntries = input<ThesaurusEntry[]>();
   /**
    * Apparatus witnesses.
    */
-  @Input()
-  public witEntries: ThesaurusEntry[] | undefined;
+  public readonly witEntries = input<ThesaurusEntry[]>();
   /**
    * Quotation tags.
    */
-  @Input()
-  public quotTagEntries: ThesaurusEntry[] | undefined;
+  public readonly quotTagEntries = input<ThesaurusEntry[]>();
   /**
    * Quotation authorities.
    */
-  @Input()
-  public quotAuthEntries: ThesaurusEntry[] | undefined;
+  public readonly quotAuthEntries = input<ThesaurusEntry[]>();
   /**
    * Authors and works.
    */
-  @Input()
-  public workEntries: ThesaurusEntry[] | undefined;
+  public readonly workEntries = input<ThesaurusEntry[]>();
   /**
    * Authors.
    */
-  @Input()
-  public authEntries: ThesaurusEntry[] | undefined;
+  public readonly authEntries = input<ThesaurusEntry[]>();
   /**
    * Author's tags.
    */
-  @Input()
-  public authTagEntries: ThesaurusEntry[] | undefined;
+  public readonly authTagEntries = input<ThesaurusEntry[]>();
 
-  @Output()
-  public modelChange: EventEmitter<Interpolation>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public type: FormControl<number>;
@@ -133,8 +110,6 @@ export class InterpolationComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _dialogService: DialogService
   ) {
-    this.modelChange = new EventEmitter<Interpolation>();
-    this.editorClose = new EventEmitter<any>();
     this._editedIndex = -1;
     this.tabIndex = 0;
     // form
@@ -167,10 +142,10 @@ export class InterpolationComponent implements OnInit {
       sources: this.sources,
       quotations: this.quotations,
     });
-  }
 
-  ngOnInit(): void {
-    // this.updateForm(this.model);
+    effect(() => {
+      this.updateForm(this.interpolation());
+    });
   }
 
   private updateForm(model: Interpolation | undefined): void {
@@ -204,7 +179,7 @@ export class InterpolationComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  private getModel(): Interpolation {
+  private getInterpolation(): Interpolation {
     return {
       type: this.type.value,
       role: this.role.value?.trim() || '',
@@ -418,13 +393,13 @@ export class InterpolationComponent implements OnInit {
     let entries: ThesaurusEntry[] | undefined;
     switch (thesaurus) {
       case 't':
-        entries = this.quotTagEntries;
+        entries = this.quotTagEntries();
         break;
       case 'a':
-        entries = this.authEntries;
+        entries = this.authEntries();
         break;
       case 'w':
-        entries = this.workEntries;
+        entries = this.workEntries();
         break;
     }
     if (!entries) {
@@ -445,7 +420,6 @@ export class InterpolationComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.interpolation.set(this.getInterpolation());
   }
 }

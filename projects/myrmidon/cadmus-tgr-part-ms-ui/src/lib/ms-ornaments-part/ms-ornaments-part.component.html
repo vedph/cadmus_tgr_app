@@ -29,9 +29,9 @@
           </tr>
         </thead>
         <tbody>
-          @for ( ornament of ornaments?.value; track ornament; let i = $index;
+          @for ( ornament of ornaments.value; track ornament; let i = $index;
           let first = $first; let last = $last) {
-          <tr>
+          <tr [class.selected]="editedOrnament === ornament">
             <td>
               <button
                 type="button"
@@ -77,7 +77,7 @@
           }
         </tbody>
       </table>
-      }
+      } @if (editedOrnament) {
       <mat-expansion-panel
         [expanded]="editedOrnament"
         [disabled]="!editedOrnament"
@@ -86,16 +86,16 @@
           ornamentation #{{ editedOrnamentIndex + 1 }}
         </mat-expansion-panel-header>
         <tgr-ms-ornament
-          [model]="editedOrnament"
+          [ornament]="editedOrnament"
           [ornTypeEntries]="ornTypeEntries"
           [szUnitEntries]="szUnitEntries"
           [szTagEntries]="szTagEntries"
           [szDimTagEntries]="szDimTagEntries"
-          (modelChange)="saveOrnament($event)"
+          (ornamentChange)="saveOrnament($event!)"
           (editorClose)="closeOrnament()"
-        >
-        </tgr-ms-ornament>
+        />
       </mat-expansion-panel>
+      }
     </mat-card-content>
     <mat-card-actions>
       <cadmus-close-save-buttons

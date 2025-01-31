@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, model, effect, output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -48,25 +48,10 @@ import { MsPalimpsest } from '../ms-units-part';
     MatIcon,
   ],
 })
-export class MsPalimpsestComponent implements OnInit {
-  private _model: MsPalimpsest | undefined;
+export class MsPalimpsestComponent {
+  public readonly palimpsest = model<MsPalimpsest>();
 
-  @Input()
-  public get model(): MsPalimpsest | undefined {
-    return this._model;
-  }
-  public set model(value: MsPalimpsest | undefined) {
-    if (this._model === value) {
-      return;
-    }
-    this._model = value;
-    this.updateForm(this._model);
-  }
-
-  @Output()
-  public modelChange: EventEmitter<MsPalimpsest>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   public locations: FormControl<string | null>;
@@ -77,9 +62,6 @@ export class MsPalimpsestComponent implements OnInit {
     formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
-    this.modelChange = new EventEmitter<MsPalimpsest>();
-    this.editorClose = new EventEmitter<any>();
-    // form
     this.locations = formBuilder.control(null, [
       Validators.maxLength(100),
       this.locationsVal,
@@ -89,32 +71,32 @@ export class MsPalimpsestComponent implements OnInit {
       locations: this.locations,
       note: this.note,
     });
+
+    effect(() => {
+      this.updateForm(this.palimpsest());
+    });
   }
 
-  ngOnInit(): void {
-    // this.updateForm(this.model);
-  }
-
-  private updateForm(model: MsPalimpsest | undefined): void {
-    if (!model) {
+  private updateForm(palimpsest: MsPalimpsest | undefined): void {
+    if (!palimpsest) {
       this.form.reset();
       return;
     }
 
     this.locations.setValue(
-      model.locations
-        ? model.locations
+      palimpsest.locations
+        ? palimpsest.locations
             .map((l) => {
               return this._locService.locationToString(l);
             })
             .join(',')
         : ''
     );
-    this.note.setValue(model.note || null);
+    this.note.setValue(palimpsest.note || null);
     this.form.markAsPristine();
   }
 
-  private getModel(): MsPalimpsest {
+  private getPalimpsest(): MsPalimpsest {
     const model: MsPalimpsest = {
       locations: this.locations.value?.split(',').map((t: string) => {
         return this._locService.parseLocation(t.trim())!;
@@ -157,7 +139,6 @@ export class MsPalimpsestComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this._model = this.getModel();
-    this.modelChange.emit(this._model);
+    this.palimpsest.set(this.getPalimpsest());
   }
 }

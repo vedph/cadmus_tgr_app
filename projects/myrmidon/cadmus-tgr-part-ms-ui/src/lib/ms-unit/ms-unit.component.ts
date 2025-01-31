@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -72,56 +72,35 @@ import { MsRuling, MsUnit, MsWatermark } from '../ms-units-part';
     PhysicalSizeComponent,
   ],
 })
-export class MsUnitComponent implements OnInit {
-  private _unit?: MsUnit;
-
-  @Input()
-  public get unit(): MsUnit | undefined {
-    return this._unit;
-  }
-  public set unit(value: MsUnit | undefined) {
-    if (this._unit === value) {
-      return;
-    }
-    this._unit = value;
-    this.updateForm(this._unit);
-  }
+export class MsUnitComponent {
+  public readonly unit = model<MsUnit>();
 
   /**
    * Manuscript's materials.
    */
-  @Input()
-  public matEntries: ThesaurusEntry[] | undefined;
+  public readonly matEntries = input<ThesaurusEntry[]>();
   /**
    * Manuscript's ruling: manners of execution.
    */
-  @Input()
-  public rulManEntries: ThesaurusEntry[] | undefined;
+  public readonly rulManEntries = input<ThesaurusEntry[]>();
   /**
    * Manuscript's ruling: systems.
    */
-  @Input()
-  public rulSysEntries: ThesaurusEntry[] | undefined;
+  public readonly rulSysEntries = input<ThesaurusEntry[]>();
   /**
    * Physical size: units.
    */
-  @Input()
-  public szUnitEntries: ThesaurusEntry[] | undefined;
+  public readonly szUnitEntries = input<ThesaurusEntry[]>();
   /**
    * Physical size: size tags.
    */
-  @Input()
-  public szTagEntries: ThesaurusEntry[] | undefined;
+  public readonly szTagEntries = input<ThesaurusEntry[]>();
   /**
    * Physical size: dimensions tags.
    */
-  @Input()
-  public szDimTagEntries: ThesaurusEntry[] | undefined;
+  public readonly szDimTagEntries = input<ThesaurusEntry[]>();
 
-  @Output()
-  public unitChange: EventEmitter<MsUnit>;
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public form: FormGroup;
   // general
@@ -163,8 +142,6 @@ export class MsUnitComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _locService: MsLocationService
   ) {
-    this.unitChange = new EventEmitter<MsUnit>();
-    this.editorClose = new EventEmitter<any>();
     // form - general
     this.start = _formBuilder.control(null, [
       Validators.required,
@@ -236,9 +213,11 @@ export class MsUnitComponent implements OnInit {
       // watermarks
       watermarks: this.watermarks,
     });
-  }
 
-  ngOnInit(): void {}
+    effect(() => {
+      this.updateForm(this.unit());
+    });
+  }
 
   private locationsVal(control: AbstractControl): ValidationErrors | null {
     const locService = new MsLocationService();
@@ -362,7 +341,7 @@ export class MsUnitComponent implements OnInit {
     return locs.length ? (locs as MsLocation[]) : undefined;
   }
 
-  private getModel(): MsUnit {
+  private getUnit(): MsUnit {
     return {
       // general
       start: this._locService.parseLocation(this.start.value),
@@ -608,7 +587,6 @@ export class MsUnitComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this._unit = this.getModel();
-    this.unitChange.emit(this._unit);
+    this.unit.set(this.getUnit());
   }
 }
