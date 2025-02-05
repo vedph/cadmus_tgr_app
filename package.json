@@ -42,7 +42,7 @@
     "@myrmidon/cadmus-part-general-pg": "^12.0.0",
     "@myrmidon/cadmus-part-general-ui": "^12.0.0",
     "@myrmidon/cadmus-part-philology-pg": "^12.0.0",
-    "@myrmidon/cadmus-part-philology-ui": "^12.0.0",
+    "@myrmidon/cadmus-part-philology-ui": "^12.0.1",
     "@myrmidon/cadmus-preview-pg": "^12.0.0",
     "@myrmidon/cadmus-preview-ui": "^12.0.0",
     "@myrmidon/cadmus-profile-core": "^11.0.0",

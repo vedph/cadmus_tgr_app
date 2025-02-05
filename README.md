@@ -67,6 +67,7 @@ ng g library @myrmidon/cadmus-tgr-part-ms-ui --prefix cadmus --force
 
 ### 9.0.0
 
+- 2025-02-05: updated philology UI package (higher note limit in apparatus).
 - 2025-01-30:
   - ⚠️ migrated to signals.
   - updated Angular and packages.
