@@ -27,7 +27,7 @@ services:
 
   # Cadmus TGR API
   cadmus-tgr-api:
-    image: vedph2020/cadmus-tgr-api:7.0.0
+    image: vedph2020/cadmus-tgr-api:8.0.1
     container_name: cadmus-tgr-api
     ports:
       - 59590:8080
@@ -50,7 +50,7 @@ services:
 
   # Cadmus app
   cadmus-tgr-app:
-    image: vedph2020/cadmus-tgr-app:6.0.3
+    image: vedph2020/cadmus-tgr-app:9.0.1
     container_name: cadmus-tgr-app
     ports:
       - 4200:80
