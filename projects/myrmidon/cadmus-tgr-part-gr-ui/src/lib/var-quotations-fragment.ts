@@ -35,6 +35,7 @@ export interface VarQuotation {
   authority: string;
   work: string;
   location: string;
+  subrange?: string;
   note?: string;
   parallels?: QuotationParallel[];
   variants?: QuotationVariant[];
@@ -86,6 +87,9 @@ export const VAR_QUOTATIONS_FRAGMENT_SCHEMA = {
                 type: 'string',
               },
               location: {
+                type: 'string',
+              },
+              subrange: {
                 type: 'string',
               },
               note: {

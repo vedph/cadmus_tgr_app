@@ -65,6 +65,10 @@ ng g library @myrmidon/cadmus-tgr-part-ms-ui --prefix cadmus --force
 
 ## History
 
+### 9.0.3
+
+- 2025-04-29: added `subrange` to `VarQuotation`.
+
 ### 9.0.2
 
 - 2025-03-06:

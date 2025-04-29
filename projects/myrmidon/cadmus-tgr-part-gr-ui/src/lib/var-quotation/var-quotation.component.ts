@@ -103,6 +103,7 @@ export class VarQuotationComponent {
   public authority: FormControl<string | null>;
   public work: FormControl<string | null>;
   public location: FormControl<string | null>;
+  public subrange: FormControl<string | null>;
   public note: FormControl<string | null>;
   public parallels: FormArray;
   public variants: FormControl<QuotationVariant[]>;
@@ -128,6 +129,7 @@ export class VarQuotationComponent {
       Validators.required,
       Validators.maxLength(50),
     ]);
+    this.subrange = _formBuilder.control(null, Validators.maxLength(50));
     this.note = _formBuilder.control(null, Validators.maxLength(1000));
     this.parallels = _formBuilder.array([]);
     this.variants = _formBuilder.control([], { nonNullable: true });
@@ -136,6 +138,7 @@ export class VarQuotationComponent {
       authority: this.authority,
       work: this.work,
       location: this.location,
+      subrange: this.subrange,
       note: this.note,
       parallels: this.parallels,
       variants: this.variants,
@@ -156,6 +159,7 @@ export class VarQuotationComponent {
     this.authority.setValue(model.authority);
     this.work.setValue(model.work);
     this.location.setValue(model.location);
+    this.subrange.setValue(model.subrange || null);
     this.note.setValue(model.note || null);
     this.parallels.clear();
     if (model.parallels) {
@@ -174,6 +178,7 @@ export class VarQuotationComponent {
       authority: this.authority.value?.trim() || '',
       work: this.work.value?.trim() || '',
       location: this.location.value?.trim() || '',
+      subrange: this.subrange.value?.trim() || undefined,
       note: this.note.value?.trim(),
       parallels: this.getParallels(),
       variants: this.variants.value.length ? this.variants.value : undefined,

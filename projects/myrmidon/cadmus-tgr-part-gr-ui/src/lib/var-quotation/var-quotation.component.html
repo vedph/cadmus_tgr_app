@@ -85,6 +85,16 @@
           <mat-error>too long</mat-error>
           }
         </mat-form-field>
+
+        <!-- subrange -->
+        <mat-form-field>
+          <mat-label>subrange</mat-label>
+          <input matInput [formControl]="subrange" />
+          @if ( $any(subrange).errors?.maxLength && (subrange.dirty ||
+          subrange.touched) ) {
+          <mat-error>too long</mat-error>
+          }
+        </mat-form-field>
       </div>
       <!-- note -->
       <div>
