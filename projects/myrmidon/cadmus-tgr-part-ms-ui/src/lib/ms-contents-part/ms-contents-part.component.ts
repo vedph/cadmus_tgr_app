@@ -29,10 +29,13 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { DialogService } from '@myrmidon/ngx-mat-tools';
 import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
 import {
   EditedObject,
+  ThesauriSet,
+  ThesaurusEntry,
+} from '@myrmidon/cadmus-core';
+import { MsLocation, MsLocationService } from '@myrmidon/cadmus-tgr-core';
+import {
   ModelEditorComponentBase,
   CloseSaveButtonsComponent,
 } from '@myrmidon/cadmus-ui';

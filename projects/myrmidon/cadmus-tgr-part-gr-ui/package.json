@@ -1,6 +1,6 @@
 {
   "name": "@myrmidon/cadmus-tgr-part-gr-ui",
-  "version": "7.0.1",
+  "version": "8.0.0",
   "description": "Cadmus TGR - part editors components.",
   "keywords": [
     "Cadmus",
@@ -15,13 +15,13 @@
     "name": "Daniele Fusi"
   },
   "peerDependencies": {
-    "@angular/common": "^19.0.0",
-    "@angular/cdk": "^19.0.0",
-    "@cisstech/nge": "^18.0.4",
+    "@angular/common": "^20.1.6",
+    "@angular/cdk": "^20.1.5",
+    "@cisstech/nge": "^18.2.1",
     "@myrmidon/cadmus-tgr-core": "^5.0.0",
-    "@myrmidon/cadmus-ui": "^12.0.0",
-    "@myrmidon/auth-jwt-login": "^7.1.1",
-    "@myrmidon/ngx-tools": "^1.0.0"
+    "@myrmidon/cadmus-ui": "^14.0.0",
+    "@myrmidon/auth-jwt-login": "^8.0.1",
+    "@myrmidon/ngx-tools": "^2.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

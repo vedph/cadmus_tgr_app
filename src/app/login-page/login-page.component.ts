@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +23,6 @@ import {
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
@@ -31,8 +30,8 @@ import {
     MatIconModule,
     MatInputModule,
     MatTooltipModule,
-    AuthJwtLoginComponent,
-  ],
+    AuthJwtLoginComponent
+],
 })
 export class LoginPageComponent {
   public busy = false;
@@ -50,7 +49,7 @@ export class LoginPageComponent {
     this._authService.login(credentials.name, credentials.password).subscribe({
       next: (user) => {
         console.log('User logged in', user);
-        this._router.navigate([credentials.returnUrl || '/home']);
+        this._router.navigate([credentials.returnUrl || '/items']);
       },
       error: (error) => {
         this.error = 'Login failed';

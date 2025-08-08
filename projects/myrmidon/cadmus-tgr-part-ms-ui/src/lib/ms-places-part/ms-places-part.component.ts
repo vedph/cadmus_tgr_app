@@ -31,11 +31,14 @@ import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 
 import {
-  EditedObject,
   ModelEditorComponentBase,
   CloseSaveButtonsComponent,
 } from '@myrmidon/cadmus-ui';
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  EditedObject,
+  ThesauriSet,
+  ThesaurusEntry,
+} from '@myrmidon/cadmus-core';
 
 import { MsPlaceComponent } from '../ms-place/ms-place.component';
 

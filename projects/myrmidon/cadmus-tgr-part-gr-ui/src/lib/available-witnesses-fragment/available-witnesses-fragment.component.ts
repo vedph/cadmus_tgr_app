@@ -27,10 +27,13 @@ import { MatInput } from '@angular/material/input';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { BucketStoreService } from '@myrmidon/cadmus-tgr-core';
 import {
   EditedObject,
+  ThesauriSet,
+  ThesaurusEntry,
+} from '@myrmidon/cadmus-core';
+import { BucketStoreService } from '@myrmidon/cadmus-tgr-core';
+import {
   ModelEditorComponentBase,
   CloseSaveButtonsComponent,
 } from '@myrmidon/cadmus-ui';

@@ -123,7 +123,7 @@
       <!-- date -->
       <div>
         <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
-        @if (hasDate?.value) {
+        @if (hasDate.value) {
         <cadmus-refs-historical-date
           [date]="$any(date)"
           (dateChange)="onDateChange($event!)"

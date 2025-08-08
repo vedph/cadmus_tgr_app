@@ -8,13 +8,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 import { NgeMonacoModule } from '@cisstech/nge/monaco';
 import { NgeMarkdownModule } from '@cisstech/nge/markdown';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 import {
   provideHttpClient,
   withInterceptors,
   withJsonpSupport,
 } from '@angular/common/http';
-import { authJwtInterceptor } from '@myrmidon/auth-jwt-login';
+import { authJwtInterceptor, jwtInterceptor } from '@myrmidon/auth-jwt-login';
 import { GEONAMES_USERNAME_TOKEN } from '@myrmidon/cadmus-refs-geonames-lookup';
 import { PROXY_INTERCEPTOR_OPTIONS } from '@myrmidon/cadmus-refs-lookup';
 import {
@@ -39,13 +40,15 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withViewTransitions()),
     provideAnimationsAsync(),
-    provideHttpClient(
-      withInterceptors([authJwtInterceptor]),
-      withJsonpSupport()
-    ),
+    provideHttpClient(withInterceptors([jwtInterceptor]), withJsonpSupport()),
     provideNativeDateAdapter(),
     importProvidersFrom(NgeMonacoModule.forRoot({})),
     importProvidersFrom(NgeMarkdownModule),
+    importProvidersFrom(
+      NgxEchartsModule.forRoot({
+        echarts: () => import('echarts'),
+      })
+    ),
     // parts and fragments type IDs to editor group keys mappings
     // https://github.com/nrwl/nx/issues/208#issuecomment-384102058
     // inject like: @Inject('partEditorKeys') partEditorKeys: PartEditorKeys
